@@ -73,7 +73,7 @@ namespace DemoPrototype
             if (OperatorListBox.IsSelected)
             {
                 MyFrame.Navigate(typeof(OperatorPage));
-                TitleTextBlock.Text = "Run Injection Moulding";
+                TitleTextBlock.Text = "Run injection moulding";
                 BackButton.Visibility = Visibility.Collapsed;
             }
            

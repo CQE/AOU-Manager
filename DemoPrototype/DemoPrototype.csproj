@@ -98,7 +98,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="HardwareTest_TemporaryKey.pfx" />
     <None Include="project.json" />
     <None Include="project.lock.json" />
   </ItemGroup>
@@ -144,6 +143,7 @@
     <Content Include="Assets\Food.png" />
     <Content Include="Assets\Help.html" />
     <Content Include="Assets\imm-img.png" />
+    <Content Include="Includes\DataHandler.dll" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -197,9 +197,9 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="DataHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="DataHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\AOU-Manager-DataHandler\DataHandler\bin\Release\DataHandler.dll</HintPath>
+      <HintPath>Includes\DataHandler.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -131,6 +131,22 @@ namespace DemoPrototype
         private void Page_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
         }
+
+        private void FreezeDelayChart(object sender, RoutedEventArgs e)
+        {
+            //make chart toggle freeze and run
+
+        }
+
+        private void FreezeEnergyChart(object sender, TappedRoutedEventArgs e)
+        {
+
+        }
+
+        private void FreezeVolumeChart(object sender, TappedRoutedEventArgs e)
+        {
+
+        }
     }
 
 

@@ -22,12 +22,30 @@ namespace DemoPrototype
     /// </summary>
     public sealed partial class MaintenancePage : Page
     {
-        public List<AOULogMessage> AOULogMsgs;
+        private DispatcherTimer dTimer;
+        private DataUpdater dataUpdater;
+
         public MaintenancePage()
         {
             this.InitializeComponent();
-            AOULogMsgs = AOULogMessageHandler.GetAOULogMessages();
+            dataUpdater = new DataUpdater();
+            InitDispatcherTimer();
         }
-       
+
+        private void InitDispatcherTimer()
+        {
+            dTimer = new DispatcherTimer();
+            dTimer.Tick += UpdateTick;
+            dTimer.Interval = new TimeSpan(0, 0, 1);
+            dTimer.Start();
+        }
+
+        void UpdateTick(object sender, object e)
+        {
+            if (LogGrid.DataContext != null) {
+                dataUpdater.UpdateInputDataLogMessages(LogGrid.DataContext);
+            }
+        }
+
     }
 }

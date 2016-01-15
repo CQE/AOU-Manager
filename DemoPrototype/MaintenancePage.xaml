@@ -5,18 +5,19 @@
     xmlns:local="using:DemoPrototype"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:data="using:DemoPrototype"
+    xmlns:sfgrid="using:Syncfusion.UI.Xaml.Grid"
+    xmlns:sfpager="using:Syncfusion.UI.Xaml.Controls.DataPager"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid x:Name="MaintenanceGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <!-- ColumnDefinition Width="*"></ -->
         </Grid.ColumnDefinitions>
 
 
@@ -228,8 +229,25 @@
 
         </StackPanel>
 
-       
 
+        <Grid x:Name="LogGrid" Grid.Column="4">
+            <Grid.DataContext>
+                <local:LogMessageViewModel/>
+                <!-- local:OrderInfoRepository/ -->
+            </Grid.DataContext>
+
+            <sfgrid:SfDataGrid x:Name="datagrid" ColumnSizer="Auto"  Margin='0,0,0,100'
+                               AllowSorting="True" AllowFiltering="True"
+                               ItemsSource="{Binding ElementName=datapager, Path=PagedSource}">
+
+                <sfgrid:SfDataGrid.SortColumnDescriptions>
+                    <!-- sfgrid:SortColumnDescription ColumnName="OrderID" SortDirection="Descending"/ -->
+                </sfgrid:SfDataGrid.SortColumnDescriptions>
+            </sfgrid:SfDataGrid>
+            <sfpager:SfDataPager  Margin='0,110,0,0' x:Name="datapager" NumericButtonCount="1" PageSize="25" AccentBackground="Gray" Source="{Binding logMessages}"/>
+            <!-- sfpager:SfDataPager x:Name="datapager" NumericButtonCount="1" PageSize="5" AccentBackground="Gray" Source="{Binding OrderInfoCollection}"/ -->
+
+        </Grid>
 
     </Grid>
 </Page>

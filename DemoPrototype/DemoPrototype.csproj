@@ -17,8 +17,8 @@
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>HardwareTest_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>1FEC0D2D9281062A4BE2B6CB8905FE2CE14F9667</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>DemoPrototype_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>068288594B630ADD367DD8A903142A1D4332B58F</PackageCertificateThumbprint>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>arm</AppxBundlePlatforms>
@@ -98,6 +98,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="DemoPrototype_TemporaryKey.pfx" />
     <None Include="project.json" />
     <None Include="project.lock.json" />
   </ItemGroup>
@@ -197,7 +198,7 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="DataHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DataHandler, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\DataHandler.dll</HintPath>
     </Reference>

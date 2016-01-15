@@ -22,9 +22,30 @@ namespace DemoPrototype
     /// </summary>
     public sealed partial class CalibratePage : Page
     {
+        private DispatcherTimer dTimer;
+        private DataUpdater dataUpdater;
+
         public CalibratePage()
         {
             this.InitializeComponent();
+            dataUpdater = new DataUpdater();
+            InitDispatcherTimer();
+        }
+
+        private void InitDispatcherTimer()
+        {
+            dTimer = new DispatcherTimer();
+            dTimer.Tick += UpdateTick;
+            dTimer.Interval = new TimeSpan(0, 0, 1);
+            dTimer.Start();
+        }
+
+        void UpdateTick(object sender, object e)
+        {
+            if (CalibrateGrid.DataContext != null)
+            {
+                dataUpdater.UpdateInputData(CalibrateGrid.DataContext);
+            }
         }
 
         private void CalibrateFreezeVolumeChart(object sender, TappedRoutedEventArgs e)

@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.ApplicationModel;
+using Windows.UI.ViewManagement;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -40,10 +41,14 @@ namespace DemoPrototype
             BackButton.Visibility = Visibility.Collapsed;
             //want to start with Operator page, is there a better way then change
             MyFrame.Navigate(typeof(OperatorPage));
-            TitleTextBlock.Text = "Run Injection Moulding";
+            TitleTextBlock.Text = "Run injection moulding";
             //create these only once
             webView = new WebView();
             myResolver = new StreamUriWinRTResolver();
+            //set window title
+            var applicationView = ApplicationView.GetForCurrentView();
+            string version = GetAppVersion();
+            applicationView.Title = "AOU version " + version;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -80,24 +85,24 @@ namespace DemoPrototype
             else if (SettingsListBoxItem.IsSelected)
             {
                 MyFrame.Navigate(typeof(SettingsPage));
-                TitleTextBlock.Text = "AOU Control System Settings";
+                TitleTextBlock.Text = "System settings";
                 BackButton.Visibility = Visibility.Visible;
             }
             else if (CalibrateListBoxItem.IsSelected)
             {
                 MyFrame.Navigate(typeof(CalibratePage));
-                TitleTextBlock.Text = "AOU Control System Calibrate";
+                TitleTextBlock.Text = "Calibrate system";
                 BackButton.Visibility = Visibility.Visible;
             }
             else if (MaintenanceListBoxItem.IsSelected)
             {
                 MyFrame.Navigate(typeof(MaintenancePage));
-                TitleTextBlock.Text = "AOU Control System Maintenance";
+                TitleTextBlock.Text = "System maintenance";
                 BackButton.Visibility = Visibility.Visible;
             }
             else if (HelpListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = "AOU Control System Help";
+                TitleTextBlock.Text = "System support";
                 BackButton.Visibility = Visibility.Collapsed;
                 DisplayHtml("Help");
             }
@@ -105,7 +110,7 @@ namespace DemoPrototype
             {
                 //we show version number after the title until a better place is decided
                 string version = GetAppVersion();
-                string AboutHeader = "About AOU Control System " + version;
+                string AboutHeader = "About AOU " + version;
                 TitleTextBlock.Text = AboutHeader;
                 BackButton.Visibility = Visibility.Collapsed;
                 DisplayHtml("About");

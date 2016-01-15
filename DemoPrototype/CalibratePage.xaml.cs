@@ -26,5 +26,30 @@ namespace DemoPrototype
         {
             this.InitializeComponent();
         }
+
+        private void CalibrateFreezeVolumeChart(object sender, TappedRoutedEventArgs e)
+        {
+            //todo make work
+        }
+
+        private void CalibrateFreezeEnergyChart(object sender, TappedRoutedEventArgs e)
+        {
+            //todo make work
+        }
+
+        private void CalibrateFreezeDelayChart(object sender, TappedRoutedEventArgs e)
+        {
+            //todo make work
+        }
+
+        private void CalibratePhaseLine1_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            //todo make work
+        }
+
+        private void CalibratePhaseLine2_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            //todo make work
+        }
     }
 }

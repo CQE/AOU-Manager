@@ -11,6 +11,10 @@
 
     <Grid x:Name="MaintenanceGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+        <Grid.DataContext>
+            <local:LogMessageViewModel x:Name="data"/>
+        </Grid.DataContext>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -19,7 +23,6 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <!-- ColumnDefinition Width="*"></ -->
         </Grid.ColumnDefinitions>
-
 
         <StackPanel Margin="10,10,0,0" Orientation="Vertical" Width="220" HorizontalAlignment="Left">
             <TextBlock FontWeight="SemiBold" Text="Force valves (On/Off)"></TextBlock>
@@ -84,7 +87,6 @@
                 <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
             </StackPanel>
 
-
         </StackPanel>
 
         <StackPanel Grid.Column="1" Margin='20,0,0,0'>
@@ -145,9 +147,6 @@
                 <TextBox IsEnabled="False" Text="100"></TextBox>
             </StackPanel>
 
-
-
-
         </StackPanel>
 
 
@@ -196,10 +195,11 @@
                 <TextBox IsEnabled="False" Text="55"></TextBox>
             </StackPanel>
 
-        </StackPanel>
+        <!-- /StackPanel >
 
-        <StackPanel Grid.Column="3" Margin='20,0,0,0'>
-            <TextBlock FontWeight="SemiBold" Text="Current (A)"></TextBlock>
+        <StackPanel Grid.Column="3" Margin='20,0,0,0' -->
+            <Line Stroke="#FF4D4D4D" StrokeThickness="3" Height="5"/>
+            <TextBlock Margin="0,20,0,0" FontWeight="SemiBold" Text="Current (A)"></TextBlock>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Heating bars Phase1"></TextBlock>
                 <TextBox IsEnabled="False" Text="22"></TextBox>
@@ -212,7 +212,6 @@
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Heating bars Phase3"></TextBlock>
                 <TextBox IsEnabled="False" Text="22"></TextBox>
             </StackPanel>
-
             <TextBlock FontWeight="SemiBold" Text="Voltage (On/Off)"></TextBlock>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Electric Phase L1"></TextBlock>
@@ -230,24 +229,24 @@
         </StackPanel>
 
 
-        <Grid x:Name="LogGrid" Grid.Column="4">
-            <Grid.DataContext>
-                <local:LogMessageViewModel/>
-                <!-- local:OrderInfoRepository/ -->
-            </Grid.DataContext>
+        <StackPanel x:Name="LogGrid" Grid.Column="3">
 
-            <sfgrid:SfDataGrid x:Name="datagrid" ColumnSizer="Auto"  Margin='0,0,0,100'
-                               AllowSorting="True" AllowFiltering="True"
-                               ItemsSource="{Binding ElementName=datapager, Path=PagedSource}">
+            <sfgrid:SfDataGrid ColumnSizer="Auto"  Height='725'
+                               AllowSorting="True" AllowFiltering="False"
+                               ItemsSource="{Binding logMessages}"
+            />
+            <!-- ItemsSource="{Binding logMessages}" -->
+            <!-- ItemsSource="{Binding ElementName=datapager, Path=PagedSource}" -->
 
-                <sfgrid:SfDataGrid.SortColumnDescriptions>
-                    <!-- sfgrid:SortColumnDescription ColumnName="OrderID" SortDirection="Descending"/ -->
+            <!-- sfgrid:SfDataGrid.SortColumnDescriptions>
+                    <sfgrid:SortColumnDescription ColumnName="OrderID" SortDirection="Descending"/>
                 </sfgrid:SfDataGrid.SortColumnDescriptions>
-            </sfgrid:SfDataGrid>
-            <sfpager:SfDataPager  Margin='0,110,0,0' x:Name="datapager" NumericButtonCount="1" PageSize="25" AccentBackground="Gray" Source="{Binding logMessages}"/>
-            <!-- sfpager:SfDataPager x:Name="datapager" NumericButtonCount="1" PageSize="5" AccentBackground="Gray" Source="{Binding OrderInfoCollection}"/ -->
+            NumericButtonCount="3" PageSize="15" 
+            </ -->
+            
+            <!-- sfpager:SfDataPager  x:Name="logpager" Source="{Binding logMessages}"/ -->
 
-        </Grid>
+        </StackPanel>
 
     </Grid>
 </Page>

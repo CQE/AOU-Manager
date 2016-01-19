@@ -23,13 +23,26 @@ namespace DemoPrototype
     public sealed partial class MaintenancePage : Page
     {
         private DispatcherTimer dTimer;
-        private DataUpdater dataUpdater;
-
+       
         public MaintenancePage()
         {
+            this.Loaded += MaintenancePage_Loaded;
+            this.Unloaded += MaintenancePage_Unloaded;
+
             this.InitializeComponent();
-            dataUpdater = new DataUpdater();
+            DataUpdater.InitInputDataLogMessages(LogGrid.DataContext);
+
             InitDispatcherTimer();
+        }
+
+        private void MaintenancePage_Unloaded(object sender, RoutedEventArgs e)
+        {
+           dTimer.Stop();
+        }
+
+        private void MaintenancePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            dTimer.Start();
         }
 
         private void InitDispatcherTimer()
@@ -37,14 +50,11 @@ namespace DemoPrototype
             dTimer = new DispatcherTimer();
             dTimer.Tick += UpdateTick;
             dTimer.Interval = new TimeSpan(0, 0, 1);
-            dTimer.Start();
         }
 
         void UpdateTick(object sender, object e)
         {
-            if (LogGrid.DataContext != null) {
-                dataUpdater.UpdateInputDataLogMessages(LogGrid.DataContext);
-            }
+           DataUpdater.UpdateInputDataLogMessages(LogGrid.DataContext);
         }
 
     }

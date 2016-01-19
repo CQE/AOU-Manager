@@ -51,47 +51,77 @@ namespace DemoPrototype
 
     }
 
-    public class DataUpdater
+    public static class DataUpdater
     {
-        private AOURouter router;
+        private static AOURouter dataRouter;
 
-        public DataUpdater()
+        private static bool CheckDataRouterSingleton()
         {
-            router = new AOURouter(AOURouter.RunType.Random);
-            //            router = new AOURouter(AOURouter.RunType.File);
-            //            router = new AOURouter(AOURouter.RunType.Serial);
-        }
-
-        public void UpdateInputData(object dataContext)
-        {
-            var lcvm = (LineChartViewModel)dataContext; // refer LineChartttViewModel
-            router.Update(); // Important for updating to latest data
-            if (lcvm.numPoints < lcvm.maxNumPoints)
-            {
-                lcvm.AddPoints(router.GetLastPowerValues((uint)lcvm.maxNumPoints)); 
-            }
-            else if (router.NewPowerDataIsAvailable())
-            {
-                lcvm.DeleteFirstPoint();
-                lcvm.AddPoint(router.GetNewPowerValues());
-            }
-        }
-
-        public void UpdateInputDataLogMessages(object dataContext)
-        {
-            var lmvm = (LogMessageViewModel)dataContext; // refer LineChartttViewModel
-            router.Update(); // Important for updating to latest data
-
-            if (router.NewLogMessagesAreAvailable())
+            if (dataRouter == null)
             { 
-                lmvm.AddLogMessage(router.GetNewLogMessage());
+                dataRouter = new AOURouter(AOURouter.RunType.Random);
+                dataRouter.Update(); // First to do
+                return false;
+            }
+            return true;
+        }
+
+        public static void Update()
+        {
+            if (CheckDataRouterSingleton())
+            {
+                dataRouter.Update();
+            }
+        }
+
+        public static void InitInputData(object dataContext)
+        {
+            CheckDataRouterSingleton();
+            if (dataContext != null)
+            { 
+                ((LineChartViewModel)dataContext).AddPoints(dataRouter.GetLastPowerValues(((LineChartViewModel)dataContext).maxNumPoints));
+            }
+        }
+
+        public static void UpdateInputData(object dataContext)
+        {
+            CheckDataRouterSingleton();
+            if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
+            {
+                ((LineChartViewModel)dataContext).DeleteFirstPoint();
+                ((LineChartViewModel)dataContext).AddPoint(dataRouter.GetLastPowerValue());
+            }
+        }
+
+        public static void InitInputDataLogMessages(object dataContext)
+        {
+            CheckDataRouterSingleton();
+            if (dataContext != null)
+            {
+                ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetLastLogMessages(10));
+            }
+        }
+
+        public static void UpdateInputDataLogMessages(object dataContext)
+        {
+            CheckDataRouterSingleton();
+            if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
+            {
+                ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetNewLogMessages());
             }
         }
     }
 
+
     public class LineChartViewModel
     // Class for handling chart data
     {
+        public ObservableCollection<Power> power
+        {
+            get;
+            set;
+        }
+
         public int maxNumPoints
         {
             get;
@@ -103,12 +133,6 @@ namespace DemoPrototype
             {
                 return power.Count;
             }
-        }
-
-        public ObservableCollection<Power> power
-        {
-            get;
-            set;
         }
 
         public LineChartViewModel()
@@ -132,10 +156,7 @@ namespace DemoPrototype
 
         public void AddPoint(Power newPoint)
         {
-            if (newPoint != null)
-            { 
-                power.Add(newPoint);
-            }
+            power.Add(newPoint);
         }
 
         public void DeleteFirstPoint()
@@ -173,109 +194,8 @@ namespace DemoPrototype
 
         public void AddLogMessage(AOULogMessage log)
         {
-            if (log != null) { 
-                logMessages.Add(log);
-            }
-            else
-            {
-                logMessages.Add(new AOULogMessage(0, "Log Message null", 3, 0));
-            }
+            logMessages.Add(new AOULogMessage(0, "Log Message null", 3, 0));
         }
 
     }
-
-    /* Only for test 
-    public class OrderInfo
-    {
-        int orderID;
-        string customerId;
-        string country;
-        string customerName;
-        string shippingCity;
-
-        public int OrderID
-        {
-            get { return orderID; }
-            set { orderID = value; }
-        }
-
-        public string CustomerID
-        {
-            get { return customerId; }
-            set { customerId = value; }
-        }
-
-        public string CustomerName
-        {
-            get { return customerName; }
-            set { customerName = value; }
-        }
-
-
-
-        public string Country
-        {
-            get { return country; }
-            set { country = value; }
-        }
-
-
-
-        public string ShipCity
-        {
-            get { return shippingCity; }
-            set { shippingCity = value; }
-        }
-
-        public OrderInfo(int orderId, string customerName, string country, string customerId, string shipCity)
-        {
-            this.OrderID = orderId;
-            this.CustomerName = customerName;
-            this.Country = country;
-            this.CustomerID = customerId;
-            this.ShipCity = shipCity;
-        }
-    }
-
-    public class OrderInfoRepository
-    {
-        ObservableCollection<OrderInfo> orderCollection;
-
-        public ObservableCollection<OrderInfo> OrderInfoCollection
-        {
-            get { return orderCollection; }
-            set { orderCollection = value; }
-        }
-
-        public OrderInfoRepository()
-        {
-            orderCollection = new ObservableCollection<OrderInfo>();
-            this.GenerateOrders();
-        }
-
-        private void GenerateOrders()
-        {
-            orderCollection.Add(new OrderInfo(1001, "Maria Anders", "Germany", "ALFKI", "Berlin"));
-            orderCollection.Add(new OrderInfo(1002, "Ana Trujilo", "Mexico", "ANATR", "México D.F."));
-            orderCollection.Add(new OrderInfo(1003, "Antonio Moreno", "Mexico", "ANTON", "México D.F."));
-            orderCollection.Add(new OrderInfo(1004, "Thomas Hardy", "UK", "AROUT", "London"));
-            orderCollection.Add(new OrderInfo(1005, "Christina Berglund", "Sweden", "BERGS", "Luleå"));
-            orderCollection.Add(new OrderInfo(1006, "Hanna Moos", "Germany", "BLAUS", "Mannheim"));
-            orderCollection.Add(new OrderInfo(1007, "Frédérique Citeaux", "France", "BLONP", "Strasbourg"));
-            orderCollection.Add(new OrderInfo(1008, "Martin Sommer", "Spain", "BOLID", "Madrid"));
-            orderCollection.Add(new OrderInfo(1009, "Laurence Lebihan", "France", "BONAP", "Marseille"));
-            orderCollection.Add(new OrderInfo(1010, "Elizabeth Lincoln", "Canada", "BOTTM", "Tsawassen"));
-            orderCollection.Add(new OrderInfo(1001, "Maria Anders", "Germany", "ALFKI", "Berlin"));
-            orderCollection.Add(new OrderInfo(1002, "Ana Trujilo", "Mexico", "ANATR", "México D.F."));
-            orderCollection.Add(new OrderInfo(1003, "Antonio Moreno", "Mexico", "ANTON", "México D.F."));
-            orderCollection.Add(new OrderInfo(1004, "Thomas Hardy", "UK", "AROUT", "London"));
-            orderCollection.Add(new OrderInfo(1005, "Christina Berglund", "Sweden", "BERGS", "Luleå"));
-            orderCollection.Add(new OrderInfo(1006, "Hanna Moos", "Germany", "BLAUS", "Mannheim"));
-            orderCollection.Add(new OrderInfo(1007, "Frédérique Citeaux", "France", "BLONP", "Strasbourg"));
-            orderCollection.Add(new OrderInfo(1008, "Martin Sommer", "Spain", "BOLID", "Madrid"));
-            orderCollection.Add(new OrderInfo(1009, "Laurence Lebihan", "France", "BONAP", "Marseille"));
-            orderCollection.Add(new OrderInfo(1010, "Elizabeth Lincoln", "Canada", "BOTTM", "Tsawassen"));
-        }
-    }
-    */
 }

@@ -26,7 +26,8 @@ namespace DemoPrototype
     sealed partial class App : Application
     {
         private ThreadPoolTimer timer;
-        private AOURouter aouRouter; 
+
+        private const int timer_tick_period = 500;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -37,15 +38,14 @@ namespace DemoPrototype
             Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
                 Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
+
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-
-            aouRouter = new AOURouter();
         }
 
         private void Timer_Tick(ThreadPoolTimer timer)
         {
-            aouRouter.Update();
+           DataUpdater.Update();
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace DemoPrototype
             // Ensure the current window is active
             Window.Current.Activate();
 
-            timer = ThreadPoolTimer.CreatePeriodicTimer(Timer_Tick, TimeSpan.FromMilliseconds(500));
+            timer = ThreadPoolTimer.CreatePeriodicTimer(Timer_Tick, TimeSpan.FromMilliseconds(timer_tick_period));
         }
 
         /// <summary>
@@ -111,6 +111,8 @@ namespace DemoPrototype
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
+            timer.Cancel();
+
             deferral.Complete();
         }
     }

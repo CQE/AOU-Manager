@@ -25,12 +25,15 @@ namespace DemoPrototype
     {
         private bool isInitSelection = true; // ToDo. Better check
         DispatcherTimer dTimer;
-        private DataUpdater dataUpdater;
 
         public OperatorPage()
         {
+            this.Loaded += MaintenancePage_Loaded;
+            this.Unloaded += MaintenancePage_Unloaded;
+
             this.InitializeComponent();
-            dataUpdater = new DataUpdater();
+
+            DataUpdater.InitInputData(mainGrid.DataContext);
 
             //set initial values for temperature unit
             if (GlobalAppSettings.IsCelsius)
@@ -45,18 +48,26 @@ namespace DemoPrototype
             InitDispatcherTimer();
         }
 
+        private void MaintenancePage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            dTimer.Stop();
+        }
+
+        private void MaintenancePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            dTimer.Start();
+        }
+
         private void InitDispatcherTimer()
         {
             dTimer = new DispatcherTimer();
             dTimer.Tick += UpdateTick;
             dTimer.Interval = new TimeSpan(0, 0, 1);
-            dTimer.Start();
         }
 
         void UpdateTick(object sender, object e)
         {
-            if (mainGrid.DataContext != null)
-                dataUpdater.UpdateInputData(mainGrid.DataContext);
+            DataUpdater.UpdateInputData(mainGrid.DataContext);
         }
 
         private async void modalDlg(string title, string message)
@@ -122,14 +133,11 @@ namespace DemoPrototype
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            // Stop timer and clean up
+            /* Stop timer and clean up
             dTimer.Stop();
             dTimer = null;
             mainGrid.DataContext = null;
-        }
-
-        private void Page_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
-        {
+            */
         }
 
         private void FreezeDelayChart(object sender, RoutedEventArgs e)

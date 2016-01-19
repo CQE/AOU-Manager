@@ -41,6 +41,7 @@ namespace DemoPrototype
             BackButton.Visibility = Visibility.Collapsed;
             //want to start with Operator page, is there a better way then change
             MyFrame.Navigate(typeof(OperatorPage));
+            // MyFrame.Navigate(typeof(SettingsPage));
             TitleTextBlock.Text = "Run injection moulding";
             //create these only once
             webView = new WebView();

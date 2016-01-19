@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:chart="using:Syncfusion.UI.Xaml.Charts"
-    mc:Ignorable="d" Unloaded="Page_Unloaded" DataContextChanged="Page_DataContextChanged">
+    mc:Ignorable="d">
     <ScrollViewer>
         <Grid  Name="mainGrid" Margin="10,0,30,0" >
         <Grid.RowDefinitions>

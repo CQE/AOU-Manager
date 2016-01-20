@@ -59,7 +59,7 @@ namespace DemoPrototype
         {
             if (dataRouter == null)
             { 
-                dataRouter = new AOURouter(AOURouter.RunType.Random);
+                dataRouter = new AOURouter(AOURouter.RunType.Random, 0);
                 dataRouter.Update(); // First to do
                 return false;
             }
@@ -79,7 +79,9 @@ namespace DemoPrototype
             CheckDataRouterSingleton();
             if (dataContext != null)
             { 
-                ((LineChartViewModel)dataContext).AddPoints(dataRouter.GetLastPowerValues(((LineChartViewModel)dataContext).maxNumPoints));
+                // int numPoints = ((LineChartViewModel)dataContext).maxNumPoints);
+                //int numPoints = 5;
+                //((LineChartViewModel)dataContext).AddPoints(numPoints);
             }
         }
 
@@ -88,8 +90,9 @@ namespace DemoPrototype
             CheckDataRouterSingleton();
             if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
             {
-                ((LineChartViewModel)dataContext).DeleteFirstPoint();
                 ((LineChartViewModel)dataContext).AddPoint(dataRouter.GetLastPowerValue());
+                if (((LineChartViewModel)dataContext).numPoints > 30)
+                    ((LineChartViewModel)dataContext).DeleteFirstPoint();
             }
         }
 
@@ -98,7 +101,7 @@ namespace DemoPrototype
             CheckDataRouterSingleton();
             if (dataContext != null)
             {
-                ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetLastLogMessages(10));
+             //   ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetLastLogMessages(10));
             }
         }
 

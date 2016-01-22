@@ -120,6 +120,8 @@ namespace DemoPrototype
     {
         public const int maxNumPoints = 30;
 
+        private int nextIndex;
+
         public ObservableCollection<Power> power
         {
             get;
@@ -132,13 +134,34 @@ namespace DemoPrototype
             for (int i = 0; i < powerArr.Length; i++)
                 powerArr[i] = new Power(true);
             power = new ObservableCollection<Power>(powerArr);
+            nextIndex = 0;
         }
 
         public void UpdateNewValue(Power pow)
         {
-            power.Add(pow);
-            if (power.Count > maxNumPoints)
-                power.RemoveAt(0);
+            if (nextIndex < maxNumPoints)
+            {
+                power[nextIndex++] = pow;
+                if (nextIndex == 1) 
+                {
+                    long firstTime = power[0].ElapsedTime;
+                    Power pow2 = new Power(true);
+                    for (int i = 1; i < maxNumPoints; i++)
+                    {
+                        pow2.ElapsedTime = i*1000;
+                        power.RemoveAt(i);
+                        power.Insert(i, pow2);
+                    }
+                }
+
+
+            }
+            else
+            {
+                power.Add(pow);
+                if (power.Count > maxNumPoints)
+                    power.RemoveAt(0);
+            }
         }
 
         private void SetPoints(Power[] points)

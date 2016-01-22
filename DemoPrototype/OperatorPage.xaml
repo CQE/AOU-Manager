@@ -136,30 +136,40 @@
 
             <chart:SfChart  
             Header="Feed and Return delay timings"
-            Legend="Legend"
             Grid.Row="0"
             Grid.RowSpan="6"
             Grid.Column="2"
+            IsDoubleTapEnabled="True"   
+            DoubleTapped="FreezeDelayChart"
             Margin="20,0,0,0">
-            <chart:SfChart.PrimaryAxis>
-                <chart:CategoryAxis Name="MyXAxis"></chart:CategoryAxis>
-            </chart:SfChart.PrimaryAxis>
-            <chart:SfChart.SecondaryAxis>
+                <chart:SfChart.PrimaryAxis>
+                    <chart:TimeSpanAxis ></chart:TimeSpanAxis>
+                </chart:SfChart.PrimaryAxis>
+
+                <chart:SfChart.Legend>
+                    <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Visible"/>
+                </chart:SfChart.Legend>
+                <chart:SfChart.SecondaryAxis>
                     <chart:NumericalAxis Name="MyYAxis" Minimum="0" Interval="10" Maximum="100" EnableAutoIntervalOnZooming="False">
                         <chart:NumericalAxis.StripLines>
-                            <chart:ChartStripLine Name="FreezeButtonStripLine" IsSegmented="True" Label="Freeze/Run" SegmentStartValue="0" SegmentEndValue="8" Start="0" Width="15" IsTapEnabled="True"  Tapped="FreezeDelayChart" Background="GreenYellow"></chart:ChartStripLine>
-                            <chart:ChartStripLine Name="DiffStripline" IsSegmented="True" SegmentStartValue="11" SegmentEndValue="15" Start="60" Width="10" Label="13" Background="Yellow"></chart:ChartStripLine>
+                            <chart:ChartStripLine Name="DiffStripline" IsPixelWidth="True" IsSegmented="True" SegmentStartValue="11" SegmentEndValue="15" Start="60" Width="10" Label="13" Background="Yellow"></chart:ChartStripLine>
                         </chart:NumericalAxis.StripLines>
                     </chart:NumericalAxis>
-            </chart:SfChart.SecondaryAxis>
+                </chart:SfChart.SecondaryAxis>
+
                 <chart:SfChart.Annotations>
-                    <chart:VerticalLineAnnotation Name="PhaseVLine1"  CanDrag="True" DragCompleted="PhaseLine1_Dragged"  Width="2" CoordinateUnit="Axis" X1="5"></chart:VerticalLineAnnotation>
-                    <chart:VerticalLineAnnotation Name="PhaseVLine2" CanDrag="True"  DragCompleted="PhaseLine2_Dragged" CoordinateUnit="Axis" X1="22"></chart:VerticalLineAnnotation>
+                    <chart:TextAnnotation Text="Double-click to freeze/run then drag lines to measure" FontWeight="ExtraLight" FontSize="16" CoordinateUnit="Pixel" X1="50" Y1="100"></chart:TextAnnotation>
+                    <!-- <chart:RectangleAnnotation X1="50" Y1="50"  X2="100" Y2="100" CoordinateUnit="Pixel" Text="17-0" Fill="HotPink"></chart:RectangleAnnotation> -->
+                    <!-- vertical lines are tricky to position -->
+                    <chart:VerticalLineAnnotation Name="PhaseVLine1"  CanDrag="True" DragCompleted="PhaseLine1_Dragged" CoordinateUnit="Axis" X1="00:00:05"></chart:VerticalLineAnnotation>
+                    <chart:VerticalLineAnnotation Name="PhaseVLine2" CanDrag="True"  DragCompleted="PhaseLine2_Dragged" CoordinateUnit="Axis" X1="00:00:10"></chart:VerticalLineAnnotation>
                 </chart:SfChart.Annotations>
-                <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="SeriesType" Label="Label" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
-        </chart:SfChart>
-        
+                <chart:LineSeries LegendIcon="Diamond" Label="T Return Actual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="Diamond" Label="T Return Forecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
+            </chart:SfChart>
+            <!-- Make a textbox overlay the grid above-->
+            <TextBox Name="PhaseDiffResult" Grid.Row="2" Background="Yellow" BorderThickness="0" Grid.Column="2" HorizontalAlignment="Center"  VerticalAlignment="Center" Text="Diff = 5"></TextBox>
+                  
         <chart:SfChart  
             Header="Parameter Monitoring"
             Margin="20,10,0,0"
@@ -168,7 +178,7 @@
             Grid.Column="2"
             Grid.ColumnSpan="3">
             <chart:SfChart.PrimaryAxis>
-                <chart:CategoryAxis ></chart:CategoryAxis>
+                <chart:TimeSpanAxis ></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
             
             <chart:SfChart.SecondaryAxis>
@@ -181,17 +191,17 @@
             </chart:SfChart.SecondaryAxis>
 
             <chart:SfChart.Legend>
-                    <chart:ChartLegend DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Visible"/>
+                    <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Visible"/>
             </chart:SfChart.Legend>
 
-            <chart:FastLineBitmapSeries Label="Ret Actual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
-            <chart:FastLineBitmapSeries Label="Ret Forecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
-            <chart:FastLineBitmapSeries Label="Hot tank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
-            <chart:FastLineBitmapSeries Label="Cool tank"  XBindingPath="ElapsedTime" YBindingPath="TCoolTank"  ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
-            <chart:FastLineSeries Label="Hot Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:FastLineSeries>
-            <chart:FastLineSeries Label="Mid Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:FastLineSeries>
-            <chart:FastLineSeries Label="Cold Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:FastLineSeries>
-            <chart:FastLineBitmapSeries Label="Ret Valve"  XBindingPath="ElapsedTime" YBindingPath="TReturnValve" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+                <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Ret Actual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+                <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Ret Forecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+                <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Hot tank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+                <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Cold tank"  XBindingPath="ElapsedTime" YBindingPath="TCoolTank"  ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+                <chart:FastLineSeries LegendIcon="Diamond" Label="Hot Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:FastLineSeries>
+                <chart:FastLineSeries LegendIcon="Diamond" Label="Mid Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:FastLineSeries>
+                <chart:FastLineSeries LegendIcon="Diamond" Label="Cold Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:FastLineSeries>
+                <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Ret Valve"  XBindingPath="ElapsedTime" YBindingPath="TReturnValve" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
             
             <!-- chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></>
         <chart:LineSeries LegendIcon="SeriesType" Label="Label" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
@@ -206,36 +216,36 @@
 
         <chart:SfChart  
             Header="AOU / IMM Interaction"
-            Legend="Legend"
             Grid.Row="11"
             Grid.RowSpan="6"
             Grid.ColumnSpan="2"
             Margin="20,10,0,0">
             <chart:SfChart.PrimaryAxis>
-                <chart:CategoryAxis Name="MyXAx"></chart:CategoryAxis>
+                <chart:TimeSpanAxis EnableAutoIntervalOnZooming="False"></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
-                <chart:NumericalAxis Name="MyYAx" Interval="1" Maximum="8" EnableAutoIntervalOnZooming="False">
+                <chart:NumericalAxis Interval="1" PlotOffset="50" ContentPath="RunState" PositionPath="Position" LabelsSource="{Binding power}">
                     
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
-            <chart:StepLineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="State" ItemsSource="{Binding power}"></chart:StepLineSeries>
+            <chart:StepLineSeries Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="State" ItemsSource="{Binding power}"></chart:StepLineSeries>
         </chart:SfChart>
 
             <chart:SfChart  
             Header="Buffer tank Volume balance"
-            Legend="Legend"
             Grid.Row="6"
             Grid.RowSpan="5"
             Grid.Column="2"
             Margin="20,0,0,0">
                 <chart:SfChart.PrimaryAxis>
-                    <chart:CategoryAxis ></chart:CategoryAxis>
+                    <chart:TimeSpanAxis ></chart:TimeSpanAxis>
                 </chart:SfChart.PrimaryAxis>
+                <chart:SfChart.Legend>
+                    <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Visible"/>
+                </chart:SfChart.Legend>
                 <chart:SfChart.SecondaryAxis>
                     <chart:NumericalAxis Minimum="0" Interval="20" Maximum="300" EnableAutoIntervalOnZooming="False">
                         <chart:NumericalAxis.StripLines>
-                            <chart:ChartStripLine Name="FreezeButtonVolumeStripLine" IsSegmented="True" Label="Freeze/Run" SegmentStartValue="0" SegmentEndValue="8" Start="0" Width="40" IsTapEnabled="True"  Tapped="FreezeVolumeChart" Background="GreenYellow"></chart:ChartStripLine>
                             <chart:ChartStripLine IsSegmented="True" SegmentStartValue="11" SegmentEndValue="15" Start="60" Width="30" Label="60" Background="Yellow"></chart:ChartStripLine>
                         </chart:NumericalAxis.StripLines>
                     </chart:NumericalAxis>
@@ -244,28 +254,28 @@
                     <chart:HorizontalLineAnnotation Name="PhaseHLine1"  CanDrag="True" DragCompleted="PhaseLine1_Dragged"  Width="3" Fill="Chocolate" CoordinateUnit="Axis" Y1="150"></chart:HorizontalLineAnnotation>
                     <chart:HorizontalLineAnnotation Name="PhaseHLine2" CanDrag="True"  DragCompleted="PhaseLine2_Dragged" Width="4" Fill="DarkOrange" CoordinateUnit="Axis" Y1="90"></chart:HorizontalLineAnnotation>
                 </chart:SfChart.Annotations>
-                <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
-                <chart:LineSeries LegendIcon="SeriesType" Label="Label" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
-                <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="Diamond" Label="TBufferHot" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="InvertedTriangle" Label="TBufferMid" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="Diamond" Label="TBufferCold" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
             </chart:SfChart>
 
             <chart:SfChart  
             Header="Hot and Cold tanks Energy balance"
-            Legend="Legend"
             Grid.Row="6"
             Grid.RowSpan="5"
             Grid.Column="3"
                 Grid.ColumnSpan="2"
             Margin="20,0,0,0">
                 <chart:SfChart.PrimaryAxis>
-                    <chart:CategoryAxis ></chart:CategoryAxis>
+                    <chart:TimeSpanAxis ></chart:TimeSpanAxis>
                 </chart:SfChart.PrimaryAxis>
+                <chart:SfChart.Legend>
+                    <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Visible"/>
+                </chart:SfChart.Legend>
                 <chart:SfChart.SecondaryAxis>
                     <chart:NumericalAxis Minimum="0" Interval="10" Maximum="100" EnableAutoIntervalOnZooming="False">
                         <chart:NumericalAxis.StripLines>
-                            <chart:ChartStripLine Name="FreezeEnergyButtonStripLine" IsSegmented="True" Label="Freeze/Run" SegmentStartValue="0" SegmentEndValue="8" Start="0" Width="15" IsTapEnabled="True"  Tapped="FreezeEnergyChart" Background="GreenYellow"></chart:ChartStripLine>
                             <chart:ChartStripLine IsSegmented="True" SegmentStartValue="10" SegmentEndValue="15" Start="60" Width="10" Label="20" Background="Yellow"></chart:ChartStripLine>
-
                         </chart:NumericalAxis.StripLines>
                     </chart:NumericalAxis>
                 </chart:SfChart.SecondaryAxis>
@@ -273,8 +283,8 @@
                     <chart:HorizontalLineAnnotation Name="PhaseHLine3"  CanDrag="True" DragCompleted="PhaseLine1_Dragged"  Width="2" CoordinateUnit="Axis" Y1="45"></chart:HorizontalLineAnnotation>
                     <chart:HorizontalLineAnnotation Name="PhaseHLine4" CanDrag="True"  DragCompleted="PhaseLine2_Dragged" Width="3" CoordinateUnit="Axis" Y1="65" Y2="90"></chart:HorizontalLineAnnotation>
                 </chart:SfChart.Annotations>
-                <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
-                <chart:LineSeries LegendIcon="SeriesType" Label="Label" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="Diamond" Label="TReturnActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="Diamond" Label="TReturnForecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
             </chart:SfChart>
         </Grid>
 

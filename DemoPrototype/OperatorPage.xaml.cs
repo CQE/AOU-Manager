@@ -125,6 +125,9 @@ namespace DemoPrototype
         private void PhaseLine1_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             //Urban please replace this code with code showing diff between the lines, and center the Chartstripline
+            double firstSlope = GlobalAppSettings.SafeConvertToDouble(PhaseVLine2.X1);
+            double secondSlope = GlobalAppSettings.SafeConvertToDouble(PhaseVLine1.X1);
+            PhaseDiffResult.Text = "5"; //(secondSlope - firstSlope).ToString();
         }
 
         private void PhaseLine2_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
@@ -155,6 +158,22 @@ namespace DemoPrototype
         private void FreezeVolumeChart(object sender, TappedRoutedEventArgs e)
         {
 
+        }
+
+        private void FreezeDelayChart(object sender, TappedRoutedEventArgs e)
+        {
+            //todo
+        }
+
+        private void FreezeDelayChart(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            //which mode?
+            bool isRunning = dTimer.IsEnabled;
+            if (isRunning)
+            {
+                dTimer.Stop();
+            }
+            else dTimer.Start();
         }
     }
 

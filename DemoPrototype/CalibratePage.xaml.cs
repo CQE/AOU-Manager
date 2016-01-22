@@ -82,5 +82,21 @@ namespace DemoPrototype
         {
             //todo make work
         }
+
+        private void DoHotStep(object sender, RoutedEventArgs e)
+        {
+            //use value  x in Textbox and set length of X-axis in grid
+            //sent command and value to AOU 
+            //plot Hot Step response for x seconds
+            //done! Freeze output in grid 
+        }
+
+        private void DoColdStep(object sender, RoutedEventArgs e)
+        {
+            //use value  x in Textbox and set length of X-axis in grid
+            //sent command and value to AOU 
+            //plot Hot Step response for x seconds
+            //done! Freeze output in grid//use value in Textbox and set length of X-axis in grid
+        }
     }
 }

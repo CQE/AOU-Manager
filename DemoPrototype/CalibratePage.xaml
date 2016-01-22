@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -44,7 +44,7 @@
             Grid.ColumnSpan="1"
             Margin="20,10,0,0">
             <chart:SfChart.PrimaryAxis>
-                <chart:CategoryAxis Name="MyXAxis"></chart:CategoryAxis>
+                <chart:TimeSpanAxis Name="MyXAxis"></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
                 <chart:NumericalAxis Name="MyYAxis" Minimum="0" Interval="10" Maximum="100" EnableAutoIntervalOnZooming="False">
@@ -62,8 +62,18 @@
             <chart:LineSeries LegendIcon="SeriesType" Label="Label" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
 
-        <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Hot step "></Button>
-        <Button Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Cold step"></Button>
+        <StackPanel Margin="10,0,0,0" Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+            <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Hot step" Click="DoHotStep"></Button>
+            <TextBox  Margin="10,0,0,0" VerticalAlignment="Bottom" Text="10" Name="CalibrateHotStepValue"></TextBox>
+            <TextBlock VerticalAlignment="Bottom"  Text=" (s)"></TextBlock>
+        </StackPanel>
+
+        <StackPanel  Margin="10,0,0,0" Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
+            <Button Grid.Row="2" Grid.Column="1"  VerticalAlignment="Bottom" Width="100" Content="Cold step" Click="DoColdStep"></Button>
+            <TextBox  Margin="10,0,0,0" VerticalAlignment="Bottom" Text="10" Name="CalibrateColdStepValue"></TextBox>
+            <TextBlock VerticalAlignment="Bottom"  Text=" (s)"></TextBlock>
+        </StackPanel>
+       
         <StackPanel Margin="10,0,0,0"  Orientation="Horizontal" Grid.Row="3"  Grid.Column="1" >
             <TextBlock  VerticalAlignment="Center" Text="Cycle"></TextBlock>
             <ToggleSwitch  Margin="5,0,0,0"  VerticalAlignment="Center" IsOn="False" ></ToggleSwitch>
@@ -107,8 +117,9 @@
                 <chart:HorizontalLineAnnotation Name="PhaseHLine3"  CanDrag="True" DragCompleted="CalibratePhaseLine1_Dragged"  Width="2" CoordinateUnit="Axis" Y1="45"></chart:HorizontalLineAnnotation>
                 <chart:HorizontalLineAnnotation Name="PhaseHLine4" CanDrag="True"  DragCompleted="CalibratePhaseLine2_Dragged" Width="3" CoordinateUnit="Axis" Y1="65" Y2="90"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
+            <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
             <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="SeriesType" Label="Label" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="SeriesType" Label="Label" XBindingPath="ElapsedTime" YBindingPath="TCoolTank" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
 
         <TextBlock Margin="15,0,0,0"  Grid.Row="9" VerticalAlignment="Center" Text="Hot to cold Return valve switching threshold:"></TextBlock>
@@ -137,7 +148,7 @@
                 <chart:NumericalAxis Minimum="0" Interval="20" Maximum="300" EnableAutoIntervalOnZooming="False">
                     <chart:NumericalAxis.StripLines>
                         <chart:ChartStripLine Name="FreezeButtonVolumeStripLine" IsSegmented="True" Label="Freeze/Run" SegmentStartValue="0" SegmentEndValue="8" Start="0" Width="40" IsTapEnabled="True"  Tapped="CalibrateFreezeVolumeChart" Background="GreenYellow"></chart:ChartStripLine>
-                        <chart:ChartStripLine IsSegmented="True" SegmentStartValue="11" SegmentEndValue="15" Start="60" Width="30" Label="60" Background="Yellow"></chart:ChartStripLine>
+                        <chart:ChartStripLine IsSegmented="True" SegmentStartValue="11" CanDrag="True"  SegmentEndValue="15" Start="60" Width="30" Label="60" Background="Yellow"></chart:ChartStripLine>
                     </chart:NumericalAxis.StripLines>
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>

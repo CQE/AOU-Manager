@@ -53,13 +53,13 @@ namespace DemoPrototype
 
     public static class DataUpdater
     {
-        private static AOURouter dataRouter;
+        private static DataRouter dataRouter;
 
         private static bool CheckDataRouterSingleton()
         {
             if (dataRouter == null)
             { 
-                dataRouter = new AOURouter(AOURouter.RunType.Random, 0);
+                dataRouter = new DataRouter(DataRouter.RunType.Random, 0);
                 dataRouter.Update(); // First to do
                 return false;
             }
@@ -79,6 +79,7 @@ namespace DemoPrototype
             CheckDataRouterSingleton();
             if (dataContext != null)
             { 
+
                 // int numPoints = ((LineChartViewModel)dataContext).maxNumPoints);
                 //int numPoints = 5;
                 //((LineChartViewModel)dataContext).AddPoints(numPoints);
@@ -90,9 +91,7 @@ namespace DemoPrototype
             CheckDataRouterSingleton();
             if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
             {
-                ((LineChartViewModel)dataContext).AddPoint(dataRouter.GetLastPowerValue());
-                if (((LineChartViewModel)dataContext).numPoints > 30)
-                    ((LineChartViewModel)dataContext).DeleteFirstPoint();
+                ((LineChartViewModel)dataContext).UpdateNewValue(dataRouter.GetLastPowerValue());
             }
         }
 
@@ -119,58 +118,37 @@ namespace DemoPrototype
     public class LineChartViewModel
     // Class for handling chart data
     {
+        public const int maxNumPoints = 30;
+
         public ObservableCollection<Power> power
         {
             get;
             set;
         }
 
-        public int maxNumPoints
-        {
-            get;
-        }
-
-        public int numPoints
-        {
-            get
-            {
-                return power.Count;
-            }
-        }
-
         public LineChartViewModel()
         {
-            power = new ObservableCollection<Power>();
-            maxNumPoints = 30;
+            Power[] powerArr = new Power[maxNumPoints];
+            for (int i = 0; i < powerArr.Length; i++)
+                powerArr[i] = new Power(true);
+            power = new ObservableCollection<Power>(powerArr);
         }
 
-        public LineChartViewModel(int maxNumPoints) : this()
+        public void UpdateNewValue(Power pow)
         {
-            this.maxNumPoints = maxNumPoints;
+            power.Add(pow);
+            if (power.Count > maxNumPoints)
+                power.RemoveAt(0);
         }
 
-        public void AddPoints(Power[] points)
+        private void SetPoints(Power[] points)
         {
             foreach (Power point in points)
             { 
                 power.Add(point);
             }
         }
-
-        public void AddPoint(Power newPoint)
-        {
-            power.Add(newPoint);
-        }
-
-        public void DeleteFirstPoint()
-        {
-            if (power.Count > maxNumPoints)
-            {
-                power.RemoveAt(0);
-            }
-        }
-
-    }
+     }
 
     public class LogMessageViewModel
     {

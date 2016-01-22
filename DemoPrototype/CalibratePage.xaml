@@ -38,7 +38,6 @@
 
         <chart:SfChart  
             Header="Feed and Return delay timings (s)"
-            Legend="Legend"
             Grid.Row="1"
             Grid.RowSpan="4"
             Grid.ColumnSpan="1"
@@ -54,12 +53,17 @@
                     </chart:NumericalAxis.StripLines>
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
+            <chart:SfChart.Legend>
+                <chart:ChartLegend DockPosition="Top" LegendPosition="Inside" CheckBoxVisibility="Collapsed"/>
+            </chart:SfChart.Legend>
+
             <chart:SfChart.Annotations>
                 <chart:VerticalLineAnnotation Name="PhaseVLine1"  CanDrag="True" DragCompleted="CalibratePhaseLine1_Dragged"  Width="2" CoordinateUnit="Axis" X1="5"></chart:VerticalLineAnnotation>
                 <chart:VerticalLineAnnotation Name="PhaseVLine2" CanDrag="True"  DragCompleted="CalibratePhaseLine2_Dragged" CoordinateUnit="Axis" X1="22"></chart:VerticalLineAnnotation>
             </chart:SfChart.Annotations>
-            <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="SeriesType" Label="Label" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
+            
+            <chart:LineSeries LegendIcon="Circle" Label="Return Actual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="Return Forecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
 
         <StackPanel Margin="10,0,0,0" Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
@@ -96,7 +100,6 @@
 
         <chart:SfChart  
             Header="Hot and Cold tanks Energy balance (°C)"
-            Legend="Legend"
             Grid.Row="6"
             Grid.RowSpan="3"
             Grid.ColumnSpan="1"
@@ -113,13 +116,17 @@
                     </chart:NumericalAxis.StripLines>
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
+            <chart:SfChart.Legend>
+                <chart:ChartLegend DockPosition="Top" LegendPosition="Inside" CheckBoxVisibility="Collapsed"/>
+            </chart:SfChart.Legend>
+
             <chart:SfChart.Annotations>
                 <chart:HorizontalLineAnnotation Name="PhaseHLine3"  CanDrag="True" DragCompleted="CalibratePhaseLine1_Dragged"  Width="2" CoordinateUnit="Axis" Y1="45"></chart:HorizontalLineAnnotation>
                 <chart:HorizontalLineAnnotation Name="PhaseHLine4" CanDrag="True"  DragCompleted="CalibratePhaseLine2_Dragged" Width="3" CoordinateUnit="Axis" Y1="65" Y2="90"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
-            <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="SeriesType" Label="Label" XBindingPath="ElapsedTime" YBindingPath="TCoolTank" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="Hot Tank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="Return Actual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="Cool tank" XBindingPath="ElapsedTime" YBindingPath="TCoolTank" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
 
         <TextBlock Margin="15,0,0,0"  Grid.Row="9" VerticalAlignment="Center" Text="Hot to cold Return valve switching threshold:"></TextBlock>
@@ -135,7 +142,6 @@
 
         <chart:SfChart  
             Header="Buffer tank Volume balance (°C)"
-            Legend="Legend"
             Grid.Row="6"
              Grid.Column="2"
             Grid.RowSpan="3"
@@ -152,13 +158,19 @@
                     </chart:NumericalAxis.StripLines>
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
+
+            <chart:SfChart.Legend>
+                <chart:ChartLegend DockPosition="Top" LegendPosition="Inside" CheckBoxVisibility="Collapsed"/>
+            </chart:SfChart.Legend>
+            
             <chart:SfChart.Annotations>
                 <chart:HorizontalLineAnnotation Name="PhaseHLine1"  CanDrag="True" DragCompleted="CalibratePhaseLine1_Dragged"  Width="3" Fill="Chocolate" CoordinateUnit="Axis" Y1="127"></chart:HorizontalLineAnnotation>
                 <chart:HorizontalLineAnnotation Name="PhaseHLine2" CanDrag="True"  DragCompleted="CalibratePhaseLine2_Dragged" Width="4" Fill="DarkOrange" CoordinateUnit="Axis" Y1="17"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
-            <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="SeriesType" Label="Label" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
+
+            <chart:LineSeries LegendIcon="Circle" Label="Hot temp" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="Mid temp" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="Cold temp" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
 
         <TextBlock Margin="20,0,0,0" Grid.Column="2" Grid.Row="9" VerticalAlignment="Center" Text="Cold end limit:"></TextBlock>

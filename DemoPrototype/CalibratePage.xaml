@@ -41,31 +41,35 @@
             Grid.Row="1"
             Grid.RowSpan="4"
             Grid.ColumnSpan="1"
+            IsDoubleTapEnabled="True"
+            DoubleTapped="FreezeCalibrateGraphs"
             Margin="20,10,0,0">
             <chart:SfChart.PrimaryAxis>
-                <chart:TimeSpanAxis Name="MyXAxis"></chart:TimeSpanAxis>
+                <chart:TimeSpanAxis Name="CalibrateDelayXAxis"></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
-                <chart:NumericalAxis Name="MyYAxis" Minimum="0" Interval="10" Maximum="100" EnableAutoIntervalOnZooming="False">
-                    <chart:NumericalAxis.StripLines>
-                        <chart:ChartStripLine Name="FreezeButtonStripLine" IsSegmented="True" Label="Freeze/Run" SegmentStartValue="0" SegmentEndValue="8" Start="0" Width="15" IsTapEnabled="True"  Tapped="CalibrateFreezeDelayChart" Background="GreenYellow"></chart:ChartStripLine>
-                        <chart:ChartStripLine Name="DiffStripline" IsSegmented="True" SegmentStartValue="11" SegmentEndValue="15" Start="60" Width="10" Label="13" Background="Yellow"></chart:ChartStripLine>
-                    </chart:NumericalAxis.StripLines>
+                <chart:NumericalAxis Minimum="0" Interval="10" Maximum="100" EnableAutoIntervalOnZooming="False">      
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
             <chart:SfChart.Legend>
-                <chart:ChartLegend DockPosition="Top" LegendPosition="Inside" CheckBoxVisibility="Collapsed"/>
+                <chart:ChartLegend DockPosition="Floating" LegendPosition="Inside" CheckBoxVisibility="Collapsed"/>
             </chart:SfChart.Legend>
 
             <chart:SfChart.Annotations>
-                <chart:VerticalLineAnnotation Name="PhaseVLine1"  CanDrag="True" DragCompleted="CalibratePhaseLine1_Dragged"  Width="2" CoordinateUnit="Axis" X1="5"></chart:VerticalLineAnnotation>
-                <chart:VerticalLineAnnotation Name="PhaseVLine2" CanDrag="True"  DragCompleted="CalibratePhaseLine2_Dragged" CoordinateUnit="Axis" X1="22"></chart:VerticalLineAnnotation>
+                <chart:TextAnnotation X1="50" Y1="150" CoordinateUnit="Pixel" FontSize="16" FontWeight="ExtraLight" Text="Double-click for toggle Freeze/Run (TBD)"></chart:TextAnnotation>
+                <chart:VerticalLineAnnotation Name="CalibratePhaseVLine1"  CanDrag="True" DragCompleted="CalibratePhaseLine1_Dragged"  Width="2" CoordinateUnit="Pixel" X1="0"></chart:VerticalLineAnnotation>
+                <chart:VerticalLineAnnotation Name="CalibratePhaseVLine2" CanDrag="True"  DragCompleted="CalibratePhaseLine2_Dragged" CoordinateUnit="Pixel" X1="0"></chart:VerticalLineAnnotation>
             </chart:SfChart.Annotations>
             
-            <chart:LineSeries LegendIcon="Circle" Label="Return Actual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="Return Forecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="TRetForecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="THotTank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="TColdTank" XBindingPath="ElapsedTime" YBindingPath="TCoolTank" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
+        <!-- Use overlay textbox for showing diff result -->
+        <TextBox Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="2.31 s"></TextBox>
 
+        
         <StackPanel Margin="10,0,0,0" Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
             <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Hot step" Click="DoHotStep"></Button>
             <TextBox  Margin="10,0,0,0" VerticalAlignment="Bottom" Text="10" Name="CalibrateHotStepValue"></TextBox>
@@ -83,37 +87,49 @@
             <ToggleSwitch  Margin="5,0,0,0"  VerticalAlignment="Center" IsOn="False" ></ToggleSwitch>
         </StackPanel>
 
-        <TextBlock VerticalAlignment="Top" Grid.Column="3" Grid.ColumnSpan="2"> Tempering delay time Feed-to-Return (s) </TextBlock>
-        <TextBlock Grid.Column="3" VerticalAlignment="Bottom"  Text="Calibrate"></TextBlock>
-        <TextBlock Grid.Column="4" VerticalAlignment="Bottom" Text="Tune"></TextBlock>
-        <TextBlock Grid.Column="5" VerticalAlignment="Bottom" Text="Total"></TextBlock>
+        <TextBlock VerticalAlignment="Top" Grid.Column="3" Grid.ColumnSpan="2"> Tempering delay time Feed-to-Return </TextBlock>
+        <StackPanel Grid.Column="3" Orientation="Horizontal" Grid.ColumnSpan="3" VerticalAlignment="Bottom">
+            <TextBlock  VerticalAlignment="Bottom"  Text="Calibrate"></TextBlock>
+            <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
+            <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="Tune"></TextBlock>
+            <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="="></TextBlock>
+            <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,0" Text="Total"></TextBlock>
+        </StackPanel>
+        
         <TextBlock Grid.Row="1" Grid.Column="2" Text="Hot pump" VerticalAlignment="Bottom" HorizontalAlignment="Center"> </TextBlock>
-        <TextBox Grid.Row="1"  VerticalAlignment="Bottom" Grid.Column="3"  Text="8"></TextBox>
-        <TextBox Grid.Row="1" VerticalAlignment="Bottom" Grid.Column="4" BorderThickness="0" IsReadOnly="True" Text="2"></TextBox>
-        <TextBox Grid.Row="1" VerticalAlignment="Bottom" Grid.Column="5" BorderThickness="0" IsReadOnly="True" Text="10"></TextBox>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">
+            <TextBox   VerticalAlignment="Bottom"  Text="8"></TextBox>
+            <TextBlock VerticalAlignment="Bottom"  TextAlignment="Center" Width="30" Margin="5,0,0,5" Text="+"></TextBlock>
+            <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,5" Text="2"></TextBlock>
+            <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="="></TextBlock>
+            <TextBlock VerticalAlignment="Bottom"  Margin="5,0,0,5" Text="10"></TextBlock>
+            <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="(s)"></TextBlock>
+        </StackPanel>
+        
 
         <TextBlock Grid.Row="2" Grid.Column="2" Text="Cold pump" VerticalAlignment="Bottom" HorizontalAlignment="Center"></TextBlock>
-        <TextBox Grid.Row="2"  VerticalAlignment="Bottom" Grid.Column="3"  Text="10"></TextBox>
-        <TextBox Grid.Row="2" VerticalAlignment="Bottom" Grid.Column="4" BorderThickness="0" IsReadOnly="True" Text="0"></TextBox>
-        <TextBox Grid.Row="2" VerticalAlignment="Bottom" Grid.Column="5" BorderThickness="0" IsReadOnly="True" Text="10"></TextBox>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2">
+            <TextBox   VerticalAlignment="Bottom"  Text="10"></TextBox>
+            <TextBlock VerticalAlignment="Bottom"  TextAlignment="Center" Width="30" Margin="5,0,0,5" Text="+"></TextBlock>
+            <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,5" Text="0"></TextBlock>
+            <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="="></TextBlock>
+            <TextBlock VerticalAlignment="Bottom"  Margin="5,0,0,5" Text="10"></TextBlock>
+            <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="(s)"></TextBlock>
+        </StackPanel>
 
 
         <chart:SfChart  
             Header="Hot and Cold tanks Energy balance (°C)"
             Grid.Row="6"
             Grid.RowSpan="3"
-            Grid.ColumnSpan="1"
+            Grid.ColumnSpan="2"
             Margin="20,10,0,0">
             <chart:SfChart.PrimaryAxis>
-                <chart:CategoryAxis ></chart:CategoryAxis>
+                <chart:TimeSpanAxis ></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
                 <chart:NumericalAxis Minimum="0" Interval="10" Maximum="100" EnableAutoIntervalOnZooming="False">
-                    <chart:NumericalAxis.StripLines>
-                        <chart:ChartStripLine Name="FreezeEnergyButtonStripLine" IsSegmented="True" Label="Freeze/Run" SegmentStartValue="0" SegmentEndValue="8" Start="0" Width="15" IsTapEnabled="True"  Tapped="CalibrateFreezeEnergyChart" Background="GreenYellow"></chart:ChartStripLine>
-                        <chart:ChartStripLine IsSegmented="True" SegmentStartValue="10" SegmentEndValue="15" Start="60" Width="10" Label="20" Background="Yellow"></chart:ChartStripLine>
-
-                    </chart:NumericalAxis.StripLines>
+                    
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
             <chart:SfChart.Legend>
@@ -121,14 +137,15 @@
             </chart:SfChart.Legend>
 
             <chart:SfChart.Annotations>
-                <chart:HorizontalLineAnnotation Name="PhaseHLine3"  CanDrag="True" DragCompleted="CalibratePhaseLine1_Dragged"  Width="2" CoordinateUnit="Axis" Y1="45"></chart:HorizontalLineAnnotation>
-                <chart:HorizontalLineAnnotation Name="PhaseHLine4" CanDrag="True"  DragCompleted="CalibratePhaseLine2_Dragged" Width="3" CoordinateUnit="Axis" Y1="65" Y2="90"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="PhaseHLine3"  ShowLine="True" CanDrag="True" DragCompleted="CalibratePhaseLine1_Dragged"  Width="2" CoordinateUnit="Axis" Y1="45"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="PhaseHLine4" CanDrag="True"  ShowToolTip="True" DragCompleted="CalibratePhaseLine2_Dragged" Width="3" CoordinateUnit="Axis" Y1="65" Y2="90"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
-            <chart:LineSeries LegendIcon="Circle" Label="Hot Tank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="Return Actual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="Cool tank" XBindingPath="ElapsedTime" YBindingPath="TCoolTank" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="T Hot Tank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="T Return Actual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="T Cold tank" XBindingPath="ElapsedTime" YBindingPath="TCoolTank" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
-
+        <!-- Use overlay textbox for showing diff result         <TextBox Grid.Column="0" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="42"></TextBox>
+        -->
         <TextBlock Margin="15,0,0,0"  Grid.Row="9" VerticalAlignment="Center" Text="Hot to cold Return valve switching threshold:"></TextBlock>
         <StackPanel Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="9">
             <TextBox Height="30" Text="90"></TextBox>
@@ -145,17 +162,14 @@
             Grid.Row="6"
              Grid.Column="2"
             Grid.RowSpan="3"
-            Grid.ColumnSpan="3"
-            Margin="20,10,0,0">
+            Grid.ColumnSpan="4"
+            Margin="10,10,0,0">
             <chart:SfChart.PrimaryAxis>
-                <chart:CategoryAxis ></chart:CategoryAxis>
+                <chart:TimeSpanAxis ></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
                 <chart:NumericalAxis Minimum="0" Interval="20" Maximum="300" EnableAutoIntervalOnZooming="False">
-                    <chart:NumericalAxis.StripLines>
-                        <chart:ChartStripLine Name="FreezeButtonVolumeStripLine" IsSegmented="True" Label="Freeze/Run" SegmentStartValue="0" SegmentEndValue="8" Start="0" Width="40" IsTapEnabled="True"  Tapped="CalibrateFreezeVolumeChart" Background="GreenYellow"></chart:ChartStripLine>
-                        <chart:ChartStripLine IsSegmented="True" SegmentStartValue="11" CanDrag="True"  SegmentEndValue="15" Start="60" Width="30" Label="60" Background="Yellow"></chart:ChartStripLine>
-                    </chart:NumericalAxis.StripLines>
+                   
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
 
@@ -164,24 +178,25 @@
             </chart:SfChart.Legend>
             
             <chart:SfChart.Annotations>
-                <chart:HorizontalLineAnnotation Name="PhaseHLine1"  CanDrag="True" DragCompleted="CalibratePhaseLine1_Dragged"  Width="3" Fill="Chocolate" CoordinateUnit="Axis" Y1="127"></chart:HorizontalLineAnnotation>
-                <chart:HorizontalLineAnnotation Name="PhaseHLine2" CanDrag="True"  DragCompleted="CalibratePhaseLine2_Dragged" Width="4" Fill="DarkOrange" CoordinateUnit="Axis" Y1="17"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="PhaseHLine1"  CanDrag="True" FontSize="6" ShowAxisLabel="True" DragCompleted="CalibratePhaseLine1_Dragged"  Width="3" Fill="Chocolate" CoordinateUnit="Axis" Y1="127"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="PhaseHLine2" CanDrag="True"  ShowAxisLabel="True" DragCompleted="CalibratePhaseLine2_Dragged" Width="4" Fill="DarkOrange" CoordinateUnit="Axis" Y1="17"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="PhaseHLine5" CanDrag="True"  ShowAxisLabel="True" DragCompleted="PhaseHLine3_DragCompleted" Width="4"  CoordinateUnit="Axis" Y1="53"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
 
-            <chart:LineSeries LegendIcon="Circle" Label="Hot temp" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="Mid temp" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="Cold temp" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="T hot buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="T mid" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="T cold buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
+        <!-- Use overlay textbox for showing diff result -->
+        <TextBox Grid.Column="3" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="72"></TextBox>
 
-        <TextBlock Margin="20,0,0,0" Grid.Column="2" Grid.Row="9" VerticalAlignment="Center" Text="Cold end limit:"></TextBlock>
-        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="9">
-            <TextBox Height="30" Text="127"></TextBox>
+
+
+        <TextBlock Margin="30,0,0,0" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="9" VerticalAlignment="Center" Text="Buffertank mid threshold value:"></TextBlock>
+        <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="9">
+            <TextBox Name="CalColdEndLimitValue" Height="30" Text="127"></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
-        <TextBlock Margin="20,0,0,0" Grid.Column="2" Grid.Row="10" VerticalAlignment="Center" Text="Hot end limit:"></TextBlock>
-        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="10">
-            <TextBox Height="30"  Text="17"></TextBox>
-            <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
-        </StackPanel>
+       
     </Grid>
 </Page>

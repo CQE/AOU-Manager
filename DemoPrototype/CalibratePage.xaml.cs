@@ -82,12 +82,15 @@ namespace DemoPrototype
         {
             //todo make work
         }
-
+        
         private void DoHotStep(object sender, RoutedEventArgs e)
         {
             //use value  x in Textbox and set length of X-axis in grid
+            int hotStepLength = 10;
             //sent command and value to AOU 
             //plot Hot Step response for x seconds
+            CalibrateDelayXAxis.MaxWidth = hotStepLength;
+            CalibrateDelayXAxis.Interval = 1;
             //done! Freeze output in grid 
         }
 
@@ -97,6 +100,22 @@ namespace DemoPrototype
             //sent command and value to AOU 
             //plot Hot Step response for x seconds
             //done! Freeze output in grid//use value in Textbox and set length of X-axis in grid
+        }
+
+        private void FreezeCalibrateGraphs(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            //todo make freeze work
+        }
+
+        private void PhaseHLine2_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+
+        }
+
+        private void PhaseHLine3_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            //todo make work
+            CalColdEndLimitValue.Text = "42";
         }
     }
 }

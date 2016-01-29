@@ -172,8 +172,18 @@ namespace DemoPrototype
             if (isRunning)
             {
                 dTimer.Stop();
+                //where are the lines?
+                double firstSlope = GlobalAppSettings.SafeConvertToDouble(PhaseVLine2.X1);
+                double secondSlope = GlobalAppSettings.SafeConvertToDouble(PhaseVLine1.X1);
+                //and what is min on the X-axis?
+                Double startX = GlobalAppSettings.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
             }
             else dTimer.Start();
+        }
+
+        private void PhaseLineTBM_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            //TBD
         }
     }
 

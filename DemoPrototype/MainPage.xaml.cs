@@ -42,7 +42,7 @@ namespace DemoPrototype
             //want to start with Operator page, is there a better way then change
             MyFrame.Navigate(typeof(OperatorPage));
             // MyFrame.Navigate(typeof(SettingsPage));
-            TitleTextBlock.Text = "Run injection moulding";
+            TitleTextBlock.Text = "Run Injection moulding";
             //create these only once
             webView = new WebView();
             myResolver = new StreamUriWinRTResolver();
@@ -79,7 +79,7 @@ namespace DemoPrototype
             if (OperatorListBox.IsSelected)
             {
                 MyFrame.Navigate(typeof(OperatorPage));
-                TitleTextBlock.Text = "Run injection moulding";
+                TitleTextBlock.Text = "Run Injection moulding";
                 BackButton.Visibility = Visibility.Collapsed;
             }
            

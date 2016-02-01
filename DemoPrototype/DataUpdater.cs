@@ -26,34 +26,21 @@ namespace DemoPrototype
                 ApplicationData.Current.LocalSettings.Values["IsCelsius"] = (bool)value;
             }
         }
-
-        // ToDo: Move to static helper class
-        public static double SafeConvertToDouble(object value)
-        {
-            if (value is String)
-            {
-                double res = Double.NaN;
-                Double.TryParse((string)value, out res);
-                return res;
-            }
-            else
-            {
-                try
-                {
-                    return (double)value;
-                }
-                catch (Exception)
-                {
-                    return Double.NaN;
-                }
-            }
-        }
-
     }
 
     public static class DataUpdater
     {
         private static DataRouter dataRouter;
+
+        public static void StartHotStep(int time)
+        {
+            // ToDo Send to AOU
+        }
+
+        public static void StartColdStep(int time)
+        {
+            // ToDo Send to AOU
+        }
 
         private static bool CheckDataRouterSingleton()
         {

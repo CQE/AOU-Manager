@@ -24,6 +24,8 @@ namespace DemoPrototype
     {
         private DispatcherTimer dTimer;
 
+        private int calibrationTime = 0;
+
         public CalibratePage()
         {
             this.Loaded += MaintenancePage_Loaded;
@@ -56,6 +58,16 @@ namespace DemoPrototype
         void UpdateTick(object sender, object e)
         {
             DataUpdater.UpdateInputData(CalibrateGrid.DataContext);
+            if (calibrationTime > 0)
+            {
+                calibrationTime--;
+                if (calibrationTime == 0)
+                {
+                    dTimer.Stop();
+                    HotStepButton.IsEnabled = true;
+                    ColdStepButton.IsEnabled = true;
+                }
+            }
         }
 
         private void CalibrateFreezeVolumeChart(object sender, TappedRoutedEventArgs e)
@@ -85,26 +97,57 @@ namespace DemoPrototype
         
         private void DoHotStep(object sender, RoutedEventArgs e)
         {
-            //use value  x in Textbox and set length of X-axis in grid
-            int hotStepLength = 10;
-            //sent command and value to AOU 
-            //plot Hot Step response for x seconds
-            CalibrateDelayXAxis.MaxWidth = hotStepLength;
-            CalibrateDelayXAxis.Interval = 1;
-            //done! Freeze output in grid 
+            int hotStepLength = AppHelper.ConvertToInteger(CalibrateHotStepValue.Text, 5, 20);
+            if (hotStepLength == -1)
+            {
+                AppHelper.ShowMessageBox("No valid time value");
+            }
+            else
+            {
+                //use value  x in Textbox and set length of X-axis in grid
+                //sent command and value to AOU 
+                //plot Hot Step response for x seconds
+                CalibrateDelayXAxis.MaxWidth = hotStepLength;
+                CalibrateDelayXAxis.Interval = 1;
+                calibrationTime = hotStepLength;
+                DataUpdater.StartHotStep(hotStepLength);
+                HotStepButton.IsEnabled = false;
+                ColdStepButton.IsEnabled = false;
+                //done! Freeze output in grid 
+            }
         }
 
         private void DoColdStep(object sender, RoutedEventArgs e)
         {
-            //use value  x in Textbox and set length of X-axis in grid
-            //sent command and value to AOU 
-            //plot Hot Step response for x seconds
-            //done! Freeze output in grid//use value in Textbox and set length of X-axis in grid
+            int coldStepLength = AppHelper.ConvertToInteger(CalibrateColdStepValue.Text, 5, 10);
+            DataUpdater.StartHotStep(coldStepLength);
+            if (coldStepLength == -1)
+            {
+                AppHelper.ShowMessageBox("No valid time value");
+            }
+            else
+            {
+                //use value  x in Textbox and set length of X-axis in grid
+                //sent command and value to AOU 
+                //plot Hot Step response for x seconds
+                CalibrateDelayXAxis.MaxWidth = coldStepLength;
+                CalibrateDelayXAxis.Interval = 1;
+                calibrationTime = 0;
+                DataUpdater.StartColdStep(coldStepLength);
+                HotStepButton.IsEnabled = false;
+                ColdStepButton.IsEnabled = false;
+                //done! Freeze output in grid//use value in Textbox and set length of X-axis in grid
+            }
         }
 
         private void FreezeCalibrateGraphs(object sender, DoubleTappedRoutedEventArgs e)
         {
-            //todo make freeze work
+            if (dTimer.IsEnabled && calibrationTime == 0)
+            {
+                dTimer.Stop();
+                // double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
+            }
+            else dTimer.Start();
         }
 
         private void PhaseHLine2_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)

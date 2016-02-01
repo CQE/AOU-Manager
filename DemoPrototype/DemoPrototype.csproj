@@ -112,6 +112,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AppHelper.cs" />
     <Compile Include="CalibratePage.xaml.cs">
       <DependentUpon>CalibratePage.xaml</DependentUpon>
     </Compile>

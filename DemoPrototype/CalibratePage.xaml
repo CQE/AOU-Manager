@@ -71,13 +71,13 @@
 
         
         <StackPanel Margin="10,0,0,0" Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
-            <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Hot step" Click="DoHotStep"></Button>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Hot step" Click="DoHotStep" Name="HotStepButton"></Button>
             <TextBox  Margin="10,0,0,0" VerticalAlignment="Bottom" Text="10" Name="CalibrateHotStepValue"></TextBox>
             <TextBlock VerticalAlignment="Bottom"  Text=" (s)"></TextBlock>
         </StackPanel>
 
         <StackPanel  Margin="10,0,0,0" Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
-            <Button Grid.Row="2" Grid.Column="1"  VerticalAlignment="Bottom" Width="100" Content="Cold step" Click="DoColdStep"></Button>
+            <Button Grid.Row="2" Grid.Column="1"  VerticalAlignment="Bottom" Width="100" Content="Cold step" Click="DoColdStep" Name="ColdStepButton"></Button>
             <TextBox  Margin="10,0,0,0" VerticalAlignment="Bottom" Text="10" Name="CalibrateColdStepValue"></TextBox>
             <TextBlock VerticalAlignment="Bottom"  Text=" (s)"></TextBlock>
         </StackPanel>

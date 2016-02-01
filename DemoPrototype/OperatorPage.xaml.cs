@@ -115,8 +115,8 @@ namespace DemoPrototype
         private void PhaseShiftButton(object sender, RoutedEventArgs e)
         {
             //Just testing
-            double firstSlope = GlobalAppSettings.SafeConvertToDouble(PhaseVLine1.X1);
-            double secondSlope = GlobalAppSettings.SafeConvertToDouble(PhaseVLine1.X2);
+            double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
+            double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X2);
 
             //PhaseShiftResultText.Text = firstSlope.ToString();
             //PhaseShiftValue.Text = (secondSlope-firstSlope).ToString();
@@ -125,8 +125,8 @@ namespace DemoPrototype
         private void PhaseLine1_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             //Urban please replace this code with code showing diff between the lines, and center the Chartstripline
-            double firstSlope = GlobalAppSettings.SafeConvertToDouble(PhaseVLine2.X1);
-            double secondSlope = GlobalAppSettings.SafeConvertToDouble(PhaseVLine1.X1);
+            double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
+            double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
             PhaseDiffResult.Text = "5"; //(secondSlope - firstSlope).ToString();
         }
 
@@ -173,10 +173,10 @@ namespace DemoPrototype
             {
                 dTimer.Stop();
                 //where are the lines?
-                double firstSlope = GlobalAppSettings.SafeConvertToDouble(PhaseVLine2.X1);
-                double secondSlope = GlobalAppSettings.SafeConvertToDouble(PhaseVLine1.X1);
+                double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
+                double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
                 //and what is min on the X-axis?
-                Double startX = GlobalAppSettings.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
+                Double startX = AppHelper.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
             }
             else dTimer.Start();
         }

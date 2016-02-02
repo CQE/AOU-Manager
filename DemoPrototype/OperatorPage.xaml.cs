@@ -33,8 +33,6 @@ namespace DemoPrototype
 
             this.InitializeComponent();
 
-            DataUpdater.InitInputData(mainGrid.DataContext);
-
             //set initial values for temperature unit
             if (GlobalAppSettings.IsCelsius)
             {
@@ -63,7 +61,7 @@ namespace DemoPrototype
             dTimer = new DispatcherTimer();
             dTimer.Tick += UpdateTick;
             // dTimer.Interval = new TimeSpan(0, 0, 1); // Seconds
-            dTimer.Interval = new TimeSpan(0, 0, 0, 1, 500); // milliseconds
+            dTimer.Interval = new TimeSpan(0, 0, 0, 1, 0); // milliseconds
         }
 
         void UpdateTick(object sender, object e)

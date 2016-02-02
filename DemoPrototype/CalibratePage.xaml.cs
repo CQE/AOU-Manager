@@ -33,7 +33,6 @@ namespace DemoPrototype
 
             this.InitializeComponent();
 
-            DataUpdater.InitInputData(CalibrateGrid.DataContext);
             InitDispatcherTimer();
         }
 
@@ -132,7 +131,7 @@ namespace DemoPrototype
                 //plot Hot Step response for x seconds
                 CalibrateDelayXAxis.MaxWidth = coldStepLength;
                 CalibrateDelayXAxis.Interval = 1;
-                calibrationTime = 0;
+                calibrationTime = coldStepLength;
                 DataUpdater.StartColdStep(coldStepLength);
                 HotStepButton.IsEnabled = false;
                 ColdStepButton.IsEnabled = false;

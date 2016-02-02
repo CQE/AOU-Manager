@@ -199,20 +199,11 @@
                 <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Ret Forecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
                 <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Hot tank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
                 <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Cold tank"  XBindingPath="ElapsedTime" YBindingPath="TCoolTank"  ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
-                <chart:FastLineSeries LegendIcon="Diamond" Label="Hot Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:FastLineSeries>
-                <chart:FastLineSeries LegendIcon="Diamond" Label="Mid Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:FastLineSeries>
-                <chart:FastLineSeries LegendIcon="Diamond" Label="Cold Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:FastLineSeries>
+                <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Hot Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+                <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Mid Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+                <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Cold Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
                 <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Ret Valve"  XBindingPath="ElapsedTime" YBindingPath="TReturnValve" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
-            
-            <!-- chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></>
-        <chart:LineSeries LegendIcon="SeriesType" Label="Label" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
-        <chart:LineSeries XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
-        <chart:LineSeries Label="This is a Label"  XBindingPath="ElapsedTime" YBindingPath="TCoolTank"  ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="SeriesType" Label="Label" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Diamond" Label="TReturn" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries  Label="This is a Label"  XBindingPath="ElapsedTime" YBindingPath="TReturnValve" ItemsSource="{Binding power}"></chart:LineSeries -->
-            
+             
         </chart:SfChart>
 
         <!-- overlay own text as labels for chart -->

@@ -30,7 +30,6 @@ namespace DemoPrototype
             this.Unloaded += MaintenancePage_Unloaded;
 
             this.InitializeComponent();
-            DataUpdater.InitInputDataLogMessages(LogGrid.DataContext);
 
             InitDispatcherTimer();
         }

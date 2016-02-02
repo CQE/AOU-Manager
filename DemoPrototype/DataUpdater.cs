@@ -30,7 +30,7 @@ namespace DemoPrototype
 
     public static class DataUpdater
     {
-        private static DataRouter dataRouter;
+        private static AOURouter dataRouter;
 
         public static void StartHotStep(int time)
         {
@@ -46,8 +46,7 @@ namespace DemoPrototype
         {
             if (dataRouter == null)
             { 
-                dataRouter = new DataRouter(DataRouter.RunType.Random, 0);
-                dataRouter.Update(); // First to do
+                dataRouter = new AOURouter(AOURouter.RunType.Random);
                 return false;
             }
             return true;
@@ -57,44 +56,29 @@ namespace DemoPrototype
         {
             if (CheckDataRouterSingleton())
             {
-                dataRouter.Update();
-            }
-        }
-
-        public static void InitInputData(object dataContext)
-        {
-            CheckDataRouterSingleton();
-            if (dataContext != null)
-            { 
-
-                // int numPoints = ((LineChartViewModel)dataContext).maxNumPoints);
-                //int numPoints = 5;
-                //((LineChartViewModel)dataContext).AddPoints(numPoints);
+                dataRouter.Update(1);
             }
         }
 
         public static void UpdateInputData(object dataContext)
         {
             CheckDataRouterSingleton();
+            ((LineChartViewModel)dataContext).UpdateNewValue(dataRouter.GetLastPowerValue());
+            /*
             if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
             {
-                ((LineChartViewModel)dataContext).UpdateNewValue(dataRouter.GetLastPowerValue());
             }
-        }
-
-        public static void InitInputDataLogMessages(object dataContext)
-        {
-            CheckDataRouterSingleton();
-            if (dataContext != null)
+            else
             {
-             //   ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetLastLogMessages(10));
+                bool error = true;
             }
+            */
         }
 
-        public static void UpdateInputDataLogMessages(object dataContext)
+        public static void UpdateInputDataLogMessages(object dataContext)//NewPowerDataIsAvailable
         {
             CheckDataRouterSingleton();
-            if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
+            if (dataContext != null && dataRouter.NewLogMessagesAreAvailable())
             {
                 ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetNewLogMessages());
             }
@@ -106,8 +90,7 @@ namespace DemoPrototype
     // Class for handling chart data
     {
         public const int maxNumPoints = 30;
-
-        private int nextIndex;
+        private int lastRealValue = 0;
 
         public ObservableCollection<Power> power
         {
@@ -117,45 +100,39 @@ namespace DemoPrototype
 
         public LineChartViewModel()
         {
-            Power[] powerArr = new Power[maxNumPoints];
-            for (int i = 0; i < powerArr.Length; i++)
-                powerArr[i] = new Power(true);
-            power = new ObservableCollection<Power>(powerArr);
-            nextIndex = 0;
+            power = new ObservableCollection<Power>();
         }
 
         public void UpdateNewValue(Power pow)
         {
-            if (nextIndex < maxNumPoints)
+            try
             {
-                power[nextIndex++] = pow;
-                if (nextIndex == 1) 
+                if (power.Count == 0) // First
                 {
-                    long firstTime = power[0].ElapsedTime;
-                    Power pow2 = new Power(true);
+                    power.Add(pow);
+                    lastRealValue = 1;
                     for (int i = 1; i < maxNumPoints; i++)
                     {
-                        pow2.ElapsedTime = i*1000;
-                        power.RemoveAt(i);
-                        power.Insert(i, pow2);
+                        power.Add(new Power(pow.ElapsedTime + i * 1000)); // 1000 ms expected
                     }
+
                 }
-
-
-            }
-            else
-            {
-                power.Add(pow);
-                if (power.Count > maxNumPoints)
+                else if (lastRealValue < maxNumPoints)
+                { 
+                    // Fill with real values in empty points for every new value
+                    power[lastRealValue++] = pow;
+                }
+                else
+                {
+                    // And go this forever
                     power.RemoveAt(0);
+                    power.Add(pow);
+                }
             }
-        }
-
-        private void SetPoints(Power[] points)
-        {
-            foreach (Power point in points)
-            { 
-                power.Add(point);
+            catch (Exception e)
+            {
+                var errmsg = e.Message;
+                // ToDo logging
             }
         }
      }

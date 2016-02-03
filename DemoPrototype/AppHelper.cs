@@ -30,6 +30,29 @@ namespace DemoPrototype
             }
         }
 
+        public static TimeSpan SafeConvertToTimeSpan(object value)
+        {
+
+            TimeSpan res;
+            if (value is String)
+            {
+               TimeSpan.TryParse((string)value, out res);
+                return res;
+            }
+            else
+            {
+                try
+                {
+                    return (TimeSpan)value;
+                }
+                catch (Exception)
+                {
+                    //what should I return here?
+                    return res;
+                }
+            }
+        }
+
         public static int ConvertToInteger(string strValue, int minValidValue, int maxValidValue)
         {
             int value = -1;
@@ -43,6 +66,8 @@ namespace DemoPrototype
                 return -1;
             }
         }
+
+
 
         public static async void ShowMessageBox(string text)
         {

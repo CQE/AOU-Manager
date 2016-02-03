@@ -162,8 +162,8 @@
                     <chart:TextAnnotation Text="Double-click to freeze/run then drag lines to measure" FontWeight="ExtraLight" FontSize="16" CoordinateUnit="Pixel" X1="50" Y1="100"></chart:TextAnnotation>
                     <!-- <chart:RectangleAnnotation X1="50" Y1="50"  X2="100" Y2="100" CoordinateUnit="Pixel" Text="17-0" Fill="HotPink"></chart:RectangleAnnotation> -->
                     <!-- vertical lines are tricky to position -->
-                    <chart:VerticalLineAnnotation Name="PhaseVLine1"  CanDrag="True" DragCompleted="PhaseLine1_Dragged" CoordinateUnit="Axis" X1="00:00:05"></chart:VerticalLineAnnotation>
-                    <chart:VerticalLineAnnotation Name="PhaseVLine2" CanDrag="True"  DragCompleted="PhaseLine2_Dragged" CoordinateUnit="Axis" X1="00:00:10"></chart:VerticalLineAnnotation>
+                    <chart:VerticalLineAnnotation Name="MouldingDelayVLine1"  CanDrag="True" DragCompleted="MouldingDelayVLine1_DragCompleted" CoordinateUnit="Axis" X1="00:00:05"></chart:VerticalLineAnnotation>
+                    <chart:VerticalLineAnnotation Name="MouldingDelayVLine2" CanDrag="True"  DragCompleted="MouldingDelayVLine2_DragCompleted" CoordinateUnit="Axis" X1="00:00:10"></chart:VerticalLineAnnotation>
                 </chart:SfChart.Annotations>
                 <chart:LineSeries LegendIcon="Diamond" Label="T Return Actual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
                 <chart:LineSeries LegendIcon="Diamond" Label="T Return Forecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
@@ -186,7 +186,7 @@
                 <chart:NumericalAxis Minimum="0" Interval="10" Maximum="300" EnableAutoIntervalOnZooming="False">
                     <chart:NumericalAxis.StripLines>
                         <chart:ChartStripLine Start="200" Width="20" Label="Hot Tank Safe Zone" Background="PaleGreen"></chart:ChartStripLine>
-                        <chart:ChartStripLine Start="15" Width="30" Label="Cool Tank Safe Zone" Background="PaleGoldenrod"></chart:ChartStripLine>
+                        <chart:ChartStripLine Start="15" Width="30" Label="Cold Tank Safe Zone" Background="PaleGoldenrod"></chart:ChartStripLine>
                     </chart:NumericalAxis.StripLines>
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
@@ -198,7 +198,7 @@
                 <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Ret Actual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Ret Forecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Hot tank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"/>
-                <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Cold tank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank"  ItemsSource="{Binding power}"/>
+                <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Cold tank"  XBindingPath="ElapsedTime" YBindingPath="TCoolTank"  ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Hot Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Mid Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries LegendIcon="Diamond" Label="Cold Buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"/>
@@ -295,10 +295,10 @@
                     <chart:TimeSpanAxis ></chart:TimeSpanAxis>
                 </chart:SfChart.PrimaryAxis>
                 <chart:SfChart.Legend>
-                    <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Collapsed"/>
+                    <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Visible"/>
                 </chart:SfChart.Legend>
                 <chart:SfChart.SecondaryAxis>
-                    <chart:NumericalAxis Minimum="0" Interval="10" Maximum="100" EnableAutoIntervalOnZooming="False">
+                    <chart:NumericalAxis Minimum="0" Interval="20" Maximum="300" EnableAutoIntervalOnZooming="False">
                         <chart:NumericalAxis.StripLines>
                             <chart:ChartStripLine IsSegmented="True" SegmentStartValue="10" SegmentEndValue="15" Start="60" Width="10" Label="20" Background="Yellow"></chart:ChartStripLine>
                         </chart:NumericalAxis.StripLines>

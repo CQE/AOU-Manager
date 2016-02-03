@@ -113,8 +113,7 @@ namespace DemoPrototype
         private void PhaseShiftButton(object sender, RoutedEventArgs e)
         {
             //Just testing
-            double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
-            double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X2);
+           
 
             //PhaseShiftResultText.Text = firstSlope.ToString();
             //PhaseShiftValue.Text = (secondSlope-firstSlope).ToString();
@@ -123,8 +122,8 @@ namespace DemoPrototype
         private void PhaseLine1_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             //Urban please replace this code with code showing diff between the lines, and center the Chartstripline
-            double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
-            double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
+           // double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
+            //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
             PhaseDiffResult.Text = "5"; //(secondSlope - firstSlope).ToString();
         }
 
@@ -142,11 +141,7 @@ namespace DemoPrototype
             */
         }
 
-        private void FreezeDelayChart(object sender, RoutedEventArgs e)
-        {
-            //make chart toggle freeze and run
-
-        }
+        
 
         private void FreezeEnergyChart(object sender, TappedRoutedEventArgs e)
         {
@@ -158,11 +153,7 @@ namespace DemoPrototype
 
         }
 
-        private void FreezeDelayChart(object sender, TappedRoutedEventArgs e)
-        {
-            //todo
-        }
-
+       
         private void FreezeDelayChart(object sender, DoubleTappedRoutedEventArgs e)
         {
             //which mode?
@@ -171,8 +162,8 @@ namespace DemoPrototype
             {
                 dTimer.Stop();
                 //where are the lines?
-                double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
-                double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
+                //double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
+                //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
                 //and what is min on the X-axis?
                 Double startX = AppHelper.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
             }
@@ -182,6 +173,22 @@ namespace DemoPrototype
         private void PhaseLineTBM_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             //TBD
+        }
+
+        private void MouldingDelayVLine1_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            //calculate diff between lines and show result in overlaying text
+            TimeSpan newX1 = AppHelper.SafeConvertToTimeSpan(MouldingDelayVLine1.X1);
+            TimeSpan deltaX = newX1 - AppHelper.SafeConvertToTimeSpan(MouldingDelayVLine2.X1);
+            PhaseDiffResult.Text = Math.Abs(deltaX.Seconds).ToString() + " (s)";
+        }
+
+        private void MouldingDelayVLine2_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            //calculate diff between lines and show result in overlaying text
+            TimeSpan newX1 = (TimeSpan)MouldingDelayVLine1.X1;
+            TimeSpan deltaX = newX1 - (TimeSpan)MouldingDelayVLine2.X1;
+            PhaseDiffResult.Text = Math.Abs(deltaX.Seconds).ToString() + " (s)";
         }
     }
 

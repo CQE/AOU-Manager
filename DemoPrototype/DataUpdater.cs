@@ -80,10 +80,14 @@ namespace DemoPrototype
             // ToDo Send to AOU
         }
 
-        private static bool CheckDataRouterSingleton(AOURouter.RunType dataRunType, string dataRunSource)
+        private static bool CheckDataRouterSingleton(bool restart = false)
         {
-            if (dataRouter == null)
-            { 
+            // AOURouter.RunType.Random, @"AOU\Data\example_data2.txt"
+            if (dataRouter == null || restart)
+            {
+                AOURouter.RunType dataRunType = GlobalAppSettings.DataRunType;
+                string dataRunSource = GlobalAppSettings.DataRunSource;
+
                 dataRouter = new AOURouter(dataRunType, dataRunSource);
                 return false;
             }
@@ -92,7 +96,7 @@ namespace DemoPrototype
 
         public static void Update()
         {
-            if (CheckDataRouterSingleton(AOURouter.RunType.Random, @"AOU\Data\example_data2.txt"))
+            if (CheckDataRouterSingleton())
             {
                 dataRouter.Update(1);
             }
@@ -100,7 +104,7 @@ namespace DemoPrototype
 
         public static void UpdateInputData(object dataContext)
         {
-            CheckDataRouterSingleton(AOURouter.RunType.Random, @"AOU\Data\example_data2.txt");
+            CheckDataRouterSingleton();
             if (true)
             {
                 ((LineChartViewModel)dataContext).UpdateNewValue(dataRouter.GetLastPowerValue());
@@ -130,7 +134,7 @@ namespace DemoPrototype
 
         public static void UpdateInputDataLogMessages(object dataContext)//NewPowerDataIsAvailable
         {
-            CheckDataRouterSingleton(AOURouter.RunType.File, @"AOU\Data\example_data2.txt");
+            CheckDataRouterSingleton();
             if (dataContext != null && dataRouter.NewLogMessagesAreAvailable())
             {
                 ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetNewLogMessages());
@@ -154,6 +158,16 @@ namespace DemoPrototype
         public LineChartViewModel()
         {
             power = new ObservableCollection<Power>();
+        }
+
+        public TimeSpan GetActualTimeSpan()
+        {
+            if (power.Count > 0)
+            {
+                return TimeSpan.FromMilliseconds(power[power.Count - 1].ElapsedTime);
+            }
+            else
+                return new TimeSpan(0);
         }
 
         public void UpdateNewValue(Power pow)

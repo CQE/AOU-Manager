@@ -103,11 +103,25 @@ namespace DemoPrototype
             }
             else
             {
-                //use value  x in Textbox and set length of X-axis in grid
+                //need to know new starting value for x-axis
+                Point myOrigin;
+                //get curent max value
+                myOrigin.X = MyDelayChart.SeriesClipRect.Right;
+                myOrigin.Y = 0;
+                double myX0;
+                myX0 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myOrigin); 
+                //want to express newX0 in whole seconds
+                TimeSpan newX0 = new TimeSpan(0,0,0,0,(int)myX0);
+                //need to make seconds an integer
+                int newX0InWholeSeconds = newX0.Seconds;
+                TimeSpan timeInWholeSeconds = new TimeSpan(0, 0, 0, newX0InWholeSeconds, 0);
+                CalibrateDelayXAxis.Minimum = timeInWholeSeconds.ToString();
+                CalibrateDelayXAxis.Interval = "00:00:02"; //two seconds
+                //use value  x in Textbox and set new length of x-axis in grid
+                TimeSpan newMaximum = new TimeSpan(0, 0, 0, hotStepLength + newX0InWholeSeconds, 0);
+                CalibrateDelayXAxis.Maximum = newMaximum;
                 //sent command and value to AOU 
                 //plot Hot Step response for x seconds
-                CalibrateDelayXAxis.MaxWidth = hotStepLength;
-                CalibrateDelayXAxis.Interval = 1;
                 calibrationTime = hotStepLength;
                 DataUpdater.StartHotStep(hotStepLength);
                 HotStepButton.IsEnabled = false;
@@ -126,11 +140,7 @@ namespace DemoPrototype
             }
             else
             {
-                //use value  x in Textbox and set length of X-axis in grid
-                //sent command and value to AOU 
-                //plot Hot Step response for x seconds
-                CalibrateDelayXAxis.MaxWidth = coldStepLength;
-                CalibrateDelayXAxis.Interval = 1;
+                //copy code from DoHotStep when that works fine
                 calibrationTime = coldStepLength;
                 DataUpdater.StartColdStep(coldStepLength);
                 HotStepButton.IsEnabled = false;
@@ -158,6 +168,51 @@ namespace DemoPrototype
         {
             //todo make work
             CalColdEndLimitValue.Text = "42";
+        }
+
+        private void CalibratePhaseVLine1_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            double myX1, myX2;
+            Point myPoint1, myPoint2;
+            int phaseDiff;
+            //we take x-value from the line and any y-value should do
+            myPoint1.X = AppHelper.SafeConvertToXCoordinate(CalibratePhaseVLine1.X1);
+            myPoint1.Y = 0;
+            myX1 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint1);
+            //and the other line
+            myPoint2.X = AppHelper.SafeConvertToXCoordinate(CalibratePhaseVLine2.X1);
+            myPoint2.Y = 0;
+            myX2 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint2);
+            //calculate the difference in seconds
+            phaseDiff = (int)Math.Abs(myX2-myX1)/1000;
+            //write result
+            CalibratePhaseDiffResult.Text = phaseDiff.ToString() + " (s)";
+        }
+
+        private void CalibratePhaseVLine2_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            double myX1, myX2;
+            Point myPoint1, myPoint2;
+            int phaseDiff;
+            //we take x-value from the line and any y-value should do
+            myPoint1.X = AppHelper.SafeConvertToXCoordinate(CalibratePhaseVLine1.X1);
+            myPoint1.Y = 0;
+            myX1 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint1);
+            //and the other line
+            myPoint2.X = AppHelper.SafeConvertToXCoordinate(CalibratePhaseVLine2.X1);
+            myPoint2.Y = 0;
+            myX2 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint2);
+            //calculate the difference in seconds
+            phaseDiff = (int)Math.Abs(myX2 - myX1) / 1000;
+            //write result
+            CalibratePhaseDiffResult.Text = phaseDiff.ToString() + " (s)";
+        }
+
+        private void DoCycle(object sender, RoutedEventArgs e)
+        {
+            //here we need to make x-axis auto again, and loop hot and cold steps
+            //MyDelayChart.PrimaryAxis.F
+            //MyDelayChart.PrimaryAxis.Interval
         }
     }
 }

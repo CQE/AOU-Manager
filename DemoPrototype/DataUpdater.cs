@@ -26,6 +26,44 @@ namespace DemoPrototype
                 ApplicationData.Current.LocalSettings.Values["IsCelsius"] = (bool)value;
             }
         }
+
+        static public AOURouter.RunType DataRunType
+        { // Serial, File, Random
+            get
+            {
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataRunType"))
+                {
+                    return (AOURouter.RunType)ApplicationData.Current.LocalSettings.Values["DataRunType"];
+                }
+                else
+                { 
+                    return AOURouter.RunType.Random;
+                }
+            }
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["DataRunType"] = (AOURouter.RunType)value;
+            }
+        }
+
+        static public string DataRunSource
+        { // Serial, File, Random
+            get
+            {
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataRunSource"))
+                {
+                    return (string)ApplicationData.Current.LocalSettings.Values["DataRunSource"];
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["DataRunSource"] = value;
+            }
+        }
     }
 
     public static class DataUpdater
@@ -42,11 +80,11 @@ namespace DemoPrototype
             // ToDo Send to AOU
         }
 
-        private static bool CheckDataRouterSingleton()
+        private static bool CheckDataRouterSingleton(AOURouter.RunType dataRunType, string dataRunSource)
         {
             if (dataRouter == null)
             { 
-                dataRouter = new AOURouter(AOURouter.RunType.Random);
+                dataRouter = new AOURouter(dataRunType, dataRunSource);
                 return false;
             }
             return true;
@@ -54,7 +92,7 @@ namespace DemoPrototype
 
         public static void Update()
         {
-            if (CheckDataRouterSingleton())
+            if (CheckDataRouterSingleton(AOURouter.RunType.Random, @"AOU\Data\example_data2.txt"))
             {
                 dataRouter.Update(1);
             }
@@ -62,22 +100,37 @@ namespace DemoPrototype
 
         public static void UpdateInputData(object dataContext)
         {
-            CheckDataRouterSingleton();
-            ((LineChartViewModel)dataContext).UpdateNewValue(dataRouter.GetLastPowerValue());
-            /*
-            if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
+            CheckDataRouterSingleton(AOURouter.RunType.Random, @"AOU\Data\example_data2.txt");
+            if (true)
             {
+                ((LineChartViewModel)dataContext).UpdateNewValue(dataRouter.GetLastPowerValue());
+                /*
+                if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
+                {
+                }
+                else
+                {
+                    bool error = true;
+                }
+                */
             }
             else
             {
-                bool error = true;
+                var pwrArr = dataRouter.GetLastPowerValues(dataRouter.GetNumPowerValues());
+                var pwrCol = new ObservableCollection<Power>();
+                foreach (var pwr in pwrArr)
+                {
+                    pwrCol.Add(pwr);
+                }
+
+                ((LineChartViewModel)dataContext).power = pwrCol;
             }
-            */
+
         }
 
         public static void UpdateInputDataLogMessages(object dataContext)//NewPowerDataIsAvailable
         {
-            CheckDataRouterSingleton();
+            CheckDataRouterSingleton(AOURouter.RunType.File, @"AOU\Data\example_data2.txt");
             if (dataContext != null && dataRouter.NewLogMessagesAreAvailable())
             {
                 ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetNewLogMessages());

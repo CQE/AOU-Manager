@@ -53,6 +53,29 @@ namespace DemoPrototype
             }
         }
 
+        public static double SafeConvertToXCoordinate(object value)
+        {
+
+            double res;
+            if (value is String)
+            {
+                double.TryParse((string)value, out res);
+                return res;
+            }
+            else
+            {
+                try
+                {
+                    return (double)value;
+                }
+                catch (Exception)
+                {
+                    //what should I return here?
+                    return 0;
+                }
+            }
+        }
+
         public static int ConvertToInteger(string strValue, int minValidValue, int maxValidValue)
         {
             int value = -1;

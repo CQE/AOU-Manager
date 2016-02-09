@@ -42,7 +42,7 @@ namespace DemoPrototype
             }
             set
             {
-                ApplicationData.Current.LocalSettings.Values["DataRunType"] = (AOURouter.RunType)value;
+                ApplicationData.Current.LocalSettings.Values["DataRunType"] = (int)value;
             }
         }
 
@@ -80,6 +80,11 @@ namespace DemoPrototype
             // ToDo Send to AOU
         }
 
+        public static void Restart()
+        {
+            CheckDataRouterSingleton(true);
+        }
+
         private static bool CheckDataRouterSingleton(bool restart = false)
         {
             // AOURouter.RunType.Random, @"AOU\Data\example_data2.txt"
@@ -105,9 +110,11 @@ namespace DemoPrototype
         public static void UpdateInputData(object dataContext)
         {
             CheckDataRouterSingleton();
-            if (true)
+            var dc = (LineChartViewModel)dataContext;
+            if (GlobalAppSettings.DataRunType == AOURouter.RunType.Random)
             {
-                ((LineChartViewModel)dataContext).UpdateNewValue(dataRouter.GetLastPowerValue());
+                // var ts = dc.GetActualTimeSpan();
+                dc.UpdateNewValue(dataRouter.GetLastPowerValue());
                 /*
                 if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
                 {
@@ -118,16 +125,20 @@ namespace DemoPrototype
                 }
                 */
             }
-            else
+            else if (dc.power.Count == 0)
             {
                 var pwrArr = dataRouter.GetLastPowerValues(dataRouter.GetNumPowerValues());
                 var pwrCol = new ObservableCollection<Power>();
                 foreach (var pwr in pwrArr)
                 {
-                    pwrCol.Add(pwr);
+                    dc.power.Add(pwr);
                 }
 
-                ((LineChartViewModel)dataContext).power = pwrCol;
+                // dc.power = pwrCol;
+            }
+            else
+            {
+                int n = dc.power.Count;
             }
 
         }

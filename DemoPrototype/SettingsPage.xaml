@@ -53,8 +53,7 @@
             <ComboBox x:Name="AOUDataSourceTypesCombo" SelectionChanged="AOUDataSourceTypeChanged"></ComboBox>
             <TextBlock x:Name="AOUDataSourceStringText" Margin="25,0,0,0" VerticalAlignment="Center" Text="Select Data Source String"></TextBlock>
             <TextBox x:Name="AOUDataSourceString" Margin="5,0,0,0" Width="400" LostFocus="AOUDataSourceString_LostFocus"></TextBox>
+            <Button x:Name="pickButton" Content="Pick" Margin="10,0,0,0" Click="pickButton_Click"/>
         </StackPanel>
-
-
     </Grid>
 </Page>

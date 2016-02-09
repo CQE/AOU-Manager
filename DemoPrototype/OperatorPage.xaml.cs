@@ -23,7 +23,8 @@ namespace DemoPrototype
     /// </summary>
     public sealed partial class OperatorPage : Page
     {
-        private bool isInitSelection = true; // ToDo. Better check
+        private int prevRunModeSelected = -1; 
+
         DispatcherTimer dTimer;
 
         public OperatorPage()
@@ -69,30 +70,24 @@ namespace DemoPrototype
             DataUpdater.UpdateInputData(mainGrid.DataContext);
         }
 
-        private async void modalDlg(string title, string message)
-        {
-            var dlg = new ContentDialog();
-            dlg.Title = title;
-            dlg.Content = message;
-            dlg.PrimaryButtonText = "Enable";
-            dlg.SecondaryButtonText = "Cancel";
-
-            ContentDialogResult res = await dlg.ShowAsync();
-            if (res == ContentDialogResult.Primary)
-            {
-                switch (title)
-                {
-                    //kommunicera med PLC?
-                    case "": break; // example. sendToPLC 
-                }
-
-            }
-
-        }
-
         private void ShowHotTankSlider(object sender, RoutedEventArgs e)
         {
        //     SetHotTankSlider.Visibility="True";
+        }
+
+        public void AsyncResponseDlg(string message, bool ok)
+        {
+            if (ok)
+            {
+                prevRunModeSelected = RunningModeCombo.SelectedIndex;
+            }
+            else
+            {
+                int oldIndex = prevRunModeSelected;
+                AppHelper.ShowMessageBox(message);
+                prevRunModeSelected = -1; // Reset to old active mode. Prevent NewModeSelected
+                RunningModeCombo.SelectedIndex = oldIndex;
+            }
         }
 
         private void NewModeSelected(object sender, SelectionChangedEventArgs e)
@@ -100,13 +95,13 @@ namespace DemoPrototype
             ComboBoxItem item = (ComboBoxItem)e.AddedItems[0];
             string modeTitle = item.Content.ToString();
             string message = "You are about to change running mode";
-            if (!isInitSelection)
+            if (prevRunModeSelected != -1)
             {
-                modalDlg(modeTitle, message);
+                DataUpdater.VerifySendToAOUDlg(modeTitle, message, this);
             }
             else
             {
-                isInitSelection = false;
+                prevRunModeSelected = RunningModeCombo.SelectedIndex;
             }
         }
 

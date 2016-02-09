@@ -41,7 +41,7 @@
 
         <TextBlock  Grid.Row="0" Text="Operation" FontWeight="Bold" VerticalAlignment="Bottom"></TextBlock>
         <TextBlock Text="Running mode" Grid.Row="1" HorizontalAlignment="Left"></TextBlock>
-        <ComboBox Grid.Row="1" Grid.Column="1" SelectionChanged="NewModeSelected">
+        <ComboBox x:Name ="RunningModeCombo" Grid.Row="1" Grid.Column="1" SelectionChanged="NewModeSelected">
             <ComboBoxItem IsSelected="True" Content="Idle"></ComboBoxItem>
             <ComboBoxItem Content="Heating"></ComboBoxItem>
             <ComboBoxItem Content="Cooling"></ComboBoxItem>

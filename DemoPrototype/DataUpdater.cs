@@ -8,6 +8,7 @@ using Windows.Storage;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using DataHandler;
+using Windows.UI.Xaml.Controls;
 
 namespace DemoPrototype
 {
@@ -46,13 +47,13 @@ namespace DemoPrototype
             }
         }
 
-        static public string DataRunSource
+        static public string DataRunFile
         { // Serial, File, Random
             get
             {
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataRunSource"))
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataRunFile"))
                 {
-                    return (string)ApplicationData.Current.LocalSettings.Values["DataRunSource"];
+                    return (string)ApplicationData.Current.LocalSettings.Values["DataRunFile"];
                 }
                 else
                 {
@@ -61,7 +62,45 @@ namespace DemoPrototype
             }
             set
             {
-                ApplicationData.Current.LocalSettings.Values["DataRunSource"] = value;
+                ApplicationData.Current.LocalSettings.Values["DataRunFile"] = value;
+            }
+        }
+
+        static public string DataSerialSettings
+        { // Serial, File, Random
+            get
+            {
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataSerialSettings"))
+                {
+                    return (string)ApplicationData.Current.LocalSettings.Values["DataSerialSettings"];
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["DataSerialSettings"] = value;
+            }
+        }
+
+        static public string DataRandomSettings
+        { // Serial, File, Random
+            get
+            {
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataRandomSettings"))
+                {
+                    return (string)ApplicationData.Current.LocalSettings.Values["DataRandomSettings"];
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["DataRandomSettings"] = value;
             }
         }
     }
@@ -69,6 +108,48 @@ namespace DemoPrototype
     public static class DataUpdater
     {
         private static AOURouter dataRouter;
+
+        public static void sendToPLC(string cmd, int value)
+        {
+            switch (cmd)
+            {
+                case "Idle":
+                    break;
+                case "Heating":
+                    break;
+                case "Cooling":
+                    break;
+                case "Fixed Cycling":
+                    break;
+                case "Auto with IMM":
+                    break;
+
+            }
+            
+
+        }
+
+
+        public static async void VerifySendToAOUDlg(string title, string message, Page pg)
+        {
+            var dlg = new ContentDialog();
+            dlg.Title = title;
+            dlg.Content = message;
+            dlg.PrimaryButtonText = "Ok";
+            dlg.SecondaryButtonText = "Cancel";
+
+            ContentDialogResult res = await dlg.ShowAsync();
+            if (res == ContentDialogResult.Primary)
+            {
+                sendToPLC(title, 0);
+                ((OperatorPage)pg).AsyncResponseDlg("Command sent", true);
+            }
+            else
+            {
+                ((OperatorPage)pg).AsyncResponseDlg("Command canceled", false);
+            }
+
+        }
 
         public static void StartHotStep(int time)
         {
@@ -91,7 +172,7 @@ namespace DemoPrototype
             if (dataRouter == null || restart)
             {
                 AOURouter.RunType dataRunType = GlobalAppSettings.DataRunType;
-                string dataRunSource = GlobalAppSettings.DataRunSource;
+                string dataRunSource = GlobalAppSettings.DataRunFile;
 
                 dataRouter = new AOURouter(dataRunType, dataRunSource);
                 return false;

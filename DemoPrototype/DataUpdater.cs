@@ -12,99 +12,6 @@ using Windows.UI.Xaml.Controls;
 
 namespace DemoPrototype
 {
-
-    public static class GlobalAppSettings
-    {
-        static public bool IsCelsius
-        {
-            get
-            {
-                return ApplicationData.Current.LocalSettings.Values.ContainsKey("IsCelsius") ?
-                       (bool)ApplicationData.Current.LocalSettings.Values["IsCelsius"] : true;
-            }
-            set
-            {
-                ApplicationData.Current.LocalSettings.Values["IsCelsius"] = (bool)value;
-            }
-        }
-
-        static public AOURouter.RunType DataRunType
-        { // Serial, File, Random
-            get
-            {
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataRunType"))
-                {
-                    return (AOURouter.RunType)ApplicationData.Current.LocalSettings.Values["DataRunType"];
-                }
-                else
-                { 
-                    return AOURouter.RunType.Random;
-                }
-            }
-            set
-            {
-                ApplicationData.Current.LocalSettings.Values["DataRunType"] = (int)value;
-            }
-        }
-
-        static public string DataRunFile
-        { // Serial, File, Random
-            get
-            {
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataRunFile"))
-                {
-                    return (string)ApplicationData.Current.LocalSettings.Values["DataRunFile"];
-                }
-                else
-                {
-                    return "";
-                }
-            }
-            set
-            {
-                ApplicationData.Current.LocalSettings.Values["DataRunFile"] = value;
-            }
-        }
-
-        static public string DataSerialSettings
-        { // Serial, File, Random
-            get
-            {
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataSerialSettings"))
-                {
-                    return (string)ApplicationData.Current.LocalSettings.Values["DataSerialSettings"];
-                }
-                else
-                {
-                    return "";
-                }
-            }
-            set
-            {
-                ApplicationData.Current.LocalSettings.Values["DataSerialSettings"] = value;
-            }
-        }
-
-        static public string DataRandomSettings
-        { // Serial, File, Random
-            get
-            {
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataRandomSettings"))
-                {
-                    return (string)ApplicationData.Current.LocalSettings.Values["DataRandomSettings"];
-                }
-                else
-                {
-                    return "";
-                }
-            }
-            set
-            {
-                ApplicationData.Current.LocalSettings.Values["DataRandomSettings"] = value;
-            }
-        }
-    }
-
     public static class DataUpdater
     {
         private static AOURouter dataRouter;
@@ -114,21 +21,23 @@ namespace DemoPrototype
             switch (cmd)
             {
                 case "Idle":
+                    dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.idleMode, 0);
                     break;
                 case "Heating":
+                    dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.heatingMode, 0);
                     break;
                 case "Cooling":
+                    dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.coolingMode, 0);
                     break;
                 case "Fixed Cycling":
+                    dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.fixedCyclingMode, 0);
                     break;
                 case "Auto with IMM":
+                    dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.autoWidthIMMMode, 0);
                     break;
 
             }
-            
-
         }
-
 
         public static async void VerifySendToAOUDlg(string title, string message, Page pg)
         {
@@ -153,12 +62,12 @@ namespace DemoPrototype
 
         public static void StartHotStep(int time)
         {
-            // ToDo Send to AOU
+            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.tempHotTankFeedSet, time); // ToDo
         }
 
         public static void StartColdStep(int time)
         {
-            // ToDo Send to AOU
+            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.tempColdTankFeedSet, time); // ToDo
         }
 
         public static void Restart()

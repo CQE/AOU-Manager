@@ -117,6 +117,7 @@
       <DependentUpon>CalibratePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataUpdater.cs" />
+    <Compile Include="GlobalAppSettings.cs" />
     <Compile Include="HelpPage.xaml.cs">
       <DependentUpon>HelpPage.xaml</DependentUpon>
     </Compile>

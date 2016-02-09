@@ -84,42 +84,18 @@ namespace DemoPrototype
             //todo make work
         }
 
-        private void CalibratePhaseLine1_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
-        {
-            //todo make work
-        }
-
-        private void CalibratePhaseLine2_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
-        {
-            //todo make work
-        }
+        
         
         private void DoHotStep(object sender, RoutedEventArgs e)
         {
-            int hotStepLength = AppHelper.ConvertToInteger(CalibrateHotStepValue.Text, 5, 20);
+            int hotStepLength = AppHelper.ConvertToInteger(CalibrateHotStepValue.Text, 5, 25);
             if (hotStepLength == -1)
             {
                 AppHelper.ShowMessageBox("No valid time value");
             }
             else
             {
-                //need to know new starting value for x-axis
-                Point myOrigin;
-                //get curent max value
-                myOrigin.X = MyDelayChart.SeriesClipRect.Right;
-                myOrigin.Y = 0;
-                double myX0;
-                myX0 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myOrigin); 
-                //want to express newX0 in whole seconds
-                TimeSpan newX0 = new TimeSpan(0,0,0,0,(int)myX0);
-                //need to make seconds an integer
-                int newX0InWholeSeconds = newX0.Seconds;
-                TimeSpan timeInWholeSeconds = new TimeSpan(0, 0, 0, newX0InWholeSeconds, 0);
-                CalibrateDelayXAxis.Minimum = timeInWholeSeconds.ToString();
-                CalibrateDelayXAxis.Interval = "00:00:02"; //two seconds
-                //use value  x in Textbox and set new length of x-axis in grid
-                TimeSpan newMaximum = new TimeSpan(0, 0, 0, hotStepLength + newX0InWholeSeconds, 0);
-                CalibrateDelayXAxis.Maximum = newMaximum;
+                SetAxisRangeForTempStep(hotStepLength);
                 //sent command and value to AOU 
                 //plot Hot Step response for x seconds
                 calibrationTime = hotStepLength;
@@ -140,12 +116,12 @@ namespace DemoPrototype
             }
             else
             {
-                //copy code from DoHotStep when that works fine
+                SetAxisRangeForTempStep(coldStepLength);
                 calibrationTime = coldStepLength;
                 DataUpdater.StartColdStep(coldStepLength);
                 HotStepButton.IsEnabled = false;
                 ColdStepButton.IsEnabled = false;
-                //done! Freeze output in grid//use value in Textbox and set length of X-axis in grid
+                //done! 
             }
         }
 
@@ -154,21 +130,20 @@ namespace DemoPrototype
             if (dTimer.IsEnabled && calibrationTime == 0)
             {
                 dTimer.Stop();
-                // double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
             }
-            else dTimer.Start();
+            else
+            {
+                //make axis auto again
+                //todo: make work for all graphs
+                CalibrateDelayXAxis.Minimum = null;
+                CalibrateDelayXAxis.Maximum = null;
+                CalibrateDelayXAxis.Interval = null;
+                //and start the plotting
+                dTimer.Start();
+            }
         }
 
-        private void PhaseHLine2_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
-        {
-
-        }
-
-        private void PhaseHLine3_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
-        {
-            //todo make work
-            CalColdEndLimitValue.Text = "42";
-        }
+       
 
         private void CalibratePhaseVLine1_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
@@ -208,11 +183,109 @@ namespace DemoPrototype
             CalibratePhaseDiffResult.Text = phaseDiff.ToString() + " (s)";
         }
 
+        private void SetAxisRangeForTempStep(int stepLength)
+        {
+            //need to know new starting value for x-axis
+            //get curent time value
+            TimeSpan TNow;
+            if (CalibrateGrid.DataContext != null)
+            {
+                TNow = ((LineChartViewModel)CalibrateGrid.DataContext).GetActualTimeSpan();
+            }
+            else
+            {
+                TNow = new TimeSpan(0);
+            }
+
+            //save this code a bit longer
+            //myOrigin.X = MyDelayChart.SeriesClipRect.Right;
+            //myOrigin.Y = 0;
+            //double myX0;
+            //myX0 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myOrigin); 
+
+            //need to make the seconds in timespan integer
+            int newX0InWholeSeconds = TNow.Seconds;
+            int newX0InWholeMinutes = TNow.Minutes;
+            int newX0InWholeHours = TNow.Hours;
+            int newX0InWholeDays = TNow.Days;
+            TimeSpan timeInWholeSeconds = new TimeSpan(newX0InWholeDays, newX0InWholeHours, newX0InWholeMinutes, newX0InWholeSeconds, 0);
+            CalibrateDelayXAxis.Minimum = timeInWholeSeconds.ToString();
+            CalibrateDelayXAxis.Interval = "00:00:02"; //two seconds will do
+                                                       //use value  x in Textbox and set new length of x-axis in grid
+            TimeSpan newMaximum = new TimeSpan(0, 0, 0, stepLength, 0) + TNow;
+            CalibrateDelayXAxis.Maximum = newMaximum;
+
+        }
+
         private void DoCycle(object sender, RoutedEventArgs e)
         {
             //here we need to make x-axis auto again, and loop hot and cold steps
-            //MyDelayChart.PrimaryAxis.F
-            //MyDelayChart.PrimaryAxis.Interval
+            AppHelper.ShowMessageBox("Not yet implemented: Cycle");
+        }
+
+       
+
+        private void ColdToHotLineAnnotation_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            double newThreshold = 0;
+            if (ColdToHotLineAnnotation.Y1 != null)
+            {
+                newThreshold = (double)ColdToHotLineAnnotation.Y1;
+            }
+            //want to skip the decimals                            
+           ColdToHotThreshold.Text = Convert.ToInt32(newThreshold).ToString();
+            //ask user if new threshold is OK
+            string modeTitle = "Calibrate";
+            string message = "You are about to change Cold to Hot valve Return threshold";
+            //modalDlg(modeTitle, message);
+           
+
+        }
+
+        private void HotToColdLineAnnotation_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            double newThreshold = 0;
+            if (HotToColdLineAnnotation.Y1 != null)
+            {
+                newThreshold = (double)HotToColdLineAnnotation.Y1;
+            }
+            //want to skip the decimals  
+            HotToColdThreshold.Text = Convert.ToInt32(newThreshold).ToString();
+        }
+
+        private void TBufHotHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            //only want whole integers on axis label
+            double newY = 0;
+            if (TBufHotHLine.Y1 != null)
+            {
+                newY = (double)TBufHotHLine.Y1;
+                TBufHotHLine.Y1 = Math.Round(newY,0);
+            }
+            //TBD what to do with the new threshold?
+        }
+
+        private void TBufMidHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            double newY = 0;
+            if (TBufMidHLine.Y1 != null)
+            {
+                newY = (double)TBufMidHLine.Y1;
+                TBufMidHLine.Y1 = Math.Round(newY, 0);
+            }
+            //show new value in overlay and textbox
+            BufMidThresholdValue.Text = Math.Round(newY, 0).ToString();
+        }
+
+        private void TBufColdHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            double newY = 0;
+            if (TBufColdHLine.Y1 != null)
+            {
+                newY = (double)TBufColdHLine.Y1;
+                TBufColdHLine.Y1 = Math.Round(newY, 0);
+            }
+            //TBD what to do with the new threshold?
         }
     }
 }

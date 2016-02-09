@@ -57,7 +57,7 @@
             </chart:SfChart.Legend>
 
             <chart:SfChart.Annotations>
-                <chart:TextAnnotation X1="50" Y1="150" CoordinateUnit="Pixel" FontSize="16" FontWeight="ExtraLight" Text="Double-click for toggle Freeze/Run (TBD)"></chart:TextAnnotation>
+                <chart:TextAnnotation X1="50" Y1="150" CoordinateUnit="Pixel" FontSize="16" FontWeight="ExtraLight" Text="Double-click for toggle Freeze/Run"></chart:TextAnnotation>
                 <chart:VerticalLineAnnotation Name="CalibratePhaseVLine1"  CanDrag="True" DragCompleted="CalibratePhaseVLine1_DragCompleted"  Width="2" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
                 <chart:VerticalLineAnnotation Name="CalibratePhaseVLine2" CanDrag="True"  DragCompleted="CalibratePhaseVLine2_DragCompleted" CoordinateUnit="Pixel" X1="30"></chart:VerticalLineAnnotation>
             </chart:SfChart.Annotations>
@@ -130,7 +130,6 @@
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
                 <chart:NumericalAxis Minimum="0" Interval="10" EnableAutoIntervalOnZooming="False">
-                    
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
             <chart:SfChart.Legend>
@@ -138,23 +137,23 @@
             </chart:SfChart.Legend>
 
             <chart:SfChart.Annotations>
-                <chart:HorizontalLineAnnotation Name="PhaseHLine3"  ShowLine="True" CanDrag="True" DragCompleted="CalibratePhaseLine1_Dragged"  Width="2" CoordinateUnit="Axis" Y1="45"></chart:HorizontalLineAnnotation>
-                <chart:HorizontalLineAnnotation Name="PhaseHLine4" CanDrag="True"  ShowToolTip="True" DragCompleted="CalibratePhaseLine2_Dragged" Width="3" CoordinateUnit="Axis" Y1="65" Y2="90"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="ColdToHotLineAnnotation"  ShowLine="True" ShowToolTip="True" ToolTipContent="Set cold to hot return valve switching threshold" CanDrag="True" DragCompleted="ColdToHotLineAnnotation_DragCompleted"  Width="2" CoordinateUnit="Axis" Y1="25"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="HotToColdLineAnnotation" CanDrag="True"  ShowToolTip="True" ToolTipContent="Set hot to cold return valve switching threshold" DragCompleted="HotToColdLineAnnotation_DragCompleted" Width="3" CoordinateUnit="Axis" Y1="215"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
-            <chart:LineSeries LegendIcon="Circle" Label="T Hot Tank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="T Return Actual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="T Cold tank" XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="THotTank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries LegendIcon="Circle" Label="TColdTank" XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
         <!-- Use overlay textbox for showing diff result         <TextBox Grid.Column="0" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="42"></TextBox>
         -->
         <TextBlock Margin="15,0,0,0"  Grid.Row="9" VerticalAlignment="Center" Text="Hot to cold Return valve switching threshold:"></TextBlock>
         <StackPanel Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="9">
-            <TextBox Height="30" Text="90"></TextBox>
+            <TextBox Name="HotToColdThreshold" Height="30" Text="215"></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
         <TextBlock Margin="15,0,0,0"  Grid.Row="10" VerticalAlignment="Center" Text="Cold to Hot Return valve switching threshold:"></TextBlock>
         <StackPanel Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal"  Grid.Row="10">
-            <TextBox Height="30"  Text="95"></TextBox>
+            <TextBox Name="ColdToHotThreshold" Height="30"  Text="25"></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
 
@@ -179,25 +178,24 @@
             </chart:SfChart.Legend>
             
             <chart:SfChart.Annotations>
-                <chart:HorizontalLineAnnotation Name="PhaseHLine1"  CanDrag="True" FontSize="6" ShowAxisLabel="True" DragCompleted="CalibratePhaseLine1_Dragged"  Width="3" Fill="Chocolate" CoordinateUnit="Axis" Y1="127"></chart:HorizontalLineAnnotation>
-                <chart:HorizontalLineAnnotation Name="PhaseHLine2" CanDrag="True"  ShowAxisLabel="True" DragCompleted="CalibratePhaseLine2_Dragged" Width="4" Fill="DarkOrange" CoordinateUnit="Axis" Y1="17"></chart:HorizontalLineAnnotation>
-                <chart:HorizontalLineAnnotation Name="PhaseHLine5" CanDrag="True"  ShowAxisLabel="True" DragCompleted="PhaseHLine3_DragCompleted" Width="4"  CoordinateUnit="Axis" Y1="53"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="TBufHotHLine"  CanDrag="True" FontSize="6" ShowAxisLabel="True" DragCompleted="TBufHotHLine_DragCompleted"  ShowToolTip="True" ToolTipContent="Set hot buffer tank upper limit" CoordinateUnit="Axis" Y1="127"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="TBufMidHLine" CanDrag="True"  ShowAxisLabel="True" DragCompleted="TBufMidHLine_DragCompleted" ShowToolTip="True" ToolTipContent="Set mid tank threhold" CoordinateUnit="Axis" Y1="67"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="TBufColdHLine" CanDrag="True"  ShowAxisLabel="True" DragCompleted="TBufColdHLine_DragCompleted" ShowToolTip="True" ToolTipContent="Set cold buffer tank upper limit"  CoordinateUnit="Axis" Y1="53"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
 
             <chart:LineSeries LegendIcon="Circle" Label="T hot buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
             <chart:LineSeries LegendIcon="Circle" Label="T mid" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
             <chart:LineSeries LegendIcon="Circle" Label="T cold buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
-        <!-- Use overlay textbox for showing diff result -->
-        <TextBox Grid.Column="3" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="72"></TextBox>
-
-
-
+      
         <TextBlock Margin="30,0,0,0" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="9" VerticalAlignment="Center" Text="Buffertank mid threshold value:"></TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="9">
-            <TextBox Name="CalColdEndLimitValue" Height="30" Text="127"></TextBox>
+            <TextBox Name="BufMidThresholdValue" Height="30" Text="67"></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
-       
+
+        <!-- Use overlay textbox for showing diff result -->
+        <TextBox Grid.Column="3" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="{x:Bind BufMidThresholdValue.Text}"></TextBox>
+
     </Grid>
 </Page>

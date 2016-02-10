@@ -60,6 +60,11 @@ namespace DemoPrototype
 
         }
 
+        public static string GetLog()
+        {
+            return dataRouter.GetLogStr();
+        }
+
         public static void StartHotStep(int time)
         {
             dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.tempHotTankFeedSet, time); // ToDo
@@ -81,7 +86,15 @@ namespace DemoPrototype
             if (dataRouter == null || restart)
             {
                 AOURouter.RunType dataRunType = GlobalAppSettings.DataRunType;
-                string dataRunSource = GlobalAppSettings.DataRunFile;
+                string dataRunSource = GlobalAppSettings.DataSerialSettings;
+                if (dataRunType == AOURouter.RunType.File)
+                {
+                    dataRunSource = GlobalAppSettings.DataRunFile;
+                }
+                else if (dataRunType == AOURouter.RunType.Random)
+                {
+                    dataRunSource = GlobalAppSettings.DataRandomSettings;
+                }
 
                 dataRouter = new AOURouter(dataRunType, dataRunSource);
                 return false;
@@ -93,7 +106,7 @@ namespace DemoPrototype
         {
             if (CheckDataRouterSingleton())
             {
-                dataRouter.Update(1);
+                dataRouter.Update();
             }
         }
 

@@ -25,6 +25,12 @@ namespace DemoPrototype
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
+        private const string RunTypeFileText = "Select File path relative to user Pictures folder:";
+        private const string RunTypeSerialText = "Select <Port>, <Baudrate> :";
+        private const string RunTypeRandomText = "Select<max number of values>, <ms between values>:";
+
+        DispatcherTimer dTimer;
+
         public SettingsPage()
         {
             this.InitializeComponent();
@@ -43,7 +49,7 @@ namespace DemoPrototype
             if (GlobalAppSettings.DataRunType == AOURouter.RunType.Serial)
             {
                 AOUDataSourceTypesCombo.SelectedIndex = 0;
-                AOUDataSourceStringText.Text = "Select Port:";
+                AOUDataSourceStringText.Text = RunTypeSerialText;
                 AOUDataSourceString.Text = GlobalAppSettings.DataSerialSettings;
                 this.pickButton.Visibility = Visibility.Collapsed;
                 AOUDataSourceString.IsReadOnly = false;
@@ -51,20 +57,33 @@ namespace DemoPrototype
             else if (GlobalAppSettings.DataRunType == AOURouter.RunType.File)
             {
                 AOUDataSourceTypesCombo.SelectedIndex = 1;
-                this.AOUDataSourceStringText.Text = "Select File path relative to user Pictures folder:";
+                this.AOUDataSourceStringText.Text = RunTypeFileText;
                 this.AOUDataSourceString.Text = GlobalAppSettings.DataRunFile;
                 this.pickButton.Visibility = Visibility.Visible;
                 AOUDataSourceString.IsReadOnly = true;
             }
             else
             {
-                this.AOUDataSourceStringText.Text = "Select max number of values:";
+                this.AOUDataSourceStringText.Text = RunTypeRandomText;
                 AOUDataSourceTypesCombo.SelectedIndex = 2;
                 this.AOUDataSourceString.Text = GlobalAppSettings.DataRandomSettings;
                 this.pickButton.Visibility = Visibility.Collapsed;
                 AOUDataSourceString.IsReadOnly = false;
             }
 
+            dTimer = new DispatcherTimer();
+            dTimer.Tick += UpdateTick;
+            dTimer.Interval = new TimeSpan(0, 0, 0, 1, 0); // milliseconds
+            dTimer.Start();
+        }
+
+        void UpdateTick(object sender, object e)
+        {
+            string s = DataUpdater.GetLog();
+            if (s.Length > 0)
+            {
+                AppHelper.ShowMessageBox(s);
+            }
         }
 
         /* New to be accepted */
@@ -80,34 +99,43 @@ namespace DemoPrototype
 
         private void AOUDataSourceTypeChanged(object sender, RoutedEventArgs e)
         {
+            AOURouter.RunType newRunType = GlobalAppSettings.DataRunType;
             if (AOUDataSourceTypesCombo.SelectedIndex >= 0)
             {
                 if (AOUDataSourceTypesCombo.SelectedIndex == 1)
                 {
-                    GlobalAppSettings.DataRunType = AOURouter.RunType.File;
-                    this.AOUDataSourceStringText.Text = "Select File path relative to user Pictures folder:";
+                    newRunType = AOURouter.RunType.File;
+
+                    this.AOUDataSourceStringText.Text = RunTypeFileText;
                     this.AOUDataSourceString.Text = GlobalAppSettings.DataRunFile;
                     this.pickButton.Visibility = Visibility.Visible;
                     AOUDataSourceString.IsReadOnly = true;
                 }
                 else if (AOUDataSourceTypesCombo.SelectedIndex == 0)
                 {
-                    GlobalAppSettings.DataRunType = AOURouter.RunType.Serial;
-                    this.AOUDataSourceStringText.Text = "Select Port:";
+                    newRunType = AOURouter.RunType.Serial;
+
+                    this.AOUDataSourceStringText.Text = RunTypeSerialText;
                     this.AOUDataSourceString.Text = GlobalAppSettings.DataSerialSettings;
                     this.pickButton.Visibility = Visibility.Collapsed;
                     AOUDataSourceString.IsReadOnly = false;
                 }
                 else
                 {
-                    GlobalAppSettings.DataRunType = AOURouter.RunType.Random;
-                    this.AOUDataSourceStringText.Text = "Select <max number of values>, <ms between values>:";
+                    newRunType = AOURouter.RunType.Random;
+
+                    this.AOUDataSourceStringText.Text = RunTypeRandomText;
                     this.AOUDataSourceString.Text = GlobalAppSettings.DataRandomSettings;
                     this.pickButton.Visibility = Visibility.Collapsed;
                     AOUDataSourceString.IsReadOnly = false;
                 }
             }
-            DataUpdater.Restart();
+
+            if (GlobalAppSettings.DataRunType != newRunType)
+            {
+                GlobalAppSettings.DataRunType = newRunType;
+                DataUpdater.Restart();
+            }
         }
 
         private void AOUDataSourceString_LostFocus(object sender, RoutedEventArgs e)
@@ -138,7 +166,8 @@ namespace DemoPrototype
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
-                string picturePath = file.Path.Substring(file.Path.IndexOf("Pictures")+9);
+                // Save only path relative to User Pictures folder
+                string picturePath = file.Path.Substring(file.Path.IndexOf("Pictures") + ("Pictures").Length);
                 AOUDataSourceString.Text = picturePath;
                 GlobalAppSettings.DataRunFile = picturePath;
                 DataUpdater.Restart();

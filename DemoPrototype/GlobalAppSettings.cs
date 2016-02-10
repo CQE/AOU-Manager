@@ -71,7 +71,7 @@ namespace DemoPrototype
                 }
                 else
                 {
-                    return "";
+                    return "COM3, 9600";
                 }
             }
             set
@@ -90,7 +90,7 @@ namespace DemoPrototype
                 }
                 else
                 {
-                    return "";
+                    return "30, 1000";
                 }
             }
             set

@@ -191,14 +191,28 @@ namespace DemoPrototype
 
         }
 
-        private void NewTHotTankTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        /* GotFocus works better than TextChanged 
+        private void NewTHotTankTextBox_TextChanged(object sender, TextChangedEventArgs e) 
         {
-            AppHelper.ShowMessageBox("Just testing SetHotTank");
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Hot Tank Value", 0, 300);
+            // AppHelper.ShowMessageBox("Just testing SetHotTank");
         }
 
         private void NewTColdTankTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            AppHelper.ShowMessageBox("Just testing SetColdTank");
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Cold Tank Value", 0, 300);
+            // AppHelper.ShowMessageBox("Just testing SetColdTank");
+        }
+        */
+
+        private void NewTHotTankTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Hot Tank Value", 0, 300);
+        }
+
+        private void NewTColdTankTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Cold Tank Value", 0, 300);
         }
 
         private void NewActiveHeatingTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)

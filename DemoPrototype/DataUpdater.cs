@@ -37,12 +37,12 @@ namespace DemoPrototype
             dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.tempColdTankFeedSet, value);
         }
 
-        public static void SetcoolingTime(int value)
+        public static void SetCoolingTime(int value)
         {
             dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.coolingTime, value);
         }
 
-        public static void SetheatingTime(int value)
+        public static void SetHeatingTime(int value)
         {
             dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.heatingTime, value);
         }

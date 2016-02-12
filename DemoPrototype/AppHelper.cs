@@ -94,7 +94,7 @@ namespace DemoPrototype
             }
         }
 
-        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, int min, int max)
+        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, int min, int max, bool sendToAOU = false)
         {
             /* Example to use GetValueToTextBox
             
@@ -123,8 +123,23 @@ namespace DemoPrototype
                     if (((SetValueDialog)dialog).Ok)
                     {
                         textbox.Text = ((SetValueDialog)dialog).GetStringValue();
+                        if (sendToAOU)
+                        {
+                            switch (textbox.Name)
+                            {
+                                case "NewTColdTankTextBox": DataUpdater.SetColdTankFeedTemp(((SetValueDialog)dialog).GetIntValue()); break;
+                                case "NewTHotTankTextBox": DataUpdater.SetHotTankFeedTemp(((SetValueDialog)dialog).GetIntValue()); break;
+                                case "c": DataUpdater.SetToolCoolingFeedPauseTime(((SetValueDialog)dialog).GetIntValue()); break;
+                                case "d": DataUpdater.SetToolHeatingFeedPauseTime(((SetValueDialog)dialog).GetIntValue()); break;
+                                case "e": DataUpdater.SetCoolingTime(((SetValueDialog)dialog).GetIntValue()); break;
+                                case "f": DataUpdater.SetHeatingTime(((SetValueDialog)dialog).GetIntValue()); break;
+                            }
+                        }
                     }
-                    nextControl.Focus(FocusState.Pointer);
+                    if (nextControl != null)
+                    {
+                        nextControl.Focus(FocusState.Pointer);
+                    }
                     dialog = null;
                 }
             }

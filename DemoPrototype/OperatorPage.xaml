@@ -68,18 +68,15 @@
         </StackPanel>
 
         <StackPanel Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
-            <TextBox IsReadOnly="True" BorderThickness="0" Background="White" Text="210"></TextBox>
-            <TextBox Margin="15,0,0,0" Text="220" Name="NewTHotTankTextBox"  TextChanged="NewTHotTankTextBox_TextChanged" GotFocus="ShowHotTankSlider"></TextBox>
-        </StackPanel>
-        <Slider Name="SetHotTankSlider" Grid.Row="3" Grid.Column="2" VerticalAlignment="Bottom" Value="240" Maximum="250" Visibility="Collapsed"></Slider>
+                <TextBox IsReadOnly="True" BorderThickness="0" Background="White" Text="210"/>
+                <TextBox IsReadOnly="True" Margin="15,0,0,0" Text="220" Name="NewTHotTankTextBox"  GotFocus="NewTHotTankTextBox_GotFocus"/>
+            </StackPanel>
         
         <TextBlock Grid.Row="6" VerticalAlignment="Bottom" Text="Cold tank"></TextBlock>
         <StackPanel Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
-            <TextBox IsReadOnly="True" BorderThickness="0" Text="20"></TextBox>
-            <TextBox Margin="15,0,0,0" Name="NewTColdTankTextBox" TextChanged="NewTColdTankTextBox_TextChanged" Text="25"></TextBox>
+                <TextBox Name="coldTankSet" IsReadOnly="True" BorderThickness="0" Text="20"></TextBox>
+                <TextBox Margin="15,0,0,0" IsReadOnly="True" Name="NewTColdTankTextBox" GotFocus="NewTColdTankTextBox_GotFocus"  Text="25"></TextBox>
         </StackPanel>
-        
-        <Slider Grid.Row="4" Grid.Column="2" Value="40" Maximum="250" Visibility="Collapsed"></Slider>
 
         <TextBlock Grid.Row="7" VerticalAlignment="Bottom" Text="Cycle times (s/cycle)"></TextBlock>
                      

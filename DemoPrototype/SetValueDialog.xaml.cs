@@ -23,7 +23,12 @@ namespace DemoPrototype
 
         public string GetStringValue()
         {
-            return valueSlider.Value.ToString();
+            return GetIntValue().ToString();
+        }
+
+        public int GetIntValue()
+        {
+            return (int)Math.Round(valueSlider.Value);
         }
 
         public void SetValue(int value, int min, int max)

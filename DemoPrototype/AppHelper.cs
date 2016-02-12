@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace DemoPrototype
 {
     public static class AppHelper
     {
+
+        static ContentDialog dialog = null;
 
         public static double SafeConvertToDouble(object value)
         {
@@ -90,7 +94,45 @@ namespace DemoPrototype
             }
         }
 
+        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, int min, int max)
+        {
+            /* Example to use GetValueToTextBox
+            
+            <TextBox x:Name="coldTankSet" IsReadOnly="True" BorderThickness="0" Text="20"></TextBox>
+            <TextBox x:Name="coldTankValue" IsReadOnly="True" Margin="15,0,0,0" Text="25" GotFocus="coldTankValue_GotFocus"></TextBox>
 
+            private void coldTankValue_GotFocus(object sender, RoutedEventArgs e)
+            {
+                AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Cold Tank Value", 0, 300);
+                // coldTankSet is control to go to after that the value have been changed. This prevent repeating dialog boxes
+            }
+
+            */
+
+            string value = textbox.Text;
+            try {
+                if (dialog == null)
+                {
+                    dialog = new SetValueDialog(value, min, max);
+                    dialog.Title = title;
+                    dialog.PrimaryButtonText = "Ok";
+                    dialog.SecondaryButtonText = "Cancel";
+                    // dialog.MaxWidth = ActualWidth // Required for Mobile!
+
+                    await dialog.ShowAsync();
+                    if (((SetValueDialog)dialog).Ok)
+                    {
+                        textbox.Text = ((SetValueDialog)dialog).GetStringValue();
+                    }
+                    nextControl.Focus(FocusState.Pointer);
+                    dialog = null;
+                }
+            }
+            catch (Exception e)
+            {
+                ShowMessageBox(e.Message);
+            }
+        }
 
         public static async void ShowMessageBox(string text)
         {

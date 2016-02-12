@@ -185,6 +185,51 @@ namespace DemoPrototype
             TimeSpan deltaX = newX1 - (TimeSpan)MouldingDelayVLine2.X1;
             PhaseDiffResult.Text = Math.Abs(deltaX.Seconds).ToString() + " (s)";
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void NewTHotTankTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            AppHelper.ShowMessageBox("Just testing SetHotTank");
+        }
+
+        private void NewTColdTankTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            AppHelper.ShowMessageBox("Just testing SetColdTank");
+        }
+
+        private void NewActiveHeatingTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            AppHelper.ShowMessageBox("Just testing NewHeatingTime");
+        }
+
+        private void NewPauseHeatingTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            AppHelper.ShowMessageBox("Just testing NewHeatingPause");
+        }
+
+        private void NewActiveCoolingTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            AppHelper.ShowMessageBox("Just testing NewCoolingTime");
+        }
+
+        private void NewPauseCoolingTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            AppHelper.ShowMessageBox("Just testing NewCoolingPause");
+        }
+
+        private void HotFeedToReturnDelayCalTime_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            AppHelper.ShowMessageBox("Just testing HotDelayTime");
+        }
+
+        private void ColdFeedToReturnDelayCalTime_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            AppHelper.ShowMessageBox("Just testing ColdDelayTime");
+        }
     }
 
 

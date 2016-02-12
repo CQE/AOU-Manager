@@ -69,14 +69,14 @@
 
         <StackPanel Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
             <TextBox IsReadOnly="True" BorderThickness="0" Background="White" Text="210"></TextBox>
-            <TextBox Margin="15,0,0,0" Text="220" GotFocus="ShowHotTankSlider"></TextBox>
+            <TextBox Margin="15,0,0,0" Text="220" Name="NewTHotTankTextBox"  TextChanged="NewTHotTankTextBox_TextChanged" GotFocus="ShowHotTankSlider"></TextBox>
         </StackPanel>
         <Slider Name="SetHotTankSlider" Grid.Row="3" Grid.Column="2" VerticalAlignment="Bottom" Value="240" Maximum="250" Visibility="Collapsed"></Slider>
         
         <TextBlock Grid.Row="6" VerticalAlignment="Bottom" Text="Cold tank"></TextBlock>
         <StackPanel Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
             <TextBox IsReadOnly="True" BorderThickness="0" Text="20"></TextBox>
-            <TextBox Margin="15,0,0,0" Text="25"></TextBox>
+            <TextBox Margin="15,0,0,0" Name="NewTColdTankTextBox" TextChanged="NewTColdTankTextBox_TextChanged" Text="25"></TextBox>
         </StackPanel>
         
         <Slider Grid.Row="4" Grid.Column="2" Value="40" Maximum="250" Visibility="Collapsed"></Slider>
@@ -92,15 +92,15 @@
       
         <TextBlock Grid.Row="8"  VerticalAlignment="Bottom" Text="Heating"></TextBlock>
         <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
-            <TextBox VerticalAlignment="Bottom" Text="26"></TextBox>
-            <TextBox Margin="15,0,0,0" Text="25"></TextBox>
+            <TextBox Name="NewActiveHeatingTimeTextBox" TextChanged="NewActiveHeatingTimeTextBox_TextChanged" VerticalAlignment="Bottom" Text="26"></TextBox>
+            <TextBox Name="NewPauseHeatingTimeTextBox" TextChanged="NewPauseHeatingTimeTextBox_TextChanged" Margin="15,0,0,0" Text="25"></TextBox>
         </StackPanel>
         <Slider Grid.Row="6" Grid.Column="2" Value="27" Maximum="100" Visibility="Collapsed"></Slider>
        
         <TextBlock Grid.Row="9" VerticalAlignment="Bottom" Text="Cooling"></TextBlock>
         <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
-            <TextBox VerticalAlignment="Bottom" Text="24"></TextBox>
-            <TextBox Margin="15,0,0,0" Text="20"></TextBox>
+                <TextBox Name="NewActiveCoolingTimeTextBox" TextChanged="NewActiveCoolingTimeTextBox_TextChanged" VerticalAlignment="Bottom" Text="24"></TextBox>
+                <TextBox Name="NewPauseCoolingTimeTextBox" TextChanged="NewPauseCoolingTimeTextBox_TextChanged"  Margin="15,0,0,0" Text="20"></TextBox>
         </StackPanel>
         <Slider Grid.Row="7" Grid.Column="2" Value="21" Maximum="100" Visibility="Collapsed"></Slider>
 
@@ -118,7 +118,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,30,0" Grid.Row="3" Grid.Column="4">
                 <TextBlock  VerticalAlignment="Bottom" Margin="0,0,0,0" Text="8"></TextBlock>
                 <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
-                <TextBox VerticalAlignment="Bottom" Margin="10,0,0,0" Text="2"></TextBox>
+                <TextBox Name="HotFeedToReturnDelayCalTime" TextChanged="HotFeedToReturnDelayCalTime_TextChanged" VerticalAlignment="Bottom" Margin="10,0,0,0" Text="2"></TextBox>
                 <TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,0" Text="="></TextBlock>
                 <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="10"></TextBlock>
                 <TextBlock Margin="8,0,0,0" VerticalAlignment="Bottom" Text="(s)"></TextBlock>
@@ -128,7 +128,7 @@
         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,0,30,0" Grid.Row="4" Grid.Column="4">
                 <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,0" Text="10"></TextBlock>
                 <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
-                <TextBox Margin="10,0,0,0" VerticalAlignment="Bottom" Text="3"></TextBox>
+                <TextBox Name="ColdFeedToReturnDelayCalTime"  TextChanged="ColdFeedToReturnDelayCalTime_TextChanged" Margin="10,0,0,0" VerticalAlignment="Bottom" Text="3"></TextBox>
                 <TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,0" Text="="></TextBlock>
                 <TextBlock  Margin="5,0,0,0" VerticalAlignment="Bottom" Text="12"></TextBlock>
                 <TextBlock Margin="8,0,0,0" VerticalAlignment="Bottom" Text="(s)"></TextBlock>

@@ -94,7 +94,7 @@ namespace DemoPrototype
             }
         }
 
-        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, int min, int max, bool sendToAOU = false)
+        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, int min, int max, bool sendToAOU = true)
         {
             /* Example to use GetValueToTextBox
             
@@ -123,16 +123,17 @@ namespace DemoPrototype
                     if (((SetValueDialog)dialog).Ok)
                     {
                         textbox.Text = ((SetValueDialog)dialog).GetStringValue();
+                        int val = ((SetValueDialog)dialog).GetIntValue();
                         if (sendToAOU)
                         {
                             switch (textbox.Name)
                             {
-                                case "NewTColdTankTextBox": DataUpdater.SetColdTankFeedTemp(((SetValueDialog)dialog).GetIntValue()); break;
-                                case "NewTHotTankTextBox": DataUpdater.SetHotTankFeedTemp(((SetValueDialog)dialog).GetIntValue()); break;
-                                case "c": DataUpdater.SetToolCoolingFeedPauseTime(((SetValueDialog)dialog).GetIntValue()); break;
-                                case "d": DataUpdater.SetToolHeatingFeedPauseTime(((SetValueDialog)dialog).GetIntValue()); break;
-                                case "e": DataUpdater.SetCoolingTime(((SetValueDialog)dialog).GetIntValue()); break;
-                                case "f": DataUpdater.SetHeatingTime(((SetValueDialog)dialog).GetIntValue()); break;
+                                case "NewTColdTankTextBox": DataUpdater.SetColdTankFeedTemp(val); break;
+                                case "NewTHotTankTextBox": DataUpdater.SetHotTankFeedTemp(val); break;
+                                case "c": DataUpdater.SetToolCoolingFeedPauseTime(val); break;
+                                case "d": DataUpdater.SetToolHeatingFeedPauseTime(val); break;
+                                case "e": DataUpdater.SetCoolingTime(val); break;
+                                case "f": DataUpdater.SetHeatingTime(val); break;
                             }
                         }
                     }

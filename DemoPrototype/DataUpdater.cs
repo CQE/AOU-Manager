@@ -29,70 +29,70 @@ namespace DemoPrototype
 
         public static void SetHotTankFeedTemp(int value)
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.tempHotTankFeedSet, value);
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempHotTankFeedSet, value);
         }
 
         public static void SetColdTankFeedTemp(int value)
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.tempColdTankFeedSet, value);
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempColdTankFeedSet, value);
         }
 
         public static void SetCoolingTime(int value)
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.coolingTime, value);
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.coolingTime, value);
         }
 
         public static void SetHeatingTime(int value)
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.heatingTime, value);
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.heatingTime, value);
         }
 
         public static void SetToolHeatingFeedPauseTime(int value)
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.toolHeatingFeedPause, value);
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.toolHeatingFeedPause, value);
         }
 
         public static void SetToolCoolingFeedPauseTime(int value)
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.toolCoolingFeedPause, value);
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.toolCoolingFeedPause, value);
         }
 
         public static void ChangeToIdleMode()
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.idleMode, 0);
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.idleMode, 0);
         }
 
         public static void ChangeToHeatingMode()
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.heatingMode, 0);
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.heatingMode, 0);
         }
 
         public static void ChangeToCoolingMode()
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.coolingMode, 0);
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.coolingMode, 0);
         }
 
         public static void ChangeToFixedCyclingMode()
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.fixedCyclingMode, 0);
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.fixedCyclingMode, 0);
         }
 
         public static void ChangeToAutoWidthIMMMode()
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.autoWidthIMMMode, 0);
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.autoWidthIMMMode, 0);
         }
 
         public static void StartHotStep(int time)
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.tempHotTankFeedSet, time); // ToDo
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempHotTankFeedSet, time); // ToDo
         }
 
         public static void StartColdStep(int time)
         {
-            dataRouter.SendCommandToPlc(AOURouter.AOUCommandType.tempColdTankFeedSet, time); // ToDo
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempColdTankFeedSet, time); // ToDo
         }
 
-        public static async void VerifySendToAOUDlg(string title, string mode, Page pg)
+        public static async void VerifySendToAOUDlg(string mode, string title, Page pg)
         {
             var dlg = new ContentDialog();
             dlg.Title = title;
@@ -193,8 +193,6 @@ namespace DemoPrototype
                 {
                     dc.power.Add(pwr);
                 }
-
-                // dc.power = pwrCol;
             }
             else
             {
@@ -206,9 +204,20 @@ namespace DemoPrototype
         public static void UpdateInputDataLogMessages(object dataContext)//NewPowerDataIsAvailable
         {
             CheckDataRouterSingleton();
-            if (dataContext != null && dataRouter.NewLogMessagesAreAvailable())
+
+            if (GlobalAppSettings.DataRunType == AOURouter.RunType.Random)
             {
-                ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetNewLogMessages());
+                if (dataContext != null && dataRouter.NewLogMessagesAreAvailable())
+                {
+                    ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetNewLogMessages());
+                }
+            }
+            else 
+            {
+                if (dataContext != null && ((LogMessageViewModel)dataContext).logMessages.Count == 0)
+                { 
+                    ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetNewLogMessages());
+                }
             }
         }
     }

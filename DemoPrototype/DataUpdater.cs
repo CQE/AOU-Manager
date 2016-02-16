@@ -27,6 +27,22 @@ namespace DemoPrototype
         ** Commands to AOU
         *************************************************/
 
+        public static void SetToDo(string ToDo, int value)
+        {
+            //dataRouter.SendCommandToPlc(AOUTypes.CommandType.todo, value);
+            dataRouter.SendToPlc("<ToDo value=\""+value+"\">" + ToDo + "</ToDo>");
+        }
+
+        public static void SetHotDelayTime(int value)
+        {
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.hotDelayTime, value);
+        }
+
+        public static void SetColdDelayTime(int value)
+        {
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.coldDelayTime, value);
+        }
+
         public static void SetHotTankFeedTemp(int value)
         {
             dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempHotTankFeedSet, value);

@@ -261,8 +261,12 @@ namespace DemoPrototype
             {
                 newY = (double)TBufHotHLine.Y1;
                 TBufHotHLine.Y1 = Math.Round(newY,0);
-            }
-            //TBD what to do with the new threshold?
+                //send new value to AOU
+                string thresholdTitle = "Buffer tank hot temperature threshold";
+                string message = "You are about to set a new alarm threshold value";
+                DataUpdater.VerifySendToAOUDlg(thresholdTitle, message, this);
+             }
+          
         }
 
         private void TBufMidHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
@@ -286,6 +290,18 @@ namespace DemoPrototype
                 TBufColdHLine.Y1 = Math.Round(newY, 0);
             }
             //TBD what to do with the new threshold?
+        }
+
+        private void HotFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //show slider and send command to AOU
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Hot feed-to-return delay time", 0, 30);         
+        }
+
+        private void ColdFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //show slider and send command to AOU
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Cold feed-to-return delay time", 0, 30);
         }
     }
 }

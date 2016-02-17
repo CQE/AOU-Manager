@@ -28,20 +28,34 @@ namespace DemoPrototype
 
         public int GetIntValue()
         {
+            // Todo verify value
             return (int)Math.Round(valueSlider.Value);
         }
 
-        public void SetValue(int value, int min, int max)
+        public SetValueDialog(string strValue, bool edit = false)
         {
-            valueSlider.Minimum = min;
-            valueSlider.Maximum = max;
-            valueSlider.Value = value;
+            this.InitializeComponent();
+            this.valueSlider.Visibility = Visibility.Collapsed;
+            if (edit)
+                this.textValue.IsReadOnly = false;
+            else
+                this.textValue.IsReadOnly = true;
+
+            textValue.Text = strValue;
+            Ok = false;
         }
 
         public SetValueDialog(string strValue, int min, int max)
         {
+            int value = 0;
+            int.TryParse(strValue, out value);
+
             this.InitializeComponent();
-            SetValue(int.Parse(strValue), min, max);
+
+            this.valueSlider.Visibility = Visibility.Visible;
+            valueSlider.Minimum = min;
+            valueSlider.Maximum = max;
+            valueSlider.Value = value;
             textValue.Text = strValue;
             Ok = false;
         }
@@ -58,7 +72,10 @@ namespace DemoPrototype
 
         private void valueSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            textValue.Text = valueSlider.Value.ToString();
+            if (this.valueSlider.Visibility == Visibility.Visible)
+            { 
+                textValue.Text = valueSlider.Value.ToString();
+            }
         }
     }
 }

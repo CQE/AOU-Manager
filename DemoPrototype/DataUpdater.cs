@@ -16,6 +16,8 @@ namespace DemoPrototype
     {
         // Todo ms to sek
 
+        public enum VerifyDialogType {VeryfyOkCancelOnly, VerifyIntValue, VerifySliderValue};
+
         private static AOURouter dataRouter;
 
         public static string GetLog()
@@ -108,8 +110,70 @@ namespace DemoPrototype
             dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempColdTankFeedSet, time); // ToDo
         }
 
-        public static async void VerifySendToAOUDlg(string mode, string title, Page pg)
+
+/*
+Energy balance
+ TReturnActual:
+    TReturnThresholdHot2Cold[guess(THotTank + TColdTank) / 2 - (THotTank - TColdTank) / 4]
+    TReturnThresholdCold2Hot[guess(THotTank + TColdTank) / 2 + (THotTank - TColdTank) / 4]
+
+Volume balance
+ TBufferMid: TBufferMidRefThreshold[guess(THotTank + TColdTank) / 2]
+ TBufferHot: TBufferHotLowerLimit[guess TBufferMidRefThreshold]
+ TBufferCold: TBufferColdUpperLimit[guess TBufferMidRefThreshold]
+
+Storage tanks
+ THotTank: THotTankAlarmLowThreshold[guess THotTankSet - (THotTankSet - TColdTankSet) / 4]
+ TColdTank: TColdTankAlarmHighThreshold[guess TColdTankSet + (THotTankSet - TColdTankSet) / 4]
+
+*/
+
+
+        public static void SetTHotTankAlarmLowThreshold(int time)
         {
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.THotTankAlarmLowThreshold, time); // ToDo
+        }
+
+        public static void SetTColdTankAlarmHighThreshold(int time)
+        {
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TColdTankAlarmHighThreshold, time); // ToDo
+        }
+
+        public static void SetTReturnThresholdCold2Hot(int time)
+        {
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TReturnThresholdCold2Hot, time); // ToDo
+        }
+
+        public static void SetTReturnThresholdHot2Cold(int time)
+        {
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TReturnThresholdHot2Cold, time); // ToDo
+        }
+
+
+
+        public static void SetTBufferHotLowerLimit(int time)
+        {
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferHotLowerLimit, time); // ToDo
+        }
+
+        public static void SetTBufferColdUpperLimit(int time)
+        {
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferColdUpperLimit, time); // ToDo
+        }
+
+        public static void SetTBufferMidRefThreshold(int time)
+        {
+            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferMidRefThreshold, time); // ToDo
+        }
+
+        public static async void VerifySendToAOUDlg(string mode, string title, VerifyDialogType dlgType, Page pg)
+        {
+            int value = 0;
+
+            // SetValueDialog dlg;
+
+            //if (dlgType = VerifyDialogType.VeryfyOkCancelOnly)
+            //    dlg = new SetValueDialog(strValue)
             var dlg = new ContentDialog();
             dlg.Title = title;
             dlg.Content = mode;
@@ -119,13 +183,6 @@ namespace DemoPrototype
             ContentDialogResult res = await dlg.ShowAsync();
             if (res == ContentDialogResult.Primary)
             {
-                /* ToDo Set dynamic
-            <ComboBoxItem IsSelected="True" Content="Idle"></ComboBoxItem>
-            <ComboBoxItem Content="Heating"></ComboBoxItem>
-            <ComboBoxItem Content="Cooling"></ComboBoxItem>
-            <ComboBoxItem Content="Fixed Cycling"></ComboBoxItem>
-            <ComboBoxItem Content="Auto with IMM"></ComboBoxItem>
-                */
                 switch (mode)
                 {
                     case "Idle": ChangeToIdleMode(); break;
@@ -133,14 +190,31 @@ namespace DemoPrototype
                     case "Cooling": ChangeToCoolingMode(); break;
                     case "Fixed Cycling": ChangeToFixedCyclingMode(); break;
                     case "Auto with IMM": ChangeToAutoWidthIMMMode(); break;
+
+                    case "THotTankAlarmLowThreshold": SetTHotTankAlarmLowThreshold(value); break;
+                    case "SetTColdTankAlarmHighThreshold": SetTColdTankAlarmHighThreshold(value); break;
+
+                    case "TReturnThresholdCold2Hot": SetTReturnThresholdCold2Hot(value); break;
+                    case "TReturnThresholdHot2Cold": SetTReturnThresholdHot2Cold(value); break;
+
+                    case "TBufferHotLowerLimit": SetTBufferHotLowerLimit(value); break;
+                    case "TBufferColdUpperLimit": SetTBufferColdUpperLimit(value); break;
+                    case "TBufferMidRefThreshold": SetTBufferMidRefThreshold(value); break;
                 }
 
                 //sendToPLC(title, 0);
-                ((OperatorPage)pg).AsyncResponseDlg("Command sent", true);
+                // if (pg.Name == "OperatorPage")
+//                    ((OperatorPage)pg).AsyncResponseDlg("Command sent", true);
+               // else if (pg.Name == "CalibratePage")
+               //     ((CalibratePage)pg).AsyncResponseDlg("Command sent", true);
+
             }
             else
             {
-                ((OperatorPage)pg).AsyncResponseDlg("Command canceled", false);
+//                if (pg.Name == "OperatorPage")
+//                    ((OperatorPage)pg).AsyncResponseDlg("Command canceled", false);
+                // else if (pg.Name == "CalibratePage")
+                // ((CalibratePage)pg).AsyncResponseDlg("Command canceled", false);
             }
 
         }

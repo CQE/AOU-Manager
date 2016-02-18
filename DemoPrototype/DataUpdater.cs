@@ -166,10 +166,8 @@ Storage tanks
             dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferMidRefThreshold, time); // ToDo
         }
 
-        public static async void VerifySendToAOUDlg(string mode, string title, VerifyDialogType dlgType, Page pg)
+        public static async void VerifySendToAOUDlg(string mode, string title, VerifyDialogType dlgType, Page pg, int value = 0)
         {
-            int value = 0;
-
             // SetValueDialog dlg;
 
             //if (dlgType = VerifyDialogType.VeryfyOkCancelOnly)

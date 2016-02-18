@@ -229,11 +229,14 @@
         </StackPanel>
 
 
-        <StackPanel x:Name="LogGrid" Grid.Column="3">
+        <StackPanel Grid.Column="3">
 
-            <sfgrid:SfDataGrid ColumnSizer="Auto"  Height='725'
+            <sfgrid:SfDataGrid x:Name="LogGrid"
+                               ColumnSizer="Auto"  Height='725'
                                AllowSorting="True" AllowFiltering="False"
                                ItemsSource="{Binding logMessages}"
+                               RowHeight="25"
+                               
             />
             <!-- ItemsSource="{Binding logMessages}" -->
             <!-- ItemsSource="{Binding ElementName=datapager, Path=PagedSource}" -->

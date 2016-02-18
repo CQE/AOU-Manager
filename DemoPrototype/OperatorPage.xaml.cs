@@ -117,10 +117,11 @@ namespace DemoPrototype
         private void PhaseLine1_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             int val = (int)Math.Round((double)e.NewValue.Y1);
+            
             string thresholdTitle = "Buffer tank hot temperature threshold";
             string message = "You are about to set value to " + val;
             //string y2 = e.NewValue.Y2.ToString();
-            DataUpdater.VerifySendToAOUDlg(thresholdTitle, message, DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, this);
+            DataUpdater.VerifySendToAOUDlg(thresholdTitle, message, DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, this, val);
             //Urban please replace this code with code showing diff between the lines, and center the Chartstripline
             // double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
             //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);

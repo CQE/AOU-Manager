@@ -62,7 +62,7 @@ namespace DemoPrototype
             dTimer = new DispatcherTimer();
             dTimer.Tick += UpdateTick;
             // dTimer.Interval = new TimeSpan(0, 0, 1); // Seconds
-            dTimer.Interval = new TimeSpan(0, 0, 0, 1, 0); // milliseconds
+            dTimer.Interval = new TimeSpan(0, 0, 0, 2, 0); // milliseconds
         }
 
         void UpdateTick(object sender, object e)

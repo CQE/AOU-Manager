@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using DataHandler;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -32,6 +33,7 @@ namespace DemoPrototype
             this.Unloaded += MaintenancePage_Unloaded;
 
             this.InitializeComponent();
+            this.Name = "CalibratePage";
 
             InitDispatcherTimer();
         }
@@ -68,6 +70,7 @@ namespace DemoPrototype
                 }
             }
         }
+
 
         private void CalibrateFreezeVolumeChart(object sender, TappedRoutedEventArgs e)
         {
@@ -232,13 +235,12 @@ namespace DemoPrototype
             {
                 newThreshold = (double)ColdToHotLineAnnotation.Y1;
             }
-            //want to skip the decimals                            
-           ColdToHotThreshold.Text = Convert.ToInt32(newThreshold).ToString();
             //ask user if new threshold is OK
-            string modeTitle = "Calibrate";
+            string title = "Calibrate";
             string message = "You are about to change Cold to Hot valve Return threshold";
-            //modalDlg(modeTitle, message);
-           
+            DataUpdater.VerifySendToAOUDlg(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, DataUpdater.VerifyDialogType.VerifyIntValue, (Page)this);
+
+            // Move to response dlg.ColdToHotThreshold.Text = Convert.ToInt32(newThreshold).ToString();
 
         }
 
@@ -249,59 +251,52 @@ namespace DemoPrototype
             {
                 newThreshold = (double)HotToColdLineAnnotation.Y1;
             }
-            //want to skip the decimals  
-            HotToColdThreshold.Text = Convert.ToInt32(newThreshold).ToString();
         }
 
         private void TBufHotHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            //only want whole integers on axis label
-            double newY = 0;
-            if (TBufHotHLine.Y1 != null)
-            {
-                newY = (double)TBufHotHLine.Y1;
-                TBufHotHLine.Y1 = Math.Round(newY,0);
-                //send new value to AOU
-                string thresholdTitle = "Buffer tank hot temperature threshold";
-                string message = "You are about to set a new alarm threshold value";
-                DataUpdater.VerifySendToAOUDlg(thresholdTitle, message, DataUpdater.VerifyDialogType.VerifyIntValue, this, (int)TBufHotHLine.Y1);
-             }
-          
+            string title = "Buffer tank hot temperature lower limit";
+            string message = "You are about to set value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, TBufHotHLine, this);
         }
 
         private void TBufMidHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            double newY = 0;
-            if (TBufMidHLine.Y1 != null)
-            {
-                newY = (double)TBufMidHLine.Y1;
-                TBufMidHLine.Y1 = Math.Round(newY, 0);
-            }
-            //show new value in overlay and textbox
-            BufMidThresholdValue.Text = Math.Round(newY, 0).ToString();
+            string title = "Buffer tank mid temperature threshold";
+            string message = "You are about to set value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, TBufMidHLine, this);
         }
 
         private void TBufColdHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            double newY = 0;
-            if (TBufColdHLine.Y1 != null)
-            {
-                newY = (double)TBufColdHLine.Y1;
-                TBufColdHLine.Y1 = Math.Round(newY, 0);
-            }
-            //TBD what to do with the new threshold?
+            string title = "Buffer tank cold temperature upper limit";
+            string message = "You are about to set value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, TBufColdHLine, this);
         }
 
         private void HotFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Hot feed-to-return delay time", 0, 30);         
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Hot feed-to-return delay time", AOUTypes.CommandType.TReturnThresholdCold2Hot, 0, 30);         
         }
 
         private void ColdFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Cold feed-to-return delay time", 0, 30);
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Cold feed-to-return delay time", AOUTypes.CommandType.TReturnThresholdCold2Hot, 0, 30);
         }
+
+        public void AsyncResponseDlg(AOUTypes.CommandType cmd, bool ok)
+        {
+            if (!ok)
+            {
+                switch (cmd)
+                {
+                    case AOUTypes.CommandType.coolingTime: break; // TODO: Reset old value saved in GlobalAppSettings
+                }
+                AppHelper.ShowMessageBox("Command not sent. Old value restored");
+            }
+        }
+
     }
 }

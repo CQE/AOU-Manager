@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Threading;
+using DataHandler;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -75,43 +76,59 @@ namespace DemoPrototype
        //     SetHotTankSlider.Visibility="True";
         }
 
-        public void AsyncResponseDlg(string message, bool ok)
+        public void AsyncResponseDlg(AOUTypes.CommandType cmd, bool ok)
         {
             if (ok)
             {
-                prevRunModeSelected = RunningModeCombo.SelectedIndex;
+                if (cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM)
+                {
+                    prevRunModeSelected = RunningModeCombo.SelectedIndex;
+                }
             }
             else
             {
-                int oldIndex = prevRunModeSelected;
-                AppHelper.ShowMessageBox(message);
-                prevRunModeSelected = -1; // Reset to old active mode. Prevent NewModeSelected
-                RunningModeCombo.SelectedIndex = oldIndex;
+                if (cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM)
+                {
+                    int oldIndex = prevRunModeSelected;
+                    prevRunModeSelected = -1; // Reset to old active mode. Prevent NewModeSelected
+                    RunningModeCombo.SelectedIndex = oldIndex;
+                }
+                else
+                {
+                    switch (cmd)
+                    {
+                        case AOUTypes.CommandType.coolingTime: break; // ToDo Reset old value saved in GloabaAppSettings
+                    }
+
+                }
+                AppHelper.ShowMessageBox("Command not sent. Old value restored");
             }
         }
 
         private void NewModeSelected(object sender, SelectionChangedEventArgs e)
         {
-            ComboBoxItem item = (ComboBoxItem)e.AddedItems[0];
-            string modeTitle = item.Content.ToString();
-            string message = "You are about to change running mode";
-            if (prevRunModeSelected != -1)
+            if (e.AddedItems.Count > 0)
             {
-                DataUpdater.VerifySendToAOUDlg(modeTitle, message, DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, this);
-            }
-            else
-            {
-                prevRunModeSelected = RunningModeCombo.SelectedIndex;
+                if (prevRunModeSelected != -1) // Not first time when selected is default value
+                {
+                    string modeTitle = RunningModeCombo.Items[RunningModeCombo.SelectedIndex].ToString();
+                    string message = "You are about to change running mode";
+                    DataUpdater.VerifySendToAOUDlg(modeTitle, message, (AOUTypes.CommandType)RunningModeCombo.SelectedIndex,
+                                                    DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, this);
+                }
+                else
+                {
+                    prevRunModeSelected = RunningModeCombo.SelectedIndex;
+                }
             }
         }
 
         private void PhaseLine1_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            int val = (int)Math.Round((double)e.NewValue.Y1);
-            string thresholdTitle = "Buffer tank hot temperature threshold";
-            string message = "You are about to set the threshold value to " + val;
-            DataUpdater.VerifySendToAOUDlg(thresholdTitle, message, DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, this);
-         }
+            string title = "Buffer tank hot temperature lower limit";
+            string message = "You are about to set value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, PhaseHLine1, this);
+        }
 
         private void PhaseLine2_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
@@ -229,12 +246,12 @@ namespace DemoPrototype
 
         private void NewTHotTankTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Hot Tank Value", 0, 300);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Hot Tank Value", AOUTypes.CommandType.tempHotTankFeedSet, 100, 300);
         }
 
         private void NewTColdTankTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Cold Tank Value", 0, 300);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Cold Tank Value", AOUTypes.CommandType.tempColdTankFeedSet, 0, 30);
         }
 
         private void NewActiveHeatingTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)

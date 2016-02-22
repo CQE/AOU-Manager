@@ -105,27 +105,13 @@ namespace DemoPrototype
             }
         }
 
-        private void PhaseShiftButton(object sender, RoutedEventArgs e)
-        {
-            //Just testing
-           
-
-            //PhaseShiftResultText.Text = firstSlope.ToString();
-            //PhaseShiftValue.Text = (secondSlope-firstSlope).ToString();
-        }
-
         private void PhaseLine1_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             int val = (int)Math.Round((double)e.NewValue.Y1);
             string thresholdTitle = "Buffer tank hot temperature threshold";
-            string message = "You are about to set value to " + val;
-            //string y2 = e.NewValue.Y2.ToString();
+            string message = "You are about to set the threshold value to " + val;
             DataUpdater.VerifySendToAOUDlg(thresholdTitle, message, DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, this);
-            //Urban please replace this code with code showing diff between the lines, and center the Chartstripline
-            // double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
-            //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
-            PhaseDiffResult.Text = "5"; //(secondSlope - firstSlope).ToString();
-        }
+         }
 
         private void PhaseLine2_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
@@ -178,17 +164,48 @@ namespace DemoPrototype
         private void MouldingDelayVLine1_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             //calculate diff between lines and show result in overlaying text
-            TimeSpan newX1 = AppHelper.SafeConvertToTimeSpan(MouldingDelayVLine1.X1);
-            TimeSpan deltaX = newX1 - AppHelper.SafeConvertToTimeSpan(MouldingDelayVLine2.X1);
-            PhaseDiffResult.Text = Math.Abs(deltaX.Seconds).ToString() + " (s)";
+            //TimeSpan newX1 = AppHelper.SafeConvertToTimeSpan(MouldingDelayVLine1.X1);
+            //TimeSpan deltaX = newX1 - AppHelper.SafeConvertToTimeSpan(MouldingDelayVLine2.X1);
+            //PhaseDiffResult.Text = Math.Abs(deltaX.Seconds).ToString() + " (s)";
+            double myX1, myX2;
+            Point myPoint1, myPoint2;
+            int phaseDiff;
+            //we take x-value from the line and any y-value should do
+            myPoint1.X = AppHelper.SafeConvertToXCoordinate(MouldingDelayVLine1.X1);
+            myPoint1.Y = 0;
+            myX1 = this.MyTuneChart.PointToValue(MyTuneChart.PrimaryAxis, myPoint1);
+            //and the other line
+            myPoint2.X = AppHelper.SafeConvertToXCoordinate(MouldingDelayVLine2.X1);
+            myPoint2.Y = 0;
+            myX2 = this.MyTuneChart.PointToValue(MyTuneChart.PrimaryAxis, myPoint2);
+            //calculate the difference in seconds
+            phaseDiff = (int)Math.Abs(myX2 - myX1) / 1000;
+            //write result
+            PhaseDiffResult.Text = phaseDiff.ToString() + " (s)";
         }
 
         private void MouldingDelayVLine2_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             //calculate diff between lines and show result in overlaying text
-            TimeSpan newX1 = (TimeSpan)MouldingDelayVLine1.X1;
-            TimeSpan deltaX = newX1 - (TimeSpan)MouldingDelayVLine2.X1;
-            PhaseDiffResult.Text = Math.Abs(deltaX.Seconds).ToString() + " (s)";
+            //TimeSpan newX1 = (TimeSpan)MouldingDelayVLine1.X1;
+            //TimeSpan deltaX = newX1 - (TimeSpan)MouldingDelayVLine2.X1;
+            //PhaseDiffResult.Text = Math.Abs(deltaX.Seconds).ToString() + " (s)";
+
+            double myX1, myX2;
+            Point myPoint1, myPoint2;
+            int phaseDiff;
+            //we take x-value from the line and any y-value should do
+            myPoint1.X = AppHelper.SafeConvertToXCoordinate(MouldingDelayVLine1.X1);
+            myPoint1.Y = 0;
+            myX1 = this.MyTuneChart.PointToValue(MyTuneChart.PrimaryAxis, myPoint1);
+            //and the other line
+            myPoint2.X = AppHelper.SafeConvertToXCoordinate(MouldingDelayVLine2.X1);
+            myPoint2.Y = 0;
+            myX2 = this.MyTuneChart.PointToValue(MyTuneChart.PrimaryAxis, myPoint2);
+            //calculate the difference in seconds
+            phaseDiff = (int)Math.Abs(myX2 - myX1) / 1000;
+            //write result
+            PhaseDiffResult.Text = phaseDiff.ToString() + " (s)";
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

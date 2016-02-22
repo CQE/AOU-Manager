@@ -41,13 +41,8 @@
 
         <TextBlock  Grid.Row="0" Text="Operation" FontWeight="Bold" VerticalAlignment="Bottom"></TextBlock>
         <TextBlock Text="Running mode" Grid.Row="1" HorizontalAlignment="Left"></TextBlock>
-        <ComboBox x:Name ="RunningModeCombo" Grid.Row="1" Grid.Column="1" SelectionChanged="NewModeSelected">
-            <ComboBoxItem IsSelected="True" Content="Idle"></ComboBoxItem>
-            <ComboBoxItem Content="Heating"></ComboBoxItem>
-            <ComboBoxItem Content="Cooling"></ComboBoxItem>
-            <ComboBoxItem Content="Fixed Cycling"></ComboBoxItem>
-            <ComboBoxItem Content="Auto with IMM"></ComboBoxItem>
-        </ComboBox>
+        <ComboBox x:Name ="RunningModeCombo" Grid.Row="1" Grid.Column="1" SelectionChanged="NewModeSelected"/>
+            
         <TextBlock Text="Tool tempering" Grid.Row="2" HorizontalAlignment="Left"></TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="1" Text="HEAT" Foreground="Red"></TextBlock>
 
@@ -89,15 +84,15 @@
       
         <TextBlock Grid.Row="8"  VerticalAlignment="Bottom" Text="Heating"></TextBlock>
         <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
-            <TextBox Name="NewActiveHeatingTimeTextBox" TextChanged="NewActiveHeatingTimeTextBox_TextChanged" VerticalAlignment="Bottom" Text="26"></TextBox>
-            <TextBox Name="NewPauseHeatingTimeTextBox" TextChanged="NewPauseHeatingTimeTextBox_TextChanged" Margin="15,0,0,0" Text="25"></TextBox>
+                <TextBox Name="NewActiveHeatingTimeTextBox" GotFocus="NewActiveHeatingTimeTextBox_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Text="26"></TextBox>
+                <TextBox Name="NewPauseHeatingTimeTextBox" GotFocus="NewPauseHeatingTimeTextBox_GotFocus" IsReadOnly="True" Margin="15,0,0,0" Text="25"></TextBox>
         </StackPanel>
         <Slider Grid.Row="6" Grid.Column="2" Value="27" Maximum="100" Visibility="Collapsed"></Slider>
        
         <TextBlock Grid.Row="9" VerticalAlignment="Bottom" Text="Cooling"></TextBlock>
         <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
-                <TextBox Name="NewActiveCoolingTimeTextBox" TextChanged="NewActiveCoolingTimeTextBox_TextChanged" VerticalAlignment="Bottom" Text="24"></TextBox>
-                <TextBox Name="NewPauseCoolingTimeTextBox" TextChanged="NewPauseCoolingTimeTextBox_TextChanged"  Margin="15,0,0,0" Text="20"></TextBox>
+                <TextBox Name="NewActiveCoolingTimeTextBox" GotFocus="NewActiveCoolingTimeTextBox_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Text="24"></TextBox>
+                <TextBox Name="NewPauseCoolingTimeTextBox" GotFocus="NewPauseCoolingTimeTextBox_GotFocus"  IsReadOnly="True" Margin="15,0,0,0" Text="20"></TextBox>
         </StackPanel>
         <Slider Grid.Row="7" Grid.Column="2" Value="21" Maximum="100" Visibility="Collapsed"></Slider>
 
@@ -115,7 +110,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,30,0" Grid.Row="3" Grid.Column="4">
                 <TextBlock  VerticalAlignment="Bottom" Margin="0,0,0,0" Text="8"></TextBlock>
                 <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
-                <TextBox Name="HotFeedToReturnDelayCalTime" TextChanged="HotFeedToReturnDelayCalTime_TextChanged" VerticalAlignment="Bottom" Margin="10,0,0,0" Text="2"></TextBox>
+                <TextBox Name="HotFeedToReturnDelayCalTime" GotFocus="HotFeedToReturnDelayCalTime_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Margin="10,0,0,0" Text="2"></TextBox>
                 <TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,0" Text="="></TextBlock>
                 <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="10"></TextBlock>
                 <TextBlock Margin="8,0,0,0" VerticalAlignment="Bottom" Text="(s)"></TextBlock>
@@ -125,7 +120,7 @@
         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,0,30,0" Grid.Row="4" Grid.Column="4">
                 <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,0" Text="10"></TextBlock>
                 <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
-                <TextBox Name="ColdFeedToReturnDelayCalTime"  TextChanged="ColdFeedToReturnDelayCalTime_TextChanged" Margin="10,0,0,0" VerticalAlignment="Bottom" Text="3"></TextBox>
+                <TextBox Name="ColdFeedToReturnDelayCalTime"  GotFocus="ColdFeedToReturnDelayCalTime_GotFocus" IsReadOnly="True" Margin="10,0,0,0" VerticalAlignment="Bottom" Text="3"></TextBox>
                 <TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,0" Text="="></TextBlock>
                 <TextBlock  Margin="5,0,0,0" VerticalAlignment="Bottom" Text="12"></TextBlock>
                 <TextBlock Margin="8,0,0,0" VerticalAlignment="Bottom" Text="(s)"></TextBlock>
@@ -275,15 +270,15 @@
                     </chart:NumericalAxis>
                 </chart:SfChart.SecondaryAxis>
                 <chart:SfChart.Annotations>
-                    <chart:HorizontalLineAnnotation Name="PhaseHLine1"  CanDrag="True" DragCompleted="PhaseLine1_Dragged"  Width="3" Fill="Chocolate" CoordinateUnit="Axis" Y1="150"></chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="PhaseHLine2" CanDrag="True"  DragCompleted="PhaseLine2_Dragged" Width="4" Fill="DarkOrange" CoordinateUnit="Axis" Y1="40"></chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="PhaseHLineTBM" CanDrag="True"  DragCompleted="PhaseLineTBM_Dragged" Width="4" Fill="DarkOrange" CoordinateUnit="Axis" Y1="90"></chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="PhaseHLine1" Stroke="Red" StrokeThickness="2" CanDrag="True" DragCompleted="PhaseLine1_Dragged" CoordinateUnit="Axis" Y1="150"></chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="PhaseHLine2" Stroke="Blue" StrokeThickness="2" CanDrag="True" DragCompleted="PhaseLine2_Dragged" CoordinateUnit="Axis" Y1="40"></chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="PhaseHLineTBM" Stroke="Green" StrokeThickness="2" CanDrag="True" DragCompleted="PhaseLineTBM_Dragged" CoordinateUnit="Axis" Y1="90"></chart:HorizontalLineAnnotation>
                 </chart:SfChart.Annotations>
-                <!-- Want to show a trendline for the mid buffer temperature could not find howto -->
 
-                <chart:LineSeries LegendIcon="Diamond" Label="TBufferHot" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
-                <chart:LineSeries LegendIcon="InvertedTriangle" Label="TBufferMid" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
-                <chart:LineSeries LegendIcon="Diamond" Label="TBufferCold" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
+                <!-- Want to show a trendline for the mid buffer temperature could not find howto -->
+                <chart:LineSeries LegendIcon="InvertedTriangle" Stroke="DarkRed" Interior="DarkRed" Label="Hot Buffer Temp" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="Diamond" Stroke="darkGreen" Interior="darkGreen" Label="Mid Buffer Temp" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="Triangle" Stroke="DarkBlue" Interior="DarkBlue" Label="Cold Buffer Temp" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
             </chart:SfChart>
 
             <chart:SfChart  
@@ -307,14 +302,14 @@
                     </chart:NumericalAxis>
                 </chart:SfChart.SecondaryAxis>
                 <chart:SfChart.Annotations>
-                    <chart:HorizontalLineAnnotation Name="PhaseHLine3"  CanDrag="True" DragCompleted="PhaseLine1_Dragged"  Width="2" CoordinateUnit="Axis" Y1="45"></chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="PhaseHLine4" CanDrag="True"  DragCompleted="PhaseLine2_Dragged" Width="3" CoordinateUnit="Axis" Y1="65" Y2="90"></chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="HotTankHLine" Stroke="DarkRed" StrokeThickness="2" CanDrag="True" DragCompleted="HotTankHLine_Dragged"  CoordinateUnit="Axis" Y1="65"></chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="ColdTankHLine" Stroke="DarkBlue" StrokeThickness="2" CanDrag="True"  DragCompleted="ColdTankHLine_Dragged" CoordinateUnit="Axis" Y1="45"></chart:HorizontalLineAnnotation>
                 </chart:SfChart.Annotations>
                 <!-- Return Valve not yet simulated showing another curve -->
-                <chart:LineSeries LegendIcon="Diamond" Label="TReturnActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
-                 <chart:LineSeries LegendIcon="Diamond" Label="THotTank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
-                <chart:LineSeries LegendIcon="Diamond" Label="TColdTank" XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:LineSeries>
-                <chart:LineSeries LegendIcon="Diamond" Label="ReturnValve" XBindingPath="ElapsedTime" YBindingPath="TReturnValve" ItemsSource="{Binding power}"></chart:LineSeries> 
+                <chart:LineSeries LegendIcon="Diamond" Stroke="Orange" Interior="Orange" Label="TReturnActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="Diamond" Stroke="Red" Interior="Red" Label="THotTank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="Diamond" Stroke="Blue" Interior="Blue" Label="TColdTank" XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="Diamond" Stroke="Green" Interior="Green" Label="ReturnValve" XBindingPath="ElapsedTime" YBindingPath="TReturnValve" ItemsSource="{Binding power}"></chart:LineSeries>
             </chart:SfChart>
         </Grid>
 

@@ -24,9 +24,18 @@ namespace DemoPrototype
     /// </summary>
     public sealed partial class OperatorPage : Page
     {
-        private int prevRunModeSelected = -1; 
+        private int prevRunModeSelected = -1;
 
         DispatcherTimer dTimer;
+
+        private string[] runningModes = new string[]
+        {
+            "Idle", // AOUTypes.CommandType.RunningModeIdle
+            "Heating", // RunningModeHeating
+            "Cooling", // RunningModeCooling
+            "Fixed Cycling", // RunningModefixedCycling
+            "Auto with IMM" // RunningModeAutoWidthIMM
+        };
 
         public OperatorPage()
         {
@@ -34,6 +43,18 @@ namespace DemoPrototype
             this.Unloaded += MaintenancePage_Unloaded;
 
             this.InitializeComponent();
+            this.Name = "OperatorPage";
+
+            foreach (string mode in runningModes)
+            {
+                RunningModeCombo.Items.Add(mode);
+            }
+            RunningModeCombo.SelectedIndex = 0; // Idle
+
+            PhaseHLine1.ToolTipContent = "Drag to change Buffer tank hot temperature lower limit";
+            PhaseHLine2.ToolTipContent = "Drag to change Buffer tank cold temperature upper limit";
+            PhaseHLineTBM.ToolTipContent = "Drag to change Buffer tank mid temperature threshold";
+
 
             //set initial values for temperature unit
             if (GlobalAppSettings.IsCelsius)
@@ -73,7 +94,7 @@ namespace DemoPrototype
 
         private void ShowHotTankSlider(object sender, RoutedEventArgs e)
         {
-       //     SetHotTankSlider.Visibility="True";
+            //     SetHotTankSlider.Visibility="True";
         }
 
         public void AsyncResponseDlg(AOUTypes.CommandType cmd, bool ok)
@@ -132,50 +153,32 @@ namespace DemoPrototype
 
         private void PhaseLine2_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
+            string title = "Buffer tank cold temperature upper limit";
+            string message = "You are about to set value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, PhaseHLine2, this);
+
             //Urban please replace this code with code showing diff between the lines, and center the Chartstripline
-        }
-
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
-        {
-            /* Stop timer and clean up
-            dTimer.Stop();
-            dTimer = null;
-            mainGrid.DataContext = null;
-            */
-        }
-
-        
-
-        private void FreezeEnergyChart(object sender, TappedRoutedEventArgs e)
-        {
-
-        }
-
-        private void FreezeVolumeChart(object sender, TappedRoutedEventArgs e)
-        {
-
-        }
-
-       
-        private void FreezeDelayChart(object sender, DoubleTappedRoutedEventArgs e)
-        {
-            //which mode?
-            bool isRunning = dTimer.IsEnabled;
-            if (isRunning)
-            {
-                dTimer.Stop();
-                //where are the lines?
-                //double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
-                //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
-                //and what is min on the X-axis?
-                Double startX = AppHelper.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
-            }
-            else dTimer.Start();
+            PhaseDiffResult.Text = "pl2, Cold";
         }
 
         private void PhaseLineTBM_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            //TBD
+            string title = "Buffer tank mid temperature threshold";
+            string message = "You are about to set value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, PhaseHLineTBM, this);
+        }
+        private void ColdTankHLine_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            string title = "Cold tank temperature threshold";
+            string message = "You are about to set value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TColdTankAlarmHighThreshold, ColdTankHLine, this);
+        }
+
+        private void HotTankHLine_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            string title = "Hot tank temperature threshold";
+            string message = "You are about to set value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.THotTankAlarmLowThreshold, HotTankHLine, this);
         }
 
         private void MouldingDelayVLine1_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
@@ -225,25 +228,42 @@ namespace DemoPrototype
             PhaseDiffResult.Text = phaseDiff.ToString() + " (s)";
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void FreezeEnergyChart(object sender, TappedRoutedEventArgs e)
         {
 
         }
 
-        /* GotFocus works better than TextChanged 
-        private void NewTHotTankTextBox_TextChanged(object sender, TextChangedEventArgs e) 
+        private void FreezeVolumeChart(object sender, TappedRoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Hot Tank Value", 0, 300);
-            // AppHelper.ShowMessageBox("Just testing SetHotTank");
+
         }
 
-        private void NewTColdTankTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void FreezeDelayChart(object sender, DoubleTappedRoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Cold Tank Value", 0, 300);
-            // AppHelper.ShowMessageBox("Just testing SetColdTank");
+            //which mode?
+            bool isRunning = dTimer.IsEnabled;
+            if (isRunning)
+            {
+                dTimer.Stop();
+                //where are the lines?
+                //double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
+                //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
+                //and what is min on the X-axis?
+                Double startX = AppHelper.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
+            }
+            else dTimer.Start();
         }
+
+        /*  GotFocus works better than TextChanged but problems when tab trough controls
+
+            Using TextBlock can solve the problem
+
+            ex. 
+            private void tb_active_Tapped(object sender, TappedRoutedEventArgs e)
+            {
+                // AppHelper.GetValueToTextBox(ColdFeedToReturnDelayCalTime, (Control)coldTankSet, "Cold delay time", AOUTypes.CommandType.tempHotTankFeedSet, 0, 30);
+            }
         */
-
         private void NewTHotTankTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Hot Tank Value", AOUTypes.CommandType.tempHotTankFeedSet, 100, 300);
@@ -254,36 +274,35 @@ namespace DemoPrototype
             AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Cold Tank Value", AOUTypes.CommandType.tempColdTankFeedSet, 0, 30);
         }
 
-        private void NewActiveHeatingTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void NewActiveHeatingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.ShowMessageBox("Just testing NewHeatingTime");
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Active heating time", AOUTypes.CommandType.heatingTime, 0, 30);
         }
 
-        private void NewPauseHeatingTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void NewPauseHeatingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.ShowMessageBox("Just testing NewHeatingPause");
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Heating pause time", AOUTypes.CommandType.toolHeatingFeedPause, 0, 30);
         }
 
-        private void NewActiveCoolingTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void NewActiveCoolingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.ShowMessageBox("Just testing NewCoolingTime");
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Active cooling time", AOUTypes.CommandType.coolingTime, 0, 30);
         }
 
-        private void NewPauseCoolingTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void NewPauseCoolingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.ShowMessageBox("Just testing NewCoolingPause");
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Cooling pause time", AOUTypes.CommandType.toolCoolingFeedPause, 0, 30);
         }
 
-        private void HotFeedToReturnDelayCalTime_TextChanged(object sender, TextChangedEventArgs e)
+        private void HotFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.ShowMessageBox("Just testing HotDelayTime");
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Hot return delay time", AOUTypes.CommandType.hotDelayTime, 0, 30);
         }
 
-        private void ColdFeedToReturnDelayCalTime_TextChanged(object sender, TextChangedEventArgs e)
+        private void ColdFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.ShowMessageBox("Just testing ColdDelayTime");
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Cold return delay time", AOUTypes.CommandType.coldDelayTime, 0, 30);
         }
     }
-
 
 }

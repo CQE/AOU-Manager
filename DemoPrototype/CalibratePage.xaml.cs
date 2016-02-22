@@ -264,7 +264,7 @@ namespace DemoPrototype
                 //send new value to AOU
                 string thresholdTitle = "Buffer tank hot temperature threshold";
                 string message = "You are about to set a new alarm threshold value";
-               // DataUpdater.VerifySendToAOUDlg(thresholdTitle, message, this);
+                DataUpdater.VerifySendToAOUDlg(thresholdTitle, message, DataUpdater.VerifyDialogType.VerifyIntValue, this, (int)TBufHotHLine.Y1);
              }
           
         }

@@ -166,10 +166,8 @@ Storage tanks
             dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferMidRefThreshold, time); // ToDo
         }
 
-        public static async void VerifySendToAOUDlg(string mode, string title, VerifyDialogType dlgType, Page pg)
+        public static async void VerifySendToAOUDlg(string mode, string title, VerifyDialogType dlgType, Page pg, int value = 0)
         {
-            int value = 0;
-
             // SetValueDialog dlg;
 
             //if (dlgType = VerifyDialogType.VeryfyOkCancelOnly)
@@ -259,54 +257,64 @@ Storage tanks
 
         public static void UpdateInputData(object dataContext)
         {
-            CheckDataRouterSingleton();
-            var dc = (LineChartViewModel)dataContext;
-            if (GlobalAppSettings.DataRunType == AOURouter.RunType.Random)
+            if (dataContext != null)
             {
-                // var ts = dc.GetActualTimeSpan();
-                dc.UpdateNewValue(dataRouter.GetLastPowerValue());
-                /*
-                if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
+                CheckDataRouterSingleton();
+                var dc = (LineChartViewModel)dataContext;
+                if (GlobalAppSettings.DataRunType == AOURouter.RunType.Random)
                 {
+                    // var ts = dc.GetActualTimeSpan();
+                    dc.UpdateNewValue(dataRouter.GetLastPowerValue());
+                    /*
+                    if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
+                    {
+                    }
+                    else
+                    {
+                        bool error = true;
+                    }
+                    */
                 }
-                else
+                else // if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
                 {
-                    bool error = true;
-                }
-                */
-            }
-            else if (dc.power.Count == 0)
-            {
-                var pwrArr = dataRouter.GetLastPowerValues(dataRouter.GetNumPowerValues());
-                var pwrCol = new ObservableCollection<Power>();
-                foreach (var pwr in pwrArr)
-                {
-                    dc.power.Add(pwr);
-                }
-            }
-            else
-            {
-                int n = dc.power.Count;
-            }
+                    /* Real code to use later
+                    dc.UpdateNewValue(dataRouter.GetLastPowerValue());
+                    */
+                    var pwrArr = dataRouter.GetLastPowerValues(30);
+                    for (int i = 0; i < dc.power.Count; i++)
+                    {
+                        dc.power.RemoveAt(0);
+                    }
 
+                    foreach (var pwr in pwrArr)
+                    {
+                        dc.power.Add(pwr);
+                    }
+                }
+            }
         }
 
         public static void UpdateInputDataLogMessages(object dataContext)//NewPowerDataIsAvailable
         {
-            CheckDataRouterSingleton();
+            if (dataContext != null)
+            {
+                CheckDataRouterSingleton();
+                var dc = (LogMessageViewModel)dataContext;
 
-            if (GlobalAppSettings.DataRunType == AOURouter.RunType.Random)
-            {
-                if (dataContext != null && dataRouter.NewLogMessagesAreAvailable())
+                if (GlobalAppSettings.DataRunType == AOURouter.RunType.Random)
                 {
-                    ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetNewLogMessages());
+                    if (dataContext != null && dataRouter.NewLogMessagesAreAvailable())
+                    {
+                        dc.AddLogMessages(dataRouter.GetNewLogMessages());
+                    }
                 }
-            }
-            else 
-            {
-                if (dataContext != null && ((LogMessageViewModel)dataContext).logMessages.Count == 0)
-                { 
-                    ((LogMessageViewModel)dataContext).AddLogMessages(dataRouter.GetNewLogMessages());
+                else
+                {
+                    for (int i = 0; i < dc.logMessages.Count; i++)
+                    {
+                        dc.logMessages.RemoveAt(0);
+                    }
+                    dc.AddLogMessages(dataRouter.GetLastLogMessages(20));
                 }
             }
         }

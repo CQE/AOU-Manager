@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Syncfusion.UI.Xaml.Grid;
 using DataHandler;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,6 +31,10 @@ namespace DemoPrototype
             this.Unloaded += MaintenancePage_Unloaded;
 
             this.InitializeComponent();
+
+//            LogGrid.Columns[0].CellStyle =
+            //LogGrid.Columns[0].
+            // LogGrid.Columns[0].FormatString = "hh:mm:ss";
 
             InitDispatcherTimer();
         }

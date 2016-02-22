@@ -99,7 +99,7 @@
         
         <TextBlock Grid.Row="1" Grid.Column="2" Text="Hot pump" VerticalAlignment="Bottom" HorizontalAlignment="Center"> </TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">
-            <TextBox   VerticalAlignment="Bottom"  Text="8"></TextBox>
+            <TextBox   Name="HotFeedToReturnDelayTime" GotFocus="HotFeedToReturnDelayTime_GotFocus" VerticalAlignment="Bottom"  Text="8"></TextBox>
             <TextBlock VerticalAlignment="Bottom"  TextAlignment="Center" Width="30" Margin="5,0,0,5" Text="+"></TextBlock>
             <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,5" Text="2"></TextBlock>
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="="></TextBlock>
@@ -110,7 +110,7 @@
 
         <TextBlock Grid.Row="2" Grid.Column="2" Text="Cold pump" VerticalAlignment="Bottom" HorizontalAlignment="Center"></TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2">
-            <TextBox   VerticalAlignment="Bottom"  Text="10"></TextBox>
+            <TextBox   Name="ColdFeedToReturnDelayTime" GotFocus="ColdFeedToReturnDelayTime_GotFocus" VerticalAlignment="Bottom"  Text="10"></TextBox>
             <TextBlock VerticalAlignment="Bottom"  TextAlignment="Center" Width="30" Margin="5,0,0,5" Text="+"></TextBlock>
             <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,5" Text="0"></TextBlock>
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="="></TextBlock>

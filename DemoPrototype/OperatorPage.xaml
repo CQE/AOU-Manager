@@ -133,6 +133,7 @@
 
 
             <chart:SfChart  
+            Name="MyTuneChart"    
             Header="Feed and Return delay timings"
             Grid.Row="0"
             Grid.RowSpan="6"
@@ -159,8 +160,8 @@
                     <chart:TextAnnotation Text="Double-click to freeze/run then drag lines to measure" FontWeight="ExtraLight" FontSize="16" CoordinateUnit="Pixel" X1="50" Y1="100"></chart:TextAnnotation>
                     <!-- <chart:RectangleAnnotation X1="50" Y1="50"  X2="100" Y2="100" CoordinateUnit="Pixel" Text="17-0" Fill="HotPink"></chart:RectangleAnnotation> -->
                     <!-- vertical lines are tricky to position -->
-                    <chart:VerticalLineAnnotation Name="MouldingDelayVLine1"  CanDrag="True" DragCompleted="MouldingDelayVLine1_DragCompleted" CoordinateUnit="Axis" X1="00:00:05"></chart:VerticalLineAnnotation>
-                    <chart:VerticalLineAnnotation Name="MouldingDelayVLine2" CanDrag="True"  DragCompleted="MouldingDelayVLine2_DragCompleted" CoordinateUnit="Axis" X1="00:00:10"></chart:VerticalLineAnnotation>
+                    <chart:VerticalLineAnnotation  CanDrag="True" ShowToolTip="True" ToolTipContent="Drag to measure difference between lines" Name="MouldingDelayVLine1"  DragCompleted="MouldingDelayVLine1_DragCompleted" CoordinateUnit="Pixel" X1="20"></chart:VerticalLineAnnotation>
+                    <chart:VerticalLineAnnotation CanDrag="True" ShowToolTip="True" ToolTipContent="Drag to measure difference between lines" Name="MouldingDelayVLine2" DragCompleted="MouldingDelayVLine2_DragCompleted" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
                 </chart:SfChart.Annotations>
                 <chart:LineSeries LegendIcon="Diamond" Label="T Return Actual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
                 <chart:LineSeries LegendIcon="Diamond" Label="T Return Forecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
@@ -187,7 +188,11 @@
                     </chart:NumericalAxis.StripLines>
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
-
+                <chart:SfChart.Annotations>
+                    <chart:RectangleAnnotation CanDrag="True" DraggingMode="Vertical" CoordinateUnit="Axis" Y1="100" Y2="120" Text="Testing" Fill="Coral">
+                        
+                    </chart:RectangleAnnotation>
+                </chart:SfChart.Annotations>    
             <chart:SfChart.Legend>
                     <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Visible"/>
             </chart:SfChart.Legend>

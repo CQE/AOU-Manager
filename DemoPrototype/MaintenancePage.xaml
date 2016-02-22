@@ -232,11 +232,10 @@
         <StackPanel Grid.Column="3">
 
             <sfgrid:SfDataGrid x:Name="LogGrid"
-                               ColumnSizer="Auto"  Height='600'
-                               AllowSorting="True" AllowFiltering="true"
+                               ColumnSizer="Auto"  Height='725'
+                               AllowSorting="True" AllowFiltering="False"
                                ItemsSource="{Binding logMessages}"
-                               RowHeight="40"
-                               FontSize="14"
+                               RowHeight="25"
                                
             />
             <!-- ItemsSource="{Binding logMessages}" -->

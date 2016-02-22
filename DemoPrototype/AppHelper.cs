@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Syncfusion.UI.Xaml;
+using DataHandler;
 
 namespace DemoPrototype
 {
@@ -94,7 +96,36 @@ namespace DemoPrototype
             }
         }
 
-        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, int min, int max, bool sendToAOU = true)
+
+        public static void SetLimitValueFromHorizontalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.HorizontalLineAnnotation hLine, Page pg)
+        {
+            double dblVal = SafeConvertToXCoordinate(hLine.Y1);
+            int val = (int)Math.Round(dblVal);
+
+            //only want whole integers on axis label
+            hLine.Y1 = val;
+
+            DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, pg, val);
+
+        }
+
+        public static void SetLimitValueFromVerticalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.VerticalLineAnnotation vLine, Page pg)
+        {
+            double dblVal = SafeConvertToXCoordinate(vLine.X1);
+            int val = (int)Math.Round(dblVal);
+
+            //only want whole integers on axis label
+            vLine.X1 = val;
+
+            DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, pg, val);
+
+            //Urban please replace this code with code showing diff between the lines, and center the Chartstripline
+            // double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
+            //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
+            // PhaseDiffResult.Text = "5"; //(secondSlope - firstSlope).ToString();
+        }
+
+        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, AOUTypes.CommandType cmd, int min, int max, bool sendToAOU = true)
         {
             /* Example to use GetValueToTextBox
             
@@ -103,7 +134,7 @@ namespace DemoPrototype
 
             private void coldTankValue_GotFocus(object sender, RoutedEventArgs e)
             {
-                AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Cold Tank Value", 0, 300);
+                AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, AOUTypes.CommandType. "Change Cold Tank Value", 0, 300);
                 // coldTankSet is control to go to after that the value have been changed. This prevent repeating dialog boxes
             }
 
@@ -111,8 +142,8 @@ namespace DemoPrototype
 
             string value = textbox.Text;
             try {
-                if (dialog == null)
-                {
+                if (dialog == null) // Prevent more then one dialg
+                { 
                     dialog = new SetValueDialog(value, min, max);
                     dialog.Title = title;
                     dialog.PrimaryButtonText = "Ok";
@@ -124,18 +155,7 @@ namespace DemoPrototype
                     {
                         textbox.Text = ((SetValueDialog)dialog).GetStringValue();
                         int val = ((SetValueDialog)dialog).GetIntValue();
-                        if (sendToAOU)
-                        {
-                            switch (textbox.Name)
-                            {
-                                case "NewTColdTankTextBox": DataUpdater.SetColdTankFeedTemp(val); break;
-                                case "NewTHotTankTextBox": DataUpdater.SetHotTankFeedTemp(val); break;
-                                case "c": DataUpdater.SetToolCoolingFeedPauseTime(val); break;
-                                case "d": DataUpdater.SetToolHeatingFeedPauseTime(val); break;
-                                case "e": DataUpdater.SetCoolingTime(val); break;
-                                case "f": DataUpdater.SetHeatingTime(val); break;
-                            }
-                        }
+                        DataUpdater.SetCommandValue(cmd, val);
                     }
                     if (nextControl != null)
                     {

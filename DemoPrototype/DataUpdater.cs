@@ -29,75 +29,16 @@ namespace DemoPrototype
         ** Commands to AOU
         *************************************************/
 
-        public static void SetToDo(string ToDo, int value)
+        public static void SetCommand(AOUTypes.CommandType cmd)
         {
-            //dataRouter.SendCommandToPlc(AOUTypes.CommandType.todo, value);
-            dataRouter.SendToPlc("<ToDo value=\""+value+"\">" + ToDo + "</ToDo>");
+
+            dataRouter.SendCommandToPlc(cmd, 0);
         }
 
-        public static void SetHotDelayTime(int value)
+        public static void SetCommandValue(AOUTypes.CommandType cmd, int value)
         {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.hotDelayTime, value);
-        }
-
-        public static void SetColdDelayTime(int value)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.coldDelayTime, value);
-        }
-
-        public static void SetHotTankFeedTemp(int value)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempHotTankFeedSet, value);
-        }
-
-        public static void SetColdTankFeedTemp(int value)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempColdTankFeedSet, value);
-        }
-
-        public static void SetCoolingTime(int value)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.coolingTime, value);
-        }
-
-        public static void SetHeatingTime(int value)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.heatingTime, value);
-        }
-
-        public static void SetToolHeatingFeedPauseTime(int value)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.toolHeatingFeedPause, value);
-        }
-
-        public static void SetToolCoolingFeedPauseTime(int value)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.toolCoolingFeedPause, value);
-        }
-
-        public static void ChangeToIdleMode()
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.idleMode, 0);
-        }
-
-        public static void ChangeToHeatingMode()
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.heatingMode, 0);
-        }
-
-        public static void ChangeToCoolingMode()
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.coolingMode, 0);
-        }
-
-        public static void ChangeToFixedCyclingMode()
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.fixedCyclingMode, 0);
-        }
-
-        public static void ChangeToAutoWidthIMMMode()
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.autoWidthIMMMode, 0);
+            
+            dataRouter.SendCommandToPlc(cmd, value);
         }
 
         public static void StartHotStep(int time)
@@ -109,7 +50,6 @@ namespace DemoPrototype
         {
             dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempColdTankFeedSet, time); // ToDo
         }
-
 
 /*
 Energy balance
@@ -129,44 +69,7 @@ Storage tanks
 */
 
 
-        public static void SetTHotTankAlarmLowThreshold(int time)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.THotTankAlarmLowThreshold, time); // ToDo
-        }
-
-        public static void SetTColdTankAlarmHighThreshold(int time)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TColdTankAlarmHighThreshold, time); // ToDo
-        }
-
-        public static void SetTReturnThresholdCold2Hot(int time)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TReturnThresholdCold2Hot, time); // ToDo
-        }
-
-        public static void SetTReturnThresholdHot2Cold(int time)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TReturnThresholdHot2Cold, time); // ToDo
-        }
-
-
-
-        public static void SetTBufferHotLowerLimit(int time)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferHotLowerLimit, time); // ToDo
-        }
-
-        public static void SetTBufferColdUpperLimit(int time)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferColdUpperLimit, time); // ToDo
-        }
-
-        public static void SetTBufferMidRefThreshold(int time)
-        {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferMidRefThreshold, time); // ToDo
-        }
-
-        public static async void VerifySendToAOUDlg(string mode, string title, VerifyDialogType dlgType, Page pg, int value = 0)
+        public static async void VerifySendToAOUDlg(string title, string message, AOUTypes.CommandType cmd, VerifyDialogType dlgType, Page pg, int value = 0)
         {
             // SetValueDialog dlg;
 
@@ -174,45 +77,24 @@ Storage tanks
             //    dlg = new SetValueDialog(strValue)
             var dlg = new ContentDialog();
             dlg.Title = title;
-            dlg.Content = mode;
+            dlg.Content = message;
             dlg.PrimaryButtonText = "Ok";
             dlg.SecondaryButtonText = "Cancel";
 
             ContentDialogResult res = await dlg.ShowAsync();
             if (res == ContentDialogResult.Primary)
             {
-                switch (mode)
-                {
-                    case "Idle": ChangeToIdleMode(); break;
-                    case "Heating": ChangeToHeatingMode(); break;
-                    case "Cooling": ChangeToCoolingMode(); break;
-                    case "Fixed Cycling": ChangeToFixedCyclingMode(); break;
-                    case "Auto with IMM": ChangeToAutoWidthIMMMode(); break;
-
-                    case "THotTankAlarmLowThreshold": SetTHotTankAlarmLowThreshold(value); break;
-                    case "SetTColdTankAlarmHighThreshold": SetTColdTankAlarmHighThreshold(value); break;
-
-                    case "TReturnThresholdCold2Hot": SetTReturnThresholdCold2Hot(value); break;
-                    case "TReturnThresholdHot2Cold": SetTReturnThresholdHot2Cold(value); break;
-
-                    case "TBufferHotLowerLimit": SetTBufferHotLowerLimit(value); break;
-                    case "TBufferColdUpperLimit": SetTBufferColdUpperLimit(value); break;
-                    case "TBufferMidRefThreshold": SetTBufferMidRefThreshold(value); break;
-                }
-
-                //sendToPLC(title, 0);
-                // if (pg.Name == "OperatorPage")
-//                    ((OperatorPage)pg).AsyncResponseDlg("Command sent", true);
-               // else if (pg.Name == "CalibratePage")
-               //     ((CalibratePage)pg).AsyncResponseDlg("Command sent", true);
-
+                if (pg.Name == "CalibratePage")
+                    ((CalibratePage)pg).AsyncResponseDlg(cmd, true);
+                else if (pg.Name == "OperatorPage")
+                    ((OperatorPage)pg).AsyncResponseDlg(cmd, true);
             }
             else
             {
-//                if (pg.Name == "OperatorPage")
-//                    ((OperatorPage)pg).AsyncResponseDlg("Command canceled", false);
-                // else if (pg.Name == "CalibratePage")
-                // ((CalibratePage)pg).AsyncResponseDlg("Command canceled", false);
+                if (pg.Name == "CalibratePage")
+                    ((CalibratePage)pg).AsyncResponseDlg(cmd, false);
+                else if (pg.Name == "OperatorPage")
+                    ((OperatorPage)pg).AsyncResponseDlg(cmd, false);
             }
 
         }

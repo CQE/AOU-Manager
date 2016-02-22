@@ -23,6 +23,24 @@ namespace DemoPrototype
             }
         }
 
+        public static int GetAOUCmdValue(AOUTypes.CommandType cmdType)
+        {
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("AOUCmdValue-" + cmdType))
+            {
+                return (int)ApplicationData.Current.LocalSettings.Values["AOUCmdValue-" + cmdType];
+            }
+            else
+            {
+                return 0; // ToDo default value all commands
+            }
+        }
+
+        public static void SetAOUCmdValue(AOUTypes.CommandType cmdType, int value)
+        {
+            ApplicationData.Current.LocalSettings.Values["AOUCmdValue-" + cmdType] = value;
+        }
+
+
         static public AOURouter.RunType DataRunType
         { // Serial, File, Random
             get

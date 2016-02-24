@@ -51,9 +51,9 @@ namespace DemoPrototype
             }
             RunningModeCombo.SelectedIndex = 0; // Idle
 
-            PhaseHLine1.ToolTipContent = "Drag to change Buffer tank hot temperature lower limit";
-            PhaseHLine2.ToolTipContent = "Drag to change Buffer tank cold temperature upper limit";
-            PhaseHLineTBM.ToolTipContent = "Drag to change Buffer tank mid temperature threshold";
+           // PhaseHLine1.ToolTipContent = "Drag to change Buffer tank hot temperature lower limit";
+           // PhaseHLine2.ToolTipContent = "Drag to change Buffer tank cold temperature upper limit";
+           // PhaseHLineTBM.ToolTipContent = "Drag to change Buffer tank mid temperature threshold";
 
 
             //set initial values for temperature unit
@@ -302,6 +302,38 @@ namespace DemoPrototype
         private void ColdFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
             AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Cold return delay time", AOUTypes.CommandType.coldDelayTime, 0, 30);
+        }
+
+        private void SetHotSafeZoneLine_DragDelta(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragDeltaEventArgs e)
+        {
+            //what is the new position of the line?
+            double newY = AppHelper.SafeConvertToXCoordinate(SetHotSafeZoneLine.Y1); //(double)SetHotSafeZoneLine.Y1;
+            //make chart strip line follow the line when dragged
+            HotSafeZone.Start = newY;
+        }
+
+        private void SetHotSafeZoneLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            //TBD set new threshold value
+            string title = "Hot tank safe zone";
+            string message = "You are about to set alarm value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.CmdTypeToDo, SetHotSafeZoneLine, this);
+        }
+
+        private void SetColdSafeZoneLine_DragDelta(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragDeltaEventArgs e)
+        {
+            //what is the new position of the line?
+            double newY = AppHelper.SafeConvertToXCoordinate(SetColdSafeZoneLine.Y1); //(double)SetHotSafeZoneLine.Y1;
+            //make chart strip line follow the line when dragged
+            ColdSafeZone.Start = newY;
+        }
+
+        private void SetColdSafeZoneLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            // TBD set new threshold value
+            string title = "Cold tank safe zone";
+            string message = "You are about to set alarm value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.CmdTypeToDo, SetColdSafeZoneLine, this);
         }
     }
 

@@ -20,6 +20,10 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.ApplicationModel;
 using Windows.UI.ViewManagement;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.Storage.Pickers;
+using Windows.Graphics.Imaging;
+using Windows.Graphics.Display;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -109,12 +113,16 @@ namespace DemoPrototype
             }
             else if (AboutListBoxItem.IsSelected)
             {
+                // Uncomment to Capture App Image
+                // CaptureImage(this.MainGrid);
+                
                 //we show version number after the title until a better place is decided
                 string version = GetAppVersion();
                 string AboutHeader = "About AOU " + version;
                 TitleTextBlock.Text = AboutHeader;
                 BackButton.Visibility = Visibility.Collapsed;
                 DisplayHtml("About");
+                
             }
         }
 
@@ -135,6 +143,40 @@ namespace DemoPrototype
             MyFrame.Content = webView;
         }
 
+        private async void CaptureImage(UIElement el)
+        {
+
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
+            await renderTargetBitmap.RenderAsync(el);
+            var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
+            byte[] pixelArray = pixelBuffer.ToArray();
+            uint logDpi = (uint)DisplayInformation.GetForCurrentView().LogicalDpi;
+            uint pixWidth = (uint)renderTargetBitmap.PixelWidth;
+            uint pixHeight = (uint)renderTargetBitmap.PixelHeight;
+
+            /*
+            var savePicker = new FileSavePicker();
+            savePicker.DefaultFileExtension = ".png";
+            savePicker.FileTypeChoices.Add(".png", new List<string> { ".png" });
+            savePicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            savePicker.SuggestedFileName = "snapshot.png";
+
+            var file = await savePicker.PickSaveFileAsync();
+            if (file == null)
+                return;
+            */
+
+            // Save Pixelarray to png file in images folder
+            StorageFolder imgFolder = KnownFolders.PicturesLibrary;
+            StorageFile file = await imgFolder.CreateFileAsync("DemoPrototype.png", CreationCollisionOption.OpenIfExists); ;
+            var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite);
+            var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+            encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                    pixWidth,pixHeight, logDpi, logDpi, pixelArray
+             );
+             await encoder.FlushAsync();
+        }
     }
 
     public sealed class StreamUriWinRTResolver : IUriToStreamResolver
@@ -174,7 +216,6 @@ namespace DemoPrototype
             catch (Exception) { throw new Exception("Invalid path"); }
         }
 
-       
     }
 
 }

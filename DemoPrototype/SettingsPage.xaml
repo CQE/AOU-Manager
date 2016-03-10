@@ -38,14 +38,14 @@
             <TextBox Margin="5,0,0,0" Text="IP name or number"></TextBox>
         </StackPanel>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Tapped="adminPassword_Tapped">
             <TextBlock Width="200" VerticalAlignment="Center" Text="Change Password Admin"></TextBlock>
-            <PasswordBox Margin="5,0,0,0" Width="100" ></PasswordBox>
+            <PasswordBox x:Name="adminPassword" Margin="5,0,0,0" Width="100" Height="32" VerticalAlignment="Top" GotFocus="PasswordBox_GotFocus" />
         </StackPanel>
 
         <StackPanel Margin="0,5,0,0" Grid.Row="4" Orientation="Horizontal">
             <TextBlock Width="200" VerticalAlignment="Center" Text="Change Password User"></TextBlock>
-            <PasswordBox Margin="5,0,0,0" Width="100"  ></PasswordBox>
+            <PasswordBox x:Name="userPassword" Margin="5,0,0,0" Width="100"  ></PasswordBox>
         </StackPanel>
 
         <StackPanel Visibility="Visible" Margin="0,20,0,0" Grid.Row="5" Orientation="Horizontal">

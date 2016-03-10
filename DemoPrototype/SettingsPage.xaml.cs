@@ -179,5 +179,42 @@ namespace DemoPrototype
         {
             PickFile();
         }
+
+        private async void keyboardDlg()
+        {
+            char[,] chars = new char[2, 6];
+            chars[0, 0] = 'a';
+            chars[0, 1] = 'b';
+            chars[0, 2] = 'c';
+            chars[0, 3] = 'd';
+            chars[0, 4] = 'e';
+            chars[0, 5] = 'f';
+            chars[1, 0] = 'g';
+            chars[1, 1] = 'h';
+            chars[1, 2] = 'i';
+            chars[1, 3] = 'j';
+            chars[1, 4] = 'k';
+            chars[1, 5] = 'l';
+
+            var dialog = new KeyboardDialog(chars);
+            dialog.Title = "Enter Admin Password";
+            dialog.PrimaryButtonText = "Enter";
+            dialog.SecondaryButtonText = "Cancel";
+            
+            // dialog.MaxWidth = ActualWidth // Required for Mobile!
+
+            await dialog.ShowAsync();
+            userPassword.Focus(FocusState.Pointer);
+        }
+
+        private void adminPassword_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            keyboardDlg();
+        }
+
+        private void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            keyboardDlg();
+        }
     }
 }

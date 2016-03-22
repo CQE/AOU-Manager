@@ -22,7 +22,14 @@ namespace DemoPrototype
 
         public static string GetLog()
         {
-            return dataRouter.GetLogStr();
+            if (dataRouter != null)
+            { 
+                return dataRouter.GetLogStr();
+            }
+            else
+            {
+                return "No Datasource";
+            }
         }
 
         /************************************************
@@ -31,42 +38,68 @@ namespace DemoPrototype
 
         public static void SetCommand(AOUTypes.CommandType cmd)
         {
-
-            dataRouter.SendCommandToPlc(cmd, 0);
+            if (dataRouter != null)
+            {
+                dataRouter.SendCommandToPlc(cmd, 0);
+            }
         }
 
         public static void SetCommandValue(AOUTypes.CommandType cmd, int value)
         {
-            
-            dataRouter.SendCommandToPlc(cmd, value);
+
+            if (dataRouter != null)
+            {
+                dataRouter.SendCommandToPlc(cmd, value);
+            }
         }
 
         public static void StartHotStep(int time)
         {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempHotTankFeedSet, time); // ToDo
+            if (dataRouter != null)
+            {
+                dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempHotTankFeedSet, time); // ToDo
+            }
         }
 
         public static void StartColdStep(int time)
         {
-            dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempColdTankFeedSet, time); // ToDo
+            if (dataRouter != null)
+            {
+                dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempColdTankFeedSet, time); // ToDo
+            }
         }
 
-/*
-Energy balance
- TReturnActual:
-    TReturnThresholdHot2Cold[guess(THotTank + TColdTank) / 2 - (THotTank - TColdTank) / 4]
-    TReturnThresholdCold2Hot[guess(THotTank + TColdTank) / 2 + (THotTank - TColdTank) / 4]
+        /*
+        Energy balance
+         TReturnActual:
+            TReturnThresholdHot2Cold[guess(THotTank + TColdTank) / 2 - (THotTank - TColdTank) / 4]
+            TReturnThresholdCold2Hot[guess(THotTank + TColdTank) / 2 + (THotTank - TColdTank) / 4]
 
-Volume balance
- TBufferMid: TBufferMidRefThreshold[guess(THotTank + TColdTank) / 2]
- TBufferHot: TBufferHotLowerLimit[guess TBufferMidRefThreshold]
- TBufferCold: TBufferColdUpperLimit[guess TBufferMidRefThreshold]
+        Volume balance
+         TBufferMid: TBufferMidRefThreshold[guess(THotTank + TColdTank) / 2]
+         TBufferHot: TBufferHotLowerLimit[guess TBufferMidRefThreshold]
+         TBufferCold: TBufferColdUpperLimit[guess TBufferMidRefThreshold]
 
-Storage tanks
- THotTank: THotTankAlarmLowThreshold[guess THotTankSet - (THotTankSet - TColdTankSet) / 4]
- TColdTank: TColdTankAlarmHighThreshold[guess TColdTankSet + (THotTankSet - TColdTankSet) / 4]
+        Storage tanks
+         THotTank: THotTankAlarmLowThreshold[guess THotTankSet - (THotTankSet - TColdTankSet) / 4]
+         TColdTank: TColdTankAlarmHighThreshold[guess TColdTankSet + (THotTankSet - TColdTankSet) / 4]
 
-*/
+        */
+
+        public static bool IsStarted()
+        {
+            return dataRouter != null;
+        }
+
+
+        public static void Stop()
+        {
+            if (dataRouter != null)
+            {
+                dataRouter.Stop();
+                dataRouter = null; //
+            }
+        }
 
 
         public static async void VerifySendToAOUDlg(string title, string message, AOUTypes.CommandType cmd, VerifyDialogType dlgType, Page pg, int value = 0)
@@ -109,21 +142,23 @@ Storage tanks
 
         private static bool CheckDataRouterSingleton(bool restart = false)
         {
-            // AOURouter.RunType.Random, @"AOU\Data\example_data2.txt"
             if (dataRouter == null || restart)
             {
                 AOURouter.RunType dataRunType = GlobalAppSettings.DataRunType;
-                string dataRunSource = GlobalAppSettings.DataSerialSettings;
+
                 if (dataRunType == AOURouter.RunType.File)
                 {
-                    dataRunSource = GlobalAppSettings.DataRunFile;
+                    dataRouter = new AOURouter(GlobalAppSettings.FileSettings);
                 }
                 else if (dataRunType == AOURouter.RunType.Random)
                 {
-                    dataRunSource = GlobalAppSettings.DataRandomSettings;
+                    dataRouter = new AOURouter(GlobalAppSettings.RandomSettings);
+                }
+                else if (dataRunType == AOURouter.RunType.Serial)
+                {
+                    dataRouter = new AOURouter(GlobalAppSettings.SerialSettings);
                 }
 
-                dataRouter = new AOURouter(dataRunType, dataRunSource);
                 return false;
             }
             return true;
@@ -131,9 +166,16 @@ Storage tanks
 
         public static void Update()
         {
-            if (CheckDataRouterSingleton())
+            try
+            { 
+                if (CheckDataRouterSingleton())
+                {
+                    dataRouter.Update();
+                }
+            }
+            catch (Exception e)
             {
-                dataRouter.Update();
+
             }
         }
 
@@ -145,17 +187,8 @@ Storage tanks
                 var dc = (LineChartViewModel)dataContext;
                 if (GlobalAppSettings.DataRunType == AOURouter.RunType.Random)
                 {
-                    // var ts = dc.GetActualTimeSpan();
-                    dc.UpdateNewValue(dataRouter.GetLastPowerValue());
-                    /*
                     if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
-                    {
-                    }
-                    else
-                    {
-                        bool error = true;
-                    }
-                    */
+                        dc.UpdateNewValue(dataRouter.GetLastNewPowerValue());
                 }
                 else // if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
                 {

@@ -12,6 +12,9 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
+        
+        <!-- SwapChainPanel x:Name="ImageSwapChainPanel"/ -->
+        
         <RelativePanel>
             <Button Name="HamburgerButton"
                     RelativePanel.AlignLeftWithPanel="True"
@@ -85,6 +88,5 @@
                 <Frame Name="MyFrame"></Frame>
             </SplitView.Content>
         </SplitView>
-        
     </Grid>
 </Page>

@@ -13,7 +13,11 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Syncfusion.UI.Xaml.Grid;
+using Syncfusion.UI.Xaml.Grid.Converter;
 using DataHandler;
+using Windows.Storage;
+using System.IO.IsolatedStorage;
+
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace DemoPrototype
@@ -31,10 +35,6 @@ namespace DemoPrototype
             this.Unloaded += MaintenancePage_Unloaded;
 
             this.InitializeComponent();
-
-//            LogGrid.Columns[0].CellStyle =
-            //LogGrid.Columns[0].
-            // LogGrid.Columns[0].FormatString = "hh:mm:ss";
 
             InitDispatcherTimer();
         }
@@ -61,5 +61,42 @@ namespace DemoPrototype
            DataUpdater.UpdateInputDataLogMessages(LogGrid.DataContext);
         }
 
+        private async void SaveExcelToFile(Syncfusion.XlsIO.IWorkbook workBook)
+        {
+            string filename = "Logs.xlsx";
+            StorageFolder folder = KnownFolders.PicturesLibrary;
+
+            try
+            {
+                StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists); ;
+                var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite);
+
+                var isf = IsolatedStorageFile.GetUserStoreForApplication(); // m_AppFilesPath = "C:\Users\Benurme\AppData\Local\Packages\DemoPrototype_dcmya832rqt3c\LocalState"
+                IsolatedStorageFileStream outStream = new IsolatedStorageFileStream(filename, FileMode.Create, isf);
+                await workBook.SaveAsAsync(outStream);
+                // await workBook.SaveAsAsync(fileStream);
+
+                workBook.Close();
+
+                // isf.CopyFile()
+            }
+            catch (Exception e)
+            {
+                string err = e.Message;
+            }
+            // StorageFile f = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
+            // await workBook.SaveAsAsync(f.);
+
+            // var skydrive = new SkyDriveHandler(App.LiveSession, "000000004010FA0B", "InvoiceGenerater"); // How to use Microsoft.Live
+
+        }
+
+        private void exportButton_Click(object sender, RoutedEventArgs e)
+        {
+            var options = new ExcelExportingOptions();
+            options.ExcelVersion = Syncfusion.XlsIO.ExcelVersion.Excel2013;
+            var excelEngine = LogGrid.ExportToExcel(LogGrid.View, options);
+            SaveExcelToFile(excelEngine.Excel.Workbooks[0]);
+        }
     }
 }

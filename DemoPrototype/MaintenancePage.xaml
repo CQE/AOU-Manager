@@ -229,26 +229,67 @@
         </StackPanel>
 
 
-        <StackPanel Grid.Column="3">
+        <StackPanel Grid.Column="3" Grid.ColumnSpan="2">
 
-            <sfgrid:SfDataGrid x:Name="LogGrid"
-                               ColumnSizer="Auto"  Height='725'
-                               AllowSorting="True" AllowFiltering="False"
+            <sfgrid:SfDataGrid x:Name="LogGrid" AutoGenerateColumns="False"
                                ItemsSource="{Binding logMessages}"
-                               RowHeight="25"
-                               
-            />
-            <!-- ItemsSource="{Binding logMessages}" -->
-            <!-- ItemsSource="{Binding ElementName=datapager, Path=PagedSource}" -->
+                               Height='600' HeaderRowHeight="30" RowHeight="25" Width="500">
 
-            <!-- sfgrid:SfDataGrid.SortColumnDescriptions>
+                <!-- sfgrid:SfDataGrid.RowStyle>
+                    <Style  TargetType="sfgrid:GridCell">
+                        <Setter Property="FontSize" Value="12" />
+                        <Setter Property="Margin" Value="1,1,1,1"/>
+                    </Style>
+                </ -->
+
+                <sfgrid:SfDataGrid.HeaderStyle>
+                    <Style  TargetType="sfgrid:GridHeaderCellControl">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Setter Property="FontSize" Value="14" />
+                    </Style>
+                </sfgrid:SfDataGrid.HeaderStyle>
+
+                <sfgrid:SfDataGrid.Columns>
+                    <sfgrid:GridTextColumn MappingName="time" Width="130" AllowSorting="False">
+                        <sfgrid:GridTextColumn.CellStyle>
+                            <Style TargetType="sfgrid:GridCell">
+                                <Setter Property="FontSize" Value="12" />
+                            </Style>
+                        </sfgrid:GridTextColumn.CellStyle>
+                    </sfgrid:GridTextColumn>
+                        
+                    <sfgrid:GridTextColumn MappingName="message" AllowSorting="True"  Width="300" >
+                        <sfgrid:GridTextColumn.CellStyle>
+                            <Style TargetType="sfgrid:GridCell">
+                                <Setter Property="FontSize" Value="12" />
+                                <Setter Property="Background" Value="LightYellow" />
+                            </Style>
+                        </sfgrid:GridTextColumn.CellStyle>
+                    </sfgrid:GridTextColumn>
+
+                    <sfgrid:GridNumericColumn MappingName="prio"  HeaderText="P" Width="70" AllowSorting="True">
+                        <sfgrid:GridNumericColumn.CellStyle>
+                            <Style TargetType="sfgrid:GridCell">
+                                <Setter Property="FontSize" Value="12" />
+                            </Style>
+                        </sfgrid:GridNumericColumn.CellStyle>
+                    </sfgrid:GridNumericColumn>
+                </sfgrid:SfDataGrid.Columns>
+
+                <!-- ItemsSource="{Binding logMessages}" -->
+                <!-- ItemsSource="{Binding ElementName=datapager, Path=PagedSource}" -->
+
+                <!-- sfgrid:SfDataGrid.SortColumnDescriptions>
                     <sfgrid:SortColumnDescription ColumnName="OrderID" SortDirection="Descending"/>
                 </sfgrid:SfDataGrid.SortColumnDescriptions>
             NumericButtonCount="3" PageSize="15" 
             </ -->
-            
-            <!-- sfpager:SfDataPager  x:Name="logpager" Source="{Binding logMessages}"/ -->
+            </sfgrid:SfDataGrid>
 
+            <!-- sfpager:SfDataPager  x:Name="logpager" Source="{Binding logMessages}"/ -->
+            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                <Button x:Name="exportButton" Width="150" Content="Export" Click="exportButton_Click"></Button>
+             </StackPanel>
         </StackPanel>
 
     </Grid>

@@ -60,60 +60,60 @@ namespace DemoPrototype
             }
         }
 
-        static public string DataRunFile
+        static public AOUSettings.FileSetting FileSettings
         { // Serial, File, Random
             get
             {
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataRunFile"))
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("FileSettings"))
                 {
-                    return (string)ApplicationData.Current.LocalSettings.Values["DataRunFile"];
+                    return (AOUSettings.FileSetting)ApplicationData.Current.LocalSettings.Values["FileSettings"];
                 }
                 else
                 {
-                    return "";
+                    return new AOUSettings.FileSetting("","");
                 }
             }
             set
             {
-                ApplicationData.Current.LocalSettings.Values["DataRunFile"] = value;
+                ApplicationData.Current.LocalSettings.Values["FileSettings"] = value;
             }
         }
 
-        static public string DataSerialSettings
+        static public AOUSettings.SerialSetting SerialSettings
         { // Serial, File, Random
             get
             {
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataSerialSettings"))
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("SerialSettings"))
                 {
-                    return (string)ApplicationData.Current.LocalSettings.Values["DataSerialSettings"];
+                    return (AOUSettings.SerialSetting)ApplicationData.Current.LocalSettings.Values["SerialSettings"];
                 }
                 else
                 {
-                    return "COM3, 9600";
+                    return new AOUSettings.SerialSetting("COM3", 9600); 
                 }
             }
             set
             {
-                ApplicationData.Current.LocalSettings.Values["DataSerialSettings"] = value;
+                ApplicationData.Current.LocalSettings.Values["SerialSettings"] = value;
             }
         }
 
-        static public string DataRandomSettings
+        static public AOUSettings.RandomSetting RandomSettings
         { // Serial, File, Random
             get
             {
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DataRandomSettings"))
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("RandomSettings"))
                 {
-                    return (string)ApplicationData.Current.LocalSettings.Values["DataRandomSettings"];
+                    return (AOUSettings.RandomSetting)ApplicationData.Current.LocalSettings.Values["RandomSettings"];
                 }
                 else
                 {
-                    return "30, 1000";
+                    return new AOUSettings.RandomSetting(30, 1000);
                 }
             }
             set
             {
-                ApplicationData.Current.LocalSettings.Values["DataRandomSettings"] = value;
+                ApplicationData.Current.LocalSettings.Values["RandomSettings"] = value;
             }
         }
     }

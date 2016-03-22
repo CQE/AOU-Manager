@@ -177,5 +177,18 @@ namespace DemoPrototype
             dialog.DefaultCommandIndex = 0;
             await dialog.ShowAsync();
         }
+
+        /*
+        var savePicker = new FileSavePicker();
+        savePicker.DefaultFileExtension = ".png";
+        savePicker.FileTypeChoices.Add(".png", new List<string> { ".png" });
+        savePicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+        savePicker.SuggestedFileName = "snapshot.png";
+
+        var file = await savePicker.PickSaveFileAsync();
+        if (file == null)
+            return;
+        */
+
     }
 }

@@ -106,7 +106,7 @@ namespace DemoPrototype
             hLine.Y1 = val;
 
             DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, pg, val);
-
+            //Urban here we need to save new threshold value or restore to old value asap
         }
 
         public static void SetLimitValueFromVerticalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.VerticalLineAnnotation vLine, Page pg)
@@ -119,10 +119,6 @@ namespace DemoPrototype
 
             DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, pg, val);
 
-            //Urban please replace this code with code showing diff between the lines, and center the Chartstripline
-            // double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
-            //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
-            // PhaseDiffResult.Text = "5"; //(secondSlope - firstSlope).ToString();
         }
 
         public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, AOUTypes.CommandType cmd, int min, int max, bool sendToAOU = true)

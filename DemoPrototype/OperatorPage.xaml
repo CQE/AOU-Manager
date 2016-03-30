@@ -80,21 +80,18 @@
                 <TextBlock Margin="35,0,0,0" Text="Pause"></TextBlock>
         </StackPanel>
         
-        <Slider Grid.Row="5" Grid.Column="2" Value="25" Maximum="100" Visibility="Collapsed"></Slider>
       
         <TextBlock Grid.Row="8"  VerticalAlignment="Bottom" Text="Heating"></TextBlock>
         <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
                 <TextBox Name="NewActiveHeatingTimeTextBox" GotFocus="NewActiveHeatingTimeTextBox_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Text="26"></TextBox>
                 <TextBox Name="NewPauseHeatingTimeTextBox" GotFocus="NewPauseHeatingTimeTextBox_GotFocus" IsReadOnly="True" Margin="15,0,0,0" Text="25"></TextBox>
         </StackPanel>
-        <Slider Grid.Row="6" Grid.Column="2" Value="27" Maximum="100" Visibility="Collapsed"></Slider>
        
         <TextBlock Grid.Row="9" VerticalAlignment="Bottom" Text="Cooling"></TextBlock>
         <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
                 <TextBox Name="NewActiveCoolingTimeTextBox" GotFocus="NewActiveCoolingTimeTextBox_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Text="24"></TextBox>
                 <TextBox Name="NewPauseCoolingTimeTextBox" GotFocus="NewPauseCoolingTimeTextBox_GotFocus"  IsReadOnly="True" Margin="15,0,0,0" Text="20"></TextBox>
         </StackPanel>
-        <Slider Grid.Row="7" Grid.Column="2" Value="21" Maximum="100" Visibility="Collapsed"></Slider>
 
         <TextBlock Grid.Row="10" VerticalAlignment="Bottom" Text="Monitoring" FontWeight="Bold"></TextBlock>     
        
@@ -126,7 +123,7 @@
                 <TextBlock Margin="8,0,0,0" VerticalAlignment="Bottom" Text="(s)"></TextBlock>
             </StackPanel>
 
-
+<!-- delay timing chart -->
             <chart:SfChart  
             Name="MyTuneChart"    
             Header="Feed and Return delay timings"
@@ -152,19 +149,20 @@
                 </chart:SfChart.SecondaryAxis>
 
                 <chart:SfChart.Annotations>
-                    <chart:TextAnnotation Text="Double-click to freeze/run then drag lines to measure" FontWeight="ExtraLight" FontSize="16" CoordinateUnit="Pixel" X1="50" Y1="100"></chart:TextAnnotation>
+                    <chart:TextAnnotation Text="Double-click to freeze/run" FontWeight="ExtraLight" FontSize="16" CoordinateUnit="Pixel" X1="50" Y1="100"></chart:TextAnnotation>
                     <!-- <chart:RectangleAnnotation X1="50" Y1="50"  X2="100" Y2="100" CoordinateUnit="Pixel" Text="17-0" Fill="HotPink"></chart:RectangleAnnotation> -->
                     <!-- vertical lines are tricky to position -->
-                    <chart:VerticalLineAnnotation  Stroke="Blue" StrokeThickness="2" CanDrag="True" ShowToolTip="True" ToolTipContent="Drag to measure difference between lines" Name="MouldingDelayVLine1"  DragCompleted="MouldingDelayVLine1_DragCompleted" CoordinateUnit="Pixel" X1="20"></chart:VerticalLineAnnotation>
-                    <chart:VerticalLineAnnotation Stroke="Blue" StrokeThickness="2" CanDrag="True" ShowToolTip="True" ToolTipContent="Drag to measure difference between lines" Name="MouldingDelayVLine2" DragCompleted="MouldingDelayVLine2_DragCompleted" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
+                    <chart:VerticalLineAnnotation  Stroke="Blue" StrokeThickness="2" CanDrag="True" ShowToolTip="True" ToolTipContent="Measure difference" Name="MouldingDelayVLine1"  DragCompleted="MouldingDelayVLine1_DragCompleted" CoordinateUnit="Pixel" X1="20"></chart:VerticalLineAnnotation>
+                    <chart:VerticalLineAnnotation Stroke="Blue" StrokeThickness="2" CanDrag="True" ShowToolTip="True" ToolTipContent="Measure difference" Name="MouldingDelayVLine2" DragCompleted="MouldingDelayVLine2_DragCompleted" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
                 </chart:SfChart.Annotations>
                 <chart:LineSeries LegendIcon="Diamond" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
                 <chart:LineSeries LegendIcon="Diamond" Label="TRetForecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
             </chart:SfChart>
             <!-- Make a textbox overlay the grid above-->
             <TextBox Name="PhaseDiffResult" Grid.Row="2" Background="Yellow" BorderThickness="0" Grid.Column="2" HorizontalAlignment="Center"  VerticalAlignment="Center" Text="Diff = 5"></TextBox>
-                  
-        <chart:SfChart  
+
+            <!-- parameter monitoring chart -->
+            <chart:SfChart  
             Header="Parameter Monitoring"
             Margin="0,10,0,0"
            Grid.Row="11"
@@ -222,9 +220,10 @@
                 <TextBlock Margin="2,10,0,0" Text="WHotAtMEntry" FontSize="8"></TextBlock>
                 <TextBlock Margin="2,10,0,0" Text="Idle" FontSize="8"></TextBlock>
                 <TextBlock Margin="2,10,0,0" Text="Initial" FontSize="8"></TextBlock>
-            </StackPanel>    
-            
-        <chart:SfChart  
+            </StackPanel>
+
+            <!-- state chart -->
+            <chart:SfChart  
             Header="AOU / IMM Interaction"
             Grid.Row="11"
             Grid.RowSpan="6"
@@ -246,8 +245,8 @@
                 
             <chart:StepLineSeries XBindingPath="ElapsedTime" YBindingPath="State" ItemsSource="{Binding power}"></chart:StepLineSeries>
         </chart:SfChart>
-            
 
+            <!-- volume balance chart -->
             <chart:SfChart  
             Header="Buffer tank Volume balance"
             Grid.Row="6"
@@ -280,12 +279,13 @@
                 <chart:LineSeries LegendIcon="Triangle" Stroke="DarkBlue" Interior="DarkBlue" Label="TColdBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
             </chart:SfChart>
 
+            <!-- energy balance chart -->
             <chart:SfChart  
             Header="Hot and Cold tanks Energy balance"
             Grid.Row="6"
             Grid.RowSpan="5"
             Grid.Column="2"
-                Grid.ColumnSpan="1"
+            Grid.ColumnSpan="1"
             Margin="20,0,0,0">
                 <chart:SfChart.PrimaryAxis>
                     <chart:TimeSpanAxis ></chart:TimeSpanAxis>
@@ -301,8 +301,8 @@
                     </chart:NumericalAxis>
                 </chart:SfChart.SecondaryAxis>
                 <chart:SfChart.Annotations>
-                    <chart:HorizontalLineAnnotation Name="HotTankHLine" ShowToolTip="True" ToolTipContent="Drag to set threshold" Stroke="DarkRed" StrokeThickness="2" CanDrag="True" DragCompleted="HotTankHLine_Dragged"  CoordinateUnit="Axis" Y1="65"></chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="ColdTankHLine" ShowToolTip="True" ToolTipContent="Drag to set threshold" Stroke="DarkBlue" StrokeThickness="2" CanDrag="True"  DragCompleted="ColdTankHLine_Dragged" CoordinateUnit="Axis" Y1="45"></chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="HLineSetHotTankAlarmThreshold" ShowToolTip="True"  Stroke="DarkRed" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSetHotTankAlarmThreshold_Dragged"  CoordinateUnit="Axis" Y1="200"></chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="ColdTankHLine" ShowToolTip="True"  Stroke="DarkBlue" StrokeThickness="2" CanDrag="True"  DragCompleted="ColdTankHLine_Dragged" CoordinateUnit="Axis" Y1="45"></chart:HorizontalLineAnnotation>
                 </chart:SfChart.Annotations>
                 <!-- Return Valve not yet simulated showing another curve -->
                 <chart:LineSeries LegendIcon="Diamond" Stroke="Orange" Interior="Orange" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>

@@ -51,9 +51,15 @@ namespace DemoPrototype
             }
             RunningModeCombo.SelectedIndex = 0; // Idle
 
-           // PhaseHLine1.ToolTipContent = "Drag to change Buffer tank hot temperature lower limit";
-           // PhaseHLine2.ToolTipContent = "Drag to change Buffer tank cold temperature upper limit";
-           // PhaseHLineTBM.ToolTipContent = "Drag to change Buffer tank mid temperature threshold";
+            // PhaseHLine1.ToolTipContent = "Drag to change Buffer tank hot temperature lower limit";
+            // PhaseHLine2.ToolTipContent = "Drag to change Buffer tank cold temperature upper limit";
+            // PhaseHLineTBM.ToolTipContent = "Drag to change Buffer tank mid temperature threshold";
+            // Set tooltip contents
+            HLineSetHotTankAlarmThreshold.ToolTipContent = "Threshold hot"+ " ↘ " + "cold";
+            ColdTankHLine.ToolTipContent= "Threshold cold" + " ↗ " + "hot";
+            //this is NOT correct just testing my idea
+           
+            HLineSetHotTankAlarmThreshold.Y1 = GlobalVar.ThresholdHot2Cold;
 
 
             //set initial values for temperature unit
@@ -92,10 +98,7 @@ namespace DemoPrototype
             DataUpdater.UpdateInputData(mainGrid.DataContext);
         }
 
-        private void ShowHotTankSlider(object sender, RoutedEventArgs e)
-        {
-            //     SetHotTankSlider.Visibility="True";
-        }
+      
 
         public void AsyncResponseDlg(AOUTypes.CommandType cmd, bool ok)
         {
@@ -174,19 +177,19 @@ namespace DemoPrototype
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TColdTankAlarmHighThreshold, ColdTankHLine, this);
         }
 
-        private void HotTankHLine_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        private void HLineSetHotTankAlarmThreshold_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            string title = "Hot tank temperature threshold";
+            string title =  "Threshold hot" + " ↘ " + "cold";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.THotTankAlarmLowThreshold, HotTankHLine, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.THotTankAlarmLowThreshold, HLineSetHotTankAlarmThreshold, this);
+            //save new value to global var, todo: Urban handle cancel too asap
+            GlobalVar.ThresholdHot2Cold = (int)AppHelper.SafeConvertToXCoordinate(HLineSetHotTankAlarmThreshold.Y1);
         }
 
         private void MouldingDelayVLine1_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             //calculate diff between lines and show result in overlaying text
-            //TimeSpan newX1 = AppHelper.SafeConvertToTimeSpan(MouldingDelayVLine1.X1);
-            //TimeSpan deltaX = newX1 - AppHelper.SafeConvertToTimeSpan(MouldingDelayVLine2.X1);
-            //PhaseDiffResult.Text = Math.Abs(deltaX.Seconds).ToString() + " (s)";
+          
             double myX1, myX2;
             Point myPoint1, myPoint2;
             int phaseDiff;

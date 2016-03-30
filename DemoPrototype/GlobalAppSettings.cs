@@ -116,5 +116,18 @@ namespace DemoPrototype
                 ApplicationData.Current.LocalSettings.Values["RandomSettings"] = value;
             }
         }
+        
     }
+    //temporary created global variables Urban please change this asap
+    public class GlobalVar
+    {
+        static int _thresholdHot2Cold;
+        public static int ThresholdHot2Cold
+        {
+            get { return _thresholdHot2Cold; }
+            set { _thresholdHot2Cold = value; }
+        }
+       
+    }
+    
 }

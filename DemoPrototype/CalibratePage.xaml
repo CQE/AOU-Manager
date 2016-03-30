@@ -57,7 +57,7 @@
             </chart:SfChart.Legend>
 
             <chart:SfChart.Annotations>
-                <chart:TextAnnotation X1="50" Y1="150" CoordinateUnit="Pixel" FontSize="16" FontWeight="ExtraLight" Text="Double-click for toggle Freeze/Run"></chart:TextAnnotation>
+                <chart:TextAnnotation X1="50" Y1="150" CoordinateUnit="Pixel" FontSize="16" FontWeight="ExtraLight" Text="Double-click to freeze/run"></chart:TextAnnotation>
                 <chart:VerticalLineAnnotation Name="CalibratePhaseVLine1"  CanDrag="True" DragCompleted="CalibratePhaseVLine1_DragCompleted"  Width="2" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
                 <chart:VerticalLineAnnotation Name="CalibratePhaseVLine2" CanDrag="True"  DragCompleted="CalibratePhaseVLine2_DragCompleted" CoordinateUnit="Pixel" X1="30"></chart:VerticalLineAnnotation>
             </chart:SfChart.Annotations>

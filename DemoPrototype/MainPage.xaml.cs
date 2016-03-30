@@ -43,6 +43,9 @@ namespace DemoPrototype
 
         public MainPage()
         {
+            //Urban change this asap
+            GlobalVar.ThresholdHot2Cold = 180;
+
             this.InitializeComponent();
             TitleTextBlock.Text = "AOU Control System Main View";
 
@@ -63,6 +66,7 @@ namespace DemoPrototype
             var applicationView = ApplicationView.GetForCurrentView();
             string version = GetAppVersion();
             applicationView.Title = "AOU version " + version;
+         
 
         }
 

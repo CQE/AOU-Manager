@@ -25,36 +25,28 @@ using Windows.Storage.Pickers;
 using Windows.Graphics.Imaging;
 using Windows.Graphics.Display;
 
-
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
 namespace DemoPrototype
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Main Page for navigating to other pages. Operator page is default page
     /// </summary>
     public sealed partial class MainPage : Page
     {
-
         static WebView webView;
         static StreamUriWinRTResolver myResolver;
-        // static RemoteServer server;
 
         public MainPage()
         {
-            //Urban change this asap
-            GlobalVar.ThresholdHot2Cold = 180;
+            GlobalVars.Init(); // Initate global variabels for current session
 
             this.InitializeComponent();
             TitleTextBlock.Text = "AOU Control System Main View";
 
-            // Test: server = new RemoteServer("remote", "19999");
-            // this.ImageSwapChainPanel.Loaded += ImageSwapChainPanel_Loaded; // Not working good
-
             BackButton.Visibility = Visibility.Collapsed;
+
             //want to start with Operator page, is there a better way then change
             MyFrame.Navigate(typeof(OperatorPage));
+
             // MyFrame.Navigate(typeof(SettingsPage));
             TitleTextBlock.Text = "Run Injection moulding";
 
@@ -66,18 +58,7 @@ namespace DemoPrototype
             var applicationView = ApplicationView.GetForCurrentView();
             string version = GetAppVersion();
             applicationView.Title = "AOU version " + version;
-         
-
         }
-
-        /* Test
-        private void ImageSwapChainPanel_Loaded(object sender, RoutedEventArgs e)
-        {
-            // http://igrali.com/2015/09/26/using-swapchainpanelrenderer-to-improve-real-time-rendering-in-lumia-imaging-sdk-3/
-            // NuGet Install-Package LumiaImagingSDK.UWP
-            server = new RemoteServer("remote", "19999");
-        }
-        */
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
@@ -127,13 +108,6 @@ namespace DemoPrototype
             }
             else if (AboutListBoxItem.IsSelected)
             {
-                /*Test to Capture App Image
-                if (server != null)
-                {
-                    server.CaptureUIElementAndSaveToFile(MainGrid);
-                    //server.CaptureUIElementAndSaveToFile(ImageSwapChainPanel);
-                }
-                */
                 //we show version number after the title until a better place is decided
 
                 string version = GetAppVersion();
@@ -151,7 +125,6 @@ namespace DemoPrototype
             PackageVersion version = packageId.Version;
 
             return string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
-            // throw new NotImplementedException();
         }
 
         public void DisplayHtml(string htmlPage)

@@ -182,8 +182,14 @@
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
                 <chart:SfChart.Annotations>
-                    <chart:HorizontalLineAnnotation Name="SetHotSafeZoneLine" ShowToolTip="True" ToolTipContent="Drag to set threshold" DragCompleted="SetHotSafeZoneLine_DragCompleted" DragDelta="SetHotSafeZoneLine_DragDelta" CanDrag="True" CoordinateUnit="Axis" Y1="200" Stroke="DarkGreen" StrokeThickness="2"></chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="SetColdSafeZoneLine" ShowToolTip="True" ToolTipContent="Drag to set threshold" CanDrag="True" Stroke="OrangeRed" CoordinateUnit="Axis" Y1="15" StrokeThickness="2" DragDelta="SetColdSafeZoneLine_DragDelta" DragCompleted="SetColdSafeZoneLine_DragCompleted"></chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="SetHotSafeZoneLine" ShowToolTip="True" ToolTipContent="Drag to set threshold" DragCompleted="SetHotSafeZoneLine_DragCompleted" 
+                                                    DragDelta="SetHotSafeZoneLine_DragDelta" CanDrag="True" CoordinateUnit="Axis" Y1="200" Stroke="DarkGreen" StrokeThickness="2">
+                        
+                    </chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="SetColdSafeZoneLine" ShowToolTip="True" ToolTipContent="Drag to set threshold" CanDrag="True" Stroke="OrangeRed" CoordinateUnit="Axis" Y1="15" StrokeThickness="2" 
+                                                    DragDelta="SetColdSafeZoneLine_DragDelta" DragCompleted="SetColdSafeZoneLine_DragCompleted">
+                        
+                    </chart:HorizontalLineAnnotation>
                 </chart:SfChart.Annotations>    
             <chart:SfChart.Legend>
                     <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Visible"/>
@@ -268,9 +274,12 @@
                     </chart:NumericalAxis>
                 </chart:SfChart.SecondaryAxis>
                 <chart:SfChart.Annotations>
-                    <chart:HorizontalLineAnnotation Name="PhaseHLine1" ShowToolTip="True" ToolTipContent="Drag to set threshold" Stroke="Red" StrokeThickness="2" CanDrag="True" DragCompleted="PhaseLine1_Dragged" CoordinateUnit="Axis" Y1="150"></chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="PhaseHLine2" ShowToolTip="True" ToolTipContent="Drag to set threshold" Stroke="Blue" StrokeThickness="2" CanDrag="True" DragCompleted="PhaseLine2_Dragged" CoordinateUnit="Axis" Y1="40"></chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="PhaseHLineTBM" ShowToolTip="True" ToolTipContent="Drag to set threshold" Stroke="Green" StrokeThickness="2" Opacity="0" CanDrag="True" DragCompleted="PhaseLineTBM_Dragged" CoordinateUnit="Axis" Y1="90"></chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdHotTankAlarm" ShowToolTip="True" ToolTipContent="Drag to set threshold" Stroke="Red" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdHotTankAlarm_Dragged" CoordinateUnit="Axis">
+                    </chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdMidTankAlarm" ShowToolTip="True" ToolTipContent="Drag to set threshold" Stroke="Blue" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdMidTank_Dragged" CoordinateUnit="Axis">
+                    </chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdColdTankAlarm" ShowToolTip="True" ToolTipContent="Drag to set threshold" Stroke="Green" StrokeThickness="2" Opacity="0" CanDrag="True" DragCompleted="HLineSet_ThresholdColdTankAlarm_Dragged" CoordinateUnit="Axis">
+                    </chart:HorizontalLineAnnotation>
                 </chart:SfChart.Annotations>
 
                 <!-- Want to show a trendline for the mid buffer temperature could not find howto -->
@@ -301,8 +310,8 @@
                     </chart:NumericalAxis>
                 </chart:SfChart.SecondaryAxis>
                 <chart:SfChart.Annotations>
-                    <chart:HorizontalLineAnnotation Name="HLineSetHotTankAlarmThreshold" ShowToolTip="True"  Stroke="DarkRed" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSetHotTankAlarmThreshold_Dragged"  CoordinateUnit="Axis" Y1="200"></chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="ColdTankHLine" ShowToolTip="True"  Stroke="DarkBlue" StrokeThickness="2" CanDrag="True"  DragCompleted="ColdTankHLine_Dragged" CoordinateUnit="Axis" Y1="45"></chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdHot2Cold" ShowToolTip="True"  Stroke="DarkRed" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdHot2Cold_Dragged"  CoordinateUnit="Axis" ></chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdCold2Hot" ShowToolTip="True"  Stroke="DarkBlue" StrokeThickness="2" CanDrag="True"  DragCompleted="HLineSet_ThresholdCold2Hot_Dragged" CoordinateUnit="Axis"></chart:HorizontalLineAnnotation>
                 </chart:SfChart.Annotations>
                 <!-- Return Valve not yet simulated showing another curve -->
                 <chart:LineSeries LegendIcon="Diamond" Stroke="Orange" Interior="Orange" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>

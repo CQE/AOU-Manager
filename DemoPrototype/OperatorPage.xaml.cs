@@ -55,14 +55,22 @@ namespace DemoPrototype
             // PhaseHLine2.ToolTipContent = "Drag to change Buffer tank cold temperature upper limit";
             // PhaseHLineTBM.ToolTipContent = "Drag to change Buffer tank mid temperature threshold";
             // Set tooltip contents
-            HLineSetHotTankAlarmThreshold.ToolTipContent = "Threshold hot"+ " ↘ " + "cold";
-            ColdTankHLine.ToolTipContent= "Threshold cold" + " ↗ " + "hot";
+            HLineSet_ThresholdHot2Cold.ToolTipContent = "Threshold hot"+ " ↘ " + "cold";
+            HLineSet_ThresholdCold2Hot.ToolTipContent = "Threshold cold" + " ↗ " + "hot";
             //this is NOT correct just testing my idea
-           
-            HLineSetHotTankAlarmThreshold.Y1 = GlobalVar.ThresholdHot2Cold;
 
 
-            //set initial values for temperature unit
+            // MouldingDelayVLine1_DragCompleted.
+            // SetHotSafeZoneLine
+
+            HLineSet_ThresholdCold2Hot.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
+            HLineSet_ThresholdHot2Cold.Y1 = GlobalVars.globThresholds.ThresholdHot2Cold;
+
+            HLineSet_ThresholdHotTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdHotTankLowLimit;
+            HLineSet_ThresholdMidTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
+            HLineSet_ThresholdColdTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
+
+            // Set initial values for temperature unit. App settings
             if (GlobalAppSettings.IsCelsius)
             {
                 TextCorF.Text = " (°C)";
@@ -75,6 +83,59 @@ namespace DemoPrototype
             InitDispatcherTimer();
         }
 
+        public void SetRunningMode()
+        {
+            prevRunModeSelected = RunningModeCombo.SelectedIndex;
+        }
+
+        public void ResetRunningMode()
+        {
+            int oldIndex = prevRunModeSelected;
+            prevRunModeSelected = -1; // Reset to old active mode. Prevent NewModeSelected
+            RunningModeCombo.SelectedIndex = oldIndex;
+        }
+
+        public void Reset_HotTankAlarmThreshold()
+        {
+            HLineSet_ThresholdHot2Cold.Y1 = GlobalVars.globThresholds.ThresholdHot2Cold;
+        }
+        public void Reset_ColdTankAlarmHighThreshold()
+        {
+            HLineSet_ThresholdCold2Hot.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
+        }
+
+        /*
+ThresholdHotTankAlarm
+ThresholdColdTankAlarm
+
+*/
+        public void Reset_ThresholdHot2Cold()
+        {
+            HLineSet_ThresholdHot2Cold.Y1 = GlobalVars.globThresholds.ThresholdHot2Cold;
+        }
+
+        public void Reset_ThresholdCold2Hot()
+        {
+            HLineSet_ThresholdCold2Hot.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
+        }
+        //--------------------------------------------------------------------------------
+
+        public void Reset_ThresholdHotTankAlarm()
+        {
+            HLineSet_ThresholdHotTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
+        }
+
+        public void Reset_ThresholColdTankAlarm()
+        {
+            HLineSet_ThresholdColdTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
+        }
+
+        public void Reset_ThresholdMidTankAlarm()
+        {
+           this.HLineSet_ThresholdMidTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
+        }
+
+        //--------------------------------------------------------------------------------
         private void MaintenancePage_Unloaded(object sender, RoutedEventArgs e)
         {
             dTimer.Stop();
@@ -138,7 +199,7 @@ namespace DemoPrototype
                     string modeTitle = RunningModeCombo.Items[RunningModeCombo.SelectedIndex].ToString();
                     string message = "You are about to change running mode";
                     DataUpdater.VerifySendToAOUDlg(modeTitle, message, (AOUTypes.CommandType)RunningModeCombo.SelectedIndex,
-                                                    DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, this);
+                                                    DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, this, RunningModeCombo.SelectedIndex, 0); // Value and OldValue not needed
                 }
                 else
                 {
@@ -146,46 +207,47 @@ namespace DemoPrototype
                 }
             }
         }
-
-        private void PhaseLine1_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        
+        private void HLineSet_ThresholdHot2Cold_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank hot temperature lower limit";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, PhaseHLine1, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, HLineSet_ThresholdHot2Cold, this,  0); // ToDo OldValue
         }
 
-        private void PhaseLine2_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        private void HLineSet_ThresholdCold2Hot_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank cold temperature upper limit";
-            string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, PhaseHLine2, this);
+            string message = "You are about to set value to "; 
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, HLineSet_ThresholdCold2Hot, this, 0); // ToDo OldValue
 
             //Urban please replace this code with code showing diff between the lines, and center the Chartstripline
             PhaseDiffResult.Text = "pl2, Cold";
         }
 
-        private void PhaseLineTBM_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        // 
+        private void HLineSet_ThresholdMidTank_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank mid temperature threshold";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, PhaseHLineTBM, this);
-        }
-        private void ColdTankHLine_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
-        {
-            string title = "Cold tank temperature threshold";
-            string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TColdTankAlarmHighThreshold, ColdTankHLine, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, HLineSet_ThresholdMidTankAlarm, this, 0); // ToDo OldValue
         }
 
-        private void HLineSetHotTankAlarmThreshold_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        private void HLineSet_ThresholdHotTankAlarm_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title =  "Threshold hot" + " ↘ " + "cold";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.THotTankAlarmLowThreshold, HLineSetHotTankAlarmThreshold, this);
-            //save new value to global var, todo: Urban handle cancel too asap
-            GlobalVar.ThresholdHot2Cold = (int)AppHelper.SafeConvertToXCoordinate(HLineSetHotTankAlarmThreshold.Y1);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.THotTankAlarmLowThreshold, HLineSet_ThresholdHotTankAlarm, this, GlobalVars.globThresholds.ThresholdHot2Cold);
         }
 
+        private void HLineSet_ThresholdColdTankAlarm_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
+        {
+            string title = "Threshold hot" + " ↘ " + "cold";
+            string message = "You are about to set value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.THotTankAlarmLowThreshold, HLineSet_ThresholdHotTankAlarm, this, GlobalVars.globThresholds.ThresholdHot2Cold);
+        }
+
+        //
         private void MouldingDelayVLine1_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             //calculate diff between lines and show result in overlaying text
@@ -194,11 +256,11 @@ namespace DemoPrototype
             Point myPoint1, myPoint2;
             int phaseDiff;
             //we take x-value from the line and any y-value should do
-            myPoint1.X = AppHelper.SafeConvertToXCoordinate(MouldingDelayVLine1.X1);
+            myPoint1.X = AppHelper.SafeConvertToDouble(MouldingDelayVLine1.X1);
             myPoint1.Y = 0;
             myX1 = this.MyTuneChart.PointToValue(MyTuneChart.PrimaryAxis, myPoint1);
             //and the other line
-            myPoint2.X = AppHelper.SafeConvertToXCoordinate(MouldingDelayVLine2.X1);
+            myPoint2.X = AppHelper.SafeConvertToDouble(MouldingDelayVLine2.X1);
             myPoint2.Y = 0;
             myX2 = this.MyTuneChart.PointToValue(MyTuneChart.PrimaryAxis, myPoint2);
             //calculate the difference in seconds
@@ -218,11 +280,11 @@ namespace DemoPrototype
             Point myPoint1, myPoint2;
             int phaseDiff;
             //we take x-value from the line and any y-value should do
-            myPoint1.X = AppHelper.SafeConvertToXCoordinate(MouldingDelayVLine1.X1);
+            myPoint1.X = AppHelper.SafeConvertToDouble(MouldingDelayVLine1.X1);
             myPoint1.Y = 0;
             myX1 = this.MyTuneChart.PointToValue(MyTuneChart.PrimaryAxis, myPoint1);
             //and the other line
-            myPoint2.X = AppHelper.SafeConvertToXCoordinate(MouldingDelayVLine2.X1);
+            myPoint2.X = AppHelper.SafeConvertToDouble(MouldingDelayVLine2.X1);
             myPoint2.Y = 0;
             myX2 = this.MyTuneChart.PointToValue(MyTuneChart.PrimaryAxis, myPoint2);
             //calculate the difference in seconds
@@ -310,7 +372,7 @@ namespace DemoPrototype
         private void SetHotSafeZoneLine_DragDelta(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragDeltaEventArgs e)
         {
             //what is the new position of the line?
-            double newY = AppHelper.SafeConvertToXCoordinate(SetHotSafeZoneLine.Y1); //(double)SetHotSafeZoneLine.Y1;
+            double newY = AppHelper.SafeConvertToDouble(SetHotSafeZoneLine.Y1); //(double)SetHotSafeZoneLine.Y1;
             //make chart strip line follow the line when dragged
             HotSafeZone.Start = newY;
         }
@@ -320,13 +382,13 @@ namespace DemoPrototype
             //TBD set new threshold value
             string title = "Hot tank safe zone";
             string message = "You are about to set alarm value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.CmdTypeToDo, SetHotSafeZoneLine, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.CmdTypeToDo, SetHotSafeZoneLine, this, 0); // ToDo OldValue
         }
 
         private void SetColdSafeZoneLine_DragDelta(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragDeltaEventArgs e)
         {
             //what is the new position of the line?
-            double newY = AppHelper.SafeConvertToXCoordinate(SetColdSafeZoneLine.Y1); //(double)SetHotSafeZoneLine.Y1;
+            double newY = AppHelper.SafeConvertToDouble(SetColdSafeZoneLine.Y1); //(double)SetHotSafeZoneLine.Y1;
             //make chart strip line follow the line when dragged
             ColdSafeZone.Start = newY;
         }
@@ -336,7 +398,7 @@ namespace DemoPrototype
             // TBD set new threshold value
             string title = "Cold tank safe zone";
             string message = "You are about to set alarm value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.CmdTypeToDo, SetColdSafeZoneLine, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.CmdTypeToDo, SetColdSafeZoneLine, this, 0); // ToDo OldValue
         }
     }
 

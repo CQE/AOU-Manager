@@ -15,6 +15,19 @@ namespace DemoPrototype
 
         static ContentDialog dialog = null;
 
+        public static int SafeConvertToInt(object value)
+        {
+            double dblVal = SafeConvertToDouble(value);
+            if (dblVal == Double.NaN)
+            {
+                return -1; // What value is best to represent a non valid integer
+            }
+            else
+            { 
+                return (int)Math.Round(dblVal);
+            }
+        }
+
         public static double SafeConvertToDouble(object value)
         {
             if (value is String)
@@ -39,7 +52,7 @@ namespace DemoPrototype
         public static TimeSpan SafeConvertToTimeSpan(object value)
         {
 
-            TimeSpan res;
+            TimeSpan res = new TimeSpan(0);  // What value is best to represent a non valid TimeSpan
             if (value is String)
             {
                TimeSpan.TryParse((string)value, out res);
@@ -53,36 +66,12 @@ namespace DemoPrototype
                 }
                 catch (Exception)
                 {
-                    //what should I return here?
                     return res;
                 }
             }
         }
 
-        public static double SafeConvertToXCoordinate(object value)
-        {
-
-            double res;
-            if (value is String)
-            {
-                double.TryParse((string)value, out res);
-                return res;
-            }
-            else
-            {
-                try
-                {
-                    return (double)value;
-                }
-                catch (Exception)
-                {
-                    //what should I return here?
-                    return 0;
-                }
-            }
-        }
-
-        public static int ConvertToInteger(string strValue, int minValidValue, int maxValidValue)
+        public static int ConvertToValidInteger(string strValue, int minValidValue, int maxValidValue)
         {
             int value = -1;
             int.TryParse(strValue, out value);
@@ -96,29 +85,16 @@ namespace DemoPrototype
             }
         }
 
-
-        public static void SetLimitValueFromHorizontalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.HorizontalLineAnnotation hLine, Page pg)
+        public static void SetLimitValueFromHorizontalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.HorizontalLineAnnotation hLine, Page pg, int oldValue)
         {
-            double dblVal = SafeConvertToXCoordinate(hLine.Y1);
-            int val = (int)Math.Round(dblVal);
-
-            //only want whole integers on axis label
-            hLine.Y1 = val;
-
-            DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, pg, val);
-            //Urban here we need to save new threshold value or restore to old value asap
+            int val = SafeConvertToInt(hLine.Y1); //only want whole integers on Y axis label
+            DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, hLine.Y1, pg, val, oldValue);
         }
 
-        public static void SetLimitValueFromVerticalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.VerticalLineAnnotation vLine, Page pg)
+        public static void SetLimitValueFromVerticalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.VerticalLineAnnotation vLine, Page pg, int oldValue)
         {
-            double dblVal = SafeConvertToXCoordinate(vLine.X1);
-            int val = (int)Math.Round(dblVal);
-
-            //only want whole integers on axis label
-            vLine.X1 = val;
-
-            DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, pg, val);
-
+            int val = SafeConvertToInt(vLine.X1); //only want whole integers on X axis label
+            DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, vLine, pg, val, oldValue);
         }
 
         public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, AOUTypes.CommandType cmd, int min, int max, bool sendToAOU = true)

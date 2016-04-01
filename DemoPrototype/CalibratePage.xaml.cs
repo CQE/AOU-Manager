@@ -91,7 +91,7 @@ namespace DemoPrototype
         
         private void DoHotStep(object sender, RoutedEventArgs e)
         {
-            int hotStepLength = AppHelper.ConvertToInteger(CalibrateHotStepValue.Text, 5, 25);
+            int hotStepLength = AppHelper.ConvertToValidInteger(CalibrateHotStepValue.Text, 5, 25);
             if (hotStepLength == -1)
             {
                 AppHelper.ShowMessageBox("No valid time value");
@@ -111,7 +111,7 @@ namespace DemoPrototype
 
         private void DoColdStep(object sender, RoutedEventArgs e)
         {
-            int coldStepLength = AppHelper.ConvertToInteger(CalibrateColdStepValue.Text, 5, 10);
+            int coldStepLength = AppHelper.ConvertToValidInteger(CalibrateColdStepValue.Text, 5, 10);
             DataUpdater.StartHotStep(coldStepLength);
             if (coldStepLength == -1)
             {
@@ -154,11 +154,11 @@ namespace DemoPrototype
             Point myPoint1, myPoint2;
             int phaseDiff;
             //we take x-value from the line and any y-value should do
-            myPoint1.X = AppHelper.SafeConvertToXCoordinate(CalibratePhaseVLine1.X1);
+            myPoint1.X = AppHelper.SafeConvertToDouble(CalibratePhaseVLine1.X1);
             myPoint1.Y = 0;
             myX1 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint1);
             //and the other line
-            myPoint2.X = AppHelper.SafeConvertToXCoordinate(CalibratePhaseVLine2.X1);
+            myPoint2.X = AppHelper.SafeConvertToDouble(CalibratePhaseVLine2.X1);
             myPoint2.Y = 0;
             myX2 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint2);
             //calculate the difference in seconds
@@ -173,11 +173,11 @@ namespace DemoPrototype
             Point myPoint1, myPoint2;
             int phaseDiff;
             //we take x-value from the line and any y-value should do
-            myPoint1.X = AppHelper.SafeConvertToXCoordinate(CalibratePhaseVLine1.X1);
+            myPoint1.X = AppHelper.SafeConvertToDouble(CalibratePhaseVLine1.X1);
             myPoint1.Y = 0;
             myX1 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint1);
             //and the other line
-            myPoint2.X = AppHelper.SafeConvertToXCoordinate(CalibratePhaseVLine2.X1);
+            myPoint2.X = AppHelper.SafeConvertToDouble(CalibratePhaseVLine2.X1);
             myPoint2.Y = 0;
             myX2 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint2);
             //calculate the difference in seconds
@@ -238,10 +238,10 @@ namespace DemoPrototype
             //ask user if new threshold is OK
             string title = "Calibrate";
             string message = "You are about to change Cold to Hot valve Return threshold";
-            DataUpdater.VerifySendToAOUDlg(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, DataUpdater.VerifyDialogType.VerifyIntValue, (Page)this);
 
-            // Move to response dlg.ColdToHotThreshold.Text = Convert.ToInt32(newThreshold).ToString();
-
+            int value = AppHelper.SafeConvertToInt(ColdToHotLineAnnotation.Y1);
+            int oldValue = 0; // Todo
+            DataUpdater.VerifySendToAOUDlg(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, DataUpdater.VerifyDialogType.VerifyIntValue, (Page)this, value, oldValue);
         }
 
         private void HotToColdLineAnnotation_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
@@ -257,21 +257,21 @@ namespace DemoPrototype
         {
             string title = "Buffer tank hot temperature lower limit";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, TBufHotHLine, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, TBufHotHLine, this, GlobalVars.globThresholds.ThresholdHot2Cold);
         }
 
         private void TBufMidHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank mid temperature threshold";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, TBufMidHLine, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, TBufMidHLine, this, 0); // ToDo OldValue
         }
 
         private void TBufColdHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank cold temperature upper limit";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, TBufColdHLine, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, TBufColdHLine, this, 0); // ToDo OldValue
         }
 
         private void HotFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)

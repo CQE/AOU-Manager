@@ -102,12 +102,37 @@ namespace DemoPrototype
         }
 
 
-        public static async void VerifySendToAOUDlg(string title, string message, AOUTypes.CommandType cmd, VerifyDialogType dlgType, Page pg, int value = 0)
-        {
-            // SetValueDialog dlg;
 
-            //if (dlgType = VerifyDialogType.VeryfyOkCancelOnly)
-            //    dlg = new SetValueDialog(strValue)
+        /*
+               public enum CommandType
+                {
+                    CmdTypeToDo = 0,
+                    RunningModeIdle = 1,
+                    RunningModeHeating = 2,
+                    RunningModeCooling = 3,
+                    RunningModefixedCycling = 4,
+                    RunningModeAutoWidthIMM = 5,
+                    tempHotTankFeedSet = 6,
+                    tempColdTankFeedSet = 7,
+                    coolingTime = 8,
+                    heatingTime = 9,
+                    toolHeatingFeedPause = 10,
+                    toolCoolingFeedPause = 11,
+                    hotDelayTime = 12,
+                    coldDelayTime = 13,
+                    THotTankAlarmLowThreshold = 14,
+                    TColdTankAlarmHighThreshold = 15,
+                    TReturnThresholdCold2Hot = 16,
+                    TReturnThresholdHot2Cold = 17,
+                    TBufferHotLowerLimit = 18,
+                    TBufferMidRefThreshold = 19,
+                    TBufferColdUpperLimit = 20
+                }
+
+        */
+
+        public static async void VerifySendToAOUDlg(string title, string message, AOUTypes.CommandType cmd, Object valueObject, Page pg, int val, int oldVal)
+        {
             var dlg = new ContentDialog();
             dlg.Title = title;
             dlg.Content = message;
@@ -117,19 +142,66 @@ namespace DemoPrototype
             ContentDialogResult res = await dlg.ShowAsync();
             if (res == ContentDialogResult.Primary)
             {
+                if (cmd >= AOUTypes.CommandType.RunningModeIdle && cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM)
+                {
+                    ((OperatorPage)pg).SetRunningMode(); // Special case because drop 
+                }
+                else
+                {
+                }
+
+                /*
                 if (pg.Name == "CalibratePage")
                     ((CalibratePage)pg).AsyncResponseDlg(cmd, true);
                 else if (pg.Name == "OperatorPage")
                     ((OperatorPage)pg).AsyncResponseDlg(cmd, true);
+               */
             }
             else
             {
-                if (pg.Name == "CalibratePage")
-                    ((CalibratePage)pg).AsyncResponseDlg(cmd, false);
-                else if (pg.Name == "OperatorPage")
-                    ((OperatorPage)pg).AsyncResponseDlg(cmd, false);
-            }
+                if (cmd >= AOUTypes.CommandType.RunningModeIdle && cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM)
+                {
+                    ((OperatorPage)pg).ResetRunningMode();
+                }
+                else
+                {
+                    switch (cmd)
+                    {
+                        case AOUTypes.CommandType.THotTankAlarmLowThreshold:
+                            ((OperatorPage)pg).Reset_HotTankAlarmThreshold();
+                            break;
+                        case AOUTypes.CommandType.TColdTankAlarmHighThreshold:
+                            ((OperatorPage)pg).Reset_ColdTankAlarmHighThreshold();
+                            break;
+                        case AOUTypes.CommandType.TReturnThresholdCold2Hot:
+                            ((OperatorPage)pg).Reset_ThresholdCold2Hot();
+                            break;
+                        case AOUTypes.CommandType.TReturnThresholdHot2Cold:
+                            ((OperatorPage)pg).Reset_ThresholdHot2Cold();
+                            break;
+                        case AOUTypes.CommandType.TBufferHotLowerLimit:
+                            ((OperatorPage)pg).Reset_HotTankAlarmThreshold();
+                            break;
+                        case AOUTypes.CommandType.TBufferMidRefThreshold:
+                            ((OperatorPage)pg).Reset_ThresholdMidTankAlarm();
+                            break;
+                        case AOUTypes.CommandType.TBufferColdUpperLimit:
+                            ((OperatorPage)pg).Reset_ThresholColdTankAlarm();
+                            break;
+                        default:
+                            break;
+                    }
+                    
+                }
+                /*
+                 if (pg.Name == "CalibratePage")
+                     ((CalibratePage)pg).AsyncResponseDlg(cmd, false);
+                 else if (pg.Name == "OperatorPage")
+                     ((OperatorPage)pg).AsyncResponseDlg(cmd, false);
+                 */
+                AppHelper.ShowMessageBox("Command not sent. Old value restored");
 
+            }
         }
 
         /*****************************************************

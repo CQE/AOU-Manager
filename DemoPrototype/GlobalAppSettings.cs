@@ -134,14 +134,14 @@ namespace DemoPrototype
                 60
             */
             globThresholds = new GlobalThresHolds();
-            globThresholds.ThresholdHot2Cold = 180;
-            globThresholds.ThresholdCold2Hot = 50;
-            globThresholds.ThresholdHotTankLowLimit = 200;
-            globThresholds.ThresholdColdTankUpperLimit = 40;
+            globThresholds.ThresholdHot2Cold = 100;
+            globThresholds.ThresholdCold2Hot = 110;
+            globThresholds.ThresholdHotTankLowLimit = 120;
+            globThresholds.ThresholdColdTankUpperLimit = 80;
 
-            globThresholds.ThresholdHotBuffTankAlarmLimit = 230;
+            globThresholds.ThresholdHotBuffTankAlarmLimit = 110;
             globThresholds.ThresholdMidBuffTankAlarmLimit = 100;
-            globThresholds.ThresholdColdTankBuffAlarmLimit = 70;
+            globThresholds.ThresholdColdTankBuffAlarmLimit = 90;
         }
 
         public static void Save()

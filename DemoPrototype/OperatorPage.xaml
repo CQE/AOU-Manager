@@ -176,17 +176,17 @@
             <chart:SfChart.SecondaryAxis>
                 <chart:NumericalAxis Minimum="0" Interval="10" Maximum="300" EnableAutoIntervalOnZooming="False">
                     <chart:NumericalAxis.StripLines>
-                        <chart:ChartStripLine Name="HotSafeZone" Start="200" Width="25" Label="Hot Tank Safe Zone" Background="PaleGreen"></chart:ChartStripLine>
-                        <chart:ChartStripLine Name="ColdSafeZone"  Start="15" Width="25" Label="Cold Tank Safe Zone" Background="PaleGoldenrod"></chart:ChartStripLine>
+                        <chart:ChartStripLine Name="HotSafeZone" Start="200" Width="25"  Background="PaleGreen"></chart:ChartStripLine>
+                        <chart:ChartStripLine Name="ColdSafeZone"  Start="15" Width="25"  Background="PaleGoldenrod"></chart:ChartStripLine>
                     </chart:NumericalAxis.StripLines>
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
                 <chart:SfChart.Annotations>
                     <chart:HorizontalLineAnnotation Name="SetHotSafeZoneLine" ShowToolTip="True" ToolTipContent="Drag to set threshold" DragCompleted="SetHotSafeZoneLine_DragCompleted" 
-                                                    DragDelta="SetHotSafeZoneLine_DragDelta" CanDrag="True" CoordinateUnit="Axis" Y1="200" Stroke="DarkGreen" StrokeThickness="2">
+                                                    DragDelta="SetHotSafeZoneLine_DragDelta" CanDrag="True" CoordinateUnit="Axis"  Stroke="DarkGreen" StrokeThickness="2">
                         
                     </chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="SetColdSafeZoneLine" ShowToolTip="True" ToolTipContent="Drag to set threshold" CanDrag="True" Stroke="OrangeRed" CoordinateUnit="Axis" Y1="15" StrokeThickness="2" 
+                    <chart:HorizontalLineAnnotation Name="SetColdSafeZoneLine" ShowToolTip="True" ToolTipContent="Drag to set threshold" CanDrag="True" Stroke="OrangeRed" CoordinateUnit="Axis"  StrokeThickness="2" 
                                                     DragDelta="SetColdSafeZoneLine_DragDelta" DragCompleted="SetColdSafeZoneLine_DragCompleted">
                         
                     </chart:HorizontalLineAnnotation>
@@ -274,11 +274,11 @@
                     </chart:NumericalAxis>
                 </chart:SfChart.SecondaryAxis>
                 <chart:SfChart.Annotations>
-                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdHotTankAlarm" ShowToolTip="True" ToolTipContent="Drag to set threshold" Stroke="Red" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdHotTankAlarm_Dragged" CoordinateUnit="Axis">
+                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdHotTankAlarm" ShowToolTip="True" ToolTipContent="Drag to set hot threshold" Stroke="Red" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdHotTankAlarm_Dragged" CoordinateUnit="Axis">
                     </chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdMidTankAlarm" ShowToolTip="True" ToolTipContent="Drag to set threshold" Stroke="Blue" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdMidTank_Dragged" CoordinateUnit="Axis">
+                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdMidTankAlarm" ShowToolTip="True" ToolTipContent="Drag to set mid threshold" Stroke="RosyBrown" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdMidTank_Dragged" CoordinateUnit="Axis">
                     </chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdColdTankAlarm" ShowToolTip="True" ToolTipContent="Drag to set threshold" Stroke="Green" StrokeThickness="2" Opacity="0" CanDrag="True" DragCompleted="HLineSet_ThresholdColdTankAlarm_Dragged" CoordinateUnit="Axis">
+                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdColdTankAlarm" ShowToolTip="True" ToolTipContent="Drag to set cold threshold" Stroke="Blue" StrokeThickness="2"  CanDrag="True" DragCompleted="HLineSet_ThresholdColdTankAlarm_Dragged" CoordinateUnit="Axis">
                     </chart:HorizontalLineAnnotation>
                 </chart:SfChart.Annotations>
 

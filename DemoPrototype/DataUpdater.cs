@@ -148,16 +148,51 @@ namespace DemoPrototype
                 }
                 else
                 {
-                }
+                    //Store new value and send to AOU
+                    switch (cmd)
+                    {
+                        case AOUTypes.CommandType.THotTankAlarmLowThreshold:
+                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.THotTankAlarmLowThreshold, val);
+                            GlobalVars.globThresholds.ThresholdHotTankLowLimit = val;
+                            break;
+                        case AOUTypes.CommandType.TColdTankAlarmHighThreshold:
+                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TColdTankAlarmHighThreshold, val);
+                            GlobalVars.globThresholds.ThresholdColdTankUpperLimit = val;
+                            break;
+                        case AOUTypes.CommandType.TReturnThresholdCold2Hot:
+                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TReturnThresholdCold2Hot, val);
+                            GlobalVars.globThresholds.ThresholdCold2Hot = val;
+                            break;
+                        case AOUTypes.CommandType.TReturnThresholdHot2Cold:
+                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TReturnThresholdHot2Cold, val);
+                            GlobalVars.globThresholds.ThresholdHot2Cold = val;
+                            break;
+                        case AOUTypes.CommandType.TBufferHotLowerLimit:
+                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferHotLowerLimit, val);
+                            GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit = val;
+                            break;
+                        case AOUTypes.CommandType.TBufferMidRefThreshold:
+                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferMidRefThreshold, val);
+                            GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit = val;
+                            break;
+                        case AOUTypes.CommandType.TBufferColdUpperLimit:
+                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferColdUpperLimit, val);
+                            GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit = val;
+                            break;
+                        default:
+                            break;
 
-                /*
-                if (pg.Name == "CalibratePage")
-                    ((CalibratePage)pg).AsyncResponseDlg(cmd, true);
-                else if (pg.Name == "OperatorPage")
-                    ((OperatorPage)pg).AsyncResponseDlg(cmd, true);
-               */
+                    }
+
+                    /*
+                    if (pg.Name == "CalibratePage")
+                        ((CalibratePage)pg).AsyncResponseDlg(cmd, true);
+                    else if (pg.Name == "OperatorPage")
+                        ((OperatorPage)pg).AsyncResponseDlg(cmd, true);
+                   */
+                }
             }
-            else
+            else  //need to handle cancel
             {
                 if (cmd >= AOUTypes.CommandType.RunningModeIdle && cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM)
                 {
@@ -168,30 +203,51 @@ namespace DemoPrototype
                     switch (cmd)
                     {
                         case AOUTypes.CommandType.THotTankAlarmLowThreshold:
-                            ((OperatorPage)pg).Reset_HotTankAlarmThreshold();
+                            //if (pg.Name == "CalibratePage")
+                             //   ((CalibratePage)pg).Reset_HotTankAlarmThreshold();
+                            if (pg.Name == "OperatorPage")
+                                ((OperatorPage)pg).Reset_HotTankAlarmThreshold();
                             break;
                         case AOUTypes.CommandType.TColdTankAlarmHighThreshold:
-                            ((OperatorPage)pg).Reset_ColdTankAlarmHighThreshold();
+                            //if (pg.Name == "CalibratePage")
+                            //    ((CalibratePage)pg).Reset_ColdTankAlarmHighThreshold();
+                            if (pg.Name == "OperatorPage")
+                                ((OperatorPage)pg).Reset_ColdTankAlarmHighThreshold();
                             break;
                         case AOUTypes.CommandType.TReturnThresholdCold2Hot:
-                            ((OperatorPage)pg).Reset_ThresholdCold2Hot();
+                            if (pg.Name == "CalibratePage")
+                                ((CalibratePage)pg).Reset_ThresholdCold2Hot();
+                            else if (pg.Name == "OperatorPage")
+                                ((OperatorPage)pg).Reset_ThresholdCold2Hot();
                             break;
                         case AOUTypes.CommandType.TReturnThresholdHot2Cold:
-                            ((OperatorPage)pg).Reset_ThresholdHot2Cold();
+                            if (pg.Name == "CalibratePage")
+                                ((CalibratePage)pg).Reset_ThresholdHot2Cold();
+                            else if (pg.Name == "OperatorPage")
+                                ((OperatorPage)pg).Reset_ThresholdHot2Cold();
                             break;
                         case AOUTypes.CommandType.TBufferHotLowerLimit:
-                            ((OperatorPage)pg).Reset_HotTankAlarmThreshold();
+                            if (pg.Name == "CalibratePage")
+                               ((CalibratePage)pg).Reset_ThresholdHotTankAlarm();
+                            else if (pg.Name == "OperatorPage")
+                                ((OperatorPage)pg).Reset_ThresholdHotTankAlarm();
                             break;
                         case AOUTypes.CommandType.TBufferMidRefThreshold:
-                            ((OperatorPage)pg).Reset_ThresholdMidTankAlarm();
+                            if (pg.Name == "CalibratePage")
+                                ((CalibratePage)pg).Reset_ThresholdMidTankAlarm();
+                            else if (pg.Name == "OperatorPage")
+                                ((OperatorPage)pg).Reset_ThresholdMidTankAlarm();
                             break;
                         case AOUTypes.CommandType.TBufferColdUpperLimit:
-                            ((OperatorPage)pg).Reset_ThresholColdTankAlarm();
+                            if (pg.Name == "CalibratePage")
+                               ((CalibratePage)pg).Reset_ThresholdColdTankAlarm();
+                            else if (pg.Name == "OperatorPage")
+                                ((OperatorPage)pg).Reset_ThresholdColdTankAlarm();
                             break;
                         default:
                             break;
                     }
-                    
+
                 }
                 /*
                  if (pg.Name == "CalibratePage")

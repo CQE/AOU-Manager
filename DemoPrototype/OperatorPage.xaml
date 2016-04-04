@@ -105,21 +105,21 @@
 
             <TextBlock VerticalAlignment="Bottom"  Margin="30,0,0,0" Grid.Row="3" Grid.Column="3" Text="Hot pump"></TextBlock>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,30,0" Grid.Row="3" Grid.Column="4">
-                <TextBlock  VerticalAlignment="Bottom" Margin="0,0,0,0" Text="8"></TextBlock>
+                <TextBlock  Name="TextBlock_HotCalibrate" VerticalAlignment="Bottom" Margin="0,0,0,0" Text="88"></TextBlock>
                 <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
-                <TextBox Name="HotFeedToReturnDelayCalTime" GotFocus="HotFeedToReturnDelayCalTime_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Margin="10,0,0,0" Text="2"></TextBox>
+                <TextBox Name="HotFeedToReturnDelayCalTime" GotFocus="HotFeedToReturnDelayCalTime_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Margin="10,0,0,0" Text="22"></TextBox>
                 <TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,0" Text="="></TextBlock>
-                <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="10"></TextBlock>
+                <TextBlock Name="TextBlock_SumHotDelayTime" VerticalAlignment="Bottom" Margin="5,0,0,0" Text="110"></TextBlock>
                 <TextBlock Margin="8,0,0,0" VerticalAlignment="Bottom" Text="(s)"></TextBlock>
         </StackPanel>
 
             <TextBlock  Margin="30,0,0,0" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="3" Text="Cold pump"></TextBlock>
         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,0,30,0" Grid.Row="4" Grid.Column="4">
-                <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,0" Text="10"></TextBlock>
+                <TextBlock Name="TextBlock_ColdCalibrate" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,0" Text="110"></TextBlock>
                 <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
-                <TextBox Name="ColdFeedToReturnDelayCalTime"  GotFocus="ColdFeedToReturnDelayCalTime_GotFocus" IsReadOnly="True" Margin="10,0,0,0" VerticalAlignment="Bottom" Text="3"></TextBox>
+                <TextBox Name="ColdFeedToReturnDelayCalTime"  GotFocus="ColdFeedToReturnDelayCalTime_GotFocus" IsReadOnly="True" Margin="10,0,0,0" VerticalAlignment="Bottom" Text="33"></TextBox>
                 <TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,0" Text="="></TextBlock>
-                <TextBlock  Margin="5,0,0,0" VerticalAlignment="Bottom" Text="12"></TextBlock>
+                <TextBlock  Name="TextBlock_SumColdDelayTime" Margin="5,0,0,0" VerticalAlignment="Bottom" Text="122"></TextBlock>
                 <TextBlock Margin="8,0,0,0" VerticalAlignment="Bottom" Text="(s)"></TextBlock>
             </StackPanel>
 
@@ -182,11 +182,11 @@
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
                 <chart:SfChart.Annotations>
-                    <chart:HorizontalLineAnnotation Name="SetHotSafeZoneLine" ShowToolTip="True" ToolTipContent="Drag to set threshold" DragCompleted="SetHotSafeZoneLine_DragCompleted" 
+                    <chart:HorizontalLineAnnotation Name="SetHotSafeZoneLine" ShowToolTip="True" DragCompleted="SetHotSafeZoneLine_DragCompleted" 
                                                     DragDelta="SetHotSafeZoneLine_DragDelta" CanDrag="True" CoordinateUnit="Axis"  Stroke="DarkGreen" StrokeThickness="2">
                         
                     </chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="SetColdSafeZoneLine" ShowToolTip="True" ToolTipContent="Drag to set threshold" CanDrag="True" Stroke="OrangeRed" CoordinateUnit="Axis"  StrokeThickness="2" 
+                    <chart:HorizontalLineAnnotation Name="SetColdSafeZoneLine" ShowToolTip="True" CanDrag="True" Stroke="OrangeRed" CoordinateUnit="Axis"  StrokeThickness="2" 
                                                     DragDelta="SetColdSafeZoneLine_DragDelta" DragCompleted="SetColdSafeZoneLine_DragCompleted">
                         
                     </chart:HorizontalLineAnnotation>
@@ -274,11 +274,11 @@
                     </chart:NumericalAxis>
                 </chart:SfChart.SecondaryAxis>
                 <chart:SfChart.Annotations>
-                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdHotTankAlarm" ShowToolTip="True" ToolTipContent="Drag to set hot threshold" Stroke="Red" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdHotTankAlarm_Dragged" CoordinateUnit="Axis">
+                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdHotTankAlarm" ShowToolTip="True" Stroke="Red" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdHotTankAlarm_Dragged" CoordinateUnit="Axis">
                     </chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdMidTankAlarm" ShowToolTip="True" ToolTipContent="Drag to set mid threshold" Stroke="RosyBrown" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdMidTank_Dragged" CoordinateUnit="Axis">
+                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdMidTankAlarm" ShowToolTip="True"  Stroke="RosyBrown" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdMidTank_Dragged" CoordinateUnit="Axis">
                     </chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdColdTankAlarm" ShowToolTip="True" ToolTipContent="Drag to set cold threshold" Stroke="Blue" StrokeThickness="2"  CanDrag="True" DragCompleted="HLineSet_ThresholdColdTankAlarm_Dragged" CoordinateUnit="Axis">
+                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdColdTankAlarm" ShowToolTip="True"  Stroke="Blue" StrokeThickness="2"  CanDrag="True" DragCompleted="HLineSet_ThresholdColdTankAlarm_Dragged" CoordinateUnit="Axis">
                     </chart:HorizontalLineAnnotation>
                 </chart:SfChart.Annotations>
 

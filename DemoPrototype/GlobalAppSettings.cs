@@ -125,7 +125,7 @@ namespace DemoPrototype
     public static class GlobalVars
     {
         public static GlobalThresHolds globThresholds;
-
+        public static GlobalDelayTimes globDelayTimes;
         // Important to call this in MainPage constructor. Program crasch If not 
         public static void Init()
         {
@@ -142,6 +142,12 @@ namespace DemoPrototype
             globThresholds.ThresholdHotBuffTankAlarmLimit = 110;
             globThresholds.ThresholdMidBuffTankAlarmLimit = 100;
             globThresholds.ThresholdColdTankBuffAlarmLimit = 90;
+
+            globDelayTimes = new GlobalDelayTimes();
+            globDelayTimes.HotCalibrate = 8;
+            globDelayTimes.ColdCalibrate = 7;
+            globDelayTimes.HotTune = 3;
+            globDelayTimes.ColdTune = 2;
         }
 
         public static void Save()
@@ -208,6 +214,35 @@ namespace DemoPrototype
             set { _ThresholdMidTankAlarm = value; }
         }
 
+    }
+
+    public class GlobalDelayTimes
+    {
+        private int _hotTune;
+        private int _hotCalibrate;
+        private int _coldTune;
+        private int _coldCalibrate;
+
+        public int HotTune
+        {
+            get { return _hotTune;}
+            set { _hotTune = value; }
+        }
+        public int HotCalibrate
+        {
+            get { return _hotCalibrate; }
+            set { _hotCalibrate = value; }
+        }
+        public int ColdTune
+        {
+            get { return _coldTune; }
+            set { _coldTune = value; }
+        }
+        public int ColdCalibrate
+        {
+            get { return _coldCalibrate; }
+            set { _coldCalibrate = value; }
+        }
     }
 
 }

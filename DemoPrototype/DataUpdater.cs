@@ -57,7 +57,7 @@ namespace DemoPrototype
         {
             if (dataRouter != null)
             {
-                dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempHotTankFeedSet, time); // ToDo
+                dataRouter.SendCommandToPlc(AOUTypes.CommandType.hotDelayTime, time); // ToDo
             }
         }
 
@@ -65,7 +65,7 @@ namespace DemoPrototype
         {
             if (dataRouter != null)
             {
-                dataRouter.SendCommandToPlc(AOUTypes.CommandType.tempColdTankFeedSet, time); // ToDo
+                dataRouter.SendCommandToPlc(AOUTypes.CommandType.coldDelayTime, time); // ToDo
             }
         }
 

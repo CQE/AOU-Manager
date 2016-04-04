@@ -36,6 +36,36 @@ namespace DemoPrototype
             this.Name = "CalibratePage";
 
             InitDispatcherTimer();
+
+            //set and calculate delay time values
+            HotFeedToReturnDelayTime.Text = GlobalVars.globDelayTimes.HotCalibrate.ToString();
+            TextBlock_HotTune.Text = GlobalVars.globDelayTimes.HotTune.ToString();
+            int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
+            TextBlock_SumHotDelayTime.Text = sum.ToString();
+            ColdFeedToReturnDelayTime.Text = GlobalVars.globDelayTimes.ColdCalibrate.ToString();
+            TextBlock_ColdTune.Text = GlobalVars.globDelayTimes.ColdTune.ToString();
+            sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
+            TextBlock_SumColdDelayTime.Text = sum.ToString();
+
+
+            //set threshold levels (should have better names)
+            TBufHotHLine.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
+            TBufMidHLine.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
+            BufMidThresholdValue.Text = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit.ToString();
+            TBufColdHLine.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
+
+            HotToColdLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdHot2Cold;
+            TextBox_HotToColdThreshold.Text = GlobalVars.globThresholds.ThresholdHot2Cold.ToString();
+            ColdToHotLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
+            TextBox_ColdToHotThreshold.Text = GlobalVars.globThresholds.ThresholdCold2Hot.ToString();
+
+            //set tooltip contents
+            TBufHotHLine.ToolTipContent = "Lower limit THotBuffer";
+            TBufMidHLine.ToolTipContent = "Threshold TMidBuffer";
+            TBufColdHLine.ToolTipContent = "Upper limit TColdBuffer";
+            HotToColdLineAnnotation.ToolTipContent = "Threshold TRetActual hot" + " ↘ " + "cold";
+            ColdToHotLineAnnotation.ToolTipContent = "Threshold TRetActual cold" + " ↗ " + "hot";
+
         }
 
 
@@ -112,7 +142,7 @@ namespace DemoPrototype
         private void DoColdStep(object sender, RoutedEventArgs e)
         {
             int coldStepLength = AppHelper.ConvertToValidInteger(CalibrateColdStepValue.Text, 5, 10);
-            DataUpdater.StartHotStep(coldStepLength);
+            //DataUpdater.StartHotStep(coldStepLength);
             if (coldStepLength == -1)
             {
                 AppHelper.ShowMessageBox("No valid time value");
@@ -146,7 +176,7 @@ namespace DemoPrototype
             }
         }
 
-       
+     
 
         private void CalibratePhaseVLine1_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
@@ -230,27 +260,27 @@ namespace DemoPrototype
 
         private void ColdToHotLineAnnotation_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            double newThreshold = 0;
-            if (ColdToHotLineAnnotation.Y1 != null)
-            {
-                newThreshold = (double)ColdToHotLineAnnotation.Y1;
-            }
             //ask user if new threshold is OK
-            string title = "Calibrate";
-            string message = "You are about to change Cold to Hot valve Return threshold";
-
-            int value = AppHelper.SafeConvertToInt(ColdToHotLineAnnotation.Y1);
-            int oldValue = 0; // Todo
-            DataUpdater.VerifySendToAOUDlg(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, DataUpdater.VerifyDialogType.VerifyIntValue, (Page)this, value, oldValue);
+            string title = "Threshold TRetActual cold" + " ↗ " + "hot";
+            string message = "You are about to set new threshold value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdCold2Hot, ColdToHotLineAnnotation, this, 0); // ToDo OldValue
+        }
+        // need to handle cancel button press in this page too
+        public void Reset_ThresholdHot2Cold()
+        {
+            HotToColdLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdHot2Cold;
         }
 
+        public void Reset_ThresholdCold2Hot()
+        {
+            ColdToHotLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
+        }
+        
         private void HotToColdLineAnnotation_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            double newThreshold = 0;
-            if (HotToColdLineAnnotation.Y1 != null)
-            {
-                newThreshold = (double)HotToColdLineAnnotation.Y1;
-            }
+            string title = "Threshold TRetActual hot" + " ↘ " + "cold";
+            string message = "You are about to set new threshold value to ";
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdHot2Cold, HotToColdLineAnnotation, this, 0); // ToDo OldValue
         }
 
         private void TBufHotHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
@@ -273,6 +303,23 @@ namespace DemoPrototype
             string message = "You are about to set value to ";
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, TBufColdHLine, this, 0); // ToDo OldValue
         }
+
+
+        public void Reset_ThresholdHotTankAlarm() //not a good name MW
+        {
+            TBufHotHLine.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
+        }
+
+        public void Reset_ThresholdColdTankAlarm()
+        {
+            TBufColdHLine.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
+        }
+
+        public void Reset_ThresholdMidTankAlarm()
+        {
+            TBufMidHLine.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
+        }
+
 
         private void HotFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
         {

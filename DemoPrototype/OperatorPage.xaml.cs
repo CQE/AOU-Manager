@@ -51,11 +51,28 @@ namespace DemoPrototype
             }
             RunningModeCombo.SelectedIndex = 0; // Idle
 
+            //set and calculate delay time values
+            TextBlock_HotCalibrate.Text = GlobalVars.globDelayTimes.HotCalibrate.ToString();
+            HotFeedToReturnDelayCalTime.Text = GlobalVars.globDelayTimes.HotTune.ToString();
+            int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
+            TextBlock_SumHotDelayTime.Text = sum.ToString();
+            TextBlock_ColdCalibrate.Text = GlobalVars.globDelayTimes.ColdCalibrate.ToString();
+            ColdFeedToReturnDelayCalTime.Text = GlobalVars.globDelayTimes.ColdTune.ToString();
+            sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
+            TextBlock_SumColdDelayTime.Text = sum.ToString();
             
             // Set tooltip contents
-            HLineSet_ThresholdHot2Cold.ToolTipContent = "Threshold hot"+ " ↘ " + "cold";
-            HLineSet_ThresholdCold2Hot.ToolTipContent = "Threshold cold" + " ↗ " + "hot";
-            
+            HLineSet_ThresholdHot2Cold.ToolTipContent = "Threshold TRetActual hot"+ " ↘ " + "cold";
+            HLineSet_ThresholdCold2Hot.ToolTipContent = "Threshold TRetActual cold" + " ↗ " + "hot";
+
+            HLineSet_ThresholdHotTankAlarm.ToolTipContent = "Lower limit THotBuffer";
+            HLineSet_ThresholdMidTankAlarm.ToolTipContent = "Threshold TMidBuffer";
+            HLineSet_ThresholdColdTankAlarm.ToolTipContent = "Upper limit TColdBuffer";
+
+            SetHotSafeZoneLine.ToolTipContent = "Lower limit THotTank";
+            SetColdSafeZoneLine.ToolTipContent = "Upper limit TColdTank";
+
+
             // Set saved global values to all threshold lines
 
             HLineSet_ThresholdCold2Hot.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
@@ -123,7 +140,7 @@ namespace DemoPrototype
             HLineSet_ThresholdHotTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
         }
 
-        public void Reset_ThresholColdTankAlarm()
+        public void Reset_ThresholdColdTankAlarm()
         {
             HLineSet_ThresholdColdTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
         }
@@ -208,14 +225,14 @@ namespace DemoPrototype
         
         private void HLineSet_ThresholdHot2Cold_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            string title = "Threshold hot" + " ↘ " + "cold";
+            string title = "Threshold TRetActual hot" + " ↘ " + "cold";
             string message = "You are about to set new threshold value to ";
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdHot2Cold, HLineSet_ThresholdHot2Cold, this,  0); // ToDo OldValue
         }
 
         private void HLineSet_ThresholdCold2Hot_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            string title = "Threshold cold" + " ↘ " + "hot";
+            string title = "Threshold TRetActual cold" + " ↘ " + "hot";
             string message = "You are about to set new threshold value to "; 
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdCold2Hot, HLineSet_ThresholdCold2Hot, this, 0); // ToDo OldValue
 

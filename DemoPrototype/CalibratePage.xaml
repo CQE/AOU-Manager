@@ -99,26 +99,26 @@
         
         <TextBlock Grid.Row="1" Grid.Column="2" Text="Hot pump" VerticalAlignment="Bottom" HorizontalAlignment="Center"> </TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">
-            <TextBox   Name="HotFeedToReturnDelayTime" GotFocus="HotFeedToReturnDelayTime_GotFocus" VerticalAlignment="Bottom"  Text="8"></TextBox>
+            <TextBox   Name="HotFeedToReturnDelayTime" GotFocus="HotFeedToReturnDelayTime_GotFocus" VerticalAlignment="Bottom"  Text="88"></TextBox>
             <TextBlock VerticalAlignment="Bottom"  TextAlignment="Center" Width="30" Margin="5,0,0,5" Text="+"></TextBlock>
-            <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,5" Text="2"></TextBlock>
+            <TextBlock Name="TextBlock_HotTune" VerticalAlignment="Bottom" Margin="5,0,0,5" Text="22"></TextBlock>
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="="></TextBlock>
-            <TextBlock VerticalAlignment="Bottom"  Margin="5,0,0,5" Text="10"></TextBlock>
+            <TextBlock  Name="TextBlock_SumHotDelayTime" VerticalAlignment="Bottom"  Margin="5,0,0,5" Text="110"></TextBlock>
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="(s)"></TextBlock>
         </StackPanel>
         
 
         <TextBlock Grid.Row="2" Grid.Column="2" Text="Cold pump" VerticalAlignment="Bottom" HorizontalAlignment="Center"></TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2">
-            <TextBox   Name="ColdFeedToReturnDelayTime" GotFocus="ColdFeedToReturnDelayTime_GotFocus" VerticalAlignment="Bottom"  Text="10"></TextBox>
+            <TextBox   Name="ColdFeedToReturnDelayTime" GotFocus="ColdFeedToReturnDelayTime_GotFocus" VerticalAlignment="Bottom"  Text="1110"></TextBox>
             <TextBlock VerticalAlignment="Bottom"  TextAlignment="Center" Width="30" Margin="5,0,0,5" Text="+"></TextBlock>
-            <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,5" Text="0"></TextBlock>
+            <TextBlock  Name="TextBlock_ColdTune" VerticalAlignment="Bottom" Margin="5,0,0,5" Text="220"></TextBlock>
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="="></TextBlock>
-            <TextBlock VerticalAlignment="Bottom"  Margin="5,0,0,5" Text="10"></TextBlock>
+            <TextBlock Name="TextBlock_SumColdDelayTime" VerticalAlignment="Bottom"  Margin="5,0,0,5" Text="210"></TextBlock>
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="(s)"></TextBlock>
         </StackPanel>
 
-
+<!--Energy balance chart-->
         <chart:SfChart  
             Header="Hot and Cold tanks Energy balance (°C)"
             Grid.Row="6"
@@ -137,8 +137,8 @@
             </chart:SfChart.Legend>
 
             <chart:SfChart.Annotations>
-                <chart:HorizontalLineAnnotation Name="ColdToHotLineAnnotation"  ShowLine="True" ShowToolTip="True" ToolTipContent="Set cold to hot return valve switching threshold" CanDrag="True" DragCompleted="ColdToHotLineAnnotation_DragCompleted"  Width="2" CoordinateUnit="Axis" Y1="25"></chart:HorizontalLineAnnotation>
-                <chart:HorizontalLineAnnotation Name="HotToColdLineAnnotation" CanDrag="True"  ShowToolTip="True" ToolTipContent="Set hot to cold return valve switching threshold" DragCompleted="HotToColdLineAnnotation_DragCompleted" Width="3" CoordinateUnit="Axis" Y1="215"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="ColdToHotLineAnnotation"  ShowLine="True" ShowToolTip="True"  CanDrag="True" DragCompleted="ColdToHotLineAnnotation_DragCompleted"  Width="2" CoordinateUnit="Axis" Y1="25"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="HotToColdLineAnnotation" CanDrag="True"  ShowToolTip="True"  DragCompleted="HotToColdLineAnnotation_DragCompleted" Width="3" CoordinateUnit="Axis" Y1="215"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
             <chart:LineSeries LegendIcon="Circle" Label="THotTank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
             <chart:LineSeries LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
@@ -148,15 +148,16 @@
         -->
         <TextBlock Margin="15,0,0,0"  Grid.Row="9" VerticalAlignment="Center" Text="Hot to cold Return valve switching threshold:"></TextBlock>
         <StackPanel Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="9">
-            <TextBox Name="HotToColdThreshold" Height="30" Text="215"></TextBox>
+            <TextBox Name="TextBox_HotToColdThreshold" Height="30"></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
         <TextBlock Margin="15,0,0,0"  Grid.Row="10" VerticalAlignment="Center" Text="Cold to Hot Return valve switching threshold:"></TextBlock>
         <StackPanel Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal"  Grid.Row="10">
-            <TextBox Name="ColdToHotThreshold" Height="30"  Text="25"></TextBox>
+            <TextBox Name="TextBox_ColdToHotThreshold" Height="30"></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
 
+        <!-- Volume balance chart-->
         <chart:SfChart  
             Header="Buffer tank Volume balance (°C)"
             Grid.Row="6"
@@ -178,9 +179,9 @@
             </chart:SfChart.Legend>
             
             <chart:SfChart.Annotations>
-                <chart:HorizontalLineAnnotation Name="TBufHotHLine"  CanDrag="True" FontSize="6" ShowAxisLabel="True" DragCompleted="TBufHotHLine_DragCompleted"  ShowToolTip="True" ToolTipContent="Set hot buffer tank upper limit" CoordinateUnit="Axis" Y1="127"></chart:HorizontalLineAnnotation>
-                <chart:HorizontalLineAnnotation Name="TBufMidHLine" CanDrag="True"  ShowAxisLabel="True" DragCompleted="TBufMidHLine_DragCompleted" ShowToolTip="True" ToolTipContent="Set mid tank threhold" CoordinateUnit="Axis" Y1="67"></chart:HorizontalLineAnnotation>
-                <chart:HorizontalLineAnnotation Name="TBufColdHLine" CanDrag="True"  ShowAxisLabel="True" DragCompleted="TBufColdHLine_DragCompleted" ShowToolTip="True" ToolTipContent="Set cold buffer tank upper limit"  CoordinateUnit="Axis" Y1="53"></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="TBufHotHLine"  CanDrag="True" FontSize="6" ShowAxisLabel="True" DragCompleted="TBufHotHLine_DragCompleted"  ShowToolTip="True"  CoordinateUnit="Axis" ></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="TBufMidHLine" CanDrag="True"  ShowAxisLabel="True" DragCompleted="TBufMidHLine_DragCompleted" ShowToolTip="True"  CoordinateUnit="Axis" ></chart:HorizontalLineAnnotation>
+                <chart:HorizontalLineAnnotation Name="TBufColdHLine" CanDrag="True"  ShowAxisLabel="True" DragCompleted="TBufColdHLine_DragCompleted" ShowToolTip="True"   CoordinateUnit="Axis"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
 
             <chart:LineSeries LegendIcon="Circle" Label="T hot buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
@@ -190,7 +191,7 @@
       
         <TextBlock Margin="30,0,0,0" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="9" VerticalAlignment="Center" Text="Buffertank mid threshold value:"></TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="9">
-            <TextBox Name="BufMidThresholdValue" Height="30" Text="67"></TextBox>
+            <TextBox Name="BufMidThresholdValue" Height="30" ></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
 

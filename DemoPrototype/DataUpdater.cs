@@ -145,6 +145,8 @@ namespace DemoPrototype
                 if (cmd >= AOUTypes.CommandType.RunningModeIdle && cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM)
                 {
                     ((OperatorPage)pg).SetRunningMode(); // Special case because drop 
+                    //Urban is this the place to make the call to AOU? TBD
+                    dataRouter.SendCommandToPlc(cmd,val);
                 }
                 else
                 {

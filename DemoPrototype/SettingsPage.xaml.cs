@@ -88,6 +88,8 @@ namespace DemoPrototype
             this.Param1Combo.Items.Add("COM2");
             this.Param1Combo.Items.Add("COM3");
             this.Param1Combo.Items.Add("COM4");
+            this.Param1Combo.Items.Add("COM5");
+            this.Param1Combo.Items.Add("COM6");
 
             this.Param2Text.Visibility = Visibility.Visible;
             this.Param2Text.Text = "Baud Rate";
@@ -155,11 +157,23 @@ namespace DemoPrototype
             this.Param2Combo.Items.Add("1500");
             this.Param2Combo.Items.Add("2000");
 
-            var settings = GlobalAppSettings.RandomSettings;
-            this.Param1Combo.SelectedItem = settings.NumValues.ToString();
-            this.Param2Combo.SelectedItem = settings.MsBetween.ToString();
-            //            this.AOUDataSourceStringText.Text = RunTypeRandomText;
-            //            this.AOUDataSourceString.Text = GlobalAppSettings.DataRandomSettings;
+            switch (GlobalAppSettings.DataRunType)
+            {
+                case AOURouter.RunType.Serial:
+                    this.Param1Combo.SelectedItem = GlobalAppSettings.SerialSettings.ComPort;
+                    this.Param2Combo.SelectedItem = GlobalAppSettings.SerialSettings.BaudRate;
+                    break;
+                case AOURouter.RunType.File:
+                    this.Param1Combo.SelectedItem = GlobalAppSettings.FileSettings.SourceType;
+                    this.Param2Combo.SelectedItem = GlobalAppSettings.FileSettings.FilePath;
+                    break;
+                case AOURouter.RunType.Random:
+                    this.Param1Combo.SelectedItem = GlobalAppSettings.RandomSettings.NumValues;
+                    this.Param2Combo.SelectedItem = GlobalAppSettings.RandomSettings.MsBetween;
+                    break;
+            default:
+                    break;
+            }
         }
 
         void UpdateTick(object sender, object e)
@@ -194,6 +208,29 @@ namespace DemoPrototype
         {
             if (StartStopButton.Content.ToString() == "Start")
             {
+                switch (GlobalAppSettings.DataRunType)
+                {
+                    case AOURouter.RunType.Serial:
+                        String comPort = Param1Combo.SelectedItem.ToString();
+                        uint baudRate = uint.Parse(Param2Combo.SelectedItem.ToString());
+                        GlobalAppSettings.SerialSettings = new AOUSettings.SerialSetting(comPort, baudRate);
+                        break;
+                    case AOURouter.RunType.File:
+                        AOUSettings.FileSetting filesettings;
+                        filesettings.SourceType = Param1Combo.SelectedItem.ToString();
+                        filesettings.FilePath = Param2Combo.SelectedItem.ToString();
+                        GlobalAppSettings.FileSettings = filesettings;
+                        break;
+                    case AOURouter.RunType.Random:
+                        AOUSettings.RandomSetting randomsettings;
+                        randomsettings.NumValues = uint.Parse(Param1Combo.SelectedItem.ToString());
+                        randomsettings.MsBetween = uint.Parse(Param2Combo.SelectedItem.ToString());
+                        GlobalAppSettings.RandomSettings = randomsettings;
+                        break;
+                    default:
+                        break;
+                }
+
                 DataUpdater.Restart();
                 DisableChangeDataSource();
 

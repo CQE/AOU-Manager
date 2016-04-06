@@ -61,7 +61,7 @@ namespace DemoPrototype
         }
 
         static public AOUSettings.FileSetting FileSettings
-        { // Serial, File, Random
+        { 
             get
             {
                 if (ApplicationData.Current.LocalSettings.Values.ContainsKey("FileSettings"))
@@ -80,12 +80,14 @@ namespace DemoPrototype
         }
 
         static public AOUSettings.SerialSetting SerialSettings
-        { // Serial, File, Random
+        { 
             get
             {
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("SerialSettings"))
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("SerialSettings-comport"))
                 {
-                    return (AOUSettings.SerialSetting)ApplicationData.Current.LocalSettings.Values["SerialSettings"];
+                    string comport = (string)ApplicationData.Current.LocalSettings.Values["SerialSettings-comport"];
+                    uint baudrate = (uint)ApplicationData.Current.LocalSettings.Values["SerialSettings-baudrate"];
+                    return new AOUSettings.SerialSetting(comport, baudrate);
                 }
                 else
                 {
@@ -94,12 +96,19 @@ namespace DemoPrototype
             }
             set
             {
-                ApplicationData.Current.LocalSettings.Values["SerialSettings"] = value;
+                try {
+                    ApplicationData.Current.LocalSettings.Values["SerialSettings-comport"] = value.ComPort;
+                    ApplicationData.Current.LocalSettings.Values["SerialSettings-baudrate"] = value.BaudRate;
+                }
+                catch (Exception e)
+                {
+                    string s = e.Message;
+                }
             }
         }
 
         static public AOUSettings.RandomSetting RandomSettings
-        { // Serial, File, Random
+        { 
             get
             {
                 if (ApplicationData.Current.LocalSettings.Values.ContainsKey("RandomSettings"))

@@ -107,7 +107,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,30,0" Grid.Row="3" Grid.Column="4">
                 <TextBlock  Name="TextBlock_HotCalibrate" VerticalAlignment="Bottom" Margin="0,0,0,0" Text="88"></TextBlock>
                 <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
-                <TextBox Name="HotFeedToReturnDelayCalTime" GotFocus="HotFeedToReturnDelayCalTime_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Margin="10,0,0,0" Text="22"></TextBox>
+                <TextBox Name="HotFeedToReturnDelayCalTime" GotFocus="HotFeedToReturnDelayCalTime_GotFocus" TextChanged="HotFeedToReturnDelayCalTime_TextChanged" IsReadOnly="True" VerticalAlignment="Bottom" Margin="10,0,0,0" Text="22"></TextBox>
                 <TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,0" Text="="></TextBlock>
                 <TextBlock Name="TextBlock_SumHotDelayTime" VerticalAlignment="Bottom" Margin="5,0,0,0" Text="110"></TextBlock>
                 <TextBlock Margin="8,0,0,0" VerticalAlignment="Bottom" Text="(s)"></TextBlock>
@@ -117,7 +117,7 @@
         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,0,30,0" Grid.Row="4" Grid.Column="4">
                 <TextBlock Name="TextBlock_ColdCalibrate" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,0" Text="110"></TextBlock>
                 <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
-                <TextBox Name="ColdFeedToReturnDelayCalTime"  GotFocus="ColdFeedToReturnDelayCalTime_GotFocus" IsReadOnly="True" Margin="10,0,0,0" VerticalAlignment="Bottom" Text="33"></TextBox>
+                <TextBox Name="ColdFeedToReturnDelayCalTime"  GotFocus="ColdFeedToReturnDelayCalTime_GotFocus" TextChanged="ColdFeedToReturnDelayCalTime_TextChanged" IsReadOnly="True" Margin="10,0,0,0" VerticalAlignment="Bottom" Text="33"></TextBox>
                 <TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,0" Text="="></TextBlock>
                 <TextBlock  Name="TextBlock_SumColdDelayTime" Margin="5,0,0,0" VerticalAlignment="Bottom" Text="122"></TextBlock>
                 <TextBlock Margin="8,0,0,0" VerticalAlignment="Bottom" Text="(s)"></TextBlock>

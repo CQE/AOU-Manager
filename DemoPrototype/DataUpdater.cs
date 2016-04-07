@@ -57,7 +57,8 @@ namespace DemoPrototype
         {
             if (dataRouter != null)
             {
-                dataRouter.SendCommandToPlc(AOUTypes.CommandType.hotDelayTime, time); // ToDo
+                //dataRouter.SendCommandToPlc(AOUTypes.CommandType.hotDelayTime, time); // ToDo
+                dataRouter.SendCommandToPlc(AOUTypes.CommandType.RunningModeHeating,time);
             }
         }
 
@@ -65,7 +66,7 @@ namespace DemoPrototype
         {
             if (dataRouter != null)
             {
-                dataRouter.SendCommandToPlc(AOUTypes.CommandType.coldDelayTime, time); // ToDo
+                dataRouter.SendCommandToPlc(AOUTypes.CommandType.RunningModeCooling, time); // ToDo
             }
         }
 

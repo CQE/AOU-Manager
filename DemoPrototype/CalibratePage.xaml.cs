@@ -25,7 +25,7 @@ namespace DemoPrototype
     {
         private DispatcherTimer dTimer;
 
-        private int calibrationTime = 0;
+        private int doStepTimer = 0;
 
         public CalibratePage()
         {
@@ -89,12 +89,14 @@ namespace DemoPrototype
         void UpdateTick(object sender, object e)
         {
             DataUpdater.UpdateInputData(CalibrateGrid.DataContext);
-            if (calibrationTime > 0)
+            if (doStepTimer > 0)
             {
-                calibrationTime--;
-                if (calibrationTime == 0)
+                doStepTimer--;
+                if (doStepTimer == 0)
                 {
                     dTimer.Stop();
+                    //todo: set back to Idle
+                    DataUpdater.SetCommand(AOUTypes.CommandType.RunningModeIdle);
                     HotStepButton.IsEnabled = true;
                     ColdStepButton.IsEnabled = true;
                 }
@@ -121,7 +123,9 @@ namespace DemoPrototype
         
         private void DoHotStep(object sender, RoutedEventArgs e)
         {
-            int hotStepLength = AppHelper.ConvertToValidInteger(CalibrateHotStepValue.Text, 5, 25);
+            int hotStepLength = AppHelper.ConvertToValidInteger(CalibrateHotStepValue.Text, 2, 25);
+            //TODO must check if in state IDLE. If not, display error message and return
+            
             if (hotStepLength == -1)
             {
                 AppHelper.ShowMessageBox("No valid time value");
@@ -131,7 +135,7 @@ namespace DemoPrototype
                 SetAxisRangeForTempStep(hotStepLength);
                 //sent command and value to AOU 
                 //plot Hot Step response for x seconds
-                calibrationTime = hotStepLength;
+                doStepTimer = hotStepLength;
                 DataUpdater.StartHotStep(hotStepLength);
                 HotStepButton.IsEnabled = false;
                 ColdStepButton.IsEnabled = false;
@@ -141,7 +145,7 @@ namespace DemoPrototype
 
         private void DoColdStep(object sender, RoutedEventArgs e)
         {
-            int coldStepLength = AppHelper.ConvertToValidInteger(CalibrateColdStepValue.Text, 5, 10);
+            int coldStepLength = AppHelper.ConvertToValidInteger(CalibrateColdStepValue.Text, 2, 25);
             //DataUpdater.StartHotStep(coldStepLength);
             if (coldStepLength == -1)
             {
@@ -150,7 +154,7 @@ namespace DemoPrototype
             else
             {
                 SetAxisRangeForTempStep(coldStepLength);
-                calibrationTime = coldStepLength;
+                doStepTimer = coldStepLength;
                 DataUpdater.StartColdStep(coldStepLength);
                 HotStepButton.IsEnabled = false;
                 ColdStepButton.IsEnabled = false;
@@ -160,7 +164,7 @@ namespace DemoPrototype
 
         private void FreezeCalibrateGraphs(object sender, DoubleTappedRoutedEventArgs e)
         {
-            if (dTimer.IsEnabled && calibrationTime == 0)
+            if (dTimer.IsEnabled && doStepTimer == 0)
             {
                 dTimer.Stop();
             }

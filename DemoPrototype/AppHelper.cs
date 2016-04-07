@@ -97,7 +97,7 @@ namespace DemoPrototype
             DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, vLine, pg, val, oldValue);
         }
 
-        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, AOUTypes.CommandType cmd, int min, int max, bool sendToAOU = true)
+        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, AOUTypes.CommandType cmd, int min, int max, Page pg, bool sendToAOU = true)
         {
             /* Example to use GetValueToTextBox
             
@@ -127,6 +127,26 @@ namespace DemoPrototype
                     {
                         textbox.Text = ((SetValueDialog)dialog).GetStringValue();
                         int val = ((SetValueDialog)dialog).GetIntValue();
+                        //Need to handle delay time to calculate correct val
+                        if (cmd == AOUTypes.CommandType.hotDelayTime)
+                        {
+                            //save new value
+                            if (pg.Name == "OperatorPage")
+                                GlobalVars.globDelayTimes.HotTune = val;
+                            else
+                                GlobalVars.globDelayTimes.HotCalibrate = val;
+                            val = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
+                        }
+                        if (cmd == AOUTypes.CommandType.coldDelayTime)
+                        {
+                            //save new value
+                            if (pg.Name == "OperatorPage")
+                                GlobalVars.globDelayTimes.ColdTune = val;
+                            else
+                                GlobalVars.globDelayTimes.ColdCalibrate = val;
+                            val = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
+                        }
+
                         DataUpdater.SetCommandValue(cmd, val);
                     }
                     if (nextControl != null)

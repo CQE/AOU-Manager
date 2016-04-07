@@ -324,13 +324,13 @@ namespace DemoPrototype
         private void HotFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Hot feed-to-return delay time", AOUTypes.CommandType.TReturnThresholdCold2Hot, 0, 30);         
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Hot feed-to-return delay time", AOUTypes.CommandType.hotDelayTime, 0, 30, this);         
         }
 
         private void ColdFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Cold feed-to-return delay time", AOUTypes.CommandType.TReturnThresholdCold2Hot, 0, 30);
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Cold feed-to-return delay time", AOUTypes.CommandType.coldDelayTime, 0, 30, this);
         }
 
         public void AsyncResponseDlg(AOUTypes.CommandType cmd, bool ok)
@@ -345,5 +345,18 @@ namespace DemoPrototype
             }
         }
 
+        private void HotFeedToReturnDelayTime_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //do we need to change the sum?
+            int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
+            TextBlock_SumHotDelayTime.Text = sum.ToString();
+        }
+
+        private void ColdFeedToReturnDelayTime_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //do we need to change the sum?
+            int sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
+            TextBlock_SumColdDelayTime.Text = sum.ToString();
+        }
     }
 }

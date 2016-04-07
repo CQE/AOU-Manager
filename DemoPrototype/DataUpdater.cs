@@ -315,37 +315,24 @@ namespace DemoPrototype
             {
                 CheckDataRouterSingleton();
                 var dc = (LineChartViewModel)dataContext;
-                if (GlobalAppSettings.DataRunType == AOURouter.RunType.Random)
+                if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
                 {
-                    if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
-                        dc.UpdateNewValue(dataRouter.GetLastNewPowerValue());
-                }
-                else // if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
-                {
-                    /* Real code to use later
-                    dc.UpdateNewValue(dataRouter.GetLastPowerValue());
-                    */
-                    var pwrArr = dataRouter.GetLastPowerValues(30);
-                    for (int i = 0; i < dc.power.Count; i++)
-                    {
-                        dc.power.RemoveAt(0);
-                    }
-
-                    foreach (var pwr in pwrArr)
-                    {
-                        dc.power.Add(pwr);
-                    }
+                    dc.UpdateNewValue(dataRouter.GetLastNewPowerValue());
                 }
             }
         }
 
-        public static void UpdateInputDataLogMessages(object dataContext)//NewPowerDataIsAvailable
+        public static void UpdateInputDataLogMessages(object dataContext)
         {
             if (dataContext != null)
             {
                 CheckDataRouterSingleton();
                 var dc = (LogMessageViewModel)dataContext;
-
+                if (dataContext != null && dataRouter.NewLogMessagesAreAvailable())
+                {
+                    dc.AddLogMessages(dataRouter.GetNewLogMessages());
+                }
+/*
                 if (GlobalAppSettings.DataRunType == AOURouter.RunType.Random)
                 {
                     if (dataContext != null && dataRouter.NewLogMessagesAreAvailable())
@@ -355,12 +342,10 @@ namespace DemoPrototype
                 }
                 else
                 {
-                    for (int i = 0; i < dc.logMessages.Count; i++)
-                    {
-                        dc.logMessages.RemoveAt(0);
-                    }
+                    dc.logMessages.Clear();
                     dc.AddLogMessages(dataRouter.GetLastLogMessages(20));
                 }
+                */
             }
         }
     }

@@ -91,19 +91,13 @@ namespace DemoPrototype
                 }
                 else
                 {
-                    return new AOUSettings.SerialSetting("COM3", 9600); 
+                    return new AOUSettings.SerialSetting("COM3", 115200); 
                 }
             }
             set
             {
-                try {
-                    ApplicationData.Current.LocalSettings.Values["SerialSettings-comport"] = value.ComPort;
-                    ApplicationData.Current.LocalSettings.Values["SerialSettings-baudrate"] = value.BaudRate;
-                }
-                catch (Exception e)
-                {
-                    string s = e.Message;
-                }
+                ApplicationData.Current.LocalSettings.Values["SerialSettings-comport"] = value.ComPort;
+                ApplicationData.Current.LocalSettings.Values["SerialSettings-baudrate"] = value.BaudRate;
             }
         }
 
@@ -113,7 +107,9 @@ namespace DemoPrototype
             {
                 if (ApplicationData.Current.LocalSettings.Values.ContainsKey("RandomSettings"))
                 {
-                    return (AOUSettings.RandomSetting)ApplicationData.Current.LocalSettings.Values["RandomSettings"];
+                    uint msBetween = (uint)ApplicationData.Current.LocalSettings.Values["RandomSettings-msBetween"];
+                    uint numValues = (uint)ApplicationData.Current.LocalSettings.Values["RandomSettings-numValues"];
+                    return new AOUSettings.RandomSetting(numValues, msBetween);
                 }
                 else
                 {
@@ -122,7 +118,8 @@ namespace DemoPrototype
             }
             set
             {
-                ApplicationData.Current.LocalSettings.Values["RandomSettings"] = value;
+                ApplicationData.Current.LocalSettings.Values["RandomSettings-msBetween"] = value.MsBetween;
+                ApplicationData.Current.LocalSettings.Values["RandomSettings-numValues"] = value.NumValues;
             }
         }
         

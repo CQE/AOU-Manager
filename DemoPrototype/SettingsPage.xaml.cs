@@ -90,6 +90,8 @@ namespace DemoPrototype
             this.Param1Combo.Items.Add("COM4");
             this.Param1Combo.Items.Add("COM5");
             this.Param1Combo.Items.Add("COM6");
+            this.Param1Combo.Items.Add("COM7");
+            this.Param1Combo.Items.Add("COM8");
 
             this.Param2Text.Visibility = Visibility.Visible;
             this.Param2Text.Text = "Baud Rate";
@@ -223,9 +225,9 @@ namespace DemoPrototype
                         break;
                     case AOURouter.RunType.Random:
                         AOUSettings.RandomSetting randomsettings;
-                        randomsettings.NumValues = uint.Parse(Param1Combo.SelectedItem.ToString());
-                        randomsettings.MsBetween = uint.Parse(Param2Combo.SelectedItem.ToString());
-                        GlobalAppSettings.RandomSettings = randomsettings;
+                        // uint numValues = uint.Parse(Param1Combo.SelectedItem.ToString());
+                        //uint msBetween = uint.Parse(Param2Combo.SelectedItem.ToString());
+                        GlobalAppSettings.RandomSettings = new AOUSettings.RandomSetting(30, 1000);
                         break;
                     default:
                         break;

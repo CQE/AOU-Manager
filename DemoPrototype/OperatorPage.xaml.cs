@@ -213,7 +213,7 @@ namespace DemoPrototype
                 {
                     string modeTitle = RunningModeCombo.Items[RunningModeCombo.SelectedIndex].ToString();
                     string message = "You are about to change running mode";
-                    DataUpdater.VerifySendToAOUDlg(modeTitle, message, (AOUTypes.CommandType)RunningModeCombo.SelectedIndex,
+                    DataUpdater.VerifySendToAOUDlg(modeTitle, message, (AOUTypes.CommandType)(RunningModeCombo.SelectedIndex+1), //Urban TODO this is NOT a good solution to this bug MW
                                                     DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, this, RunningModeCombo.SelectedIndex, 0); // Value and OldValue not needed
                 }
                 else

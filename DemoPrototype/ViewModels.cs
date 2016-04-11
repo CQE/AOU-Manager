@@ -29,7 +29,10 @@ namespace DemoPrototype
         {
             if (power.Count > 0)
             {
-                return TimeSpan.FromMilliseconds(power[power.Count - 1].ElapsedTime);
+                if (lastRealValue < power.Count) 
+                    return TimeSpan.FromMilliseconds(power[lastRealValue - 1].ElapsedTime);
+                else
+                    return TimeSpan.FromMilliseconds(power[power.Count - 1].ElapsedTime);
             }
             else
                 return new TimeSpan(0);

@@ -136,7 +136,9 @@
                 <chart:SfChart.PrimaryAxis> 
                     <chart:TimeSpanAxis Name="OperatorDelayXAxis" ></chart:TimeSpanAxis>
                 </chart:SfChart.PrimaryAxis>
-
+                <chart:SfChart.Behaviors>
+                    <chart:ChartTrackBallBehavior LabelDisplayMode="NearestPoint" ></chart:ChartTrackBallBehavior>
+                </chart:SfChart.Behaviors>
                 <chart:SfChart.Legend>
                     <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Collapsed"/>
                 </chart:SfChart.Legend>
@@ -283,9 +285,9 @@
                 </chart:SfChart.Annotations>
 
                 <!-- Want to show a trendline for the mid buffer temperature could not find howto -->
-                <chart:LineSeries LegendIcon="InvertedTriangle" Stroke="DarkRed" Interior="DarkRed" Label="THotBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="InvertedTriangle" Stroke="Red" Interior="Red" Label="THotBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
                 <chart:LineSeries LegendIcon="Diamond" Stroke="darkGreen" Interior="darkGreen" Label="TMidBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
-                <chart:LineSeries LegendIcon="Triangle" Stroke="DarkBlue" Interior="DarkBlue" Label="TColdBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="Triangle" Stroke="Blue" Interior="Blue" Label="TColdBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
             </chart:SfChart>
 
             <!-- energy balance chart -->
@@ -310,14 +312,14 @@
                     </chart:NumericalAxis>
                 </chart:SfChart.SecondaryAxis>
                 <chart:SfChart.Annotations>
-                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdHot2Cold" ShowToolTip="True"  Stroke="DarkRed" StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdHot2Cold_Dragged"  CoordinateUnit="Axis" ></chart:HorizontalLineAnnotation>
+                    <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdHot2Cold" ShowToolTip="True"  Stroke="DarkRed"  StrokeThickness="2" CanDrag="True" DragCompleted="HLineSet_ThresholdHot2Cold_Dragged"  CoordinateUnit="Axis" ></chart:HorizontalLineAnnotation>
                     <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdCold2Hot" ShowToolTip="True"  Stroke="DarkBlue" StrokeThickness="2" CanDrag="True"  DragCompleted="HLineSet_ThresholdCold2Hot_Dragged" CoordinateUnit="Axis"></chart:HorizontalLineAnnotation>
                 </chart:SfChart.Annotations>
                 <!-- Return Valve not yet simulated showing another curve -->
                 <chart:LineSeries LegendIcon="Diamond" Stroke="Orange" Interior="Orange" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
                 <chart:LineSeries LegendIcon="Diamond" Stroke="Red" Interior="Red" Label="THotTank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
                 <chart:LineSeries LegendIcon="Diamond" Stroke="Blue" Interior="Blue" Label="TColdTank" XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:LineSeries>
-                <chart:LineSeries LegendIcon="Diamond" Stroke="Green" Interior="Green" Label="TRetValve" XBindingPath="ElapsedTime" YBindingPath="TReturnValve" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries LegendIcon="Diamond" Stroke="Green" Interior="Green" Label="ValveReturn" XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"></chart:LineSeries>
             </chart:SfChart>
         </Grid>
 

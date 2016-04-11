@@ -250,14 +250,14 @@ namespace DemoPrototype
 
         private void HLineSet_ThresholdHotTankAlarm_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            string title = "Buffer tank hot temperature threshold";
+            string title = "Buffer tank Hot end Lower temperature limit";
             string message = "You are about to set value to ";
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, HLineSet_ThresholdHotTankAlarm, this, GlobalVars.globThresholds.ThresholdHot2Cold);
         }
 
         private void HLineSet_ThresholdColdTankAlarm_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            string title = "Buffer tank cold temperature threshold";
+            string title = "Buffer tank Cold end Upper temperature limit";
             string message = "You are about to set value to ";
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, HLineSet_ThresholdColdTankAlarm, this, GlobalVars.globThresholds.ThresholdHot2Cold);
         }
@@ -390,7 +390,7 @@ namespace DemoPrototype
 
         private void SetHotSafeZoneLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            string title = "Hot tank safe zone";
+            string title = "Lower temperature limit Hot Tank Safe Zone";
             string message = "You are about to set alarm value to ";
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.THotTankAlarmLowThreshold, SetHotSafeZoneLine, this, 0); // ToDo OldValue
         }
@@ -406,7 +406,7 @@ namespace DemoPrototype
         private void SetColdSafeZoneLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             // TBD set new threshold value
-            string title = "Cold tank safe zone";
+            string title = "Upper temperature limit Cold Tank Safe Zone";
             string message = "You are about to set alarm value to ";
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TColdTankAlarmHighThreshold, SetColdSafeZoneLine, this, 0); // ToDo OldValue
         }

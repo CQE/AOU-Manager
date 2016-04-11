@@ -267,23 +267,29 @@ namespace DemoPrototype
             //ask user if new threshold is OK
             string title = "Threshold TRetActual cold" + " ↗ " + "hot";
             string message = "You are about to set new threshold value to ";
+            //set new value in textbox, will restore if cancel
+            TextBox_ColdToHotThreshold.Text = AppHelper.SafeConvertToInt(ColdToHotLineAnnotation.Y1).ToString();
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdCold2Hot, ColdToHotLineAnnotation, this, 0); // ToDo OldValue
         }
         // need to handle cancel button press in this page too
         public void Reset_ThresholdHot2Cold()
         {
             HotToColdLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdHot2Cold;
+            TextBox_HotToColdThreshold.Text = GlobalVars.globThresholds.ThresholdHot2Cold.ToString();
         }
 
         public void Reset_ThresholdCold2Hot()
         {
             ColdToHotLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
+            TextBox_ColdToHotThreshold.Text = GlobalVars.globThresholds.ThresholdCold2Hot.ToString();
         }
-        
+
         private void HotToColdLineAnnotation_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Threshold TRetActual hot" + " ↘ " + "cold";
             string message = "You are about to set new threshold value to ";
+            //set new value in textbox, will restore if cancel
+            TextBox_HotToColdThreshold.Text = AppHelper.SafeConvertToInt(HotToColdLineAnnotation.Y1).ToString();
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdHot2Cold, HotToColdLineAnnotation, this, 0); // ToDo OldValue
         }
 
@@ -298,6 +304,8 @@ namespace DemoPrototype
         {
             string title = "Buffer tank mid temperature threshold";
             string message = "You are about to set value to ";
+            //set new value in textbox, will restore if cancel
+            BufMidThresholdValue.Text = AppHelper.SafeConvertToInt(TBufMidHLine.Y1).ToString();
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, TBufMidHLine, this, 0); // ToDo OldValue
         }
 
@@ -322,6 +330,8 @@ namespace DemoPrototype
         public void Reset_ThresholdMidTankAlarm()
         {
             TBufMidHLine.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
+            BufMidThresholdValue.Text = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit.ToString();
+
         }
 
 
@@ -361,6 +371,26 @@ namespace DemoPrototype
             //do we need to change the sum?
             int sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
             TextBlock_SumColdDelayTime.Text = sum.ToString();
+        }
+
+        private void TextBox_HotToColdThreshold_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //show slider and send command to AOU
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TRetActual hot" + " ↘ " + "cold", AOUTypes.CommandType.TReturnThresholdHot2Cold, 0, 300, this);
+        }
+
+        private void TextBox_ColdToHotThreshold_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //show slider and send command to AOU
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TRetActual cold" + " ↗ " + "hot", AOUTypes.CommandType.TReturnThresholdCold2Hot, 0, 300, this);
+            //todo update line
+        }
+
+        private void BufMidThresholdValue_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //show slider and send command to AOU
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TMidBuffer", AOUTypes.CommandType.TBufferMidRefThreshold, 0, 300, this);
+            //todo update line
         }
     }
 }

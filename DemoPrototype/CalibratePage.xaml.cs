@@ -289,7 +289,7 @@ namespace DemoPrototype
 
         private void TBufHotHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            string title = "Buffer tank hot temperature lower limit";
+            string title = "Buffer tank Hot temperature Lower limit";
             string message = "You are about to set value to ";
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, TBufHotHLine, this, GlobalVars.globThresholds.ThresholdHot2Cold);
         }
@@ -303,7 +303,7 @@ namespace DemoPrototype
 
         private void TBufColdHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
-            string title = "Buffer tank cold temperature upper limit";
+            string title = "Buffer tank Cold temperature Upper limit";
             string message = "You are about to set value to ";
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, TBufColdHLine, this, 0); // ToDo OldValue
         }

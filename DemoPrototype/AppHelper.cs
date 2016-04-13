@@ -85,16 +85,16 @@ namespace DemoPrototype
             }
         }
 
-        public static void SetLimitValueFromHorizontalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.HorizontalLineAnnotation hLine, Page pg, int oldValue)
+        public static void SetLimitValueFromHorizontalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.HorizontalLineAnnotation hLine, Page pg)
         {
             int val = SafeConvertToInt(hLine.Y1); //only want whole integers on Y axis label
-            DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, hLine.Y1, pg, val, oldValue);
+            DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, pg, val);
         }
 
-        public static void SetLimitValueFromVerticalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.VerticalLineAnnotation vLine, Page pg, int oldValue)
+        public static void SetLimitValueFromVerticalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.VerticalLineAnnotation vLine, Page pg)
         {
             int val = SafeConvertToInt(vLine.X1); //only want whole integers on X axis label
-            DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, vLine, pg, val, oldValue);
+            DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, pg, val);
         }
 
         public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, AOUTypes.CommandType cmd, int min, int max, Page pg, bool sendToAOU = true)

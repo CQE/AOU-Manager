@@ -11,8 +11,9 @@ namespace DemoPrototype
     public class LineChartViewModel
     // Class for handling chart data
     {
-        public const int maxNumPoints = 30;
+        private const int maxNumPoints = 30;
         private int lastRealValue = 0;
+        private long timeBetween = 1000;
 
         public ObservableCollection<Power> power
         {
@@ -20,46 +21,71 @@ namespace DemoPrototype
             set;
         }
 
+        public int GetMaxNumOfPoints()
+        {
+            return maxNumPoints;
+        }
+
         public LineChartViewModel()
         {
             power = new ObservableCollection<Power>();
         }
 
-        public TimeSpan GetActualTimeSpan()
+        public bool IsEmpty()
         {
-            if (power.Count > 0)
+            return power.Count == 0; 
+        }
+
+        public bool IsMoreTheMaxNumPoints()
+        {
+            return power.Count > maxNumPoints;
+        }
+
+        public void SetValues(List<Power> lastPowers)
+        {
+            try
             {
-                if (lastRealValue < power.Count) 
-                    return TimeSpan.FromMilliseconds(power[lastRealValue - 1].ElapsedTime);
-                else
-                    return TimeSpan.FromMilliseconds(power[power.Count - 1].ElapsedTime);
+                for (int i = 0; i < lastPowers.Count; i++)
+                {
+                    power.Add(lastPowers[i]);
+                }
+
+                long lastTime = 0;
+                if (lastPowers.Count > 0)
+                {
+                    lastTime = lastPowers[lastPowers.Count - 1].ElapsedTime;
+                }
+
+                if (lastPowers.Count > 1)
+                {
+                    long diff = lastPowers[lastPowers.Count - 1].ElapsedTime - lastPowers[0].ElapsedTime;
+                    if (diff >= 100*lastPowers.Count)
+                    { 
+                        timeBetween = diff / (lastPowers.Count - 1);
+                    }
+                }
+
+                if (lastPowers.Count < maxNumPoints) { 
+
+                    for (int i = lastPowers.Count; i < maxNumPoints; i++)
+                    {
+                        power.Add(new Power(lastTime + i * timeBetween)); 
+                    }
+                }
             }
-            else
-                return new TimeSpan(0);
+            catch (Exception e)
+            {
+                var errmsg = e.Message;
+                // ToDo logging
+            }
         }
 
         public void UpdateNewValue(Power pow)
         {
             try
             {
-                if (power.Count == 0) // First
+                if (power.Count > 0)
                 {
-                    power.Add(pow);
-                    lastRealValue = 1;
-                    for (int i = 1; i < maxNumPoints; i++)
-                    {
-                        power.Add(new Power(pow.ElapsedTime + i * 1000)); // 1000 ms expected
-                    }
-
-                }
-                else if (lastRealValue < maxNumPoints)
-                {
-                    // Fill with real values in empty points for every new value
-                    power[lastRealValue++] = pow;
-                }
-                else
-                {
-                    // And go this forever
                     power.RemoveAt(0);
                     power.Add(pow);
                 }
@@ -69,6 +95,19 @@ namespace DemoPrototype
                 var errmsg = e.Message;
                 // ToDo logging
             }
+        }
+
+        public TimeSpan GetActualTimeSpan()
+        {
+            if (power.Count > 0)
+            {
+                if (lastRealValue < power.Count)
+                    return TimeSpan.FromMilliseconds(power[lastRealValue - 1].ElapsedTime);
+                else
+                    return TimeSpan.FromMilliseconds(power[power.Count - 1].ElapsedTime);
+            }
+            else
+                return new TimeSpan(0);
         }
     }
 

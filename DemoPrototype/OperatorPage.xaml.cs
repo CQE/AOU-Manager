@@ -24,18 +24,12 @@ namespace DemoPrototype
     /// </summary>
     public sealed partial class OperatorPage : Page
     {
-        private int prevRunModeSelected = -1;
+        private int prevRunModeSelected = -1; // First time or
+
+        private Brush OrgTuneChartBrush;
+        private SolidColorBrush FreezeBrush;
 
         DispatcherTimer dTimer;
-
-        private string[] runningModes = new string[]
-        {
-            "Idle", // AOUTypes.CommandType.RunningModeIdle
-            "Heating", // RunningModeHeating
-            "Cooling", // RunningModeCooling
-            "Fixed Cycling", // RunningModefixedCycling
-            "Auto with IMM" // RunningModeAutoWidthIMM
-        };
 
         public OperatorPage()
         {
@@ -45,11 +39,13 @@ namespace DemoPrototype
             this.InitializeComponent();
             this.Name = "OperatorPage";
 
-            foreach (string mode in runningModes)
+            foreach (string mode in GlobalAppSettings.RunningModeStrings)
             {
                 RunningModeCombo.Items.Add(mode);
             }
-            RunningModeCombo.SelectedIndex = 0; // Idle
+
+            prevRunModeSelected = -1; // First time to prevent sending new mode everytime entering OperatorPage
+            RunningModeCombo.SelectedIndex = GlobalAppSettings.RunningMode; // Get saved Running Mode. Idle default, Only for Run ? Global settings only
 
             //set and calculate delay time values
             TextBlock_HotCalibrate.Text = GlobalVars.globDelayTimes.HotCalibrate.ToString();
@@ -98,15 +94,45 @@ namespace DemoPrototype
                 TextCorF.Text = " (°F)";
             }
 
+            var FreezeColor = new Windows.UI.Color(); FreezeColor.R = 255; FreezeColor.G = 255; FreezeColor.B = 230; FreezeColor.A = 255;
+
+            OrgTuneChartBrush = MyTuneChart.Background;
+
+            FreezeBrush = new SolidColorBrush();
+            FreezeBrush.Color = FreezeColor;
+
             InitDispatcherTimer();
         }
 
-        public void SetRunningMode()
+        private void MaintenancePage_Unloaded(object sender, RoutedEventArgs e)
         {
-            prevRunModeSelected = RunningModeCombo.SelectedIndex;
+            dTimer.Stop();
         }
 
-        public void ResetRunningMode()
+        private void MaintenancePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            dTimer.Start();
+        }
+
+        private void InitDispatcherTimer()
+        {
+            dTimer = new DispatcherTimer();
+            dTimer.Tick += UpdateTick;
+            // dTimer.Interval = new TimeSpan(0, 0, 1); // Seconds
+            dTimer.Interval = new TimeSpan(0, 0, 0, 1, 0); // milliseconds
+        }
+
+        void UpdateTick(object sender, object e)
+        {
+            DataUpdater.UpdateInputData(mainGrid.DataContext);
+        }
+
+
+
+        /****************************************************************************
+        ** Reset methods when Cancel in Modal Dialogs
+        *****************************************************************************/
+        public void Reset_RunningMode()
         {
             int oldIndex = prevRunModeSelected;
             prevRunModeSelected = -1; // Reset to old active mode. Prevent NewModeSelected
@@ -151,59 +177,6 @@ namespace DemoPrototype
         }
 
         //--------------------------------------------------------------------------------
-        private void MaintenancePage_Unloaded(object sender, RoutedEventArgs e)
-        {
-            dTimer.Stop();
-        }
-
-        private void MaintenancePage_Loaded(object sender, RoutedEventArgs e)
-        {
-            dTimer.Start();
-        }
-
-        private void InitDispatcherTimer()
-        {
-            dTimer = new DispatcherTimer();
-            dTimer.Tick += UpdateTick;
-            // dTimer.Interval = new TimeSpan(0, 0, 1); // Seconds
-            dTimer.Interval = new TimeSpan(0, 0, 0, 1, 0); // milliseconds
-        }
-
-        void UpdateTick(object sender, object e)
-        {
-            DataUpdater.UpdateInputData(mainGrid.DataContext);
-        }
-
-      
-
-        public void AsyncResponseDlg(AOUTypes.CommandType cmd, bool ok)
-        {
-            if (ok)
-            {
-                if (cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM)
-                {
-                    prevRunModeSelected = RunningModeCombo.SelectedIndex;
-                }
-            }
-            else
-            {
-                if (cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM)
-                {
-                    int oldIndex = prevRunModeSelected;
-                    prevRunModeSelected = -1; // Reset to old active mode. Prevent NewModeSelected
-                    RunningModeCombo.SelectedIndex = oldIndex;
-                }
-                else
-                {
-                    switch (cmd)
-                    {
-                        case AOUTypes.CommandType.coolingTime: break; // ToDo Reset old value saved in GloabaAppSettings
-                    }
-
-                }
-                AppHelper.ShowMessageBox("Command not sent. Old value restored");
-            }
-        }
 
         private void NewModeSelected(object sender, SelectionChangedEventArgs e)
         {
@@ -213,8 +186,7 @@ namespace DemoPrototype
                 {
                     string modeTitle = RunningModeCombo.Items[RunningModeCombo.SelectedIndex].ToString();
                     string message = "You are about to change running mode";
-                    DataUpdater.VerifySendToAOUDlg(modeTitle, message, (AOUTypes.CommandType)(RunningModeCombo.SelectedIndex+1), //Urban TODO this is NOT a good solution to this bug MW
-                                                    DataUpdater.VerifyDialogType.VeryfyOkCancelOnly, this, RunningModeCombo.SelectedIndex, 0); // Value and OldValue not needed
+                    DataUpdater.VerifySendToAOUDlg(modeTitle, message, AOUTypes.CommandType.RunningMode, this, RunningModeCombo.SelectedIndex);
                 }
                 else
                 {
@@ -227,14 +199,14 @@ namespace DemoPrototype
         {
             string title = "Threshold TRetActual hot" + " ↘ " + "cold";
             string message = "You are about to set new threshold value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdHot2Cold, HLineSet_ThresholdHot2Cold, this,  0); // ToDo OldValue
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdHot2Cold, HLineSet_ThresholdHot2Cold, this);
         }
 
         private void HLineSet_ThresholdCold2Hot_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Threshold TRetActual cold" + " ↘ " + "hot";
             string message = "You are about to set new threshold value to "; 
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdCold2Hot, HLineSet_ThresholdCold2Hot, this, 0); // ToDo OldValue
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdCold2Hot, HLineSet_ThresholdCold2Hot, this);
 
             //Urban please replace this code with code showing diff between the lines, and center the Chartstripline
             //what is this code doing here? PhaseDiffResult.Text = "pl2, Cold";
@@ -245,21 +217,21 @@ namespace DemoPrototype
         {
             string title = "Buffer tank mid temperature threshold";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, HLineSet_ThresholdMidTankAlarm, this, 0); // ToDo OldValue
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, HLineSet_ThresholdMidTankAlarm, this);
         }
 
         private void HLineSet_ThresholdHotTankAlarm_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank Hot end Lower temperature limit";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, HLineSet_ThresholdHotTankAlarm, this, GlobalVars.globThresholds.ThresholdHot2Cold);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, HLineSet_ThresholdHotTankAlarm, this);
         }
 
         private void HLineSet_ThresholdColdTankAlarm_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank Cold end Upper temperature limit";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, HLineSet_ThresholdColdTankAlarm, this, GlobalVars.globThresholds.ThresholdHot2Cold);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, HLineSet_ThresholdColdTankAlarm, this);
         }
 
         //
@@ -321,13 +293,19 @@ namespace DemoPrototype
             if (isRunning)
             {
                 dTimer.Stop();
+                MyTuneChart.Background = FreezeBrush;
+
                 //where are the lines?
                 //double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
                 //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
                 //and what is min on the X-axis?
                 Double startX = AppHelper.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
             }
-            else dTimer.Start();
+            else
+            {
+                dTimer.Start();
+                MyTuneChart.Background = OrgTuneChartBrush;
+            }
         }
 
         /*  GotFocus works better than TextChanged but problems when tab trough controls
@@ -392,7 +370,7 @@ namespace DemoPrototype
         {
             string title = "Lower temperature limit Hot Tank Safe Zone";
             string message = "You are about to set alarm value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.THotTankAlarmLowThreshold, SetHotSafeZoneLine, this, 0); // ToDo OldValue
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.THotTankAlarmLowThreshold, SetHotSafeZoneLine, this);
         }
 
         private void SetColdSafeZoneLine_DragDelta(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragDeltaEventArgs e)
@@ -408,7 +386,7 @@ namespace DemoPrototype
             // TBD set new threshold value
             string title = "Upper temperature limit Cold Tank Safe Zone";
             string message = "You are about to set alarm value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TColdTankAlarmHighThreshold, SetColdSafeZoneLine, this, 0); // ToDo OldValue
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TColdTankAlarmHighThreshold, SetColdSafeZoneLine, this);
         }
 
         private void ColdFeedToReturnDelayCalTime_TextChanged(object sender, TextChangedEventArgs e)
@@ -424,6 +402,39 @@ namespace DemoPrototype
             int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
             TextBlock_SumHotDelayTime.Text = sum.ToString();
         }
+
+        /* Urban Delete?
+         public void AsyncResponseDlg(AOUTypes.CommandType cmd, bool ok) // ToDo: return value
+         {
+             if (ok)
+             {
+                 if (cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM)
+                 {
+                     GlobalAppSettings.AOURunningMode = (GlobalAppSettings.RunningMode)cmd;  // RunningModes. ToDo One CommandType
+                     prevRunModeSelected = RunningModeCombo.SelectedIndex;
+                 }
+             }
+             else
+             {
+                 if (cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM) // RunningModes. ToDo One CommandType
+                 {
+                     int oldIndex = prevRunModeSelected;
+                     prevRunModeSelected = -1; // Reset to old active mode. Prevent NewModeSelected
+                     RunningModeCombo.SelectedIndex = oldIndex;
+                 }
+                 else
+                 {
+                     switch (cmd)
+                     {
+                         case AOUTypes.CommandType.coolingTime: break; // ToDo Reset old value saved in GloabaAppSettings
+                     }
+
+                 }
+                 AppHelper.ShowMessageBox("Command not sent. Old value restored");
+             }
+         }
+         */
+
     }
 
 }

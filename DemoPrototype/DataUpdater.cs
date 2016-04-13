@@ -287,7 +287,7 @@ namespace DemoPrototype
                 }
                 else if (dataRunType == AOURouter.RunType.Serial)
                 {
-                    dataRouter = new AOURouter(GlobalAppSettings.SerialSettings);
+                    dataRouter = new AOURouter(GlobalAppSettings.SerialSettings, AOUSettings.DebugMode.noDebug);
                 }
 
                 return false;

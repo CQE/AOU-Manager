@@ -51,6 +51,7 @@
         <StackPanel Margin="2,20,0,0" Grid.Row="5" Orientation="Horizontal">
             <TextBlock Margin="0,0,0,0" VerticalAlignment="Center" Text="Select AOU Data Source"/>
             <ComboBox x:Name="AOUDataSourceTypesCombo" Margin="2,0,0,0" SelectionChanged="AOUDataSourceTypeChanged"/>
+            <Button x:Name="StartStopButton" Content="Start"  Margin="5,0,0,0" Click="StartStopButton_Click"/>
             <TextBlock x:Name="Param1Text" Margin="20,0,0,0" VerticalAlignment="Center" Text="Param1"/>
             <ComboBox x:Name="Param1Combo" Margin="2,0,0,0"/>
             <TextBlock x:Name="Param2Text" Margin="20,0,0,0" VerticalAlignment="Center" Text="Param2"/>
@@ -58,7 +59,6 @@
             <TextBlock x:Name="Param3Text" Margin="25,0,0,0" VerticalAlignment="Center" Text="Param3"/>
             <TextBox x:Name="FileName" Margin="5,0,0,0" Width="200"></TextBox>
             <Button x:Name="pickButton" Content="Pick" Margin="10,0,0,0" Click="pickButton_Click"/>
-            <Button x:Name="StartStopButton" Content="Start"  Margin="25,0,0,0" Click="StartStopButton_Click"/>
         </StackPanel>
         <StackPanel Margin="0,5,0,0" Grid.Row="6" Orientation="Horizontal">
             <TextBlock x:Name="SourceStatus" Margin="5,2,0,2" VerticalAlignment="Center" Text=""/>

@@ -84,6 +84,7 @@ namespace DemoPrototype
 
             this.Param1Combo.Visibility = Visibility.Visible;
             this.Param1Combo.Items.Clear();
+            this.Param1Combo.Items.Add("RPI1");
             this.Param1Combo.Items.Add("COM1");
             this.Param1Combo.Items.Add("COM2");
             this.Param1Combo.Items.Add("COM3");
@@ -92,6 +93,7 @@ namespace DemoPrototype
             this.Param1Combo.Items.Add("COM6");
             this.Param1Combo.Items.Add("COM7");
             this.Param1Combo.Items.Add("COM8");
+            this.Param1Combo.Items.Add("UART0");
 
             this.Param2Text.Visibility = Visibility.Visible;
             this.Param2Text.Text = "Baud Rate";

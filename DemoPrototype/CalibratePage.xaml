@@ -150,12 +150,12 @@
         -->
         <TextBlock Margin="15,0,0,0"  Grid.Row="9" VerticalAlignment="Center" Text="Hot to cold Return valve switching threshold:"></TextBlock>
         <StackPanel Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="9">
-            <TextBox Name="TextBox_HotToColdThreshold" Height="30"></TextBox>
+            <TextBox Name="TextBox_HotToColdThreshold" GotFocus="TextBox_HotToColdThreshold_GotFocus" Height="30"></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
         <TextBlock Margin="15,0,0,0"  Grid.Row="10" VerticalAlignment="Center" Text="Cold to Hot Return valve switching threshold:"></TextBlock>
         <StackPanel Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal"  Grid.Row="10">
-            <TextBox Name="TextBox_ColdToHotThreshold" Height="30"></TextBox>
+            <TextBox Name="TextBox_ColdToHotThreshold" GotFocus="TextBox_ColdToHotThreshold_GotFocus"  Height="30"></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
 
@@ -193,7 +193,7 @@
       
         <TextBlock Margin="30,0,0,0" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="9" VerticalAlignment="Center" Text="Buffertank mid threshold value:"></TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="9">
-            <TextBox Name="BufMidThresholdValue" Height="30" ></TextBox>
+            <TextBox Name="BufMidThresholdValue" GotFocus="BufMidThresholdValue_GotFocus" Height="30" ></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
 

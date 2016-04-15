@@ -85,6 +85,8 @@ namespace DemoPrototype
             this.Param1Combo.Visibility = Visibility.Visible;
             this.Param1Combo.Items.Clear();
             this.Param1Combo.Items.Add("RPI1");
+            this.Param1Combo.Items.Add("RPI2");
+            this.Param1Combo.Items.Add("RPI3");
             this.Param1Combo.Items.Add("COM1");
             this.Param1Combo.Items.Add("COM2");
             this.Param1Combo.Items.Add("COM3");

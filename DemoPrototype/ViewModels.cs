@@ -38,40 +38,69 @@ namespace DemoPrototype
 
         public bool IsMoreTheMaxNumPoints()
         {
-            return power.Count > maxNumPoints;
+            return power.Count >= maxNumPoints && (lastRealValue+1) >= maxNumPoints;
         }
 
         public void SetValues(List<Power> lastPowers)
         {
+            if (lastPowers.Count == 0)
+            {
+                return; // No data to handle
+            }
+
             try
             {
-                for (int i = 0; i < lastPowers.Count; i++)
+                if (power.Count == 0)
                 {
-                    power.Add(lastPowers[i]);
-                }
-
-                long lastTime = 0;
-                if (lastPowers.Count > 0)
-                {
-                    lastTime = lastPowers[lastPowers.Count - 1].ElapsedTime;
-                }
-
-                if (lastPowers.Count > 1)
-                {
-                    long diff = lastPowers[lastPowers.Count - 1].ElapsedTime - lastPowers[0].ElapsedTime;
-                    if (diff >= 100*lastPowers.Count)
-                    { 
-                        timeBetween = diff / (lastPowers.Count - 1);
-                    }
-                }
-
-                if (lastPowers.Count < maxNumPoints) { 
-
-                    for (int i = lastPowers.Count; i < maxNumPoints; i++)
+                    lastRealValue = lastPowers.Count;
+                    for (int i = 0; i < lastPowers.Count; i++)
                     {
-                        power.Add(new Power(lastTime + i * timeBetween)); 
+                        power.Add(lastPowers[i]);
+                    }
+
+                    long lastTime = 0;
+                    if (lastPowers.Count > 0)
+                    {
+                        lastTime = lastPowers[lastPowers.Count - 1].ElapsedTime;
+                    }
+
+                    if (lastPowers.Count > 1)
+                    {
+                        long diff = lastPowers[lastPowers.Count - 1].ElapsedTime - lastPowers[0].ElapsedTime;
+                        if (diff >= 100 * lastPowers.Count)
+                        {
+                            timeBetween = diff / (lastPowers.Count - 1);
+                        }
+                    }
+                    if (lastPowers.Count < maxNumPoints)
+                    {
+                        for (int i = lastPowers.Count; i < maxNumPoints; i++)
+                        {
+                            power.Add(new Power(lastTime + i * timeBetween));
+                        }
                     }
                 }
+                else if (power.Count == maxNumPoints && lastRealValue < maxNumPoints)
+                {
+                    int num = lastPowers.Count;
+                    int start = lastRealValue;
+                    lastRealValue += num;
+
+                    if ((lastRealValue + num) > maxNumPoints)
+                    {
+                        num = maxNumPoints - lastRealValue - 1;
+                        lastRealValue = 30;
+                    }
+                    for (int i = 1; i <= num; i++)
+                    {
+                        power[start+i] = lastPowers[i-1];
+                    }
+                }
+                else
+                {
+                    int err = 1;
+                }
+
             }
             catch (Exception e)
             {

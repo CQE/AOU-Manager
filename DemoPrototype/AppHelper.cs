@@ -146,6 +146,13 @@ namespace DemoPrototype
                                 GlobalVars.globDelayTimes.ColdCalibrate = val;
                             val = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
                         }
+                        //need to handle thresholds too
+                        if (cmd == AOUTypes.CommandType.TReturnThresholdHot2Cold)
+                        {
+                            //save new value
+                            GlobalVars.globThresholds.ThresholdHot2Cold = val;
+                            //and now what? MW
+                        }
 
                         DataUpdater.SetCommandValue(cmd, val);
                     }

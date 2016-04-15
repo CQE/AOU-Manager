@@ -29,3 +29,38 @@
 
   </Application>
 </Directives>
+
+
+<Library Name="Syncfusion.Data.UWP">
+    <Type Name="System.Linq.EnumerableExecutor{System.Int32}" Dynamic="Required Public" />
+    <Type Name="System.Collections.ObjectModel.ObservableCollection{}" Dynamic="Required Public" />
+    <Namespace Name="System.Linq" Dynamic="Required All" />
+    <Type Name="System.Linq.Queryable">
+      <MethodInstantiation Name="OrderBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Int32" Dynamic="Required" />
+      <MethodInstantiation Name="OrderBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Boolean" Dynamic="Required" />
+      <MethodInstantiation Name="OrderBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.DateTime" Dynamic="Required"/>
+      <MethodInstantiation Name="OrderBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Decimal" Dynamic="Required" />
+      <MethodInstantiation Name="OrderBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Double" Dynamic="Required" />
+      <MethodInstantiation Name="OrderBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Int64" Dynamic="Required" />
+      <MethodInstantiation Name="OrderByDescending" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Int32"Dynamic="Required" />
+      <MethodInstantiation Name="OrderByDescending" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Boolean"Dynamic="Required" />
+      <MethodInstantiation Name="OrderByDescending" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.DateTime"Dynamic="Required" />
+      <MethodInstantiation Name="OrderByDescending" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Decimal"Dynamic="Required" />
+      <MethodInstantiation Name="OrderByDescending" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Double"Dynamic="Required" />
+      <MethodInstantiation Name="OrderByDescending" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Int64"Dynamic="Required" />
+  <MethodInstantiation Name="ThenByDescending" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Int32" Dynamic="Required" />
+  <MethodInstantiation Name="ThenByDescending" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Boolean" Dynamic="Required" />
+  <MethodInstantiation Name="ThenByDescending" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.DateTime " Dynamic="Required" />
+  <MethodInstantiation Name="ThenByDescending" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Decimal " Dynamic="Required" />
+
+  <MethodInstantiation Name="ThenByDescending" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Double " Dynamic="Required" />
+  <MethodInstantiation Name="ThenByDescending" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Int64" Dynamic="Required" />
+  <MethodInstantiation Name="ThenBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Int32" Dynamic="Required" />
+  <MethodInstantiation Name="ThenBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Boolean" Dynamic="Required" />
+  <MethodInstantiation Name=" ThenBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.DateTime " Dynamic="Required" />
+  <MethodInstantiation Name=" ThenBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Decimal " Dynamic="Required" />
+
+  <MethodInstantiation Name=" ThenBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Double " Dynamic="Required" />
+  <MethodInstantiation Name=" ThenBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Int64" Dynamic="Required" />
+    </Type>
+  </Library>

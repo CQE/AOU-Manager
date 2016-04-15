@@ -40,6 +40,37 @@ namespace DemoPrototype
             ApplicationData.Current.LocalSettings.Values["AOUCmdValue-" + cmdType] = value;
         }
 
+        /********************
+        ***  Running Mode
+        */
+        public static string[] RunningModeStrings = new string[] {
+                                                                "Idle", // 0, AOUTypes.CommandType.RunningModeIdle
+                                                                "Heating", // 1, RunningModeHeating
+                                                                "Cooling", // 2, RunningModeCooling
+                                                                "Fixed Cycling", // 3, RunningModefixedCycling
+                                                                "Auto with IMM" // 4, RunningModeAutoWidthIMM
+                                                                };
+
+        public static int RunningMode
+        {
+            get
+            {
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("RunningMode"))
+                {
+                    return (int)ApplicationData.Current.LocalSettings.Values["RunningMode"];
+                }
+                else
+                {
+                    return (int)AOUTypes.AOURunningMode.Idle;
+                }
+            }
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["RunningMode"] = value;
+            }
+        }
+
+        /********************/
 
         static public AOURouter.RunType DataRunType
         { // Serial, File, Random
@@ -122,7 +153,7 @@ namespace DemoPrototype
                 ApplicationData.Current.LocalSettings.Values["RandomSettings-numValues"] = value.NumValues;
             }
         }
-        
+
     }
 
     /// <summary>
@@ -130,16 +161,16 @@ namespace DemoPrototype
     /// </summary>
     public static class GlobalVars
     {
-        public static GlobalThresHolds globThresholds;
-        public static GlobalDelayTimes globDelayTimes;
-        // Important to call this in MainPage constructor. Program crasch If not 
-        public static void Init()
-        {
-            /* Where - this values
-                220
-                60
-            */
-            globThresholds = new GlobalThresHolds();
+    public static GlobalThresHolds globThresholds;
+    public static GlobalDelayTimes globDelayTimes;
+    // Important to call this in MainPage constructor. Program crasch If not 
+    public static void Init()
+    {
+    /* Where - this values
+        220
+        60
+    */
+        globThresholds = new GlobalThresHolds();
             globThresholds.ThresholdHot2Cold = 100;
             globThresholds.ThresholdCold2Hot = 110;
             globThresholds.ThresholdHotTankLowLimit = 120;

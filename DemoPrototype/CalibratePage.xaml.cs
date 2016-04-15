@@ -96,7 +96,7 @@ namespace DemoPrototype
                 {
                     dTimer.Stop();
                     //todo: set back to Idle
-                    DataUpdater.SetCommand(AOUTypes.CommandType.RunningModeIdle);
+                    DataUpdater.SetCommandValue(AOUTypes.CommandType.RunningMode, (int)AOUTypes.AOURunningMode.Idle);
                     HotStepButton.IsEnabled = true;
                     ColdStepButton.IsEnabled = true;
                 }
@@ -269,7 +269,7 @@ namespace DemoPrototype
             string message = "You are about to set new threshold value to ";
             //set new value in textbox, will restore if cancel
             TextBox_ColdToHotThreshold.Text = AppHelper.SafeConvertToInt(ColdToHotLineAnnotation.Y1).ToString();
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdCold2Hot, ColdToHotLineAnnotation, this, 0); // ToDo OldValue
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdCold2Hot, ColdToHotLineAnnotation, this);
         }
         // need to handle cancel button press in this page too
         public void Reset_ThresholdHot2Cold()
@@ -290,14 +290,14 @@ namespace DemoPrototype
             string message = "You are about to set new threshold value to ";
             //set new value in textbox, will restore if cancel
             TextBox_HotToColdThreshold.Text = AppHelper.SafeConvertToInt(HotToColdLineAnnotation.Y1).ToString();
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdHot2Cold, HotToColdLineAnnotation, this, 0); // ToDo OldValue
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdHot2Cold, HotToColdLineAnnotation, this);
         }
 
         private void TBufHotHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank Hot temperature Lower limit";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, TBufHotHLine, this, GlobalVars.globThresholds.ThresholdHot2Cold);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, TBufHotHLine, this);
         }
 
         private void TBufMidHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
@@ -306,14 +306,14 @@ namespace DemoPrototype
             string message = "You are about to set value to ";
             //set new value in textbox, will restore if cancel
             BufMidThresholdValue.Text = AppHelper.SafeConvertToInt(TBufMidHLine.Y1).ToString();
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, TBufMidHLine, this, 0); // ToDo OldValue
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, TBufMidHLine, this);
         }
 
         private void TBufColdHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank Cold temperature Upper limit";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, TBufColdHLine, this, 0); // ToDo OldValue
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, TBufColdHLine, this);
         }
 
 

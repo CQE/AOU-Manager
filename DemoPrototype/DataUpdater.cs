@@ -58,7 +58,7 @@ namespace DemoPrototype
             if (dataRouter != null)
             {
                 //dataRouter.SendCommandToPlc(AOUTypes.CommandType.hotDelayTime, time); // ToDo
-                dataRouter.SendCommandToPlc(AOUTypes.CommandType.RunningModeHeating,time);
+                dataRouter.SendCommandToPlc(AOUTypes.CommandType.CmdTypeToDo, time);
             }
         }
 
@@ -66,7 +66,7 @@ namespace DemoPrototype
         {
             if (dataRouter != null)
             {
-                dataRouter.SendCommandToPlc(AOUTypes.CommandType.RunningModeCooling, time); // ToDo
+                dataRouter.SendCommandToPlc(AOUTypes.CommandType.CmdTypeToDo, time); // ToDo
             }
         }
 
@@ -102,37 +102,7 @@ namespace DemoPrototype
             }
         }
 
-
-
-        /*
-               public enum CommandType
-                {
-                    CmdTypeToDo = 0,
-                    RunningModeIdle = 1,
-                    RunningModeHeating = 2,
-                    RunningModeCooling = 3,
-                    RunningModefixedCycling = 4,
-                    RunningModeAutoWidthIMM = 5,
-                    tempHotTankFeedSet = 6,
-                    tempColdTankFeedSet = 7,
-                    coolingTime = 8,
-                    heatingTime = 9,
-                    toolHeatingFeedPause = 10,
-                    toolCoolingFeedPause = 11,
-                    hotDelayTime = 12,
-                    coldDelayTime = 13,
-                    THotTankAlarmLowThreshold = 14,
-                    TColdTankAlarmHighThreshold = 15,
-                    TReturnThresholdCold2Hot = 16,
-                    TReturnThresholdHot2Cold = 17,
-                    TBufferHotLowerLimit = 18,
-                    TBufferMidRefThreshold = 19,
-                    TBufferColdUpperLimit = 20
-                }
-
-        */
-
-        public static async void VerifySendToAOUDlg(string title, string message, AOUTypes.CommandType cmd, Object valueObject, Page pg, int val, int oldVal)
+        public static async void VerifySendToAOUDlg(string title, string message, AOUTypes.CommandType cmd, Page pg, int val)
         {
             var dlg = new ContentDialog();
             dlg.Title = title;
@@ -141,19 +111,17 @@ namespace DemoPrototype
             dlg.SecondaryButtonText = "Cancel";
 
             ContentDialogResult res = await dlg.ShowAsync();
-            if (res == ContentDialogResult.Primary)
+            try
             {
-                if (cmd >= AOUTypes.CommandType.RunningModeIdle && cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM)
-                {
-                    ((OperatorPage)pg).SetRunningMode(); // Special case because drop 
-                    //Urban is this the place to make the call to AOU? TBD
-                    dataRouter.SendCommandToPlc(cmd,val);
-                }
-                else
+                if (res == ContentDialogResult.Primary)
                 {
                     //Store new value and send to AOU
                     switch (cmd)
                     {
+                        case AOUTypes.CommandType.RunningMode:
+                            dataRouter.SendCommandToPlc(cmd, val);
+                            GlobalAppSettings.RunningMode = val;
+                            break;
                         case AOUTypes.CommandType.THotTankAlarmLowThreshold:
                             dataRouter.SendCommandToPlc(AOUTypes.CommandType.THotTankAlarmLowThreshold, val);
                             GlobalVars.globThresholds.ThresholdHotTankLowLimit = val;
@@ -184,32 +152,15 @@ namespace DemoPrototype
                             break;
                         default:
                             break;
-
                     }
-
-                    /*
-                    if (pg.Name == "CalibratePage")
-                        ((CalibratePage)pg).AsyncResponseDlg(cmd, true);
-                    else if (pg.Name == "OperatorPage")
-                        ((OperatorPage)pg).AsyncResponseDlg(cmd, true);
-                   */
                 }
-            }
-            else  //need to handle cancel
-            {
-                if (cmd >= AOUTypes.CommandType.RunningModeIdle && cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM)
-                {
-                    ((OperatorPage)pg).ResetRunningMode();
-                }
-                else
+                else  //need to handle cancel
                 {
                     switch (cmd)
                     {
-                        case AOUTypes.CommandType.THotTankAlarmLowThreshold:
-                            //if (pg.Name == "CalibratePage")
-                             //   ((CalibratePage)pg).Reset_HotTankAlarmThreshold();
+                        case AOUTypes.CommandType.RunningMode:
                             if (pg.Name == "OperatorPage")
-                                ((OperatorPage)pg).Reset_HotTankAlarmThreshold();
+                                ((OperatorPage)pg).Reset_RunningMode();
                             break;
                         case AOUTypes.CommandType.TColdTankAlarmHighThreshold:
                             //if (pg.Name == "CalibratePage")
@@ -231,7 +182,7 @@ namespace DemoPrototype
                             break;
                         case AOUTypes.CommandType.TBufferHotLowerLimit:
                             if (pg.Name == "CalibratePage")
-                               ((CalibratePage)pg).Reset_ThresholdHotTankAlarm();
+                                ((CalibratePage)pg).Reset_ThresholdHotTankAlarm();
                             else if (pg.Name == "OperatorPage")
                                 ((OperatorPage)pg).Reset_ThresholdHotTankAlarm();
                             break;
@@ -243,24 +194,21 @@ namespace DemoPrototype
                             break;
                         case AOUTypes.CommandType.TBufferColdUpperLimit:
                             if (pg.Name == "CalibratePage")
-                               ((CalibratePage)pg).Reset_ThresholdColdTankAlarm();
+                                ((CalibratePage)pg).Reset_ThresholdColdTankAlarm();
                             else if (pg.Name == "OperatorPage")
                                 ((OperatorPage)pg).Reset_ThresholdColdTankAlarm();
                             break;
                         default:
                             break;
                     }
-
+                    AppHelper.ShowMessageBox("Command not sent. Old value restored");
                 }
-                /*
-                 if (pg.Name == "CalibratePage")
-                     ((CalibratePage)pg).AsyncResponseDlg(cmd, false);
-                 else if (pg.Name == "OperatorPage")
-                     ((OperatorPage)pg).AsyncResponseDlg(cmd, false);
-                 */
-                AppHelper.ShowMessageBox("Command not sent. Old value restored");
-
             }
+            catch (Exception e)
+            {
+                AppHelper.ShowMessageBox("Error: " + e.Message);
+            }
+
         }
 
         /*****************************************************
@@ -287,7 +235,7 @@ namespace DemoPrototype
                 }
                 else if (dataRunType == AOURouter.RunType.Serial)
                 {
-                    dataRouter = new AOURouter(GlobalAppSettings.SerialSettings);
+                    dataRouter = new AOURouter(GlobalAppSettings.SerialSettings, AOUSettings.DebugMode.noDebug);
                 }
 
                 return false;
@@ -316,9 +264,19 @@ namespace DemoPrototype
             {
                 CheckDataRouterSingleton();
                 var dc = (LineChartViewModel)dataContext;
-                if (dataContext != null && dataRouter.NewPowerDataIsAvailable())
+                if (dataContext != null)
                 {
-                    dc.UpdateNewValue(dataRouter.GetLastNewPowerValue());
+                    if (dc.IsMoreTheMaxNumPoints())
+                    {
+                        if (dataRouter.NewPowerDataIsAvailable())
+                        { 
+                            dc.UpdateNewValue(dataRouter.GetLastNewPowerValue());
+                        }
+                    }
+                    else
+                    {
+                        dc.SetValues(dataRouter.GetLastPowerValues((int)dc.GetMaxNumOfPoints()));
+                    }
                 }
             }
         }

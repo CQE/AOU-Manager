@@ -31,7 +31,7 @@
 </Directives>
 
 
-<Library Name="Syncfusion.Data.UWP">
+<!-- Library Name="Syncfusion.Data.UWP">
     <Type Name="System.Linq.EnumerableExecutor{System.Int32}" Dynamic="Required Public" />
     <Type Name="System.Collections.ObjectModel.ObservableCollection{}" Dynamic="Required Public" />
     <Namespace Name="System.Linq" Dynamic="Required All" />
@@ -63,4 +63,4 @@
   <MethodInstantiation Name=" ThenBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Double " Dynamic="Required" />
   <MethodInstantiation Name=" ThenBy" Arguments="Syncfusion.Data.Extensions.QueryableExtensions,System.Int64" Dynamic="Required" />
     </Type>
-  </Library>
+  </Library -->

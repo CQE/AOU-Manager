@@ -12,8 +12,11 @@ namespace DemoPrototype
     // Class for handling chart data
     {
         private const int maxNumPoints = 30;
-        private int lastRealValue = 0;
-        private long timeBetween = 1000;
+
+        private int realValueCount = 0;
+
+        private long defaultTimeBetween = 1000;
+        private long newTimeBetween = 0;
 
         public ObservableCollection<Power> power
         {
@@ -21,24 +24,50 @@ namespace DemoPrototype
             set;
         }
 
+        public LineChartViewModel()
+        {
+            power = new ObservableCollection<Power>();
+            for (int i = 0; i < maxNumPoints; i++)
+            {
+                power.Add(new Power(i * defaultTimeBetween)); // Create dummy array with no values
+            }
+        }
+
         public int GetMaxNumOfPoints()
         {
             return maxNumPoints;
         }
 
-        public LineChartViewModel()
-        {
-            power = new ObservableCollection<Power>();
-        }
-
         public bool IsEmpty()
         {
-            return power.Count == 0; 
+            return realValueCount == 0; 
         }
 
-        public bool IsMoreTheMaxNumPoints()
+        public bool NotMaxValuesInCharts()
         {
-            return power.Count >= maxNumPoints && (lastRealValue+1) >= maxNumPoints;
+            return realValueCount < maxNumPoints;
+        }
+
+        private void UpdateTime()
+        {
+            // Shall we update dummy time stamp in dummy values?
+            if (newTimeBetween == 0 && realValueCount > 2 && realValueCount < maxNumPoints)
+            {
+                // Replace time in dummy values with expected time values
+                long diff = power[realValueCount - 1].ElapsedTime - power[0].ElapsedTime;
+                if (diff > (100*realValueCount)) // minimum accepted
+                {
+                    newTimeBetween = diff / (realValueCount - 1);
+                    long time = power[realValueCount - 1].ElapsedTime;
+                    for (int i = realValueCount; i < (maxNumPoints - realValueCount); i++)
+                    {
+                        time += newTimeBetween;
+                        Power pow = power[i];
+                        pow.ElapsedTime = time;
+                        power[i] = pow;
+                    }
+                }
+            }
         }
 
         public void SetValues(List<Power> lastPowers)
@@ -50,57 +79,27 @@ namespace DemoPrototype
 
             try
             {
-                if (power.Count == 0)
+                for (int i = 0; i < lastPowers.Count; i++)
                 {
-                    lastRealValue = lastPowers.Count;
-                    for (int i = 0; i < lastPowers.Count; i++)
-                    {
-                        power.Add(lastPowers[i]);
-                    }
-
-                    long lastTime = 0;
-                    if (lastPowers.Count > 0)
-                    {
-                        lastTime = lastPowers[lastPowers.Count - 1].ElapsedTime;
-                    }
-
-                    if (lastPowers.Count > 1)
-                    {
-                        long diff = lastPowers[lastPowers.Count - 1].ElapsedTime - lastPowers[0].ElapsedTime;
-                        if (diff >= 100 * lastPowers.Count)
-                        {
-                            timeBetween = diff / (lastPowers.Count - 1);
-                        }
-                    }
-                    if (lastPowers.Count < maxNumPoints)
-                    {
-                        for (int i = lastPowers.Count; i < maxNumPoints; i++)
-                        {
-                            power.Add(new Power(lastTime + i * timeBetween));
-                        }
-                    }
+                    power[i] = lastPowers[i];
                 }
-                else if (power.Count == maxNumPoints && lastRealValue < maxNumPoints)
-                {
-                    int num = lastPowers.Count;
-                    int start = lastRealValue;
-                    lastRealValue += num;
+                realValueCount = lastPowers.Count;
+                UpdateTime();
+            }
+            catch (Exception e)
+            {
+                var errmsg = e.Message;
+                // ToDo logging
+            }
+        }
 
-                    if ((lastRealValue + num) > maxNumPoints)
-                    {
-                        num = maxNumPoints - lastRealValue - 1;
-                        lastRealValue = 30;
-                    }
-                    for (int i = 1; i <= num; i++)
-                    {
-                        power[start+i] = lastPowers[i-1];
-                    }
-                }
-                else
-                {
-                    int err = 1;
-                }
-
+        public void SetNewValue(Power pow)
+        {
+            try
+            {
+                power[realValueCount] = pow;
+                realValueCount++;
+                UpdateTime();
             }
             catch (Exception e)
             {
@@ -113,11 +112,8 @@ namespace DemoPrototype
         {
             try
             {
-                if (power.Count > 0)
-                {
-                    power.RemoveAt(0);
-                    power.Add(pow);
-                }
+                power.RemoveAt(0);
+                power.Add(pow);
             }
             catch (Exception e)
             {
@@ -128,10 +124,11 @@ namespace DemoPrototype
 
         public TimeSpan GetActualTimeSpan()
         {
+            // Todo 
             if (power.Count > 0)
             {
-                if (lastRealValue < power.Count)
-                    return TimeSpan.FromMilliseconds(power[lastRealValue - 1].ElapsedTime);
+                if (realValueCount < power.Count)
+                    return TimeSpan.FromMilliseconds(power[realValueCount - 1].ElapsedTime);
                 else
                     return TimeSpan.FromMilliseconds(power[power.Count - 1].ElapsedTime);
             }

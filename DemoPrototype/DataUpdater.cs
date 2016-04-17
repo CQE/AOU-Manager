@@ -266,16 +266,24 @@ namespace DemoPrototype
                 var dc = (LineChartViewModel)dataContext;
                 if (dataContext != null)
                 {
-                    if (dc.IsMoreTheMaxNumPoints())
+                    if (dc.IsEmpty())
                     {
+                        // If first time then get all last values
+                        dc.SetValues(dataRouter.GetLastPowerValues((int)dc.GetMaxNumOfPoints()));
+                    }
+                    else if (dc.NotMaxValuesInCharts())
+                    {
+                        if (dataRouter.NewPowerDataIsAvailable())
+                        {
+                            dc.SetNewValue(dataRouter.GetLastNewPowerValue());
+                        }
+                    }
+                    else
+                    { 
                         if (dataRouter.NewPowerDataIsAvailable())
                         { 
                             dc.UpdateNewValue(dataRouter.GetLastNewPowerValue());
                         }
-                    }
-                    else
-                    {
-                        dc.SetValues(dataRouter.GetLastPowerValues((int)dc.GetMaxNumOfPoints()));
                     }
                 }
             }
@@ -291,21 +299,7 @@ namespace DemoPrototype
                 {
                     dc.AddLogMessages(dataRouter.GetNewLogMessages());
                 }
-/*
-                if (GlobalAppSettings.DataRunType == AOURouter.RunType.Random)
-                {
-                    if (dataContext != null && dataRouter.NewLogMessagesAreAvailable())
-                    {
-                        dc.AddLogMessages(dataRouter.GetNewLogMessages());
-                    }
-                }
-                else
-                {
-                    dc.logMessages.Clear();
-                    dc.AddLogMessages(dataRouter.GetLastLogMessages(20));
-                }
-                */
-            }
+           }
         }
     }
 }

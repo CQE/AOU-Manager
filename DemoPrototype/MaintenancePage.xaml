@@ -11,8 +11,13 @@
 
     <Grid x:Name="MaintenanceGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <Grid.DataContext>
+     <!--  <Grid.DataContext>
             <local:LogMessageViewModel x:Name="data"/>
+        </Grid.DataContext>-->
+
+        <Grid.DataContext>
+            <!--<local:OrderInfoRepository/>  this row works-->
+            <local:LogMessageViewModel></local:LogMessageViewModel>
         </Grid.DataContext>
 
         <Grid.ColumnDefinitions>
@@ -230,18 +235,12 @@
 
 
         <StackPanel Grid.Column="3" Grid.ColumnSpan="2">
-
+<!--
             <sfgrid:SfDataGrid x:Name="LogGrid" AutoGenerateColumns="False"
                                ItemsSource="{Binding logMessages}"
                                Height='600' HeaderRowHeight="30" RowHeight="25" Width="500">
 
-                <!-- sfgrid:SfDataGrid.RowStyle>
-                    <Style  TargetType="sfgrid:GridCell">
-                        <Setter Property="FontSize" Value="12" />
-                        <Setter Property="Margin" Value="1,1,1,1"/>
-                    </Style>
-                </ -->
-
+            
                 <sfgrid:SfDataGrid.HeaderStyle>
                     <Style  TargetType="sfgrid:GridHeaderCellControl">
                         <Setter Property="Background" Value="LightGray" />
@@ -276,17 +275,19 @@
                     </sfgrid:GridNumericColumn>
                 </sfgrid:SfDataGrid.Columns>
 
-                <!-- ItemsSource="{Binding logMessages}" -->
-                <!-- ItemsSource="{Binding ElementName=datapager, Path=PagedSource}" -->
+                        </sfgrid:SfDataGrid>
+-->
+            <!-- sfpager:SfDataPager  x:Name="logpager" Source="{Binding logMessages}"/ -->
 
-                <!-- sfgrid:SfDataGrid.SortColumnDescriptions>
-                    <sfgrid:SortColumnDescription ColumnName="OrderID" SortDirection="Descending"/>
+            <sfgrid:SfDataGrid x:Name="LogGrid" Margin="20,30,0,0" ColumnSizer="Auto"
+                               AllowSorting="True" AllowFiltering="True"
+                              ItemsSource="{Binding logMessages}">
+
+                <sfgrid:SfDataGrid.SortColumnDescriptions>
+                    <sfgrid:SortColumnDescription ColumnName="OrderID"/>
                 </sfgrid:SfDataGrid.SortColumnDescriptions>
-            NumericButtonCount="3" PageSize="15" 
-            </ -->
             </sfgrid:SfDataGrid>
 
-            <!-- sfpager:SfDataPager  x:Name="logpager" Source="{Binding logMessages}"/ -->
             <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                 <Button x:Name="exportButton" Width="150" Content="Export" Click="exportButton_Click"></Button>
              </StackPanel>

@@ -16,7 +16,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using Windows.System.Threading;
-using DataHandler;
 
 namespace DemoPrototype
 {

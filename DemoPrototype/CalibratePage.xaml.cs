@@ -12,7 +12,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using DataHandler;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -96,7 +95,7 @@ namespace DemoPrototype
                 {
                     dTimer.Stop();
                     //todo: set back to Idle
-                    DataUpdater.SetCommandValue(AOUTypes.CommandType.RunningMode, (int)AOUTypes.AOURunningMode.Idle);
+                    DataUpdater.SetCommandValue(AOUDataTypes.CommandType.RunningMode, (int)AOUDataTypes.AOURunningMode.Idle);
                     HotStepButton.IsEnabled = true;
                     ColdStepButton.IsEnabled = true;
                 }
@@ -125,7 +124,7 @@ namespace DemoPrototype
         {
             int hotStepLength = AppHelper.ConvertToValidInteger(CalibrateHotStepValue.Text, 2, 25);
             //TODO must check if in state IDLE. If not, display error message and return
-            if (GlobalAppSettings.RunningMode != (int)AOUTypes.AOURunningMode.Idle)
+            if (GlobalAppSettings.RunningMode != (int)AOUDataTypes.AOURunningMode.Idle)
             {
                 AppHelper.ShowMessageBox("AOU must be in mode IDLE for this command");
                 return;
@@ -152,7 +151,7 @@ namespace DemoPrototype
         {
             int coldStepLength = AppHelper.ConvertToValidInteger(CalibrateColdStepValue.Text, 2, 25);
 
-            if (GlobalAppSettings.RunningMode != (int)AOUTypes.AOURunningMode.Idle)
+            if (GlobalAppSettings.RunningMode != (int)AOUDataTypes.AOURunningMode.Idle)
             {
                 AppHelper.ShowMessageBox("AOU must be in mode IDLE for this command");
                 return;
@@ -237,7 +236,8 @@ namespace DemoPrototype
             TimeSpan TNow;
             if (CalibrateGrid.DataContext != null)
             {
-                TNow = ((LineChartViewModel)CalibrateGrid.DataContext).GetActualTimeSpan();
+                var dc = (LineChartViewModel)CalibrateGrid.DataContext;
+                TNow = TimeSpan.FromMilliseconds(dc.power[dc.power.Count].ElapsedTime);
             }
             else
             {
@@ -279,7 +279,7 @@ namespace DemoPrototype
             string message = "You are about to set new threshold value to ";
             //set new value in textbox, will restore if cancel
             TextBox_ColdToHotThreshold.Text = AppHelper.SafeConvertToInt(ColdToHotLineAnnotation.Y1).ToString();
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdCold2Hot, ColdToHotLineAnnotation, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TReturnThresholdCold2Hot, ColdToHotLineAnnotation, this);
         }
         // need to handle cancel button press in this page too
         public void Reset_ThresholdHot2Cold()
@@ -300,14 +300,14 @@ namespace DemoPrototype
             string message = "You are about to set new threshold value to ";
             //set new value in textbox, will restore if cancel
             TextBox_HotToColdThreshold.Text = AppHelper.SafeConvertToInt(HotToColdLineAnnotation.Y1).ToString();
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdHot2Cold, HotToColdLineAnnotation, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TReturnThresholdHot2Cold, HotToColdLineAnnotation, this);
         }
 
         private void TBufHotHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank Hot temperature Lower limit";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, TBufHotHLine, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TBufferHotLowerLimit, TBufHotHLine, this);
         }
 
         private void TBufMidHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
@@ -316,14 +316,14 @@ namespace DemoPrototype
             string message = "You are about to set value to ";
             //set new value in textbox, will restore if cancel
             BufMidThresholdValue.Text = AppHelper.SafeConvertToInt(TBufMidHLine.Y1).ToString();
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, TBufMidHLine, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TBufferMidRefThreshold, TBufMidHLine, this);
         }
 
         private void TBufColdHLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank Cold temperature Upper limit";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, TBufColdHLine, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TBufferColdUpperLimit, TBufColdHLine, this);
         }
 
 
@@ -348,22 +348,22 @@ namespace DemoPrototype
         private void HotFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Hot feed-to-return delay time", AOUTypes.CommandType.hotDelayTime, 0, 30, this);         
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Hot feed-to-return delay time", AOUDataTypes.CommandType.hotDelayTime, 0, 30, this);         
         }
 
         private void ColdFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Cold feed-to-return delay time", AOUTypes.CommandType.coldDelayTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Cold feed-to-return delay time", AOUDataTypes.CommandType.coldDelayTime, 0, 30, this);
         }
 
-        public void AsyncResponseDlg(AOUTypes.CommandType cmd, bool ok)
+        public void AsyncResponseDlg(AOUDataTypes.CommandType cmd, bool ok)
         {
             if (!ok)
             {
                 switch (cmd)
                 {
-                    case AOUTypes.CommandType.coolingTime: break; // TODO: Reset old value saved in GlobalAppSettings
+                    case AOUDataTypes.CommandType.coolingTime: break; // TODO: Reset old value saved in GlobalAppSettings
                 }
                 AppHelper.ShowMessageBox("Command not sent. Old value restored");
             }
@@ -386,20 +386,20 @@ namespace DemoPrototype
         private void TextBox_HotToColdThreshold_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TRetActual hot" + " ↘ " + "cold", AOUTypes.CommandType.TReturnThresholdHot2Cold, 0, 300, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TRetActual hot" + " ↘ " + "cold", AOUDataTypes.CommandType.TReturnThresholdHot2Cold, 0, 300, this);
         }
 
         private void TextBox_ColdToHotThreshold_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TRetActual cold" + " ↗ " + "hot", AOUTypes.CommandType.TReturnThresholdCold2Hot, 0, 300, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TRetActual cold" + " ↗ " + "hot", AOUDataTypes.CommandType.TReturnThresholdCold2Hot, 0, 300, this);
             //todo update line
         }
 
         private void BufMidThresholdValue_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TMidBuffer", AOUTypes.CommandType.TBufferMidRefThreshold, 0, 300, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TMidBuffer", AOUDataTypes.CommandType.TBufferMidRefThreshold, 0, 300, this);
             //todo update line
         }
     }

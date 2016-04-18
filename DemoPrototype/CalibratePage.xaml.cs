@@ -125,7 +125,12 @@ namespace DemoPrototype
         {
             int hotStepLength = AppHelper.ConvertToValidInteger(CalibrateHotStepValue.Text, 2, 25);
             //TODO must check if in state IDLE. If not, display error message and return
-            
+            if (GlobalAppSettings.RunningMode != (int)AOUTypes.AOURunningMode.Idle)
+            {
+                AppHelper.ShowMessageBox("AOU must be in mode IDLE for this command");
+                return;
+            }
+
             if (hotStepLength == -1)
             {
                 AppHelper.ShowMessageBox("No valid time value");
@@ -146,7 +151,12 @@ namespace DemoPrototype
         private void DoColdStep(object sender, RoutedEventArgs e)
         {
             int coldStepLength = AppHelper.ConvertToValidInteger(CalibrateColdStepValue.Text, 2, 25);
-            //DataUpdater.StartHotStep(coldStepLength);
+
+            if (GlobalAppSettings.RunningMode != (int)AOUTypes.AOURunningMode.Idle)
+            {
+                AppHelper.ShowMessageBox("AOU must be in mode IDLE for this command");
+                return;
+            }
             if (coldStepLength == -1)
             {
                 AppHelper.ShowMessageBox("No valid time value");

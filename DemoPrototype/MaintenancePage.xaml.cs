@@ -14,7 +14,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Syncfusion.UI.Xaml.Grid;
 //using Syncfusion.UI.Xaml.Grid.Converter; new handling in v14
-using DataHandler;
 using Windows.Storage;
 using System.IO.IsolatedStorage;
 using System.Collections.ObjectModel;

@@ -13,7 +13,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Threading;
-using DataHandler;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -186,7 +185,7 @@ namespace DemoPrototype
                 {
                     string modeTitle = RunningModeCombo.Items[RunningModeCombo.SelectedIndex].ToString();
                     string message = "You are about to change running mode";
-                    DataUpdater.VerifySendToAOUDlg(modeTitle, message, AOUTypes.CommandType.RunningMode, this, RunningModeCombo.SelectedIndex);
+                    DataUpdater.VerifySendToAOUDlg(modeTitle, message, AOUDataTypes.CommandType.RunningMode, this, RunningModeCombo.SelectedIndex);
                 }
                 else
                 {
@@ -199,14 +198,14 @@ namespace DemoPrototype
         {
             string title = "Threshold TRetActual hot" + " ↘ " + "cold";
             string message = "You are about to set new threshold value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdHot2Cold, HLineSet_ThresholdHot2Cold, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TReturnThresholdHot2Cold, HLineSet_ThresholdHot2Cold, this);
         }
 
         private void HLineSet_ThresholdCold2Hot_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Threshold TRetActual cold" + " ↘ " + "hot";
             string message = "You are about to set new threshold value to "; 
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TReturnThresholdCold2Hot, HLineSet_ThresholdCold2Hot, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TReturnThresholdCold2Hot, HLineSet_ThresholdCold2Hot, this);
 
             //Urban please replace this code with code showing diff between the lines, and center the Chartstripline
             //what is this code doing here? PhaseDiffResult.Text = "pl2, Cold";
@@ -217,21 +216,21 @@ namespace DemoPrototype
         {
             string title = "Buffer tank mid temperature threshold";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferMidRefThreshold, HLineSet_ThresholdMidTankAlarm, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TBufferMidRefThreshold, HLineSet_ThresholdMidTankAlarm, this);
         }
 
         private void HLineSet_ThresholdHotTankAlarm_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank Hot end Lower temperature limit";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferHotLowerLimit, HLineSet_ThresholdHotTankAlarm, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TBufferHotLowerLimit, HLineSet_ThresholdHotTankAlarm, this);
         }
 
         private void HLineSet_ThresholdColdTankAlarm_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank Cold end Upper temperature limit";
             string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TBufferColdUpperLimit, HLineSet_ThresholdColdTankAlarm, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TBufferColdUpperLimit, HLineSet_ThresholdColdTankAlarm, this);
         }
 
         //
@@ -320,42 +319,42 @@ namespace DemoPrototype
         */
         private void NewTHotTankTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Hot Tank Value", AOUTypes.CommandType.tempHotTankFeedSet, 100, 300, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Hot Tank Value", AOUDataTypes.CommandType.tempHotTankFeedSet, 100, 300, this);
         }
 
         private void NewTColdTankTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Cold Tank Value", AOUTypes.CommandType.tempColdTankFeedSet, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Cold Tank Value", AOUDataTypes.CommandType.tempColdTankFeedSet, 0, 30, this);
         }
 
         private void NewActiveHeatingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Active heating time", AOUTypes.CommandType.heatingTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Active heating time", AOUDataTypes.CommandType.heatingTime, 0, 30, this);
         }
 
         private void NewPauseHeatingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Heating pause time", AOUTypes.CommandType.toolHeatingFeedPause, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Heating pause time", AOUDataTypes.CommandType.toolHeatingFeedPause, 0, 30, this);
         }
 
         private void NewActiveCoolingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Active cooling time", AOUTypes.CommandType.coolingTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Active cooling time", AOUDataTypes.CommandType.coolingTime, 0, 30, this);
         }
 
         private void NewPauseCoolingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Cooling pause time", AOUTypes.CommandType.toolCoolingFeedPause, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Cooling pause time", AOUDataTypes.CommandType.toolCoolingFeedPause, 0, 30, this);
         }
 
         private void HotFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Hot return delay time", AOUTypes.CommandType.hotDelayTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Hot return delay time", AOUDataTypes.CommandType.hotDelayTime, 0, 30, this);
         }
 
         private void ColdFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Cold return delay time", AOUTypes.CommandType.coldDelayTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Cold return delay time", AOUDataTypes.CommandType.coldDelayTime, 0, 30, this);
         }
 
         private void SetHotSafeZoneLine_DragDelta(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragDeltaEventArgs e)
@@ -370,7 +369,7 @@ namespace DemoPrototype
         {
             string title = "Lower temperature limit Hot Tank Safe Zone";
             string message = "You are about to set alarm value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.THotTankAlarmLowThreshold, SetHotSafeZoneLine, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.THotTankAlarmLowThreshold, SetHotSafeZoneLine, this);
         }
 
         private void SetColdSafeZoneLine_DragDelta(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragDeltaEventArgs e)
@@ -386,7 +385,7 @@ namespace DemoPrototype
             // TBD set new threshold value
             string title = "Upper temperature limit Cold Tank Safe Zone";
             string message = "You are about to set alarm value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUTypes.CommandType.TColdTankAlarmHighThreshold, SetColdSafeZoneLine, this);
+            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TColdTankAlarmHighThreshold, SetColdSafeZoneLine, this);
         }
 
         private void ColdFeedToReturnDelayCalTime_TextChanged(object sender, TextChangedEventArgs e)

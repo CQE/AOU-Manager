@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using Windows.Storage;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using DataHandler;
 using Windows.UI.Xaml.Controls;
 
 namespace DemoPrototype
@@ -19,6 +18,10 @@ namespace DemoPrototype
         public enum VerifyDialogType {VeryfyOkCancelOnly, VerifyIntValue, VerifySliderValue};
 
         private static AOURouter dataRouter;
+
+        private static int timeBetween;
+        private const int defaultTimeBetween = 1000;
+        private const int maxPowerCount = 30;
 
         public static string GetLog()
         {
@@ -36,7 +39,7 @@ namespace DemoPrototype
         ** Commands to AOU
         *************************************************/
 
-        public static void SetCommand(AOUTypes.CommandType cmd)
+        public static void SetCommand(AOUDataTypes.CommandType cmd)
         {
             if (dataRouter != null)
             {
@@ -44,7 +47,7 @@ namespace DemoPrototype
             }
         }
 
-        public static void SetCommandValue(AOUTypes.CommandType cmd, int value)
+        public static void SetCommandValue(AOUDataTypes.CommandType cmd, int value)
         {
 
             if (dataRouter != null)
@@ -58,7 +61,7 @@ namespace DemoPrototype
             if (dataRouter != null)
             {
                 //dataRouter.SendCommandToPlc(AOUTypes.CommandType.hotDelayTime, time); // ToDo
-                dataRouter.SendCommandToPlc(AOUTypes.CommandType.CmdTypeToDo, time);
+                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.CmdTypeToDo, time);
             }
         }
 
@@ -66,7 +69,7 @@ namespace DemoPrototype
         {
             if (dataRouter != null)
             {
-                dataRouter.SendCommandToPlc(AOUTypes.CommandType.CmdTypeToDo, time); // ToDo
+                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.CmdTypeToDo, time); // ToDo
             }
         }
 
@@ -102,7 +105,7 @@ namespace DemoPrototype
             }
         }
 
-        public static async void VerifySendToAOUDlg(string title, string message, AOUTypes.CommandType cmd, Page pg, int val)
+        public static async void VerifySendToAOUDlg(string title, string message, AOUDataTypes.CommandType cmd, Page pg, int val)
         {
             var dlg = new ContentDialog();
             dlg.Title = title;
@@ -118,36 +121,36 @@ namespace DemoPrototype
                     //Store new value and send to AOU
                     switch (cmd)
                     {
-                        case AOUTypes.CommandType.RunningMode:
+                        case AOUDataTypes.CommandType.RunningMode:
                             dataRouter.SendCommandToPlc(cmd, val);
                             GlobalAppSettings.RunningMode = val;
                             break;
-                        case AOUTypes.CommandType.THotTankAlarmLowThreshold:
-                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.THotTankAlarmLowThreshold, val);
+                        case AOUDataTypes.CommandType.THotTankAlarmLowThreshold:
+                            dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.THotTankAlarmLowThreshold, val);
                             GlobalVars.globThresholds.ThresholdHotTankLowLimit = val;
                             break;
-                        case AOUTypes.CommandType.TColdTankAlarmHighThreshold:
-                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TColdTankAlarmHighThreshold, val);
+                        case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold:
+                            dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TColdTankAlarmHighThreshold, val);
                             GlobalVars.globThresholds.ThresholdColdTankUpperLimit = val;
                             break;
-                        case AOUTypes.CommandType.TReturnThresholdCold2Hot:
-                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TReturnThresholdCold2Hot, val);
+                        case AOUDataTypes.CommandType.TReturnThresholdCold2Hot:
+                            dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TReturnThresholdCold2Hot, val);
                             GlobalVars.globThresholds.ThresholdCold2Hot = val;
                             break;
-                        case AOUTypes.CommandType.TReturnThresholdHot2Cold:
-                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TReturnThresholdHot2Cold, val);
+                        case AOUDataTypes.CommandType.TReturnThresholdHot2Cold:
+                            dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TReturnThresholdHot2Cold, val);
                             GlobalVars.globThresholds.ThresholdHot2Cold = val;
                             break;
-                        case AOUTypes.CommandType.TBufferHotLowerLimit:
-                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferHotLowerLimit, val);
+                        case AOUDataTypes.CommandType.TBufferHotLowerLimit:
+                            dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TBufferHotLowerLimit, val);
                             GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit = val;
                             break;
-                        case AOUTypes.CommandType.TBufferMidRefThreshold:
-                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferMidRefThreshold, val);
+                        case AOUDataTypes.CommandType.TBufferMidRefThreshold:
+                            dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TBufferMidRefThreshold, val);
                             GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit = val;
                             break;
-                        case AOUTypes.CommandType.TBufferColdUpperLimit:
-                            dataRouter.SendCommandToPlc(AOUTypes.CommandType.TBufferColdUpperLimit, val);
+                        case AOUDataTypes.CommandType.TBufferColdUpperLimit:
+                            dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TBufferColdUpperLimit, val);
                             GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit = val;
                             break;
                         default:
@@ -158,41 +161,41 @@ namespace DemoPrototype
                 {
                     switch (cmd)
                     {
-                        case AOUTypes.CommandType.RunningMode:
+                        case AOUDataTypes.CommandType.RunningMode:
                             if (pg.Name == "OperatorPage")
                                 ((OperatorPage)pg).Reset_RunningMode();
                             break;
-                        case AOUTypes.CommandType.TColdTankAlarmHighThreshold:
+                        case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold:
                             //if (pg.Name == "CalibratePage")
                             //    ((CalibratePage)pg).Reset_ColdTankAlarmHighThreshold();
                             if (pg.Name == "OperatorPage")
                                 ((OperatorPage)pg).Reset_ColdTankAlarmHighThreshold();
                             break;
-                        case AOUTypes.CommandType.TReturnThresholdCold2Hot:
+                        case AOUDataTypes.CommandType.TReturnThresholdCold2Hot:
                             if (pg.Name == "CalibratePage")
                                 ((CalibratePage)pg).Reset_ThresholdCold2Hot();
                             else if (pg.Name == "OperatorPage")
                                 ((OperatorPage)pg).Reset_ThresholdCold2Hot();
                             break;
-                        case AOUTypes.CommandType.TReturnThresholdHot2Cold:
+                        case AOUDataTypes.CommandType.TReturnThresholdHot2Cold:
                             if (pg.Name == "CalibratePage")
                                 ((CalibratePage)pg).Reset_ThresholdHot2Cold();
                             else if (pg.Name == "OperatorPage")
                                 ((OperatorPage)pg).Reset_ThresholdHot2Cold();
                             break;
-                        case AOUTypes.CommandType.TBufferHotLowerLimit:
+                        case AOUDataTypes.CommandType.TBufferHotLowerLimit:
                             if (pg.Name == "CalibratePage")
                                 ((CalibratePage)pg).Reset_ThresholdHotTankAlarm();
                             else if (pg.Name == "OperatorPage")
                                 ((OperatorPage)pg).Reset_ThresholdHotTankAlarm();
                             break;
-                        case AOUTypes.CommandType.TBufferMidRefThreshold:
+                        case AOUDataTypes.CommandType.TBufferMidRefThreshold:
                             if (pg.Name == "CalibratePage")
                                 ((CalibratePage)pg).Reset_ThresholdMidTankAlarm();
                             else if (pg.Name == "OperatorPage")
                                 ((OperatorPage)pg).Reset_ThresholdMidTankAlarm();
                             break;
-                        case AOUTypes.CommandType.TBufferColdUpperLimit:
+                        case AOUDataTypes.CommandType.TBufferColdUpperLimit:
                             if (pg.Name == "CalibratePage")
                                 ((CalibratePage)pg).Reset_ThresholdColdTankAlarm();
                             else if (pg.Name == "OperatorPage")
@@ -258,32 +261,53 @@ namespace DemoPrototype
             }
         }
 
+        public static int GetFirstNullIndex(LineChartViewModel lc)
+        {
+            for (int i = 0; i < lc.power.Count; i++)
+            {
+                if (double.IsNaN(lc.power[i].THotTank) || lc.power[i].THotTank < 1)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+
         public static void UpdateInputData(object dataContext)
         {
             if (dataContext != null)
             {
                 CheckDataRouterSingleton();
                 var dc = (LineChartViewModel)dataContext;
-                if (dataContext != null)
+                if (dc.power.Count == 0)
                 {
-                    if (dc.IsEmpty())
+                    // If first time then get all last values
+                    var values = dataRouter.GetLastPowerValues(maxPowerCount, out timeBetween, defaultTimeBetween);
+                    dc.SetValues(values);
+                }
+                else if (dataRouter.NewPowerValuesAvailable > 0)
+                {
+                    int firstNullIndex = GetFirstNullIndex(dc);
+                    if (firstNullIndex >= 0)
                     {
-                        // If first time then get all last values
-                        dc.SetValues(dataRouter.GetLastPowerValues((int)dc.GetMaxNumOfPoints()));
-                    }
-                    else if (dc.NotMaxValuesInCharts())
-                    {
-                        if (dataRouter.NewPowerDataIsAvailable())
+                        dc.SetNewValue(dataRouter.GetLastNewPowerValue(), firstNullIndex);
+                        if (firstNullIndex > 3 && dc.power[dc.power.Count-1].ElapsedTime == 0)
                         {
-                            dc.SetNewValue(dataRouter.GetLastNewPowerValue());
+                            long time = dc.power[firstNullIndex - 1].ElapsedTime;
+                            long diff = (dc.power[firstNullIndex - 1].ElapsedTime - dc.power[firstNullIndex - 1].ElapsedTime) / (firstNullIndex - 1);
+                            for (int i = firstNullIndex; i < dc.power.Count; i++)
+                            {
+                                Power pow = dc.power[i];
+                                time += diff;
+                                pow.ElapsedTime = time;
+                                dc.power[i] = pow;
+                            }
                         }
                     }
                     else
                     { 
-                        if (dataRouter.NewPowerDataIsAvailable())
-                        { 
-                            dc.UpdateNewValue(dataRouter.GetLastNewPowerValue());
-                        }
+                        dc.UpdateNewValue(dataRouter.GetLastNewPowerValue());
                     }
                 }
             }
@@ -295,7 +319,11 @@ namespace DemoPrototype
             {
                 CheckDataRouterSingleton();
                 var dc = (LogMessageViewModel)dataContext;
-                if (dataContext != null && dataRouter.NewLogMessagesAreAvailable())
+                if (dc.logMessages.Count == 0)
+                {
+                    dc.AddLogMessages(dataRouter.GetLastLogMessages(100));
+                }
+                else if (dataRouter.NewLogMessagesAvailable > 0)
                 {
                     dc.AddLogMessages(dataRouter.GetNewLogMessages());
                 }

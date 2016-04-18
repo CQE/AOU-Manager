@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataHandler;
 using Windows.Storage;
 
 namespace DemoPrototype
@@ -23,7 +22,7 @@ namespace DemoPrototype
             }
         }
 
-        public static int GetAOUCmdValue(AOUTypes.CommandType cmdType)
+        public static int GetAOUCmdValue(AOUDataTypes.CommandType cmdType)
         {
             if (ApplicationData.Current.LocalSettings.Values.ContainsKey("AOUCmdValue-" + cmdType))
             {
@@ -35,7 +34,7 @@ namespace DemoPrototype
             }
         }
 
-        public static void SetAOUCmdValue(AOUTypes.CommandType cmdType, int value)
+        public static void SetAOUCmdValue(AOUDataTypes.CommandType cmdType, int value)
         {
             ApplicationData.Current.LocalSettings.Values["AOUCmdValue-" + cmdType] = value;
         }
@@ -61,7 +60,7 @@ namespace DemoPrototype
                 }
                 else
                 {
-                    return (int)AOUTypes.AOURunningMode.Idle;
+                    return (int)AOUDataTypes.AOURunningMode.Idle;
                 }
             }
             set

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Syncfusion.UI.Xaml;
-using DataHandler;
 
 namespace DemoPrototype
 {
@@ -85,19 +84,19 @@ namespace DemoPrototype
             }
         }
 
-        public static void SetLimitValueFromHorizontalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.HorizontalLineAnnotation hLine, Page pg)
+        public static void SetLimitValueFromHorizontalLine(string title, string message, AOUDataTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.HorizontalLineAnnotation hLine, Page pg)
         {
             int val = SafeConvertToInt(hLine.Y1); //only want whole integers on Y axis label
             DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, pg, val);
         }
 
-        public static void SetLimitValueFromVerticalLine(string title, string message, AOUTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.VerticalLineAnnotation vLine, Page pg)
+        public static void SetLimitValueFromVerticalLine(string title, string message, AOUDataTypes.CommandType cmd, Syncfusion.UI.Xaml.Charts.VerticalLineAnnotation vLine, Page pg)
         {
             int val = SafeConvertToInt(vLine.X1); //only want whole integers on X axis label
             DataUpdater.VerifySendToAOUDlg(title, message + val, cmd, pg, val);
         }
 
-        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, AOUTypes.CommandType cmd, int min, int max, Page pg, bool sendToAOU = true)
+        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, AOUDataTypes.CommandType cmd, int min, int max, Page pg, bool sendToAOU = true)
         {
             /* Example to use GetValueToTextBox
             
@@ -128,7 +127,7 @@ namespace DemoPrototype
                         textbox.Text = ((SetValueDialog)dialog).GetStringValue();
                         int val = ((SetValueDialog)dialog).GetIntValue();
                         //Need to handle delay time to calculate correct val
-                        if (cmd == AOUTypes.CommandType.hotDelayTime)
+                        if (cmd == AOUDataTypes.CommandType.hotDelayTime)
                         {
                             //save new value
                             if (pg.Name == "OperatorPage")
@@ -137,7 +136,7 @@ namespace DemoPrototype
                                 GlobalVars.globDelayTimes.HotCalibrate = val;
                             val = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
                         }
-                        if (cmd == AOUTypes.CommandType.coldDelayTime)
+                        if (cmd == AOUDataTypes.CommandType.coldDelayTime)
                         {
                             //save new value
                             if (pg.Name == "OperatorPage")
@@ -147,7 +146,7 @@ namespace DemoPrototype
                             val = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
                         }
                         //need to handle thresholds too
-                        if (cmd == AOUTypes.CommandType.TReturnThresholdHot2Cold)
+                        if (cmd == AOUDataTypes.CommandType.TReturnThresholdHot2Cold)
                         {
                             //save new value
                             GlobalVars.globThresholds.ThresholdHot2Cold = val;

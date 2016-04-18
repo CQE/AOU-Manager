@@ -117,6 +117,25 @@
     <Compile Include="CalibratePage.xaml.cs">
       <DependentUpon>CalibratePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataHandler\AOUCalibrate.cs" />
+    <Compile Include="DataHandler\AOUData.cs" />
+    <Compile Include="DataHandler\AOUFileData.cs" />
+    <Compile Include="DataHandler\AOUHelper.cs" />
+    <Compile Include="DataHandler\AOUInputParser.cs" />
+    <Compile Include="DataHandler\AOULogFile.cs" />
+    <Compile Include="DataHandler\AOULogMessage.cs" />
+    <Compile Include="DataHandler\AOUModels.cs" />
+    <Compile Include="DataHandler\AOURandomData.cs" />
+    <Compile Include="DataHandler\AOURemoteData.cs" />
+    <Compile Include="DataHandler\AOURouter.cs" />
+    <Compile Include="DataHandler\AOUSerialData.cs" />
+    <Compile Include="DataHandler\AOUSettings.cs" />
+    <Compile Include="DataHandler\AOUTypes.cs" />
+    <Compile Include="DataHandler\AOUValuesFile.cs" />
+    <Compile Include="DataHandler\Power.cs" />
+    <Compile Include="DataHandler\SerialData.cs" />
+    <Compile Include="DataHandler\TextFile.cs" />
+    <Compile Include="DataHandler\ValueGenerator.cs" />
     <Compile Include="DataUpdater.cs" />
     <Compile Include="GlobalAppSettings.cs" />
     <Compile Include="HelpPage.xaml.cs">
@@ -154,7 +173,6 @@
     <Content Include="Assets\Food.png" />
     <Content Include="Assets\Help.html" />
     <Content Include="Assets\imm-img.png" />
-    <Content Include="Includes\DataHandler.dll" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -216,26 +234,26 @@
       <HintPath>Includes\DataHandler.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.Data.UWP">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\14.1.0.41\Assemblies for Universal Windows\10.0\Syncfusion.Data.UWP.dll</HintPath>
+      <HintPath>..\..\..\Syncfusion\Syncfusion.Data.UWP.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.SfChart.UWP">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\14.1.0.41\Assemblies for Universal Windows\10.0\Syncfusion.SfChart.UWP.dll</HintPath>
+      <HintPath>..\..\..\Syncfusion\Syncfusion.SfChart.UWP.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.SfGrid.UWP, Version=13.3460.0.7, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\14.1.0.41\Assemblies for Universal Windows\10.0\Syncfusion.SfGrid.UWP.dll</HintPath>
+      <HintPath>..\..\..\Syncfusion\Syncfusion.SfGrid.UWP.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.SfInput.UWP, Version=13.3460.0.7, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\14.1.0.41\Assemblies for Universal Windows\10.0\Syncfusion.SfInput.UWP.dll</HintPath>
+      <HintPath>..\..\..\Syncfusion\Syncfusion.SfInput.UWP.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.SfShared.UWP, Version=13.3460.0.7, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\14.1.0.41\Assemblies for Universal Windows\10.0\Syncfusion.SfShared.UWP.dll</HintPath>
+      <HintPath>..\..\..\Syncfusion\Syncfusion.SfShared.UWP.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.XlsIO.UWP, Version=13.3460.0.7, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\14.1.0.41\Assemblies for Universal Windows\10.0\Syncfusion.XlsIO.UWP.dll</HintPath>
+      <HintPath>..\..\..\Syncfusion\Syncfusion.XlsIO.UWP.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup />

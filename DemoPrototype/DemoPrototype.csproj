@@ -230,29 +230,27 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Syncfusion.Data.UWP">
-      <HintPath>..\..\..\Syncfusion\Syncfusion.Data.UWP.dll</HintPath>
+      <HintPath>E:\Syncfusion\Syncfusion.Data.UWP.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.SfChart.UWP">
-      <HintPath>..\..\..\Syncfusion\Syncfusion.SfChart.UWP.dll</HintPath>
+      <HintPath>E:\Syncfusion\Syncfusion.SfChart.UWP.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.SfGrid.UWP, Version=13.3460.0.7, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Syncfusion\Syncfusion.SfGrid.UWP.dll</HintPath>
+    <Reference Include="Syncfusion.SfGrid.UWP">
+      <HintPath>E:\Syncfusion\Syncfusion.SfGrid.UWP.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.SfInput.UWP, Version=13.3460.0.7, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Syncfusion\Syncfusion.SfInput.UWP.dll</HintPath>
+    <Reference Include="Syncfusion.SfGridConverter.UWP">
+      <HintPath>E:\Syncfusion\Syncfusion.SfGridConverter.UWP.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.SfShared.UWP, Version=13.3460.0.7, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Syncfusion\Syncfusion.SfShared.UWP.dll</HintPath>
+    <Reference Include="Syncfusion.SfInput.UWP">
+      <HintPath>E:\Syncfusion\Syncfusion.SfInput.UWP.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.XlsIO.UWP, Version=13.3460.0.7, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Syncfusion\Syncfusion.XlsIO.UWP.dll</HintPath>
+    <Reference Include="Syncfusion.SfShared.UWP">
+      <HintPath>E:\Syncfusion\Syncfusion.SfShared.UWP.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.XlsIO.UWP">
+      <HintPath>E:\Syncfusion\Syncfusion.XlsIO.UWP.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

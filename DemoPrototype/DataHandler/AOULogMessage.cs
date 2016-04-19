@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DemoPrototype
 {
 
-    public struct AOULogMessage
+    public class AOULogMessage
     {
         public TimeSpan time
         {

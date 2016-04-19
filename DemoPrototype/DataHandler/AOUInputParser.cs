@@ -430,13 +430,13 @@ h. Signals AOU/IMM interaction
             stateData.bufMid = AOUDataTypes.UInt16_NaN;
             stateData.bufHot = AOUDataTypes.UInt16_NaN;
 
-            stateData.Energy = 0;
-            stateData.IMM = 0;// ToDo: Rembeber old value
-            stateData.Mode = 0;// ToDo: Rembeber old value
-            stateData.Power = 0;
-            stateData.SeqNr = 0;
-            stateData.UI = 0;
-            stateData.Valves = 0; // ToDo: Rembeber old value
+            stateData.Energy = AOUDataTypes.UInt16_NaN; // ToDo: Rembeber old value
+            stateData.IMM = AOUDataTypes.UInt16_NaN; // ToDo: Rembeber old value
+            stateData.Mode = AOUDataTypes.UInt16_NaN; // ToDo: Rembeber old value
+            stateData.Power = AOUDataTypes.UInt16_NaN;
+            stateData.SeqNr = AOUDataTypes.UInt16_NaN;
+            stateData.UI = AOUDataTypes.UInt16_NaN;
+            stateData.Valves = AOUDataTypes.UInt16_NaN; // ToDo: Rembeber old value
 
             ParseWordTime10(tagText, out stateData.time_min_of_week, out stateData.time_ms_of_min);
             ParseWord(tagTempSubTagHot, tagText, out stateData.hotTankTemp);
@@ -469,6 +469,7 @@ h. Signals AOU/IMM interaction
         #endregion
 
         #region ParseXMLOld
+        /*
         public static bool ParseTemperature(string tagText, out AOUTemperatureData tempData)
         {
             // textLine = "<temperature><Time>104898416</Time><Hot>122</Hot><Cold>56</Cold><Ret>68</Ret><Cool>40</Cool></temperature>";
@@ -683,7 +684,6 @@ h. Signals AOU/IMM interaction
                                     tagIMM, tagSubTagTime, IMMSettingsTag, // 0 - 2
                                     time_ms, tempData.imm_setting_val); // 3 - 4
         }
-        */
         public static string CreateHotFeedXmlString(long time_ms, AOUHotFeedData data)
         {
             return String.Format("<{0}><{1}>{5}</{1}><{2}> <{3}>{6}</{3}><{4}>{7}</{4}> </{2}></{0}>",
@@ -723,6 +723,7 @@ h. Signals AOU/IMM interaction
                                     tagValvesSubTagRetPrev, tagValvesSubTagRetNew, // 3 - 4
                                     time_ms, data.prevValveReturnTemp, data.newValveReturnTemp); // 5 - 7
         }
+        */
 
         public static string CreateLogXmlString(long time_ms, AOULogMessage data)
         {

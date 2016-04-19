@@ -38,6 +38,7 @@ namespace DemoPrototype
         }
 
         #region private static methods
+        /*
         private static string CreateRandomTempXmlString(long time)
         {
             var rndData = ValueGenerator.GetRandomTempData(time);
@@ -50,13 +51,11 @@ namespace DemoPrototype
             return AOUInputParser.CreateSeqXmlString(time, rndData);
         }
 
-        /*
         private static string CreateRandomIMMXmlString(long time, AOUDataTypes.IMMSettings settings)
         {
             var rndData = ValueGenerator.GetRandomIMMData(time, settings);
             return AOUInputParser.CreateIMMXmlString(time, rndData);
         }
-        */
         private static string CreateRandomColdFeedXmlString(long time)
         {
             var rndData = ValueGenerator.GetRandomColdFeedData(time);
@@ -87,6 +86,7 @@ namespace DemoPrototype
             return AOUInputParser.CreateValvesXmlString(time, rndData);
         }
 
+                    */
         private static string CreateRandomLogXmlString(long time)
         {
             return AOUInputParser.CreateLogXmlString(time, ValueGenerator.GetRandomLogMsg(1000));
@@ -113,8 +113,8 @@ namespace DemoPrototype
 
             for (int i = 0; i < num; i++)
             {
+                /*
                 xml += CreateRandomTempXmlString(time) + "\r\n";
-
                 if (state == AOUDataTypes.StateType.SQ_WAIT_HOT_AT_MOULD_ENTRY)
                     xml += CreateRandomHotFeedXmlString(time) + "\r\n";
                 else if (state == AOUDataTypes.StateType.SQ_WAIT_COLD_AT_MOULD_ENTRY)
@@ -149,7 +149,7 @@ namespace DemoPrototype
 
                 if ((i % 10) == 0)
                 {
-                   /* xml += CreateRandomIMMXmlString(time, immSetting) + "\r\n";
+                   xml += CreateRandomIMMXmlString(time, immSetting) + "\r\n";
                     if (immSetting == AOUDataTypes.IMMSettings.IMMToolClosed)
                     {
                         immSetting = AOUDataTypes.IMMSettings.SetIMMBlockInject;
@@ -158,8 +158,8 @@ namespace DemoPrototype
                     {
                         immSetting++;
                     }
-                    */
                 }
+                */
             }
             return xml;
         }

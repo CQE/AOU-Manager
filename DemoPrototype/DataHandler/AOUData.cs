@@ -155,6 +155,7 @@ namespace DemoPrototype
 
             AOUStateData stateData;
 
+            /*
             AOUSeqData seqData;
             AOUTemperatureData tempData;
             AOUHotFeedData hotFeedData;
@@ -163,9 +164,9 @@ namespace DemoPrototype
             AOUColdLevelData coldLevelData;
             AOUValvesData valvesData;
             AOUIMMData immData;
+            */
 
             newPowerValues = new List<Power>();
-
             newLogMessages = new List<AOULogMessage>();
 
             string textDataStream = GetTextData();
@@ -174,6 +175,8 @@ namespace DemoPrototype
             while (prevTextLength > 0)
             {
                 Power tempPower = new Power(0);
+                bool IsTempData = false;
+
                 int count = 0;
                 string tagContent;
                 List<string> loglines;
@@ -205,16 +208,20 @@ namespace DemoPrototype
                 if (nextTag == AOUInputParser.tagState)
                 {
                     AOUInputParser.ParseState(tagContent, out stateData);
-                    tempPower.ElapsedTime = AOUDataTypes.AOUModelTimeDecSecToTimeMs(stateData.time_min_of_week, stateData.time_ms_of_min);
-                    tempPower.THotTank = stateData.hotTankTemp;
-                    tempPower.TColdTank = stateData.coldTankTemp;
-                    tempPower.TReturnActual = stateData.retTemp;
+                    if (stateData.hotTankTemp < 500)
+                    { 
+                        tempPower.ElapsedTime = AOUDataTypes.AOUModelTimeDecSecToTimeMs(stateData.time_min_of_week, stateData.time_ms_of_min);
+                        tempPower.THotTank = stateData.hotTankTemp;
+                        tempPower.TColdTank = stateData.coldTankTemp;
+                        tempPower.TReturnActual = stateData.retTemp;
 
-                    tempPower.TBufferCold = stateData.bufCold;
-                    tempPower.TBufferMid = stateData.bufMid;
-                    tempPower.TBufferHot = stateData.bufHot;
+                        tempPower.TBufferCold = stateData.bufCold;
+                        tempPower.TBufferMid = stateData.bufMid;
+                        tempPower.TBufferHot = stateData.bufHot;
 
-                    tempPower.PowerHeating = stateData.Power;
+                        tempPower.PowerHeating = 0; // stateData.Power;
+                        IsTempData = true;
+                    }
 
                     /* ToDo ????
                     tempPower.TReturnValve = 0;
@@ -228,17 +235,20 @@ namespace DemoPrototype
                     //--------------------------------------------------------------------------------------------
                     //<Valves>MMSS</Valves> 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”). 
                     // Bits: 0/Hot valve, 1/Cold valve, 2/Return valve
+                    /*
                     byte valveState = GetStateByte(stateData.Valves);
                     tempPower.ValveFeedHot = (valveState & 1) != 0 ? 70 : 50;  // Off=50, On=70  
                     tempPower.ValveFeedCold = (valveState & 2) != 0 ? 70 : 50;  // Off=50, On=70  
                     tempPower.ValveReturn = (valveState & 4) != 0 ? 70 : 50;  // Cold=50, Hot=70  
                     // tempPower.ValveCoolant = (valveState & 8) != 0 ? 100 : 0; // ????
                     tempPower.ValveCoolant = stateData.coolerTemp; // ?????
-
+                    */
                     //--------------------------------------------------------------------------------------------
                     // <IMM>MMSS</IMM>, 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
                     // IMM_OutIMMError: 0x01; IMM_OutIMMBlockInject: 0x02; IMM_OutIMMBlockOpen: 0x04; IMM_InIMMStop: 0x08;
                     // IMM_InCycleAuto: 0x10; IMM_InIMMInjecting: 0x20; IMM_InIMMEjecting: 0x40; IMM_InIMMToolClosed: 0x80;
+
+                   
                     AOUDataTypes.IMMSettings imm;
                     byte immState = GetStateByte(stateData.IMM);
                     switch(immState)
@@ -253,6 +263,7 @@ namespace DemoPrototype
                         case 0x80: imm = AOUDataTypes.IMMSettings.InIMMToolClosed; break;
                         default: imm = AOUDataTypes.IMMSettings.Nothing; break;
                     }
+                   
 
                     //--------------------------------------------------------------------------------------------
                     // UI>MMSS</UI> (hex) MM=8bit mask, SS=8bits. 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
@@ -303,6 +314,8 @@ namespace DemoPrototype
                 {
                     newLogMessages.Add(new AOULogMessage(AOUHelper.GetNowToMs(), "Unknown:" + tagContent, 0, 0));
                 }
+
+
                 #region OldHandling
                 /* Old handling
                 else if (nextTag == AOUInputParser.tagTemperature)
@@ -390,7 +403,10 @@ namespace DemoPrototype
                 // long curtimeStep = AOUHelper.ToCurTimeStep(tempPower.ElapsedTime, curTimeSpan);
                 if (AOUInputParser.ValidPowerTag(nextTag))
                 {
-                    newPowerValues.Add(tempPower);
+                    if (IsTempData)
+                    { 
+                        newPowerValues.Add(tempPower);
+                    }
                 }
                 if (count == 0) // No more valid tags. Wait for more data
                 {

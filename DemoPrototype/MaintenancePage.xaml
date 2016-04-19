@@ -282,10 +282,6 @@
             <sfgrid:SfDataGrid x:Name="LogGrid" Margin="20,30,0,0" ColumnSizer="Auto"
                                AllowSorting="True" AllowFiltering="True"
                               ItemsSource="{Binding logMessages}">
-
-                <sfgrid:SfDataGrid.SortColumnDescriptions>
-                    <sfgrid:SortColumnDescription ColumnName="OrderID"/>
-                </sfgrid:SfDataGrid.SortColumnDescriptions>
             </sfgrid:SfDataGrid>
 
             <StackPanel Margin="0,5,0,0" Orientation="Horizontal">

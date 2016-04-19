@@ -137,6 +137,12 @@ namespace DemoPrototype
             return GetTextData();
         }
 
+        protected byte GetStateByte(UInt16 word)
+        {
+            byte mask = (byte)(word >> 8);
+            return (byte)(word & 0x00FF); // ???? Do mask
+        }
+
         protected void GetTextDataList()
         {
             long time_ms = 0;
@@ -196,7 +202,110 @@ namespace DemoPrototype
                     }
                 }
 
-                if (nextTag == AOUInputParser.tagTemperature)
+                if (nextTag == AOUInputParser.tagState)
+                {
+                    AOUInputParser.ParseState(tagContent, out stateData);
+                    tempPower.ElapsedTime = AOUDataTypes.AOUModelTimeDecSecToTimeMs(stateData.time_min_of_week, stateData.time_ms_of_min);
+                    tempPower.THotTank = stateData.hotTankTemp;
+                    tempPower.TColdTank = stateData.coldTankTemp;
+                    tempPower.TReturnActual = stateData.retTemp;
+
+                    tempPower.TBufferCold = stateData.bufCold;
+                    tempPower.TBufferMid = stateData.bufMid;
+                    tempPower.TBufferHot = stateData.bufHot;
+
+                    tempPower.PowerHeating = stateData.Power;
+
+                    /* ToDo ????
+                    tempPower.TReturnValve = 0;
+                    tempPower.TReturnForecasted = 0;
+                    tempPower.THeaterOilOut = 0;
+                    tempPower.THeatExchangerCoolantOut = 0;
+
+                    int n = stateData.SeqNr; // ToDo
+                    */
+
+                    //--------------------------------------------------------------------------------------------
+                    //<Valves>MMSS</Valves> 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”). 
+                    // Bits: 0/Hot valve, 1/Cold valve, 2/Return valve
+                    byte valveState = GetStateByte(stateData.Valves);
+                    tempPower.ValveFeedHot = (valveState & 1) != 0 ? 70 : 50;  // Off=50, On=70  
+                    tempPower.ValveFeedCold = (valveState & 2) != 0 ? 70 : 50;  // Off=50, On=70  
+                    tempPower.ValveReturn = (valveState & 4) != 0 ? 70 : 50;  // Cold=50, Hot=70  
+                    // tempPower.ValveCoolant = (valveState & 8) != 0 ? 100 : 0; // ????
+                    tempPower.ValveCoolant = stateData.coolerTemp; // ?????
+
+                    //--------------------------------------------------------------------------------------------
+                    // <IMM>MMSS</IMM>, 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
+                    // IMM_OutIMMError: 0x01; IMM_OutIMMBlockInject: 0x02; IMM_OutIMMBlockOpen: 0x04; IMM_InIMMStop: 0x08;
+                    // IMM_InCycleAuto: 0x10; IMM_InIMMInjecting: 0x20; IMM_InIMMEjecting: 0x40; IMM_InIMMToolClosed: 0x80;
+                    AOUDataTypes.IMMSettings imm;
+                    byte immState = GetStateByte(stateData.IMM);
+                    switch(immState)
+                    {
+                        case 0x01: imm = AOUDataTypes.IMMSettings.OutIMMError; break;
+                        case 0x02: imm = AOUDataTypes.IMMSettings.OutIMMBlockInject; break;
+                        case 0x04: imm = AOUDataTypes.IMMSettings.OutIMMBlockOpen; break;
+                        case 0x08: imm = AOUDataTypes.IMMSettings.InIMMStop; break;
+                        case 0x10: imm = AOUDataTypes.IMMSettings.InCycleAuto; break;
+                        case 0x20: imm = AOUDataTypes.IMMSettings.InIMMInjecting ; break;
+                        case 0x40: imm = AOUDataTypes.IMMSettings.InIMMEjecting; break;
+                        case 0x80: imm = AOUDataTypes.IMMSettings.InIMMToolClosed; break;
+                        default: imm = AOUDataTypes.IMMSettings.Nothing; break;
+                    }
+
+                    //--------------------------------------------------------------------------------------------
+                    // UI>MMSS</UI> (hex) MM=8bit mask, SS=8bits. 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
+                    // BUTTON_ONOFF: 0x0001  // Soft on/Off;  BUTTON_EMERGENCYOFF: 0x0002  // Hard Off
+                    // BUTTON_MANUALOPHEAT: 0x0004  // Forced Heating; BUTTON_MANUALOPCOOL  0x0008  // Forced Cooling
+                    // BUTTON_CYCLE: 0x0010  // Forced Cycling; BUTTON_RUN: 0x0020  // Run with IMM
+                    byte uiState = GetStateByte(stateData.UI);
+
+                    //-----------------------------------------------------------------------------------
+                    // <Energy>MMSS</Energy>, 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
+                    byte energyState = GetStateByte(stateData.Energy);
+                    //tempPower.???? = energyState;
+
+                    //-----------------------------------------------------------------------------------
+                    // <Mode>1</Mode> (int); 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”). Which???
+                    //#define HT_STATE_INVALID: -999; #define HT_STATE_COLD: -1; 
+                    // #define HT_STATE_UNKNOWN: 0; #define HT_STATE_HOT 1
+                    byte modeState = GetStateByte(stateData.Mode);
+                    uint mode = stateData.Mode;
+
+                    AOUDataTypes.StateType state; // ???? Which
+                    switch (0)
+                    {
+                        case 0: state = AOUDataTypes.StateType.IDLE; break;
+                        case 1: state = AOUDataTypes.StateType.SQ_INITIAL; break;
+                        case 2: state = AOUDataTypes.StateType.SQ_WAIT_COLD_AT_MOULD_ENTRY; break;
+                        case 3: state = AOUDataTypes.StateType.SQ_WAIT_FOR_COOLING_END; break;
+                        case 4: state = AOUDataTypes.StateType.SQ_WAIT_FOR_EJECT_BEGIN; break;
+                        case 5: state = AOUDataTypes.StateType.SQ_WAIT_FOR_EJECT_END; break;
+                        case 6: state = AOUDataTypes.StateType.SQ_WAIT_FOR_INJECTION_BEGIN; break;
+                        case 7: state = AOUDataTypes.StateType.SQ_WAIT_FOR_INJECTION_END; break;
+                        case 8: state = AOUDataTypes.StateType.SQ_WAIT_FOR_OPEN_BEGIN; break;
+                        case 9: state = AOUDataTypes.StateType.SQ_WAIT_FOR_OPEN_END; break;
+                        default: state = AOUDataTypes.StateType.NOTHING; break;
+                    }
+                }
+
+                else if (nextTag == AOUInputParser.tagLog)
+                {
+                    if (AOUInputParser.ParseLog(tagContent, out time_ms, out logMsg))
+                    {
+                        AOULogMessage msg = new AOULogMessage(AOUHelper.ToCurTimeStep(time_ms, curTimeSpan), logMsg);
+                        if (msg.prio == 0) msg.prio = 1;
+                        newLogMessages.Add(msg);
+                    }
+                }
+                else if (nextTag.Length > 0)
+                {
+                    newLogMessages.Add(new AOULogMessage(AOUHelper.GetNowToMs(), "Unknown:" + tagContent, 0, 0));
+                }
+                #region OldHandling
+                /* Old handling
+                else if (nextTag == AOUInputParser.tagTemperature)
                 {
                     if (AOUInputParser.ParseTemperature(tagContent, out tempData))
                     {
@@ -206,18 +315,6 @@ namespace DemoPrototype
                         tempPower.TReturnActual = tempData.retTemp;
                         tempPower.ValveCoolant = tempData.coolerTemp;
                     }
-                }
-                else if (nextTag == AOUInputParser.tagState)
-                {
-                    AOUInputParser.ParseState(tagContent, out stateData);
-                    tempPower.ElapsedTime = AOUDataTypes.AOUModelTimeDecSecToTimeMs(stateData.time_min_of_week, stateData.time_ms_of_min);
-                    tempPower.THotTank = stateData.hotTankTemp;
-                    tempPower.TColdTank = stateData.coldTankTemp;
-                    tempPower.TReturnActual = stateData.retTemp;
-                    tempPower.ValveCoolant = stateData.coolerTemp;
-                    tempPower.TBufferCold = stateData.bufCold;
-                    tempPower.TBufferMid = stateData.bufMid;
-                    tempPower.TBufferHot = stateData.bufHot;
                 }
                 else if (nextTag == AOUInputParser.tagSequence)
                 {
@@ -287,19 +384,8 @@ namespace DemoPrototype
                         tempPower.TReturnActual = valvesData.prevValveReturnTemp;
                     }
                 }
-                else if (nextTag == AOUInputParser.tagLog)
-                {
-                    if (AOUInputParser.ParseLog(tagContent, out time_ms, out logMsg))
-                    {
-                        AOULogMessage msg = new AOULogMessage(AOUHelper.ToCurTimeStep(time_ms, curTimeSpan), logMsg);
-                        if (msg.prio == 0) msg.prio = 1;
-                        newLogMessages.Add(msg);
-                    }
-                }
-                else if (nextTag.Length > 0)
-                {
-                    newLogMessages.Add(new AOULogMessage(AOUHelper.GetNowToMs(), "Unknown:" + tagContent, 0, 0));
-                }
+                */
+                #endregion
 
                 // long curtimeStep = AOUHelper.ToCurTimeStep(tempPower.ElapsedTime, curTimeSpan);
                 if (AOUInputParser.ValidPowerTag(nextTag))

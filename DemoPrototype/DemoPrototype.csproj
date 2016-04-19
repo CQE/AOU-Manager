@@ -229,10 +229,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="DataHandler, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Includes\DataHandler.dll</HintPath>
-    </Reference>
     <Reference Include="Syncfusion.Data.UWP">
       <HintPath>..\..\..\Syncfusion\Syncfusion.Data.UWP.dll</HintPath>
     </Reference>

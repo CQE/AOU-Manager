@@ -96,10 +96,5 @@ namespace DemoPrototype
             }
         }
 
-        public void AddLogMessage(AOULogMessage log)
-        {
-            logMessages.Add(new AOULogMessage(0, "Log Message null", 3, 0));
-        }
-
-    }
+     }
 }

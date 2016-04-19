@@ -153,6 +153,11 @@ b.      Läsa av temperaturer från kurvorna
                 return false;
         }
 
+        public void SendTagCommandToPlc(string subTag, int value)
+        {
+            SendToPlc(String.Format("<cmd><{0}>{1}</{0}></cmd>", subTag, value));
+        }
+
         public void SendCommandToPlc(AOUDataTypes.CommandType cmd, int value)
         {
             /*
@@ -166,17 +171,17 @@ b.      Läsa av temperaturer från kurvorna
             switch (cmd)
             {
                 case AOUDataTypes.CommandType.tempHotTankFeedSet:
-                    SendToPlc(String.Format("<cmd><tempHotTankFeedSet>{0}</tempHotTankFeedSet></cmd>", value)); break;
+                    SendTagCommandToPlc("tempHotTankFeedSet", value); break;
                 case AOUDataTypes.CommandType.tempColdTankFeedSet:
-                    SendToPlc(String.Format("<cmd><tempColdTankFeedSet>{0}</tempColdTankFeedSet></cmd>", value)); break;
+                    SendTagCommandToPlc("tempColdTankFeedSet", value); break;
                 case AOUDataTypes.CommandType.coolingTime:
-                    SendToPlc(String.Format("<cmd><coolingTime>{0}</coolingTime></cmd>", value)); break;
+                    SendTagCommandToPlc("coolingTime", value); break;
                 case AOUDataTypes.CommandType.heatingTime:
-                    SendToPlc(String.Format("<cmd><heatingTime>{0}</heatingTime></cmd>", value)); break;
+                    SendTagCommandToPlc("heatingTime", value); break;
                 case AOUDataTypes.CommandType.toolHeatingFeedPause:
-                    SendToPlc(String.Format("<cmd><toolHeatingFeedPause>{0}</toolHeatingFeedPause></cmd>", value)); break;
+                    SendTagCommandToPlc("toolHeatingFeedPause", value); break;
                 default:
-                    SendToPlc(String.Format("<cmd><{0}>{1}</{0}></cmd>", cmd, value)); break;
+                    SendTagCommandToPlc(cmd.ToString(), value); break;
             }
         }
 
@@ -272,7 +277,7 @@ b.      Läsa av temperaturer från kurvorna
             {
                 for (int i = numValues; i < count; i++)
                 {
-                    powers.Add(new Power());
+                    powers.Add(new Power(0));
                 }
                 GetTimeBetween(powers, defaultTimeBetween);
             }

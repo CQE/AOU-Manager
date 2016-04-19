@@ -44,7 +44,7 @@ namespace DemoPrototype
 
     public struct Power
     {
-        public Power(long etime = 0)
+        public Power(long etime)
         {
             ElapsedTime = etime;
             State = AOUDataTypes.StateType.NOTHING;
@@ -67,6 +67,7 @@ namespace DemoPrototype
             ValveFeedCold = double.NaN;
             ValveReturn = double.NaN;
             ValveCoolant = double.NaN;
+
             PowerHeating = double.NaN;
         }
 

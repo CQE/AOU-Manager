@@ -328,7 +328,7 @@
                 <chart:LineSeries LegendIcon="Diamond" Stroke="Orange" Interior="Orange" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
                 <chart:LineSeries LegendIcon="Diamond" Stroke="Red" Interior="Red" Label="THotTank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
                 <chart:LineSeries LegendIcon="Diamond" Stroke="Blue" Interior="Blue" Label="TColdTank" XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:LineSeries>
-                <chart:LineSeries LegendIcon="Diamond" Stroke="Green" Interior="Green" Label="ValveReturn" XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:StepLineSeries LegendIcon="Circle" Stroke="Green" Interior="Green" Label="ValveReturn" XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"></chart:StepLineSeries>
             </chart:SfChart>
         </Grid>
 

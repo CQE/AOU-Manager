@@ -402,6 +402,29 @@ namespace DemoPrototype
             TextBlock_SumHotDelayTime.Text = sum.ToString();
         }
 
+        private void Button_Freeze_Run_Click(object sender, RoutedEventArgs e)
+        {
+            bool isRunning = dTimer.IsEnabled;
+            if (isRunning)
+            {
+                dTimer.Stop();
+                MyTuneChart.Background = FreezeBrush;
+                Button_Freeze_Run.Content="Run";
+
+                //where are the lines?
+                //double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
+                //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
+                //and what is min on the X-axis?
+                Double startX = AppHelper.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
+            }
+            else
+            {
+                dTimer.Start();
+                MyTuneChart.Background = OrgTuneChartBrush;
+                Button_Freeze_Run.Content="Freeze";
+            }
+        }
+
         /* Urban Delete?
          public void AsyncResponseDlg(AOUTypes.CommandType cmd, bool ok) // ToDo: return value
          {

@@ -45,6 +45,7 @@
             
         <TextBlock Text="Tool tempering" Grid.Row="2" HorizontalAlignment="Left"></TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="1" Text="HEAT" Foreground="Red"></TextBlock>
+            <Button Grid.Row="1"  Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Name="Button_Freeze_Run" Content="Freeze" Click="Button_Freeze_Run_Click"></Button>
 
         <TextBlock Grid.Row="3"  FontWeight="Bold" Text="Moulding parameters" VerticalAlignment="Bottom"></TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="4" >
@@ -143,7 +144,7 @@
                     <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Collapsed"/>
                 </chart:SfChart.Legend>
                 <chart:SfChart.SecondaryAxis>
-                    <chart:NumericalAxis Name="MyYAxis" Minimum="0" Interval="10" Maximum="100" EnableAutoIntervalOnZooming="False">
+                    <chart:NumericalAxis Name="MyYAxis" Minimum="0" Interval="20"  EnableAutoIntervalOnZooming="False">
                         <chart:NumericalAxis.StripLines>
                             <chart:ChartStripLine Name="DiffStripline" IsPixelWidth="True" IsSegmented="True" SegmentStartValue="11" SegmentEndValue="15" Start="60" Width="10" Label="13" Background="Yellow"></chart:ChartStripLine>
                         </chart:NumericalAxis.StripLines>
@@ -157,7 +158,7 @@
                     <chart:VerticalLineAnnotation  Stroke="Blue" StrokeThickness="2" CanDrag="True" ShowToolTip="True" ToolTipContent="Measure difference" Name="MouldingDelayVLine1"  DragCompleted="MouldingDelayVLine1_DragCompleted" CoordinateUnit="Pixel" X1="20"></chart:VerticalLineAnnotation>
                     <chart:VerticalLineAnnotation Stroke="Blue" StrokeThickness="2" CanDrag="True" ShowToolTip="True" ToolTipContent="Measure difference" Name="MouldingDelayVLine2" DragCompleted="MouldingDelayVLine2_DragCompleted" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
                 </chart:SfChart.Annotations>
-                <chart:LineSeries LegendIcon="Diamond" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
+                <chart:LineSeries EnableAnimation="True"  LegendIcon="Diamond" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
                 <chart:LineSeries LegendIcon="Diamond" Label="TRetForecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
             </chart:SfChart>
             <!-- Make a textbox overlay the grid above-->
@@ -174,9 +175,11 @@
             <chart:SfChart.PrimaryAxis>
                 <chart:TimeSpanAxis ></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
-            
-            <chart:SfChart.SecondaryAxis>
-                <chart:NumericalAxis Minimum="0" Interval="10" Maximum="300" EnableAutoIntervalOnZooming="False">
+                <chart:SfChart.Behaviors>
+                    <chart:ChartTrackBallBehavior LabelDisplayMode="NearestPoint" ></chart:ChartTrackBallBehavior>
+                </chart:SfChart.Behaviors>
+                <chart:SfChart.SecondaryAxis>
+                <chart:NumericalAxis Minimum="0" EnableAutoIntervalOnZooming="False">
                     <chart:NumericalAxis.StripLines>
                         <chart:ChartStripLine Name="HotSafeZone" Start="200" Width="25"  Background="PaleGreen"></chart:ChartStripLine>
                         <chart:ChartStripLine Name="ColdSafeZone"  Start="15" Width="25"  Background="PaleGoldenrod"></chart:ChartStripLine>
@@ -265,11 +268,14 @@
                 <chart:SfChart.PrimaryAxis>
                     <chart:TimeSpanAxis ></chart:TimeSpanAxis>
                 </chart:SfChart.PrimaryAxis>
+                <chart:SfChart.Behaviors>
+                    <chart:ChartTrackBallBehavior LabelDisplayMode="NearestPoint" ></chart:ChartTrackBallBehavior>
+                </chart:SfChart.Behaviors>
                 <chart:SfChart.Legend>
                     <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Collapsed"/>
                 </chart:SfChart.Legend>
                 <chart:SfChart.SecondaryAxis>
-                    <chart:NumericalAxis Minimum="0" Interval="20" Maximum="300" EnableAutoIntervalOnZooming="False">
+                    <chart:NumericalAxis Minimum="0"  EnableAutoIntervalOnZooming="False">
                         <chart:NumericalAxis.StripLines>
                             <chart:ChartStripLine IsSegmented="True" SegmentStartValue="11" SegmentEndValue="15" Start="60" Width="30" Label="60" Background="Yellow"></chart:ChartStripLine>
                         </chart:NumericalAxis.StripLines>
@@ -301,11 +307,14 @@
                 <chart:SfChart.PrimaryAxis>
                     <chart:TimeSpanAxis ></chart:TimeSpanAxis>
                 </chart:SfChart.PrimaryAxis>
+                <chart:SfChart.Behaviors>
+                    <chart:ChartTrackBallBehavior LabelDisplayMode="NearestPoint" ></chart:ChartTrackBallBehavior>
+                </chart:SfChart.Behaviors>
                 <chart:SfChart.Legend>
                     <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Collapsed"/>
                 </chart:SfChart.Legend>
                 <chart:SfChart.SecondaryAxis>
-                    <chart:NumericalAxis Minimum="0" Interval="20" Maximum="300" EnableAutoIntervalOnZooming="False">
+                    <chart:NumericalAxis Minimum="0"  EnableAutoIntervalOnZooming="False">
                         <chart:NumericalAxis.StripLines>
                             <chart:ChartStripLine IsSegmented="True" SegmentStartValue="10" SegmentEndValue="15" Start="60" Width="10" Label="20" Background="Yellow"></chart:ChartStripLine>
                         </chart:NumericalAxis.StripLines>

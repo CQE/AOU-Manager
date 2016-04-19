@@ -93,12 +93,12 @@ namespace DemoPrototype
                 TextCorF.Text = " (°F)";
             }
 
-            var FreezeColor = new Windows.UI.Color(); FreezeColor.R = 255; FreezeColor.G = 255; FreezeColor.B = 230; FreezeColor.A = 255;
+            //var FreezeColor = new Windows.UI.Color(); FreezeColor.R = 255; FreezeColor.G = 255; FreezeColor.B = 230; FreezeColor.A = 255;
 
             OrgTuneChartBrush = MyTuneChart.Background;
 
-            FreezeBrush = new SolidColorBrush();
-            FreezeBrush.Color = FreezeColor;
+            //FreezeBrush = new SolidColorBrush();
+            //FreezeBrush.Color = FreezeColor;
 
             InitDispatcherTimer();
         }
@@ -292,7 +292,7 @@ namespace DemoPrototype
             if (isRunning)
             {
                 dTimer.Stop();
-                MyTuneChart.Background = FreezeBrush;
+                //MyTuneChart.Background = FreezeBrush;
 
                 //where are the lines?
                 //double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
@@ -303,7 +303,7 @@ namespace DemoPrototype
             else
             {
                 dTimer.Start();
-                MyTuneChart.Background = OrgTuneChartBrush;
+                //MyTuneChart.Background = OrgTuneChartBrush;
             }
         }
 
@@ -408,7 +408,7 @@ namespace DemoPrototype
             if (isRunning)
             {
                 dTimer.Stop();
-                MyTuneChart.Background = FreezeBrush;
+                //MyTuneChart.Background = FreezeBrush;
                 Button_Freeze_Run.Content="Run";
 
                 //where are the lines?
@@ -420,7 +420,7 @@ namespace DemoPrototype
             else
             {
                 dTimer.Start();
-                MyTuneChart.Background = OrgTuneChartBrush;
+                //MyTuneChart.Background = OrgTuneChartBrush;
                 Button_Freeze_Run.Content="Freeze";
             }
         }

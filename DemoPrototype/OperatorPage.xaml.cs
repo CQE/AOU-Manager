@@ -419,6 +419,7 @@ namespace DemoPrototype
             }
             else
             {
+                //MyTuneChart.Save("chart.gif");
                 dTimer.Start();
                 //MyTuneChart.Background = OrgTuneChartBrush;
                 Button_Freeze_Run.Content="Freeze";

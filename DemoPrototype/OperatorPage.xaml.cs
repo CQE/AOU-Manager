@@ -93,12 +93,12 @@ namespace DemoPrototype
                 TextCorF.Text = " (°F)";
             }
 
-            var FreezeColor = new Windows.UI.Color(); FreezeColor.R = 255; FreezeColor.G = 255; FreezeColor.B = 230; FreezeColor.A = 255;
+            //var FreezeColor = new Windows.UI.Color(); FreezeColor.R = 255; FreezeColor.G = 255; FreezeColor.B = 230; FreezeColor.A = 255;
 
             OrgTuneChartBrush = MyTuneChart.Background;
 
-            FreezeBrush = new SolidColorBrush();
-            FreezeBrush.Color = FreezeColor;
+            //FreezeBrush = new SolidColorBrush();
+            //FreezeBrush.Color = FreezeColor;
 
             InitDispatcherTimer();
         }
@@ -292,7 +292,7 @@ namespace DemoPrototype
             if (isRunning)
             {
                 dTimer.Stop();
-                MyTuneChart.Background = FreezeBrush;
+                //MyTuneChart.Background = FreezeBrush;
 
                 //where are the lines?
                 //double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
@@ -303,7 +303,7 @@ namespace DemoPrototype
             else
             {
                 dTimer.Start();
-                MyTuneChart.Background = OrgTuneChartBrush;
+                //MyTuneChart.Background = OrgTuneChartBrush;
             }
         }
 
@@ -400,6 +400,29 @@ namespace DemoPrototype
             //calculate and show new sum
             int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
             TextBlock_SumHotDelayTime.Text = sum.ToString();
+        }
+
+        private void Button_Freeze_Run_Click(object sender, RoutedEventArgs e)
+        {
+            bool isRunning = dTimer.IsEnabled;
+            if (isRunning)
+            {
+                dTimer.Stop();
+                //MyTuneChart.Background = FreezeBrush;
+                Button_Freeze_Run.Content="Run";
+
+                //where are the lines?
+                //double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
+                //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
+                //and what is min on the X-axis?
+                Double startX = AppHelper.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
+            }
+            else
+            {
+                dTimer.Start();
+                //MyTuneChart.Background = OrgTuneChartBrush;
+                Button_Freeze_Run.Content="Freeze";
+            }
         }
 
         /* Urban Delete?

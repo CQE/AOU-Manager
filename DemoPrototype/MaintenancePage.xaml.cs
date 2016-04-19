@@ -38,7 +38,7 @@ namespace DemoPrototype
 
             InitDispatcherTimer();
             //just testing 
-            AOULogMessage msg = new AOULogMessage((long)1000, "just testing");
+           // AOULogMessage msg = new AOULogMessage((long)1000, "just testing");
         //    LogMessageViewModel. logMessages.add(msg);
             
         }

@@ -90,6 +90,7 @@ namespace DemoPrototype
        */
     }
 
+
     [StructLayout(LayoutKind.Sequential, Pack = 2)] // Pack = 0, 1, 2, 4, 8, 16, 32, 64, or 128:
     public struct AOUStateData
     {
@@ -103,15 +104,15 @@ namespace DemoPrototype
         public UInt16 bufMid;
         public UInt16 bufCold;
 
+        public UInt16 BearHot;
+
         public UInt16 Power;
         public UInt16 Energy;
 
         public UInt16 Valves;
-        public UInt16 UI;
         public UInt16 IMM;
-        public UInt16 Mode;
 
-        public UInt16 SeqNr;
+        public UInt16 SeqState;
     }
 
     #region OldStructs

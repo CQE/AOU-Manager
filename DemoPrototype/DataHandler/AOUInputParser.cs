@@ -11,6 +11,10 @@ namespace DemoPrototype
 
     public class AOUInputParser
     {
+
+        static string valvesStr = "3F01";
+        static int seqNr = 0;
+
         #region Tag Constants
         public const string tagSubTagTime = "Time"; //
 
@@ -32,63 +36,17 @@ namespace DemoPrototype
         public const string tagUI = "UI";
         public const string tagIMM = "IMM";
         public const string tagMode = "Mode";
-        public const string tagSequenceNumber = "Seq";
-        #endregion
-
-
-        #region OldTags
-        /* old tags */
-        public const string tagTemperature = "temperature";
-        public const string tagTempSubTagSpare1 = "Spare1";
-
-        public const string tagFeeds = "feeds";
-        public const string tagFeedsHot = "Hot";
-        public const string tagFeedsCold = "Cold";
-        public const string tagFeedsPrev = "Prev";
-        public const string tagFeedsNew = "New";
-
-        public const string tagSequence = "seq";
-        public const string tagSeqSubTagState = "State";
-        public const string tagSeqSubTagCycle = "Cycle";
-        public const string tagSeqSubTagDesc = "Descr";
-        public const string tagSeqSubTagLeave = "Leave";
-
-        public const string tagValvesOld = "valves";
-        public const string tagValvesSubTagRet = "Ret";
-        public const string tagValvesSubTagRetPrev = "Prev";
-        public const string tagValvesSubTagRetNew = "New";
-
-        public const string tagIMMOld = "imm";
-        public const string tagIMMSubTagSetIMMError = "SetIMMError";
-        public const string tagIMMSubTagIMMBlockInject = "SetIMMBlockInject";
-        public const string tagIMMSubTagIMMBlockOpen = "SetIMMBlockOpen";
-        public const string tagIMMSubTagIMMStop = "IMMStop";
-        public const string tagIMMSubTagCycleAuto = "CycleAuto";
-        public const string tagIMMSubTagIMMInjecting = "IMMInjecting";
-        public const string tagIMMSubTagIMMEjecting = "IMMEjecting";
-        public const string tagIMMSubTagIMMToolClosed = "IMMToolClosed";
-
-        public const string tagLevels = "levels";
-        public const string tagLevelsSubTagCold = "Cold";
-        public const string tagLevelsSubTagHot = "Hot";
-        public const string tagLevelsSubTagPrev = "Prev";
-        public const string tagLevelsSubTagNew = "New";
+        public const string tagSeqState = "Seq";
 
         public const string tagLog = "log";
         public const string tagLogSubTagMsg = "Msg";
+
         #endregion
+
 
         public static bool ValidPowerTag(string tag)
         {
-            if (tag == tagTemperature || tag == tagFeeds || tag == tagSequence ||
-                tag == tagLevels || tag == tagValves || tag == tagValves ||
-
-                tag == tagState // Last tag to have all Data
-                )
-            {
-                return true;
-            }
-            return false;
+            return (tag == tagState || tag == tagLog);
         }
 
         #region Common
@@ -219,6 +177,22 @@ namespace DemoPrototype
             return false;
         }
 
+        public static bool ParseMMSS(string tag, string textline, out byte mask, out byte state)
+        {
+            int endpos = 0;
+            string tagValue = "";
+            mask = 0; state = 0;
+
+            if (FindTagAndExtractText(tag, textline, out tagValue, out endpos) && tagValue.Length == 4)
+            {
+                string mm = tagValue.Substring(0, 2);
+                string ss = tagValue.Substring(2, 2);
+                return (byte.TryParse(mm, System.Globalization.NumberStyles.HexNumber, null, out mask) &&
+                        byte.TryParse(ss, System.Globalization.NumberStyles.HexNumber, null, out state));
+            }
+            return false;
+        }
+
         public static bool Parsedouble(string tag, string textline, out double value)
         {
             int endpos = 0;
@@ -261,7 +235,6 @@ namespace DemoPrototype
         #endregion
 
 
-        #region ParseXML
         public static bool ParseTime_ms(string textline, out TimeSpan time)
         {
 
@@ -346,79 +319,54 @@ namespace DemoPrototype
         }
 
 
-        // New 
-        public static bool ParseState(string tagText, out AOUStateData stateData)
+        public static bool ParseState(string tagText, out AOUStateData stateData, out AOUDataTypes.UI_Buttons uiButtons, out AOUDataTypes.HT_StateType htState)
         {
-            /* <state><Time>19</Time><temp><Heat>34</Heat><Hot>31</Hot><Ret>27</Ret>
-            <BuHot>30</BuHot><BuMid>29</BuMid><BuCold>27</BuCold>
-            <Cool>32</Cool><Cold>30</Cold><BearHot>0</BearHot>
+            /*
+            tagText += "<Valves>" + valvesStr + "</Valves><Seq>" + seqNr + "</Seq>";
+            if (valvesStr == "3F01")
+                valvesStr = "3F02";
+            else if (valvesStr == "3F02")
+                valvesStr = "3F04";
+            else if (valvesStr == "3F04")
+                valvesStr = "3F01";
 
-            <ch9>0</ch9><ch10>0</ch10><ch11>0</ch11><ch12>0</ch12><ch13>0</ch13><ch14>0</ch14><ch15>0</ch15><avg>28</avg></temp>
+            seqNr++;
+            seqNr %= 11;
+            */
 
-            1. ASCII format from AOU
-            Tagged telegram format. All sub tag pairs except “Time” are optional.
+            /* 
+            <state><Time>19</Time><temp><Heat>34</Heat><Hot>31</Hot><Ret>27</Ret><BuHot>30</BuHot><BuMid>29</BuMid><BuCold>27</BuCold><Cool>32</Cool><Cold>30</Cold><BearHot>0</BearHot>
+            <ch9>0</ch9><ch10>0</ch10><ch11>0</ch11><ch12>0</ch12><ch13>0</ch13><ch14>0</ch14><ch15>0</ch15><avg>28</avg></temp></stateData> // Arduino data
+
+            ASCII format from AOU. // MASK_STATE = 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”). Optional tags except Time
  
-            <state><Time>104898416</Time>  // Number of 1/10 second ticks since RESET (32bits unsigned)
-               <temp>  // 16bits signed
-            <Heat>120</Heat><Hot>122</Hot><Ret>68</Ret><BuHot>56</BuHot><BuMid>56</BuMid><BuCold>56</BuCold><Cool>40</Cool><Cold>56</Cold><BearHot>40</BearHot>
-               </temp>
-               <Pow>127</Pow> // 8bits unsigned
-               <Valves>MMSS</Valves>     // 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”). Bits: 0/Hot valve, 1/Cold valve, 2/Return valve
-               <Energy>MMSS</Energy>    // 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
-               <UI>MMSS</UI>                   // 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
-               <IMM>MMSS</IMM>          // 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
-               <Mode>MMSS</Mode>      // 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
-               <Seq>117</Seq>
+            <state><Time>104898416</Time>  // Number of 1/10 second ticks since RESET (32bits unsigned). Not Optional
+            <temp>  <Heat>120</Heat><Hot>122</Hot><Ret>68</Ret><BuHot>56</BuHot><BuMid>56</BuMid><BuCold>56</BuCold><Cool>40</Cool><Cold>56</Cold><BearHot>40</BearHot> </temp> // // 16bits signed
+               <Pow>127</Pow>           // 8bits unsigned
+               <Valves>MMSS</Valves>    // MASK_STATE, Bits: 0/Hot valve, 1/Cold valve, 2/Return valve
+               <Energy>MMSS</Energy>    // MASK_STATE, 
+
+               <UI>MMSS</UI>            // MASK_STATE, BUTTON_ONOFF = 0x0001 (Soft on/Off); BUTTON_EMERGENCYOFF = 0x0002 (Hard Off); BUTTON_MANUALOPHEAT = 0x0004 (Forced Heating);
+                                        // BUTTON_MANUALOPCOOL = 0x0008 (Forced Cooling); BUTTON_CYCLE = 0x0010 (Forced Cycling); BUTTON_RUN = 0x0020 (Run with IMM)
+
+               <IMM>MMSS</IMM>          // MASK_STATE, IMM_OutIMMError = 0x01; IMM_OutIMMBlockInject = 0x02; IMM_OutIMMBlockOpen = 0x04; IMM_InIMMStop = 0x08
+                                        // IMM_InCycleAuto = 0x10; IMM_InIMMInjecting = 0x20; IMM_InIMMEjecting = 0x40; IMM_InIMMToolClosed = 0x80
+
+               <Mode>MMSS</Mode>        // MASK_STATE, <Mode>1</Mode>(int); HT_STATE_INVALID = -999; HT_STATE_COLD = -1; HT_STATE_UNKNOWN = 0; HT_STATE_HOT = 1
+               <Seq>117</Seq>           // 
             </state>
  
-            Example using this spec:
             <state><Time>4711</Time>
-               <Valves>0101</Valves>      // Hot feed valve “on” (i.e. feeds hot tempering fluid)
+               <Valves>0101</Valves>      // Example Hot feed valve “on” (i.e. feeds hot tempering fluid)
             </state>
- 
             <state><Time>4721</Time>  // One second (or 10 x 1/10 second) later
                <Valves>0100</Valves>       // Hot feed valve “off” (i.e. stopped feeding hot tempering fluid)
             </state>
+*/
 
-f. Tool tempering mode
-// <state><Time>104898416</Time>
-//…
-//   <Mode>1</Mode> (int), for modes see below
-//
-#define HT_STATE_INVALID -999
-#define HT_STATE_COLD -1
-#define HT_STATE_UNKNOWN 0
-#define HT_STATE_HOT 1
- 
-g. Knapparnas körläge
-// <state><Time>104898416</Time>
-//…
-//   <UI>MMSS</UI> (hex) MM=8bit mask, SS=8bits , for buttons see below
-//
-#define BUTTON_ONOFF                  0x0001  // Soft on/Off
-#define BUTTON_EMERGENCYOFF  0x0002  // Hard Off
- 
-#define BUTTON_MANUALOPHEAT  0x0004  // Forced Heating
-#define BUTTON_MANUALOPCOOL  0x0008  // Forced Cooling
- 
-#define BUTTON_CYCLE                      0x0010  // Forced Cycling
-#define BUTTON_RUN                         0x0020  // Run with IMM
- 
- 
-h. Signals AOU/IMM interaction
-// <state><Time>104898416</Time>
-//…
-//   <IMM>MMSS</IMM> (hex)  MM=8bit mask, SS=8bits for signals (see below)
-//
-#define IMM_OutIMMError       0x01
-#define IMM_OutIMMBlockInject 0x02
-#define IMM_OutIMMBlockOpen   0x04
-#define IMM_InIMMStop         0x08
-#define IMM_InCycleAuto       0x10
-#define IMM_InIMMInjecting    0x20
-#define IMM_InIMMEjecting     0x40
-#define IMM_InIMMToolClosed   0x80
-            */
+            uiButtons = new AOUDataTypes.UI_Buttons();
+            htState = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
+
             stateData.time_min_of_week = 0;
             stateData.time_ms_of_min = 0;
             stateData.coldTankTemp = AOUDataTypes.UInt16_NaN;
@@ -430,30 +378,57 @@ h. Signals AOU/IMM interaction
             stateData.bufMid = AOUDataTypes.UInt16_NaN;
             stateData.bufHot = AOUDataTypes.UInt16_NaN;
 
-            stateData.Energy = AOUDataTypes.UInt16_NaN; // ToDo: Rembeber old value
-            stateData.IMM = AOUDataTypes.UInt16_NaN; // ToDo: Rembeber old value
-            stateData.Mode = AOUDataTypes.UInt16_NaN; // ToDo: Rembeber old value
+            stateData.BearHot = AOUDataTypes.UInt16_NaN;
+
+            stateData.Energy = AOUDataTypes.UInt16_NaN; 
+            stateData.IMM = AOUDataTypes.UInt16_NaN; 
             stateData.Power = AOUDataTypes.UInt16_NaN;
-            stateData.SeqNr = AOUDataTypes.UInt16_NaN;
-            stateData.UI = AOUDataTypes.UInt16_NaN;
+            stateData.SeqState = AOUDataTypes.UInt16_NaN;
             stateData.Valves = AOUDataTypes.UInt16_NaN; // ToDo: Rembeber old value
 
             ParseWordTime10(tagText, out stateData.time_min_of_week, out stateData.time_ms_of_min);
+
             ParseWord(tagTempSubTagHot, tagText, out stateData.hotTankTemp);
             ParseWord(tagTempSubTagCold, tagText, out stateData.coldTankTemp);
             ParseWord(tagTempSubTagRet, tagText, out stateData.retTemp);
-            ParseWord(tagTempSubTagCool, tagText, out stateData.coolerTemp);
             ParseWord(tagTempBuCold, tagText, out stateData.bufCold);
             ParseWord(tagTempBuMid, tagText, out stateData.bufMid);
             ParseWord(tagTempBuHot, tagText, out stateData.bufHot);
-            // ParseWord(tagTempSubTagBearHot, tagText, out todoValue);
+
+            ParseWord(tagTempSubTagCool, tagText, out stateData.coolerTemp);
+
+            ParseWord(tagTempSubTagBearHot, tagText, out stateData.BearHot);
+
             ParseWord(tagPower, tagText, out stateData.Power);
-            ParseWord(tagValves, tagText, out stateData.Valves);
-            ParseWord(tagEnergy, tagText, out stateData.Energy);
-            ParseWord(tagUI, tagText, out stateData.UI);
-            ParseWord(tagIMM, tagText, out stateData.IMM);
-            ParseWord(tagMode, tagText, out stateData.Mode);
-            ParseWord(tagSequenceNumber, tagText, out stateData.SeqNr);
+
+            ParseWord(tagSeqState, tagText, out stateData.SeqState);
+
+            byte mask; byte state;
+
+            if (ParseMMSS(tagValves, tagText, out mask, out state))
+            {
+                stateData.Valves = state;
+            }
+
+            if (ParseMMSS(tagEnergy, tagText, out mask, out state))
+            {
+                stateData.Energy = state;
+            }
+
+            if (ParseMMSS(tagUI, tagText, out mask, out state))
+            {
+                // uiButtons = state;
+            }
+
+            if (ParseMMSS(tagIMM, tagText, out mask, out state))
+            {
+                stateData.IMM = state;
+            }
+
+            if (ParseMMSS(tagMode, tagText, out mask, out state))
+            {
+                // htState = state;
+            }
 
 
             return true;
@@ -466,264 +441,7 @@ h. Signals AOU/IMM interaction
             // textLine = "<log><Time>94962045</Time><Msg>Setup AOU version 1.1 ready (Plastics Unbound Ltd, Cyprus)</Msg></log>";
             return ParseLongTime(tagText, out time_ms) && ParseString(tagLogSubTagMsg, tagText, out logMsg);
         }
-        #endregion
 
-        #region ParseXMLOld
-        /*
-        public static bool ParseTemperature(string tagText, out AOUTemperatureData tempData)
-        {
-            // textLine = "<temperature><Time>104898416</Time><Hot>122</Hot><Cold>56</Cold><Ret>68</Ret><Cool>40</Cool></temperature>";
-
-            tempData.time_min_of_week = 0;
-            tempData.time_ms_of_min = 0;
-            tempData.coldTankTemp = AOUDataTypes.UInt16_NaN;
-            tempData.hotTankTemp = AOUDataTypes.UInt16_NaN;
-            tempData.retTemp = AOUDataTypes.UInt16_NaN;
-            tempData.coolerTemp = AOUDataTypes.UInt16_NaN;
-
-            return ParseWordTime(tagText, out tempData.time_min_of_week, out tempData.time_ms_of_min) &&
-                    ParseWord(tagTempSubTagHot, tagText, out tempData.hotTankTemp) &&
-                    ParseWord(tagTempSubTagCold, tagText, out tempData.coldTankTemp) &&
-                    ParseWord(tagTempSubTagRet, tagText, out tempData.retTemp) &&
-                    ParseWord(tagTempSubTagCool, tagText, out tempData.coolerTemp);
-        }
-
-        public static bool ParseValves(string tagText, out AOUValvesData valvesData)
-        {
-            // textLine = "<valves><Time>104903816</Time><Ret><Prev>93</Prev><New>80</New></Ret></valves>";
-
-            valvesData.time_min_of_week = 0;
-            valvesData.time_ms_of_min = 0;
-            valvesData.prevValveReturnTemp = AOUDataTypes.UInt16_NaN;
-            valvesData.newValveReturnTemp = AOUDataTypes.UInt16_NaN;
-
-            // ToDo Check tagValvesSubTagRet
-            return ParseWordTime(tagText, out valvesData.time_min_of_week, out valvesData.time_ms_of_min) &&
-                   ParseWord(tagValvesSubTagRetPrev, tagText, out valvesData.prevValveReturnTemp) &&
-                   ParseWord(tagValvesSubTagRetNew, tagText, out valvesData.newValveReturnTemp);
-        }
-
-        public static bool ParseHotFeed(string tagText, out AOUHotFeedData feedData)
-        {
-            // textLine = "<feeds><Time>104894473</Time><Hot><Prev>60</Prev></New>63,75</New></Hot></feeds>";
-            // textLine = "<feeds><Time>104878268</Time><Cold><Prev>65</Prev></New>60</New></Cold></feeds>";
-            feedData.time_min_of_week = 0;
-            feedData.time_ms_of_min = 0;
-            feedData.prevFeedTemp = AOUDataTypes.UInt16_NaN;
-            feedData.newFeedTemp = AOUDataTypes.UInt16_NaN;
-
-            return (ParseWordTime(tagText, out feedData.time_min_of_week, out feedData.time_ms_of_min) &&
-                ParseWord(tagFeedsPrev, tagText, out feedData.prevFeedTemp) &&
-                ParseWord(tagFeedsNew, tagText, out feedData.newFeedTemp));
-        }
-
-        public static bool ParseColdFeed(string tagText, out AOUColdFeedData feedData)
-        {
-            // textLine = "<feeds><Time>104894473</Time><Hot><Prev>60</Prev></New>63,75</New></Hot></feeds>";
-            // textLine = "<feeds><Time>104878268</Time><Cold><Prev>65</Prev></New>60</New></Cold></feeds>";
-            feedData.time_min_of_week = 0;
-            feedData.time_ms_of_min = 0;
-            feedData.prevFeedTemp = AOUDataTypes.UInt16_NaN;
-            feedData.newFeedTemp = AOUDataTypes.UInt16_NaN;
-
-            return (ParseWordTime(tagText, out feedData.time_min_of_week, out feedData.time_ms_of_min) &&
-                ParseWord(tagFeedsPrev, tagText, out feedData.prevFeedTemp) &&
-                ParseWord(tagFeedsNew, tagText, out feedData.newFeedTemp));
-        }
-
-        public static bool ParseIMM(string tagText, out AOUIMMData immData)
-        {
-            string tempText = "";
-            UInt16 tempValue = 0;
-
-            immData.time_min_of_week = 0;
-            immData.time_ms_of_min = 0;
-            immData.imm_setting_val = AOUDataTypes.UInt16_NaN;
-            immData.imm_setting_type = (UInt16)AOUDataTypes.IMMSettings.Nothing;
-
-            int endpos = 0;
-            if (FindTagAndExtractText(tagIMM, tagText, out tempText, out endpos) &&
-               ParseWordTime(tempText, out immData.time_min_of_week, out immData.time_ms_of_min))
-            {
-                if (ParseWord(tagIMMSubTagSetIMMError, tempText, out tempValue))
-                {
-                    immData.imm_setting_type = (UInt16)AOUDataTypes.IMMSettings.OutIMMError;
-                    immData.imm_setting_val = tempValue;
-                }
-                else if (ParseWord(tagIMMSubTagCycleAuto, tempText, out tempValue))
-                {
-                    immData.imm_setting_type = (UInt16)AOUDataTypes.IMMSettings.InCycleAuto;
-                    immData.imm_setting_val = tempValue;
-                }
-                else if (ParseWord(tagIMMSubTagIMMEjecting, tempText, out tempValue))
-                {
-                    immData.imm_setting_type = (UInt16)AOUDataTypes.IMMSettings.InIMMEjecting;
-                    immData.imm_setting_val = tempValue;
-                }
-                else if (ParseWord(tagIMMSubTagIMMInjecting, tempText, out tempValue))
-                {
-                    immData.imm_setting_type = (UInt16)AOUDataTypes.IMMSettings.InIMMInjecting;
-                    immData.imm_setting_val = tempValue;
-                }
-                else if (ParseWord(tagIMMSubTagIMMToolClosed, tempText, out tempValue))
-                {
-                    immData.imm_setting_type = (UInt16)AOUDataTypes.IMMSettings.InIMMToolClosed;
-                    immData.imm_setting_val = tempValue;
-                }
-                else if (ParseWord(tagIMMSubTagIMMStop, tempText, out tempValue))
-                {
-                    immData.imm_setting_type = (UInt16)AOUDataTypes.IMMSettings.InIMMStop;
-                    immData.imm_setting_val = tempValue;
-                }
-                else if (ParseWord(tagIMMSubTagIMMBlockInject, tempText, out tempValue))
-                {
-                    immData.imm_setting_type = (UInt16)AOUDataTypes.IMMSettings.OutIMMBlockInject;
-                    immData.imm_setting_val = tempValue;
-                }
-                else if (ParseWord(tagIMMSubTagIMMBlockOpen, tempText, out tempValue))
-                {
-                    immData.imm_setting_type = (UInt16)AOUDataTypes.IMMSettings.OutIMMBlockOpen;
-                    immData.imm_setting_val = tempValue;
-                }
-            }
-
-            return immData.imm_setting_type != (UInt16)AOUDataTypes.IMMSettings.Nothing;
-        }
-
-        public static bool ParseHotLevel(string tagText, out AOUHotLevelData levelData)
-        {
-            // textLine = "<feeds><Time>104894473</Time><Hot><Prev>60</Prev></New>63,75</New></Hot></feeds>";
-            // textLine = "<feeds><Time>104878268</Time><Cold><Prev>65</Prev></New>60</New></Cold></feeds>";
-            levelData.time_min_of_week = 0;
-            levelData.time_ms_of_min = 0;
-            levelData.prevLevel = AOUDataTypes.UInt16_NaN;
-            levelData.newLevel = AOUDataTypes.UInt16_NaN;
-
-
-            return ParseWordTime(tagText, out levelData.time_min_of_week, out levelData.time_ms_of_min) &&
-                    ParseWord(tagLevelsSubTagPrev, tagText, out levelData.prevLevel) &&
-                    ParseWord(tagLevelsSubTagNew, tagText, out levelData.newLevel);
-        }
-
-        public static bool ParseColdLevel(string tagText, out AOUColdLevelData levelData)
-        {
-            // textLine = "<feeds><Time>104894473</Time><Hot><Prev>60</Prev></New>63,75</New></Hot></feeds>";
-            // textLine = "<feeds><Time>104878268</Time><Cold><Prev>65</Prev></New>60</New></Cold></feeds>";
-            levelData.time_min_of_week = 0;
-            levelData.time_ms_of_min = 0;
-            levelData.prevLevel = AOUDataTypes.UInt16_NaN;
-            levelData.newLevel = AOUDataTypes.UInt16_NaN;
-
-            return ParseWordTime(tagText, out levelData.time_min_of_week, out levelData.time_ms_of_min) &&
-                    ParseWord(tagLevelsSubTagPrev, tagText, out levelData.prevLevel) &&
-                    ParseWord(tagLevelsSubTagNew, tagText, out levelData.newLevel);
-        }
-
-        public static bool ParseSeqState(string tagContent, out UInt16 state)
-        {
-            string stateStr;
-            state = 0;
-            if (ParseString(tagSeqSubTagState, tagContent, out stateStr))
-            {
-                state = (UInt16)AOUDataTypes.StringToStateType(stateStr);
-                return true;
-            }
-            return false;
-        }
-
-        public static bool ParseSequence(string tagText, out AOUSeqData seqData)
-        {
-            seqData.time_min_of_week = 0;
-            seqData.time_ms_of_min = 0;
-            seqData.state = (UInt16)AOUDataTypes.StateType.NOTHING;
-            seqData.cycle = 0;
-
-            return ParseWordTime(tagText, out seqData.time_min_of_week, out seqData.time_ms_of_min) &&
-                   ParseSeqState(tagText, out seqData.state) &&
-                   ParseWord(tagSeqSubTagCycle, tagText, out seqData.cycle);
-        }
-        #endregion
-
-        #region CreateXML
-        public static string CreateTempXmlString(long time_ms, AOUTemperatureData tempData)
-        {
-            return String.Format("<{0}><{1}>{6}</{1}><{2}>{7}</{2}><{3}>{8}</{3}><{4}>{9}</{4}><{5}>{10}</{5}></{0}>",
-                                    tagTemperature,
-                                    tagSubTagTime, tagTempSubTagHot, tagTempSubTagCold, tagTempSubTagRet, tagTempSubTagCool, // 1 - 5
-                                    time_ms,
-                                    tempData.hotTankTemp, tempData.coldTankTemp, tempData.retTemp, tempData.coolerTemp); // 6 - 10
-        }
-
-        public static string CreateSeqXmlString(long time_ms, AOUSeqData tempData)
-        {
-            return String.Format("<{0}><{1}>{6}</{1}><{2}>{7}</{2}><{3}>{8}</{3}><{4}>{9}</{4}><{5}>{10}</{5}></{0}>",
-                                    tagSequence, tagSubTagTime,
-                                    tagSeqSubTagState, tagSeqSubTagCycle, tagSeqSubTagDesc, tagSeqSubTagLeave, // 2 - 5
-                                    time_ms, tempData.state, tempData.cycle, "Desc...", "Leave..."); // 6 - 10
-        }
-
-        /*
-        public static string CreateIMMXmlString(long time_ms, AOUIMMData tempData)
-        {
-            string IMMSettingsTag = null;
-
-            switch ((AOUDataTypes.IMMSettings)tempData.imm_setting_type)
-            {
-                case AOUDataTypes.IMMSettings.CycleAuto: IMMSettingsTag = tagIMMSubTagCycleAuto; break;
-                case AOUDataTypes.IMMSettings.IMMEjecting: IMMSettingsTag = tagIMMSubTagIMMEjecting; break;
-                case AOUDataTypes.IMMSettings.IMMInjecting: IMMSettingsTag = tagIMMSubTagIMMInjecting; break;
-                case AOUDataTypes.IMMSettings.IMMStop: IMMSettingsTag = tagIMMSubTagIMMStop; break;
-                case AOUDataTypes.IMMSettings.IMMToolClosed: IMMSettingsTag = tagIMMSubTagIMMToolClosed; break;
-                case AOUDataTypes.IMMSettings.SetIMMBlockInject: IMMSettingsTag = tagIMMSubTagIMMBlockInject; break;
-                case AOUDataTypes.IMMSettings.SetIMMBlockOpen: IMMSettingsTag = tagIMMSubTagIMMBlockOpen; break;
-                case AOUDataTypes.IMMSettings.SetIMMError: IMMSettingsTag = tagIMMSubTagSetIMMError;  break;
-                default: IMMSettingsTag = tagIMMSubTagSetIMMError; break;
-            }
-
-            return String.Format("<{0}><{1}>{3}</{1}><{2}>{4}</{2}></{0}>",
-                                    tagIMM, tagSubTagTime, IMMSettingsTag, // 0 - 2
-                                    time_ms, tempData.imm_setting_val); // 3 - 4
-        }
-        public static string CreateHotFeedXmlString(long time_ms, AOUHotFeedData data)
-        {
-            return String.Format("<{0}><{1}>{5}</{1}><{2}> <{3}>{6}</{3}><{4}>{7}</{4}> </{2}></{0}>",
-                                    tagFeeds, tagSubTagTime, tagFeedsHot, // 0 - 2
-                                    tagFeedsPrev, tagFeedsNew, // 3, 4
-                                    time_ms, data.prevFeedTemp, data.newFeedTemp); // 5, 6, 7
-        }
-
-        public static string CreateColdFeedXmlString(long time_ms, AOUColdFeedData data)
-        {
-            return String.Format("<{0}><{1}>{5}</{1}><{2}> <{3}>{6}</{3}><{4}>{7}</{4}> </{2}></{0}>",
-                                    tagFeeds, tagSubTagTime, tagFeedsCold, // 0 - 2
-                                    tagFeedsPrev, tagFeedsNew, // 3, 4
-                                    time_ms, data.prevFeedTemp, data.newFeedTemp); // 5, 6, 7
-        }
-
-        public static string CreateHotLevelXmlString(long time_ms, AOUHotLevelData data)
-        {
-            return String.Format("<{0}><{1}>{5}</{1}><{2}> <{3}>{6}</{3}><{4}>{7}</{4}> </{2}></{0}>",
-                                    tagLevels, tagSubTagTime, tagLevelsSubTagHot, // 0 - 2
-                                    tagLevelsSubTagPrev, tagLevelsSubTagNew, // 3, 4
-                                    time_ms, data.prevLevel, data.newLevel); // 5, 6, 7
-        }
-
-        public static string CreateColdLevelXmlString(long time_ms, AOUColdLevelData data)
-        {
-            return String.Format("<{0}><{1}>{5}</{1}><{2}> <{3}>{6}</{3}><{4}>{7}</{4}> </{2}></{0}>",
-                                    tagFeeds, tagSubTagTime, tagLevelsSubTagCold, // 0 - 2
-                                    tagFeedsPrev, tagFeedsNew, // 3, 4
-                                    time_ms, data.prevLevel, data.newLevel); // 5, 6, 7
-        }
-
-        public static string CreateValvesXmlString(long time_ms, AOUValvesData data)
-        {
-            return String.Format("<{0}><{1}>{5}</{1}><{2}>{7}</{2}><{3}>{6}</{3}><{4}>{7}</{4}></{2}></{0}>",
-                                    tagValves, tagSubTagTime, tagValvesSubTagRet, // 0 - 2
-                                    tagValvesSubTagRetPrev, tagValvesSubTagRetNew, // 3 - 4
-                                    time_ms, data.prevValveReturnTemp, data.newValveReturnTemp); // 5 - 7
-        }
-        */
 
         public static string CreateLogXmlString(long time_ms, AOULogMessage data)
         {
@@ -731,8 +449,6 @@ h. Signals AOU/IMM interaction
                                     tagLog, tagSubTagTime, tagLogSubTagMsg, // 0 - 2
                                     time_ms, data.message); // 3 - 4
         }
-
-        #endregion
 
     }
 }

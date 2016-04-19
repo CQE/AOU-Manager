@@ -41,6 +41,8 @@ b.      Läsa av temperaturer från kurvorna
         private List<AOULogMessage> logMessages;
         private List<Power> powerValues;
 
+        private Power lastPower;
+
         public int NewPowerValuesAvailable { get; private set; }
 
         public int NewLogMessagesAvailable { get; private set; }
@@ -294,7 +296,7 @@ b.      Läsa av temperaturer från kurvorna
             }
             else
             {
-                return new Power(); // Must return something
+                return new Power(0); // Must return something
             }
         }
 

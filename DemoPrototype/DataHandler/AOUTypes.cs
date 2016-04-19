@@ -25,7 +25,7 @@ namespace DemoPrototype
 
 //----------------------------------------------------------------------------------------------------------------------------
         public enum HT_StateType {
-            HT_STATE_INVALID = -999, HT_STATE_COLD = -1, HT_STATE_UNKNOWN = 0,  HT_STATE_HOT = 1
+            HT_STATE_NOT_SET = -99, HT_STATE_INVALID = -999, HT_STATE_COLD = -1, HT_STATE_UNKNOWN = 0,  HT_STATE_HOT = 1
         }
 
         // IMM_OutIMMError: 0x01; IMM_OutIMMBlockInject: 0x02; IMM_OutIMMBlockOpen: 0x04; IMM_InIMMStop: 0x08
@@ -44,6 +44,14 @@ namespace DemoPrototype
             SQ_WAIT_FOR_OPEN_BEGIN, SQ_WAIT_FOR_EJECT_BEGIN, SQ_WAIT_FOR_EJECT_END, SQ_WAIT_FOR_OPEN_END
         };
 
+        public struct UI_Buttons
+        {
+            long time;
+
+
+        }
+
+        /*
         public const int NumStates = 8;
         public static StateType StringToStateType(string state_str)
         {
@@ -63,17 +71,24 @@ namespace DemoPrototype
                 default: return StateType.NOTHING;
             }
         }
+        */
 
 //----------------------------------------------------------------------------------------------------------------------------
 
         public const long msInWeek = 60000 * 10080; // 1 week = 7*24*60 = 10 080 min
 
+        // The same as double.IsNaN for UInt16
         public const UInt16 UInt16_NaN = UInt16.MaxValue;
+        public static bool IsUInt16NaN(UInt16 value)
+        {
+            return value == UInt16_NaN;
+        }
 
         public static void TimeMsToAOUModelTime(long time_ms, out UInt16 time_minutes_of_week, out UInt16 time_ms_of_minute)
         {
             time_ms_of_minute = (UInt16)(time_ms % 60000); // 1 min = 60 000 ms
             time_minutes_of_week = (UInt16)((time_ms % msInWeek) / 60000);
+            
         }
 
         public static long AOUModelTimeToTimeMs(UInt16 time_minutes_of_week, UInt16 time_ms_of_minute)

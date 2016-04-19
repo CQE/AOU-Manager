@@ -33,8 +33,6 @@ namespace DemoPrototype
         public string GetTextData()
         {
             string text = StrData;
-            StrData = "";
-
             return text;
         }
 

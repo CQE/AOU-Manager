@@ -246,7 +246,7 @@ namespace DemoPrototype
 
         static public Power GetRandomPower(double minResolution)
         {
-            AOUDataTypes.StateType valState = (AOUDataTypes.StateType)rnd.Next(1, AOUDataTypes.NumStates + 1);
+            AOUDataTypes.StateType valState = (AOUDataTypes.StateType)rnd.Next(1, 11);
 
             var power = new Power()
             {

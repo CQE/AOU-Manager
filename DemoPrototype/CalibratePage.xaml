@@ -58,8 +58,8 @@
 
             <chart:SfChart.Annotations>
                 <chart:TextAnnotation X1="50" Y1="150" CoordinateUnit="Pixel" FontSize="16" FontWeight="ExtraLight" Text="Double-click to freeze/run"></chart:TextAnnotation>
-                <chart:VerticalLineAnnotation Name="CalibratePhaseVLine1"  CanDrag="True" DragCompleted="CalibratePhaseVLine1_DragCompleted"  Width="2" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
-                <chart:VerticalLineAnnotation Name="CalibratePhaseVLine2" CanDrag="True"  DragCompleted="CalibratePhaseVLine2_DragCompleted" CoordinateUnit="Pixel" X1="30"></chart:VerticalLineAnnotation>
+                <chart:VerticalLineAnnotation Name="CalibratePhaseVLine1"  StrokeThickness="2" CanDrag="True"  DragCompleted="CalibratePhaseVLine1_DragCompleted"  Width="2" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
+                <chart:VerticalLineAnnotation Name="CalibratePhaseVLine2" StrokeThickness="2" CanDrag="True"  DragCompleted="CalibratePhaseVLine2_DragCompleted" CoordinateUnit="Pixel" X1="30"></chart:VerticalLineAnnotation>
             </chart:SfChart.Annotations>
             
             <chart:LineSeries LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
@@ -87,6 +87,8 @@
             <TextBlock  VerticalAlignment="Center" Text="Cycle"></TextBlock>
             <ToggleSwitch  Margin="5,0,0,0"  Toggled="DoCycle" VerticalAlignment="Center" IsOn="False" ></ToggleSwitch>
         </StackPanel>
+
+        <Button Margin="10,0,0,0" Grid.Row="4" Grid.Column="1" Content="Freeze" Name="Button_Freeze_Run" Click="Button_Freeze_Run_Click"></Button>
 
         <TextBlock VerticalAlignment="Top" Grid.Column="3" Grid.ColumnSpan="2"> Tempering delay time Feed-to-Return </TextBlock>
         <StackPanel Grid.Column="3" Orientation="Horizontal" Grid.ColumnSpan="3" VerticalAlignment="Bottom">

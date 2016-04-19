@@ -402,5 +402,25 @@ namespace DemoPrototype
             AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TMidBuffer", AOUDataTypes.CommandType.TBufferMidRefThreshold, 0, 300, this);
             //todo update line
         }
+
+        private void Button_Freeze_Run_Click(object sender, RoutedEventArgs e)
+        {
+            if (dTimer.IsEnabled && doStepTimer == 0)
+            {
+                dTimer.Stop();
+                Button_Freeze_Run.Content = "Run";
+            }
+            else
+            {
+                //make axis auto again
+                //todo: make work for all graphs
+                CalibrateDelayXAxis.Minimum = null;
+                CalibrateDelayXAxis.Maximum = null;
+                CalibrateDelayXAxis.Interval = null;
+                //and start the plotting
+                dTimer.Start();
+                Button_Freeze_Run.Content = "Freeze";
+            }
+        }
     }
 }

@@ -250,7 +250,8 @@ namespace DemoPrototype
             if (CalibrateGrid.DataContext != null)
             {
                 var dc = (LineChartViewModel)CalibrateGrid.DataContext;
-                TNow = TimeSpan.FromMilliseconds(dc.power[dc.power.Count].ElapsedTime);
+                //Urban TODO you must handle time < 30 sec
+                TNow = TimeSpan.FromMilliseconds(dc.power[dc.power.Count-1].ElapsedTime);
             }
             else
             {

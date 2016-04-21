@@ -17,6 +17,7 @@ using Syncfusion.UI.Xaml.Grid;
 using Windows.Storage;
 using System.IO.IsolatedStorage;
 using System.Collections.ObjectModel;
+using Syncfusion.UI.Xaml.Grid.Converter;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -67,40 +68,25 @@ namespace DemoPrototype
 
         private async void SaveExcelToFile(Syncfusion.XlsIO.IWorkbook workBook)
         {
-            string filename = "Logs.xlsx";
-            StorageFolder folder = KnownFolders.PicturesLibrary;
 
+            StorageFile storageFile = await KnownFolders.PicturesLibrary.CreateFileAsync("LogMessages" + ".xlsx", CreationCollisionOption.ReplaceExisting);
             try
             {
-                StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists); ;
-                var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite);
-
-                var isf = IsolatedStorageFile.GetUserStoreForApplication(); // m_AppFilesPath = "C:\Users\Benurme\AppData\Local\Packages\DemoPrototype_dcmya832rqt3c\LocalState"
-                IsolatedStorageFileStream outStream = new IsolatedStorageFileStream(filename, FileMode.Create, isf);
-                await workBook.SaveAsAsync(outStream);
-                // await workBook.SaveAsAsync(fileStream);
-
-                workBook.Close();
-
-                // isf.CopyFile()
+                if (storageFile != null)
+                    await workBook.SaveAsAsync(storageFile);
             }
             catch (Exception e)
             {
                 string err = e.Message;
             }
-            // StorageFile f = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
-            // await workBook.SaveAsAsync(f.);
-
-            // var skydrive = new SkyDriveHandler(App.LiveSession, "000000004010FA0B", "InvoiceGenerater"); // How to use Microsoft.Live
-
         }
 
         private void exportButton_Click(object sender, RoutedEventArgs e)
         {
-            //var options = new ExcelExportingOptions();
-            //options.ExcelVersion = Syncfusion.XlsIO.ExcelVersion.Excel2013;
-            //var excelEngine = LogGrid.ExportToExcel(LogGrid.View, options);
-            //SaveExcelToFile(excelEngine.Excel.Workbooks[0]);
+            var options = new ExcelExportingOptions();
+            options.ExcelVersion = Syncfusion.XlsIO.ExcelVersion.Excel2013;
+            var excelEngine = LogGrid.ExportToExcel(LogGrid.View, options);
+            SaveExcelToFile(excelEngine.Excel.Workbooks[0]);
         }
     }
 

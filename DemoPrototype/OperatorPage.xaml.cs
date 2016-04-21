@@ -157,6 +157,13 @@ namespace DemoPrototype
         void UpdateTick(object sender, object e)
         {
             DataUpdater.UpdateInputData(mainGrid.DataContext);
+            //update textboxes
+            SetHotTankTempText();
+            SetColdTankTempText();
+            //Todo update mode?
+            //Todo update tooltemp
+            SetToolTemperingText();
+
         }
 
 
@@ -239,12 +246,9 @@ namespace DemoPrototype
             string title = "Threshold TRetActual cold" + " ↘ " + "hot";
             string message = "You are about to set new threshold value to "; 
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TReturnThresholdCold2Hot, HLineSet_ThresholdCold2Hot, this);
-
-            //Urban please replace this code with code showing diff between the lines, and center the Chartstripline
-            //what is this code doing here? PhaseDiffResult.Text = "pl2, Cold";
         }
 
-        // 
+        
         private void HLineSet_ThresholdMidTank_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             string title = "Buffer tank mid temperature threshold";
@@ -352,42 +356,42 @@ namespace DemoPrototype
         */
         private void NewTHotTankTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Hot Tank Value", AOUDataTypes.CommandType.tempHotTankFeedSet, 100, 300, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Change Hot Tank Value", AOUDataTypes.CommandType.tempHotTankFeedSet, 100, 300, this);
         }
 
         private void NewTColdTankTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Change Cold Tank Value", AOUDataTypes.CommandType.tempColdTankFeedSet, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Change Cold Tank Value", AOUDataTypes.CommandType.tempColdTankFeedSet, 0, 30, this);
         }
 
         private void NewActiveHeatingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Active heating time", AOUDataTypes.CommandType.heatingTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Active heating time", AOUDataTypes.CommandType.heatingTime, 0, 30, this);
         }
 
         private void NewPauseHeatingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Heating pause time", AOUDataTypes.CommandType.toolHeatingFeedPause, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Heating pause time", AOUDataTypes.CommandType.toolHeatingFeedPause, 0, 30, this);
         }
 
         private void NewActiveCoolingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Active cooling time", AOUDataTypes.CommandType.coolingTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Active cooling time", AOUDataTypes.CommandType.coolingTime, 0, 30, this);
         }
 
         private void NewPauseCoolingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Cooling pause time", AOUDataTypes.CommandType.toolCoolingFeedPause, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Cooling pause time", AOUDataTypes.CommandType.toolCoolingFeedPause, 0, 30, this);
         }
 
         private void HotFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Hot return delay time", AOUDataTypes.CommandType.hotDelayTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Hot return delay time", AOUDataTypes.CommandType.hotDelayTime, 0, 30, this);
         }
 
         private void ColdFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)coldTankSet, "Cold return delay time", AOUDataTypes.CommandType.coldDelayTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Cold return delay time", AOUDataTypes.CommandType.coldDelayTime, 0, 30, this);
         }
 
         private void SetHotSafeZoneLine_DragDelta(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragDeltaEventArgs e)
@@ -458,6 +462,49 @@ namespace DemoPrototype
                 Button_Freeze_Run.Content="Freeze";
             }
         }
+
+        private void SetHotTankTempText()
+        {
+            int newTemp = 0;
+            if (mainGrid.DataContext != null)
+            {
+                var dc = (LineChartViewModel)mainGrid.DataContext;
+                //TODO Urban want last vaue instead of first. Next line alwys returns NaN. Is this safe?
+                // newTemp = dc.power[dc.power.Count-1].THotTank;
+                newTemp = (int)dc.power[0].THotTank;
+            }
+            //zero decimals
+            TextBox_THotTank.Text = newTemp.ToString();
+        }
+
+        private void SetColdTankTempText()
+        {
+            int newTemp = 0;
+            if (mainGrid.DataContext != null)
+            {
+                var dc = (LineChartViewModel)mainGrid.DataContext;
+                //TODO Urban want last vaue instead of first. Next line alwys returns NaN. Is this safe?
+                // newTemp = dc.power[dc.power.Count-1].THotTank;
+                newTemp = (int)dc.power[0].TColdTank;
+            }
+            //zero decimals
+            TextBox_TColdTank.Text = newTemp.ToString();
+        }
+
+        private void SetToolTemperingText()
+        {
+            int newTemp = 0;
+            if (mainGrid.DataContext != null)
+            {
+                var dc = (LineChartViewModel)mainGrid.DataContext;
+                //TODO Urban want last vaue instead of first. Next line alwys returns NaN. Is this safe?
+                // newTemp = dc.power[dc.power.Count-1].THotTank;
+                newTemp = (int)dc.power[0].TColdTank;
+            }
+            //zero decimals
+            TextBox_TColdTank.Text = newTemp.ToString();
+        }
+
 
         /* Urban Delete?
          public void AsyncResponseDlg(AOUTypes.CommandType cmd, bool ok) // ToDo: return value

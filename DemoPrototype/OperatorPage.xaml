@@ -44,8 +44,8 @@
         <ComboBox x:Name ="RunningModeCombo" Grid.Row="1" Grid.Column="1" SelectionChanged="NewModeSelected"/>
             
         <TextBlock Text="Tool tempering" Grid.Row="2" HorizontalAlignment="Left"></TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="HEAT" Foreground="Red"></TextBlock>
-            <Button Grid.Row="1"  Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Name="Button_Freeze_Run" Content="Freeze" Click="Button_Freeze_Run_Click"></Button>
+        <TextBlock Grid.Row="2" Grid.Column="1" Name="TextBlock_ToolTempering" Text="HEAT" Foreground="Red"></TextBlock>
+        <Button Grid.Row="1"  Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Name="Button_Freeze_Run" Content="Freeze" Click="Button_Freeze_Run_Click"></Button>
 
         <TextBlock Grid.Row="3"  FontWeight="Bold" Text="Moulding parameters" VerticalAlignment="Bottom"></TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="4" >
@@ -64,13 +64,13 @@
         </StackPanel>
 
         <StackPanel Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
-                <TextBox IsReadOnly="True" BorderThickness="0" Background="White" Text="210"/>
+                <TextBox Name="TextBox_THotTank" IsReadOnly="True" BorderThickness="0" Background="White" Text="210"/>
                 <TextBox IsReadOnly="True" Margin="15,0,0,0" Text="220" Name="NewTHotTankTextBox"  GotFocus="NewTHotTankTextBox_GotFocus"/>
             </StackPanel>
         
         <TextBlock Grid.Row="6" VerticalAlignment="Bottom" Text="Cold tank"></TextBlock>
         <StackPanel Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
-                <TextBox Name="coldTankSet" IsReadOnly="True" BorderThickness="0" Text="20"></TextBox>
+                <TextBox Name="TextBox_TColdTank" IsReadOnly="True" BorderThickness="0" Text="20"></TextBox>
                 <TextBox Margin="15,0,0,0" IsReadOnly="True" Name="NewTColdTankTextBox" GotFocus="NewTColdTankTextBox_GotFocus"  Text="25"></TextBox>
         </StackPanel>
 

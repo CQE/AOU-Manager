@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -65,6 +66,18 @@ namespace DemoPrototype
             HotToColdLineAnnotation.ToolTipContent = "Threshold TRetActual hot" + " ↘ " + "cold";
             ColdToHotLineAnnotation.ToolTipContent = "Threshold TRetActual cold" + " ↗ " + "hot";
 
+            //Set lineSeries colors
+            Series_Delay_THotTank.Interior = new SolidColorBrush(Colors.Red);
+            Series_EB_THotTank.Interior = new SolidColorBrush(Colors.Red);
+            Series_VB_THotBuffer.Interior = new SolidColorBrush(Colors.OrangeRed);
+            Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            Series_VB_TColdBuffer.Interior = new SolidColorBrush(Colors.LightBlue);
+            Series_VB_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
+            Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
+            Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
+            Series_Delay_TRetForecasted.Interior = new SolidColorBrush(Colors.Purple);
+            Series_EB_ValveReturn.Interior = new SolidColorBrush(Colors.LightGreen);
         }
 
 

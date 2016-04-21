@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Threading;
+using Windows.UI;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -76,6 +77,38 @@ namespace DemoPrototype
             HLineSet_ThresholdHotTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
             HLineSet_ThresholdMidTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
             HLineSet_ThresholdColdTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
+
+            //Set lineSeries colors
+            Series_THotTank.Interior = new SolidColorBrush(Colors.Red);
+            Series_EB_THotTank.Interior = new SolidColorBrush(Colors.Red);
+            Series_THotBuffer.Interior = new SolidColorBrush(Colors.OrangeRed);
+            Series_VB_THotBuffer.Interior = new SolidColorBrush(Colors.OrangeRed);
+
+            Series_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            Series_TColdBuffer.Interior = new SolidColorBrush(Colors.LightBlue);
+            Series_VB_TColdBuffer.Interior = new SolidColorBrush(Colors.LightBlue);
+
+            Series_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
+            Series_VB_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
+
+            Series_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
+            Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
+            Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
+            Series_TRetForecasted.Interior = new SolidColorBrush(Colors.Purple);
+            Series_Delay_TRetForecasted.Interior = new SolidColorBrush(Colors.Purple);
+
+            Series_ValveReturn.Interior = new SolidColorBrush(Colors.LightGreen);
+            Series_EB_ValveReturn.Interior = new SolidColorBrush(Colors.LightGreen);
+
+            Series_ValveFeedHot.Interior = new SolidColorBrush(Colors.Red);
+            Series_ValveFeedCold.Interior = new SolidColorBrush(Colors.CornflowerBlue);
+            Series_ValveCoolant.Interior = new SolidColorBrush(Colors.Lime);
+
+            Series_PowerHeating.Interior = new SolidColorBrush(Colors.DarkGray);
+            Series_THeaterOilOut.Interior = new SolidColorBrush(Colors.LightYellow);
+            Series_TRetValve.Interior = new SolidColorBrush(Colors.Cyan);
+
 
             //should rename these too MW
             SetHotSafeZoneLine.Y1 = GlobalVars.globThresholds.ThresholdHotTankLowLimit;

@@ -62,10 +62,10 @@
                 <chart:VerticalLineAnnotation Name="CalibratePhaseVLine2" StrokeThickness="2" CanDrag="True"  DragCompleted="CalibratePhaseVLine2_DragCompleted" CoordinateUnit="Pixel" X1="30"></chart:VerticalLineAnnotation>
             </chart:SfChart.Annotations>
             
-            <chart:LineSeries LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="TRetForecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="THotTank" Interior="Red"  XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="TColdTank" Interior="Blue"  XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries Name="Series_Delay_TRetActual" LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries Name="Series_Delay_TRetForecasted" LegendIcon="Circle" Label="TRetForecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries Name="Series_Delay_THotTank" LegendIcon="Circle" Label="THotTank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries Name="Series_Delay_TColdTank" LegendIcon="Circle" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
         <!-- Use overlay textbox for showing diff result -->
         <TextBox Grid.Column="0" Grid.Row="3" Name="CalibratePhaseDiffResult" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="2.31 s"></TextBox>
@@ -142,10 +142,10 @@
                 <chart:HorizontalLineAnnotation Name="ColdToHotLineAnnotation"  ShowLine="True" ShowToolTip="True"  CanDrag="True" DragCompleted="ColdToHotLineAnnotation_DragCompleted"  Width="2" CoordinateUnit="Axis" Y1="25"></chart:HorizontalLineAnnotation>
                 <chart:HorizontalLineAnnotation Name="HotToColdLineAnnotation" CanDrag="True"  ShowToolTip="True"  DragCompleted="HotToColdLineAnnotation_DragCompleted" Width="3" CoordinateUnit="Axis" Y1="215"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
-            <chart:LineSeries LegendIcon="Circle" Label="THotTank" Interior="Red" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="TColdTank" Interior ="Blue" XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Stroke="Green" Interior="Green" Label="ValveReturn" XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries Name="Series_EB_THotTank" LegendIcon="Circle" Label="THotTank"  XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries Name="Series_EB_TRetActual" LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries Name="Series_EB_TColdTank" LegendIcon="Circle" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:StepLineSeries Name="Series_EB_ValveReturn" LegendIcon="Circle"  Label="ValveReturn" XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"></chart:StepLineSeries>
 
         </chart:SfChart>
         <!-- Use overlay textbox for showing diff result         <TextBox Grid.Column="0" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="42"></TextBox>
@@ -188,9 +188,9 @@
                 <chart:HorizontalLineAnnotation Name="TBufColdHLine" CanDrag="True"  ShowAxisLabel="True" DragCompleted="TBufColdHLine_DragCompleted" ShowToolTip="True"   CoordinateUnit="Axis"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
 
-            <chart:LineSeries LegendIcon="Circle" Label="T hot buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="T mid" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries LegendIcon="Circle" Label="T cold buffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries Name="Series_VB_THotBuffer" LegendIcon="Circle" Label="THotBuf" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries Name="Series_VB_TMidBuffer" LegendIcon="Circle" Label="TMidBuf" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:LineSeries>
+            <chart:LineSeries Name="Series_VB_TColdBuffer" LegendIcon="Circle" Label="TColdBuf" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
       
         <TextBlock Margin="30,0,0,0" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="9" VerticalAlignment="Center" Text="Buffertank mid threshold value:"></TextBlock>

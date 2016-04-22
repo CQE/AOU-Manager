@@ -251,8 +251,17 @@ namespace DemoPrototype
             {
                 var dc = (LineChartViewModel)CalibrateGrid.DataContext;
                 if (dc.power.Count > 0)
-                { 
-                    TNow = TimeSpan.FromMilliseconds(dc.power[dc.power.Count-1].ElapsedTime);
+                {
+                    //This is a dirty(?) solution TODO Urban please improve this
+                    int myIndex = 0;
+                    double testTemp = dc.power[myIndex].TBufferHot;
+                    while (double.IsNaN(testTemp)==false && myIndex<29) //29 is the max index in power
+                    {
+                        myIndex++;
+                        testTemp = dc.power[myIndex].TBufferHot;
+                    }
+                    TNow = TimeSpan.FromMilliseconds(dc.power[myIndex - 1].ElapsedTime);
+                    //TNow = TimeSpan.FromMilliseconds(dc.power[dc.power.Count-1].ElapsedTime);
                 }
                 else
                 {

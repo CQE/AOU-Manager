@@ -21,13 +21,17 @@ namespace DemoPrototype
 
         public const string tagState = "state";
         public const string tagTemp = "temp";
+
         public const string tagTempBuHot = "BuHot";
         public const string tagTempBuMid = "BuMid";
         public const string tagTempBuCold = "BuCold";
+
         public const string tagTempSubTagHot = "Hot";
         public const string tagTempSubTagCold = "Cold";
         public const string tagTempSubTagRet = "Ret";
+
         public const string tagTempSubTagCool = "Cool";
+        public const string tagTempSubTagHeat = "Heat";
         public const string tagTempSubTagBearHot = "BearHot";
 
         public const string tagPower = "Pow";
@@ -70,7 +74,7 @@ namespace DemoPrototype
                 {
                     int endPos = text.IndexOf("\r\n", lastTextPos + 1);
                     if (endPos >= 0)
-                    { 
+                    {
                         textLine = text.Substring(lastTextPos, endPos - lastTextPos).Trim();
                         lastTextPos = endPos + 1;
                     }
@@ -82,8 +86,8 @@ namespace DemoPrototype
                 /* If only LF*/
                 else if (text.IndexOf("\n") > 0)
                 {
-                    if ((lastTextPos+1) < tlen)
-                    { 
+                    if ((lastTextPos + 1) < tlen)
+                    {
                         int endPos = text.IndexOf("\n", lastTextPos + 1);
                         if (endPos >= 0)
                         {
@@ -102,7 +106,7 @@ namespace DemoPrototype
                 }
 
                 if (!eot && textLine.Length > 0)
-                { 
+                {
                     Match m = rTag.Match(textLine, 0);
                     if (m.Success)
                     {
@@ -251,6 +255,7 @@ namespace DemoPrototype
             }
         }
 
+        /*
         public static bool ParseWordTime(string textline, out UInt16 time_min_of_week, out UInt16 time_ms_of_min) 
         {
             long time_ms = 0;
@@ -260,7 +265,7 @@ namespace DemoPrototype
                 {
                     long t2 = time_ms;
                 }
-                AOUDataTypes.TimeMsToAOUModelTime(time_ms, out time_min_of_week, out time_ms_of_min);
+                AOUDataTypes.AOUModelTimeSecX10_to_TimeMs(time_ms, out time_min_of_week, out time_ms_of_min);
                 return true;
             }
             else
@@ -270,18 +275,19 @@ namespace DemoPrototype
                 return false;
             }
         }
+        */
 
-        public static bool ParseWordTime10(string textline, out UInt16 time_hours, out UInt16 time_dec_sek)
+        public static bool ParseWordTime_sek_x_10(string textline, out UInt16 time_hours, out UInt16 time_sek_x_10)
         {
-            long time_ms = 0;
-            if (ParseLong(tagSubTagTime, textline, out time_ms))
+            long time_s_x_10 = 0;
+            if (ParseLong(tagSubTagTime, textline, out time_s_x_10))
             {
-                AOUDataTypes.TimeDecSecToAOUModelTime(time_ms, out time_hours, out time_dec_sek);
+                AOUDataTypes.Time_ms_to_AOUModelTimeSecX10(time_s_x_10 * 100, out time_hours, out time_sek_x_10);
                 return true;
             }
             else
             {
-                time_dec_sek = 0;
+                time_sek_x_10 = 0;
                 time_hours = 0;
                 return false;
             }
@@ -319,21 +325,8 @@ namespace DemoPrototype
         }
 
 
-        public static bool ParseState(string tagText, out AOUStateData stateData, out AOUDataTypes.UI_Buttons uiButtons, out AOUDataTypes.HT_StateType htState)
+        public static bool ParseState(string tagText, out AOUStateData stateData)
         {
-            /*
-            tagText += "<Valves>" + valvesStr + "</Valves><Seq>" + seqNr + "</Seq>";
-            if (valvesStr == "3F01")
-                valvesStr = "3F02";
-            else if (valvesStr == "3F02")
-                valvesStr = "3F04";
-            else if (valvesStr == "3F04")
-                valvesStr = "3F01";
-
-            seqNr++;
-            seqNr %= 11;
-            */
-
             /* 
             <state><Time>19</Time><temp><Heat>34</Heat><Hot>31</Hot><Ret>27</Ret><BuHot>30</BuHot><BuMid>29</BuMid><BuCold>27</BuCold><Cool>32</Cool><Cold>30</Cold><BearHot>0</BearHot>
             <ch9>0</ch9><ch10>0</ch10><ch11>0</ch11><ch12>0</ch12><ch13>0</ch13><ch14>0</ch14><ch15>0</ch15><avg>28</avg></temp></stateData> // Arduino data
@@ -364,46 +357,51 @@ namespace DemoPrototype
             </state>
 */
 
-            uiButtons = new AOUDataTypes.UI_Buttons();
-            htState = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
+            stateData.time_sek_x_10_of_hour = 0;
+            stateData.time_hours = 0;
 
-            stateData.time_min_of_week = 0;
-            stateData.time_ms_of_min = 0;
             stateData.coldTankTemp = AOUDataTypes.UInt16_NaN;
             stateData.hotTankTemp = AOUDataTypes.UInt16_NaN;
             stateData.retTemp = AOUDataTypes.UInt16_NaN;
-            stateData.coolerTemp = AOUDataTypes.UInt16_NaN;
 
-            stateData.bufCold = AOUDataTypes.UInt16_NaN;
-            stateData.bufMid = AOUDataTypes.UInt16_NaN;
-            stateData.bufHot = AOUDataTypes.UInt16_NaN;
+            stateData.coolerTemp = AOUDataTypes.UInt16_NaN;
+            stateData.heaterTemp = AOUDataTypes.UInt16_NaN;
+
+            stateData.bufColdTemp = AOUDataTypes.UInt16_NaN;
+            stateData.bufMidTemp = AOUDataTypes.UInt16_NaN;
+            stateData.bufHotTemp = AOUDataTypes.UInt16_NaN;
+
+            stateData.seqState = AOUDataTypes.UInt16_NaN;
 
             stateData.BearHot = AOUDataTypes.UInt16_NaN;
-
-            stateData.Energy = AOUDataTypes.UInt16_NaN; 
-            stateData.IMM = AOUDataTypes.UInt16_NaN; 
             stateData.Power = AOUDataTypes.UInt16_NaN;
-            stateData.SeqState = AOUDataTypes.UInt16_NaN;
-            stateData.Valves = AOUDataTypes.UInt16_NaN; // ToDo: Rembeber old value
+            stateData.Energy = AOUDataTypes.UInt16_NaN;
 
-            ParseWordTime10(tagText, out stateData.time_min_of_week, out stateData.time_ms_of_min);
+            stateData.IMM = AOUDataTypes.UInt16_NaN;
+            stateData.Valves = AOUDataTypes.UInt16_NaN;
+            stateData.Mode = Int16.MaxValue;
+            stateData.UIButtons = AOUDataTypes.UInt16_NaN;
+
+            ParseWordTime_sek_x_10(tagText, out stateData.time_hours, out stateData.time_sek_x_10_of_hour);
 
             ParseWord(tagTempSubTagHot, tagText, out stateData.hotTankTemp);
             ParseWord(tagTempSubTagCold, tagText, out stateData.coldTankTemp);
             ParseWord(tagTempSubTagRet, tagText, out stateData.retTemp);
-            ParseWord(tagTempBuCold, tagText, out stateData.bufCold);
-            ParseWord(tagTempBuMid, tagText, out stateData.bufMid);
-            ParseWord(tagTempBuHot, tagText, out stateData.bufHot);
+            ParseWord(tagTempBuCold, tagText, out stateData.bufColdTemp);
+            ParseWord(tagTempBuMid, tagText, out stateData.bufMidTemp);
+            ParseWord(tagTempBuHot, tagText, out stateData.bufHotTemp);
 
             ParseWord(tagTempSubTagCool, tagText, out stateData.coolerTemp);
+            ParseWord(tagTempSubTagHeat, tagText, out stateData.heaterTemp);
 
             ParseWord(tagTempSubTagBearHot, tagText, out stateData.BearHot);
 
-            ParseWord(tagPower, tagText, out stateData.Power);
+            
+            ParseWord(tagSeqState, tagText, out stateData.seqState);
 
-            ParseWord(tagSeqState, tagText, out stateData.SeqState);
+            ParseWord(tagPower, tagText, out stateData.Power); 
 
-            byte mask; byte state;
+            byte mask; byte state; long temp;
 
             if (ParseMMSS(tagValves, tagText, out mask, out state))
             {
@@ -417,7 +415,8 @@ namespace DemoPrototype
 
             if (ParseMMSS(tagUI, tagText, out mask, out state))
             {
-                // uiButtons = state;
+                int hiAndLow = ((int)mask << 8) | state;
+                stateData.UIButtons = (UInt16)hiAndLow; 
             }
 
             if (ParseMMSS(tagIMM, tagText, out mask, out state))
@@ -427,7 +426,11 @@ namespace DemoPrototype
 
             if (ParseMMSS(tagMode, tagText, out mask, out state))
             {
-                // htState = state;
+                stateData.Mode = state;
+            }
+            else if (ParseLong(tagMode, tagText, out temp))
+            {
+                stateData.Mode = (Int16)temp;
             }
 
 
@@ -442,13 +445,77 @@ namespace DemoPrototype
             return ParseLongTime(tagText, out time_ms) && ParseString(tagLogSubTagMsg, tagText, out logMsg);
         }
 
+        /*
+        Create XML Strings
+        */
+        public static string CreateTimeXmlString(UInt16 time_hours, UInt16 time_sek_x_10_of_hour)
+        {
+            return String.Format("<Time>{0}</Time>", time_hours * 36000 + time_sek_x_10_of_hour);
+        }
 
-        public static string CreateLogXmlString(long time_ms, AOULogMessage data)
+        public static string CreateTimeXmlString(uint time)
+        {
+            return String.Format("<Time>{0}</Time>", time);
+        }
+
+        public static string CreateStateXmlString(uint time, string content)
+        {
+            return "<state>" + CreateTimeXmlString(time) + content + "</state>";
+        }
+
+        public static string CreateValvesXmlString(uint time, uint hotValve, uint coldValve, uint retValve)
+        {
+            string valvesStr = "7F";
+            int valves = 0;
+            if (hotValve != 0) valves += 1;
+            if (coldValve != 0) valves += 2;
+            if (retValve != 0) valves += 4;
+            valvesStr += String.Format("{0:X02}", valves);
+            return CreateStateXmlString(time, String.Format("<Valves>{0}</Valves>", valvesStr));
+        }
+
+        public static string CreateUIXmlString(uint time, string ui)
+        {
+            // MASK_STATE, BUTTON_ONOFF = 0x0001 (Soft on/Off); BUTTON_EMERGENCYOFF = 0x0002 (Hard Off); BUTTON_MANUALOPHEAT = 0x0004 (Forced Heating);
+            // BUTTON_MANUALOPCOOL = 0x0008 (Forced Cooling); BUTTON_CYCLE = 0x0010 (Forced Cycling); BUTTON_RUN = 0x0020 (Run with IMM)
+
+            return CreateStateXmlString(time, String.Format("<UI>{0}</UI>", ui));
+        }
+
+        public static string CreateModeXmlString(uint time, int mode)
+        {
+            return CreateStateXmlString(time, String.Format("<Mode>{0}</Mode>", mode));
+        }
+
+        public static string CreatePowXmlString(uint time, uint pow)
+        {
+            return CreateStateXmlString(time, String.Format("<Pow>{0}</Pow>", pow));
+        }
+
+        public static string CreateSeqXmlString(uint time, uint seq)
+        {
+            return CreateStateXmlString(time, String.Format("<Seq>{0}</Seq>", seq));
+        }
+
+        public static string CreateLogXmlString(uint time, string msg)
         {
             return String.Format("<{0}><{1}>{3}</{1}><{2}>{4}</{2}></{0}>",
                                     tagLog, tagSubTagTime, tagLogSubTagMsg, // 0 - 2
-                                    time_ms, data.message); // 3 - 4
+                                    time, msg); // 3 - 4
         }
 
+        public static string CreateStateTempXmlString(int Heat, int Hot, int Ret, int BuHot, int BuMid, int BuCold, int Cool, int Cold, int BearHot)
+        {
+            string content = String.Format(
+                "<Heat>{0}</Heat><Hot>{1}</Hot><Ret>{2}</Ret><BuHot>{3}</BuHot><BuMid>{4}</BuMid><BuCold>{5}</BuCold><Cool>{6}</Cool><Cold>{7}</Cold><BearHot>{8}</BearHot>",
+                       Heat, Hot, Ret, BuHot, BuMid, BuCold, Cool, Cold, BearHot);
+            return "<temp>" + content + "</temp>";
+        }
+
+        public static string CreateStateXmlString(AOUStateData data)
+        {
+            string temp = CreateStateTempXmlString(data.heaterTemp, data.hotTankTemp, data.retTemp, data.bufHotTemp, data.bufMidTemp, data.bufColdTemp, data.coolerTemp, data.coldTankTemp, data.BearHot);
+            return "<state>" + CreateTimeXmlString(data.time_hours, data.time_sek_x_10_of_hour) + temp + "</state>";
+        }
     }
 }

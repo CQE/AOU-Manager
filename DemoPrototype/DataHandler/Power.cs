@@ -81,7 +81,6 @@ namespace DemoPrototype
 
         public double THotTank { get; set; }
         public double TColdTank { get; set; }
-
         public double TReturnValve { get; set; }
 
         public double TReturnActual { get; set; }
@@ -96,22 +95,24 @@ namespace DemoPrototype
 
         public double ValveFeedHot { get; set; } // on/off
         public double ValveFeedCold { get; set; } // on/off
-        public double ValveReturn { get; set; } // on/off
-        public double ValveCoolant { get; set; } // on/off
+        public double ValveReturn { get; set; } // cold/hot
+        public double ValveCoolant { get; set; } // % ?
 
-        public double PowerHeating { get; set; } // on/off
+        public double PowerHeating { get; set; } // 
 
         public override string ToString()
         {
             try { 
-                string fmt = "{0}:{1}, Tht:{2:0.}, Tct:{3:0.}, Tret:{4:0.}, Tra:{5:0.}, Trf:{6:0.}";
-                fmt += ", (Tbuf h:{7:0.}, m:{8:0.}, c:{9:0.})";
-                fmt += ", Theco:{10:0.}, Thoo:{11:0.}, ph:{12:0.}, (Valve fh:{13:0.}, fc:{14:0.}, ret:{15:0.}, cool:{16:0.})";
+                string fmt = "{0}: hot:{2:0.}, cold:{3:0.}, ret:{4:0.} (Tbuf h:{7:0.}, m:{8:0.}, c:{9:0.})";
+                fmt += " Theco:{10:0.}, heat:{11:0.}, pow:{12:0.}  cool:{16} [Valves hot:{13}, cold:{14}, ret:{15}] [act:{5:0.}, for:{6:0.}] {1}";
+                string vHot = ValveFeedHot == 50 ? "off" : "on";
+                string vCold = ValveFeedCold == 50 ? "off" : "on";
+                string vRet = ValveReturn == 50 ? "cold" : "hot";
+                // string vCool = ValveCoolant == 50 ? "off" : "on";
+
                 return String.Format(fmt, AOUHelper.msToTimeSpanStr(ElapsedTime), State.ToString(), THotTank, TColdTank, 
-                    TReturnValve, TReturnActual, TReturnForecasted,
-                    TBufferHot, TBufferMid, TBufferCold, 
-                    THeatExchangerCoolantOut, THeaterOilOut, PowerHeating, 
-                    ValveFeedHot, ValveFeedCold, ValveReturn, ValveCoolant);
+                    TReturnValve, TReturnActual, TReturnForecasted,  TBufferHot, TBufferMid, TBufferCold, 
+                    THeatExchangerCoolantOut, THeaterOilOut, PowerHeating,  vHot, vCold, vRet, ValveCoolant);
             }
             catch (Exception e)
             {

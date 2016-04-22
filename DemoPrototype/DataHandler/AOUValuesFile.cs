@@ -8,6 +8,7 @@ namespace DemoPrototype
 {
     class AOUValuesFile
     {
+        /* Todo. Redo to binary file
         private TextFile dataFile;
 
         public AOUValuesFile()
@@ -33,6 +34,6 @@ namespace DemoPrototype
                 dataFile.AddToFile("AOU\\TReturnValve\\", "TReturnValve-" + dateStr + ".txt", ts + pwr.TReturnValve);
             }
         }
-
+        */
     }
 }

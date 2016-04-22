@@ -15,9 +15,15 @@ namespace DemoPrototype
         protected List<Power> newPowerValues;
 
         protected AOUDataTypes.StateType currentSeqState;
-        protected int currentHotValve = 50;
+        protected int currentHotValve = 50; // 50, 70
         protected int currentColdValve = 50;
         protected int currentReturnValve = 50;
+        protected int currentPower = 0;
+        protected uint currentEnergy = 0;
+
+        protected AOUDataTypes.UI_Buttons currentUIButtons = new AOUDataTypes.UI_Buttons();
+        protected AOUDataTypes.HT_StateType currentMode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
+        protected AOUDataTypes.IMMSettings currentIMMState = AOUDataTypes.IMMSettings.Nothing;
 
         private double curTimeSpan = 1000; // 1 sek between 
 
@@ -221,47 +227,45 @@ namespace DemoPrototype
 
                 if (nextTag == AOUInputParser.tagState)
                 {
-                    AOUDataTypes.UI_Buttons uiButtons;
-                    AOUDataTypes.HT_StateType htState;
+                    AOUInputParser.ParseState(tagContent, out stateData);
 
-                    AOUInputParser.ParseState(tagContent, out stateData, out uiButtons, out htState);
-
-                    if (!AOUDataTypes.IsUInt16NaN(stateData.SeqState))
+                    if (!AOUDataTypes.IsUInt16NaN(stateData.Power))
                     {
-                        /*
+                        currentPower = stateData.Power;
+                    }
+
+                    if (!AOUDataTypes.IsUInt16NaN(stateData.seqState))
+                    {   /*
                         12 - "Unknown", 11 - "WOpenEnd", 10 - "WEjectEnd", 9 - "WEjectBegin", 8 - "WOpenBegin", 7 - "WCoolingEnd"
                         6 - "WInjectionEnd",  5 - "WInjectionBegin", 4 - "WColdAtMEntry", 3 - "WHotAtMEntry", 2 - "Idle", 1 - "Initial"
-
                         NOTHING = 0, SQ_INITIAL, IDLE, SQ_WAIT_HOT_AT_MOULD_ENTRY, SQ_WAIT_COLD_AT_MOULD_ENTRY,
                         SQ_WAIT_FOR_INJECTION_BEGIN, SQ_WAIT_FOR_INJECTION_END, SQ_WAIT_FOR_COOLING_END,
-                        SQ_WAIT_FOR_OPEN_BEGIN, SQ_WAIT_FOR_EJECT_BEGIN, SQ_WAIT_FOR_EJECT_END, SQ_WAIT_FOR_OPEN_END
-                        */
-
-                        currentSeqState = (AOUDataTypes.StateType)stateData.SeqState;
+                        SQ_WAIT_FOR_OPEN_BEGIN, SQ_WAIT_FOR_EJECT_BEGIN, SQ_WAIT_FOR_EJECT_END, SQ_WAIT_FOR_OPEN_END  */
+                        currentSeqState = (AOUDataTypes.StateType)stateData.seqState;
                     }
 
                     if (!AOUDataTypes.IsUInt16NaN(stateData.Valves))
                     {
-                        //--------------------------------------------------------------------------------------------
-                        //<Valves>MMSS</Valves> 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”). 
-                        // Bits: 0/Hot valve, 1/Cold valve, 2/Return valve
-
+                        // -- VALVES -- <Valves>MMSS</Valves> MASK (e.g. “3F”), STATE Bits: 0/Hot valve, 1/Cold valve, 2/Return valve
                         currentHotValve = (stateData.Valves & 1) != 0 ? 70 : 50;  // Off=50, On=70  
-                        currentHotValve = (stateData.Valves & 2) != 0 ? 70 : 50;  // Off=50, On=70  
+                        currentColdValve = (stateData.Valves & 2) != 0 ? 70 : 50;  // Off=50, On=70  
                         currentReturnValve = (stateData.Valves & 4) != 0 ? 70 : 50;  // Cold=50, Hot=70  
                         // tempPower.ValveCoolant = (valveState & 8) != 0 ? 100 : 0; // ????
                     }
 
                     if (stateData.hotTankTemp < 500) // Temp data. ToDo better test
                     {
-                        tempPower.ElapsedTime = AOUDataTypes.AOUModelTimeDecSecToTimeMs(stateData.time_min_of_week, stateData.time_ms_of_min);
+                        tempPower.ElapsedTime = AOUDataTypes.AOUModelTimeSecX10_to_TimeMs(stateData.time_hours, stateData.time_sek_x_10_of_hour);
                         tempPower.THotTank = stateData.hotTankTemp;
                         tempPower.TColdTank = stateData.coldTankTemp;
-                        tempPower.TReturnActual = stateData.retTemp;
+                        tempPower.TReturnValve = stateData.retTemp;
 
-                        tempPower.TBufferCold = stateData.bufCold;
-                        tempPower.TBufferMid = stateData.bufMid;
-                        tempPower.TBufferHot = stateData.bufHot;
+                        tempPower.TReturnActual = stateData.retTemp;      // Todo
+                        tempPower.TReturnForecasted = stateData.retTemp;  // Todo
+
+                        tempPower.TBufferCold = stateData.bufColdTemp;
+                        tempPower.TBufferMid = stateData.bufMidTemp;
+                        tempPower.TBufferHot = stateData.bufHotTemp;
 
                         tempPower.State = currentSeqState;
 
@@ -269,90 +273,90 @@ namespace DemoPrototype
                         tempPower.ValveFeedHot = currentHotValve;
                         tempPower.ValveReturn = currentReturnValve;
 
-                        tempPower.PowerHeating = 0; // stateData.Power;
-                        IsTempData = true;
+                        tempPower.THeaterOilOut = stateData.heaterTemp;
 
-                        /* ToDo ????
-                        tempPower.TReturnValve = 0;
-                        tempPower.TReturnForecasted = 0;
-                        tempPower.THeaterOilOut = 0;
+                        tempPower.PowerHeating = currentPower;
+                        IsTempData = true; // Only add new power if temperature data
+
+                        /* ToDo when ????
                         tempPower.THeatExchangerCoolantOut = 0;
-
-                        int n = stateData.SeqNr; // ToDo
                         */
+                        tempPower.ValveCoolant = stateData.coolerTemp; // ????? %
+                    }
 
-                        tempPower.ValveCoolant = stateData.coolerTemp; // ?????
 
-                        //--------------------------------------------------------------------------------------------
+                    if (!AOUDataTypes.IsUInt16NaN(stateData.IMM))
+                    {
                         // <IMM>MMSS</IMM>, 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
                         // IMM_OutIMMError: 0x01; IMM_OutIMMBlockInject: 0x02; IMM_OutIMMBlockOpen: 0x04; IMM_InIMMStop: 0x08;
                         // IMM_InCycleAuto: 0x10; IMM_InIMMInjecting: 0x20; IMM_InIMMEjecting: 0x40; IMM_InIMMToolClosed: 0x80;
-
-
-                        AOUDataTypes.IMMSettings imm;
-                        byte immState = GetStateByte(stateData.IMM);
-                        switch (immState)
+                        switch (stateData.IMM)
                         {
-                            case 0x01: imm = AOUDataTypes.IMMSettings.OutIMMError; break;
-                            case 0x02: imm = AOUDataTypes.IMMSettings.OutIMMBlockInject; break;
-                            case 0x04: imm = AOUDataTypes.IMMSettings.OutIMMBlockOpen; break;
-                            case 0x08: imm = AOUDataTypes.IMMSettings.InIMMStop; break;
-                            case 0x10: imm = AOUDataTypes.IMMSettings.InCycleAuto; break;
-                            case 0x20: imm = AOUDataTypes.IMMSettings.InIMMInjecting; break;
-                            case 0x40: imm = AOUDataTypes.IMMSettings.InIMMEjecting; break;
-                            case 0x80: imm = AOUDataTypes.IMMSettings.InIMMToolClosed; break;
-                            default: imm = AOUDataTypes.IMMSettings.Nothing; break;
+                            case 0x01: currentIMMState = AOUDataTypes.IMMSettings.OutIMMError; break;
+                            case 0x02: currentIMMState = AOUDataTypes.IMMSettings.OutIMMBlockInject; break;
+                            case 0x04: currentIMMState = AOUDataTypes.IMMSettings.OutIMMBlockOpen; break;
+                            case 0x08: currentIMMState = AOUDataTypes.IMMSettings.InIMMStop; break;
+                            case 0x10: currentIMMState = AOUDataTypes.IMMSettings.InCycleAuto; break;
+                            case 0x20: currentIMMState = AOUDataTypes.IMMSettings.InIMMInjecting; break;
+                            case 0x40: currentIMMState = AOUDataTypes.IMMSettings.InIMMEjecting; break;
+                            case 0x80: currentIMMState = AOUDataTypes.IMMSettings.InIMMToolClosed; break;
+                            default: currentIMMState = AOUDataTypes.IMMSettings.Nothing; break;
                         }
+                    }
 
 
-                        //--------------------------------------------------------------------------------------------
+                    if (!AOUDataTypes.IsUInt16NaN(stateData.UIButtons))
+                    {
                         // UI>MMSS</UI> (hex) MM=8bit mask, SS=8bits. 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
                         // BUTTON_ONOFF: 0x0001  // Soft on/Off;  BUTTON_EMERGENCYOFF: 0x0002  // Hard Off
                         // BUTTON_MANUALOPHEAT: 0x0004  // Forced Heating; BUTTON_MANUALOPCOOL  0x0008  // Forced Cooling
                         // BUTTON_CYCLE: 0x0010  // Forced Cycling; BUTTON_RUN: 0x0020  // Run with IMM
-                        byte uiState = 0; //  GetStateByte(stateData.UI);
-
-                        //-----------------------------------------------------------------------------------
-                        // <Energy>MMSS</Energy>, 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
-                        byte energyState = GetStateByte(stateData.Energy);
-                        //tempPower.???? = energyState;
-
-                        //-----------------------------------------------------------------------------------
-                        // <Mode>1</Mode> (int); 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”). Which???
-                        //#define HT_STATE_INVALID: -999; #define HT_STATE_COLD: -1; 
-                        // #define HT_STATE_UNKNOWN: 0; #define HT_STATE_HOT 1
-                        byte modeState = 0; // GetStateByte(stateData.Mode);
-                        uint mode = 0; // stateData.Mode;
-
-                        AOUDataTypes.StateType state; // ???? Which
-                        switch (0)
+                        byte mask = AOUInputParser.HighByte(stateData.UIButtons);
+                        byte state = AOUInputParser.LowByte(stateData.UIButtons);
+                        switch (mask)
                         {
-                            case 0: state = AOUDataTypes.StateType.IDLE; break;
-                            case 1: state = AOUDataTypes.StateType.SQ_INITIAL; break;
-                            case 2: state = AOUDataTypes.StateType.SQ_WAIT_COLD_AT_MOULD_ENTRY; break;
-                            case 3: state = AOUDataTypes.StateType.SQ_WAIT_FOR_COOLING_END; break;
-                            case 4: state = AOUDataTypes.StateType.SQ_WAIT_FOR_EJECT_BEGIN; break;
-                            case 5: state = AOUDataTypes.StateType.SQ_WAIT_FOR_EJECT_END; break;
-                            case 6: state = AOUDataTypes.StateType.SQ_WAIT_FOR_INJECTION_BEGIN; break;
-                            case 7: state = AOUDataTypes.StateType.SQ_WAIT_FOR_INJECTION_END; break;
-                            case 8: state = AOUDataTypes.StateType.SQ_WAIT_FOR_OPEN_BEGIN; break;
-                            case 9: state = AOUDataTypes.StateType.SQ_WAIT_FOR_OPEN_END; break;
-                            default: state = AOUDataTypes.StateType.NOTHING; break;
+                            case 0x01: currentUIButtons.OnOffButton = (AOUDataTypes.ButtonState)state; break;
+                            case 0x02: currentUIButtons.ButtonEmergencyOff = (AOUDataTypes.ButtonState)state; break;
+                            case 0x04: currentUIButtons.ButtonForcedHeating = (AOUDataTypes.ButtonState)state; break;
+                            case 0x08: currentUIButtons.ButtonForcedCooling = (AOUDataTypes.ButtonState)state; break;
+                            case 0x10: currentUIButtons.ButtonForcedCycling = (AOUDataTypes.ButtonState)state; break;
+                            case 0x20: currentUIButtons.ButtonRunWithIMM = (AOUDataTypes.ButtonState)state; break;
+                            default: break;
                         }
+                        // ToDo: Send message changed
                     }
+
+                    if (!AOUDataTypes.IsUInt16NaN(stateData.Energy))
+                    {
+                        // <Energy>MMSS</Energy>, 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
+                        currentEnergy = stateData.Energy;
+                    }
+
+                    if (stateData.Mode < Int16.MaxValue)
+                    {
+                        // <Mode>1</Mode> (int); 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”). Which???
+                        // #define HT_STATE_INVALID: -999; #define HT_STATE_COLD: -1; #define HT_STATE_UNKNOWN: 0; #define HT_STATE_HOT 1
+                        Int16 mode = stateData.Mode;
+                        currentMode = (AOUDataTypes.HT_StateType)mode;
+                    }
+
+                }
+                else if (nextTag == "seq")
+                {
+                    newLogMessages.Add(new AOULogMessage(GetTime_ms(), "seq:" + tagContent, 0, 0));
                 }
                 else if (nextTag == AOUInputParser.tagLog)
                 {
                     if (AOUInputParser.ParseLog(tagContent, out time_ms, out logMsg))
                     {
-                        AOULogMessage msg = new AOULogMessage(AOUHelper.ToCurTimeStep(time_ms, curTimeSpan), logMsg);
+                        AOULogMessage msg = new AOULogMessage(time_ms*100, logMsg);
                         if (msg.prio == 0) msg.prio = 1;
                         newLogMessages.Add(msg);
                     }
                 }
                 else if (nextTag.Length > 0)
                 {
-                    newLogMessages.Add(new AOULogMessage(GetTime_ms(), "Unknown:" + tagContent, 0, 0));
+                    newLogMessages.Add(new AOULogMessage(GetTime_ms(), "Unknown tag:" + nextTag + " = " + tagContent, 0, 0));
                 }
 
 

@@ -62,7 +62,6 @@ namespace DemoPrototype
             return text;
         }
 
-
         public override void Connect()
         {
             base.Connect();

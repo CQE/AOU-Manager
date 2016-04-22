@@ -94,105 +94,30 @@ namespace DemoPrototype
     [StructLayout(LayoutKind.Sequential, Pack = 2)] // Pack = 0, 1, 2, 4, 8, 16, 32, 64, or 128:
     public struct AOUStateData
     {
-        public UInt16 time_min_of_week; // 60 * 24 * 7 min = 0 - 10 080 min
-        public UInt16 time_ms_of_min; // 60 * 1000 = 60 000
+        public UInt16 time_hours;             // Max 64000 hours > 7 years
+        public UInt16 time_sek_x_10_of_hour; // 60 sek * 10 * 60 min = 36000 (sek x 10)
+
         public UInt16 coldTankTemp;
         public UInt16 hotTankTemp;
         public UInt16 retTemp;
+
         public UInt16 coolerTemp;
-        public UInt16 bufHot;
-        public UInt16 bufMid;
-        public UInt16 bufCold;
+        public UInt16 heaterTemp;
+
+        public UInt16 bufHotTemp;
+        public UInt16 bufMidTemp;
+        public UInt16 bufColdTemp;
+
+        public UInt16 seqState;
 
         public UInt16 BearHot;
 
         public UInt16 Power;
-        public UInt16 Energy;
 
+        public UInt16 Energy;
         public UInt16 Valves;
         public UInt16 IMM;
-
-        public UInt16 SeqState;
+        public UInt16 UIButtons;
+        public Int16 Mode;
     }
-
-    #region OldStructs
-    /*
-    Old structs
-    */
-    // Can this be more effective ??
-    [StructLayout(LayoutKind.Sequential, Pack = 2)] // Pack = 0, 1, 2, 4, 8, 16, 32, 64, or 128:
-        public struct AOUTemperatureData
-        {
-            public UInt16 time_min_of_week; // 60 * 24 * 7 min = 0 - 10 080 min
-            public UInt16 time_ms_of_min; // 60 * 1000 = 60 000
-            public UInt16 coldTankTemp; 
-            public UInt16 hotTankTemp;
-            public UInt16 retTemp;
-            public UInt16 coolerTemp;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 2)]
-        public struct AOUColdFeedData
-        {
-            public UInt16 time_min_of_week; 
-            public UInt16 time_ms_of_min; 
-            public UInt16 prevFeedTemp;
-            public UInt16 newFeedTemp;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 2)]
-        public struct AOUHotFeedData
-        {
-            public UInt16 time_min_of_week;
-            public UInt16 time_ms_of_min;
-            public UInt16 prevFeedTemp;
-            public UInt16 newFeedTemp;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 2)]
-        public struct AOUColdLevelData
-        {
-            public UInt16 time_min_of_week; 
-            public UInt16 time_ms_of_min;
-            public UInt16 prevLevel;
-            public UInt16 newLevel;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 2)]
-        public struct AOUHotLevelData
-        {
-            public UInt16 time_min_of_week;
-            public UInt16 time_ms_of_min;
-            public UInt16 prevLevel;
-            public UInt16 newLevel;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 2)]
-        public struct AOUValvesData
-        {
-            public UInt16 time_min_of_week; 
-            public UInt16 time_ms_of_min; 
-            public UInt16 newValveReturnTemp;
-            public UInt16 prevValveReturnTemp;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 2)]
-        public struct AOUSeqData
-        {
-            public UInt16 time_min_of_week; 
-            public UInt16 time_ms_of_min; 
-            public UInt16 state;
-            public UInt16 cycle;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 2)]
-        public struct AOUIMMData
-        {
-            public UInt16 time_min_of_week; 
-            public UInt16 time_ms_of_min; 
-            public UInt16 imm_setting_type;
-            public UInt16 imm_setting_val;
-    }
-    #endregion
-
 }

@@ -250,8 +250,15 @@ namespace DemoPrototype
             if (CalibrateGrid.DataContext != null)
             {
                 var dc = (LineChartViewModel)CalibrateGrid.DataContext;
-                //Urban TODO you must handle time < 30 sec
-                TNow = TimeSpan.FromMilliseconds(dc.power[dc.power.Count-1].ElapsedTime);
+                if (dc.power.Count > 0)
+                { 
+                    TNow = TimeSpan.FromMilliseconds(dc.power[dc.power.Count-1].ElapsedTime);
+                }
+                else
+                {
+                    TNow = new TimeSpan(100); // OBS. ticks not ms
+                }
+
             }
             else
             {

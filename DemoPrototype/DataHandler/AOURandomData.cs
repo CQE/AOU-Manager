@@ -8,159 +8,121 @@ namespace DemoPrototype
 {
     public class AOURandomData:AOUData
     {
-        private double time_res;
+        private AOUSettings.RandomSetting settings;
+        private DateTime lastTime;
+
+        private uint currentSeqState = 0;
+        private uint currentHotValve = 0;
+        private uint currentColdValve = 0;
+        private uint currentReturnValve = 0;
+        private uint currentCount = 0;
 
         public AOURandomData(AOUSettings.RandomSetting rndSettings, AOUSettings.DebugMode dbgMode = AOUSettings.DebugMode.noDebug) : base(dbgMode)
         {
             AddDataLogText("Random Data Ready - num values:" + rndSettings.NumValues + ", ms between:" + rndSettings.MsBetween);
-            time_res = rndSettings.MsBetween;
-
+            settings = rndSettings;
+            lastTime = startTime;
         }
 
         public override bool SendData(string data)
         {
-            newLogMessages.Add(new AOULogMessage(0, "Send Data:" + data)); // ToDo Time
+            TimeSpan timeFromStart = new TimeSpan(DateTime.Now.Ticks - startTime.Ticks);
+            uint time = (uint)timeFromStart.TotalMilliseconds;
+            AOUInputParser.CreateLogXmlString(time, "SendData:"+data);
             return true;
         }
 
         public override void UpdateData()
         {
-            if (ValueGenerator.GetRandomOk(30)) { 
-                newLogMessages.Add(ValueGenerator.GetRandomLogMsg(time_res));
-            }
-
-            newPowerValues.Add(ValueGenerator.GetRandomPower(time_res));
+            base.GetTextDataList();
         }
 
         protected override string GetTextData()
         {
-            return "."; // Todo Nothing. Only Raw Data
+            string text = "";
+            DateTime now = DateTime.Now;
+            TimeSpan ts = new TimeSpan(now.Ticks - lastTime.Ticks);
+            if (ts.TotalMilliseconds > settings.MsBetween)
+            {
+                TimeSpan timeFromStart = new TimeSpan(now.Ticks - startTime.Ticks);
+                uint time = (uint)timeFromStart.TotalMilliseconds;
+                lastTime = now;
+                text = CreateRandomTempDataXML(time);
+                text += CreateRandomLogDataXMLString(time);
+                //text += GetPowerHeatingValue(time);
+
+                if (currentCount % 5 == 3)
+                { 
+                    if (currentHotValve == 1)
+                    { 
+                        currentHotValve = 0;
+                        currentColdValve = 1;
+                        currentReturnValve = 0;
+                    }
+                    else if (currentColdValve == 1)
+                    {
+                        currentHotValve = 0;
+                        currentColdValve = 0;
+                        currentReturnValve = 1;
+                    }
+                    else
+                    {
+                        currentSeqState++;
+                        text += CreateNextSeqXMLString(time, currentSeqState);
+                        if (currentSeqState > 10)
+                        {
+                            currentSeqState = 1;
+                        }
+
+                        currentHotValve = 1;
+                        currentColdValve = 0;
+                        currentReturnValve = 0;
+                    }
+
+                    text += CreateNextValvesXMLString(time, currentHotValve, currentColdValve, currentReturnValve);
+                }
+                currentCount++;
+            }
+            return text;
         }
 
-        #region private static methods
-        /*
-        private static string CreateRandomTempXmlString(long time)
+
+        public static string CreateRandomLogDataXMLString(uint time)
         {
-            var rndData = ValueGenerator.GetRandomTempData(time);
-            return AOUInputParser.CreateTempXmlString(time, rndData);
+            string logstr = "";
+            if (ValueGenerator.GetRandomOk(8)) // Not every time
+            {
+                logstr = AOUInputParser.CreateLogXmlString(time / 100, ValueGenerator.GetRandomString(6)) + "\r\n";
+            }
+            return logstr;
         }
 
-        private static string CreateRandomSeqXmlString(long time, AOUDataTypes.StateType state)
+        public static string CreateRandomPower(uint time)
         {
-            var rndData = ValueGenerator.GetRandomSeqData(time, state);
-            return AOUInputParser.CreateSeqXmlString(time, rndData);
+            string logstr = "";
+            if (ValueGenerator.GetRandomOk(8)) // Not every time
+            {
+                logstr = AOUInputParser.CreatePowXmlString(time / 100, ValueGenerator.RandomFromUIntArray(new uint[] { 0, 100 })) + "\r\n";
+            }
+            return logstr;
         }
 
-        private static string CreateRandomIMMXmlString(long time, AOUDataTypes.IMMSettings settings)
+        public static string CreateNextValvesXMLString(uint time, uint hotValve, uint coldValve, uint retValve)
         {
-            var rndData = ValueGenerator.GetRandomIMMData(time, settings);
-            return AOUInputParser.CreateIMMXmlString(time, rndData);
-        }
-        private static string CreateRandomColdFeedXmlString(long time)
-        {
-            var rndData = ValueGenerator.GetRandomColdFeedData(time);
-            return AOUInputParser.CreateColdFeedXmlString(time, rndData);
-        }
-
-        private static string CreateRandomHotFeedXmlString(long time)
-        {
-            var rndData = ValueGenerator.GetRandomHotFeedData(time);
-            return AOUInputParser.CreateHotFeedXmlString(time, rndData);
-        }
-
-        private static string CreateRandomColdLevelString(long time)
-        {
-            var rndData = ValueGenerator.GetRandomColdLevelData(time);
-            return AOUInputParser.CreateColdLevelXmlString(time, rndData);
-        }
-
-        private static string CreateRandomHotLevelString(long time)
-        {
-            var rndData = ValueGenerator.GetRandomHotLevelData(time);
-            return AOUInputParser.CreateHotLevelXmlString(time, rndData);
-        }
-
-        private static string CreateRandomValvesXmlString(long time)
-        {
-            var rndData = ValueGenerator.GetRandomValvesData(time);
-            return AOUInputParser.CreateValvesXmlString(time, rndData);
-        }
-
-                    */
-        private static string CreateRandomLogXmlString(long time)
-        {
-            return AOUInputParser.CreateLogXmlString(time, ValueGenerator.GetRandomLogMsg(1000));
-        }
-
-        #endregion
-
-        public static string CreateRandomText(uint num, long startTime, uint msBetween)
-        {
-            AOURandomData rndData = new AOURandomData(new AOUSettings.RandomSetting(num, msBetween));
-            string str = "CreateRandomText";
-            long time = startTime + msBetween;
-            // AOUTypes.StateType state = AOUTypes.StateType.SQ_WAIT_HOT_AT_MOULD_ENTRY;
-            // AOUTypes.IMMSettings immSetting = AOUTypes.IMMSettings.CycleAuto;
+            string str = AOUInputParser.CreateValvesXmlString(time / 100, hotValve, coldValve, retValve) + "\r\n";
             return str;
         }
 
-        public static string CreateRandomXML(uint num, long startTime, uint msBetween)
+        public static string CreateNextSeqXMLString(uint time, uint seq)
         {
-            string xml = "";
-            long time = startTime + msBetween;
-            AOUDataTypes.StateType state = AOUDataTypes.StateType.SQ_WAIT_HOT_AT_MOULD_ENTRY;
-            AOUDataTypes.IMMSettings immSetting = AOUDataTypes.IMMSettings.InCycleAuto;
+            string str = AOUInputParser.CreateSeqXmlString(time / 100, seq) + "\r\n";
+            return str;
+        }
 
-            for (int i = 0; i < num; i++)
-            {
-                /*
-                xml += CreateRandomTempXmlString(time) + "\r\n";
-                if (state == AOUDataTypes.StateType.SQ_WAIT_HOT_AT_MOULD_ENTRY)
-                    xml += CreateRandomHotFeedXmlString(time) + "\r\n";
-                else if (state == AOUDataTypes.StateType.SQ_WAIT_COLD_AT_MOULD_ENTRY)
-                    xml += CreateRandomColdFeedXmlString(time) + "\r\n";
-
-                if (state == AOUDataTypes.StateType.SQ_WAIT_HOT_AT_MOULD_ENTRY)
-                    xml += CreateRandomHotLevelString(time) + "\r\n";
-                else if (state == AOUDataTypes.StateType.SQ_WAIT_COLD_AT_MOULD_ENTRY)
-                    xml += CreateRandomColdLevelString(time) + "\r\n";
-
-                xml += CreateRandomValvesXmlString(time) + "\r\n";
-
-                time += msBetween;
-
-                if ((i % 5) == 0)
-                {
-                    xml += CreateRandomSeqXmlString(time, state) + "\r\n";
-                    if (state == AOUDataTypes.StateType.SQ_WAIT_FOR_OPEN_END)
-                    {
-                        state = AOUDataTypes.StateType.SQ_WAIT_HOT_AT_MOULD_ENTRY;
-                    }
-                    else
-                    {
-                        state++;
-                    }
-                }
-
-                if ((i % 8) == 0)
-                {
-                    xml += CreateRandomLogXmlString(time) + "\r\n";
-                }
-
-                if ((i % 10) == 0)
-                {
-                   xml += CreateRandomIMMXmlString(time, immSetting) + "\r\n";
-                    if (immSetting == AOUDataTypes.IMMSettings.IMMToolClosed)
-                    {
-                        immSetting = AOUDataTypes.IMMSettings.SetIMMBlockInject;
-                    }
-                    else
-                    {
-                        immSetting++;
-                    }
-                }
-                */
-            }
+        public static string CreateRandomTempDataXML(uint time)
+        {
+            AOUStateData data = ValueGenerator.GetRandomStateData(time);
+            string xml = AOUInputParser.CreateStateXmlString(data) + "\r\n";
             return xml;
         }
     }

@@ -12,18 +12,10 @@ namespace DemoPrototype
         static long ts_start = -1;
 
         #region common
-        private static double[] onOffArr = new double[] { 50, 70 };
-
-        static public long RandomFromIntArray(long[] intArr, int period)
+        static public uint RandomFromUIntArray(uint[] uintArr)
         {
-            long index = rnd.Next(0, intArr.Length);
-            return intArr[index];
-        }
-
-        static public double RandomFromDoubleArray(double[] dblArr, int period)
-        {
-            long index = rnd.Next(0, dblArr.Length);
-            return dblArr[index];
+            uint index = (uint)rnd.Next(0, uintArr.Length);
+            return uintArr[index];
         }
 
         static public bool GetRandomOk(int max)
@@ -48,7 +40,6 @@ namespace DemoPrototype
             return str;
         }
 
-
         static public double GetRandomDouble(double min, double max, double numDec)
         {
             // ToDo numDec
@@ -69,94 +60,33 @@ namespace DemoPrototype
 
         #endregion
 
-        static public AOUTemperatureData GetRandomTempData(long time)
+        static public AOUStateData GetRandomStateData(uint time_ms)
         {
-            AOUTemperatureData tempData; // = new AOUModels.AOUTemperatureData();
+            AOUStateData stateData;
 
-            AOUDataTypes.TimeMsToAOUModelTime(time, out tempData.time_min_of_week, out tempData.time_ms_of_min);
+            AOUDataTypes.Time_ms_to_AOUModelTimeSecX10(time_ms, out stateData.time_hours, out stateData.time_sek_x_10_of_hour);
 
-            tempData.coldTankTemp = RealToWordX100(ValueGenerator.GetTColdTankValue());
-            tempData.hotTankTemp = RealToWordX100(ValueGenerator.GetTHotTankValue());
-            tempData.retTemp = RealToWordX100(ValueGenerator.GetTReturnValveValue());
-            tempData.coolerTemp = RealToWordX100(ValueGenerator.GetValveCoolantValue());
+            stateData.UIButtons = 0;  stateData.Mode = 0; stateData.IMM = 0;  stateData.Valves = 0;
+            stateData.seqState = 0;   stateData.Power = 0; stateData.Energy = 0;
 
-            return tempData;
+            /* Only temperature values will be set */
+            stateData.bufHotTemp = RealToWordX100(ValueGenerator.GetTBufferHotValue());
+            stateData.bufMidTemp = RealToWordX100(ValueGenerator.GetTBufferMidValue());
+            stateData.bufColdTemp = RealToWordX100(ValueGenerator.GetTColdTankValue());
+
+            stateData.coldTankTemp = RealToWordX100(ValueGenerator.GetTColdTankValue());
+            stateData.hotTankTemp = RealToWordX100(ValueGenerator.GetTHotTankValue());
+            stateData.retTemp = RealToWordX100(ValueGenerator.GetTReturnValveValue());
+
+            stateData.coolerTemp = RealToWordX100(ValueGenerator.GetValveCoolantValue());
+            stateData.heaterTemp = RealToWordX100(ValueGenerator.GetTheaterOilOutValue());
+
+            stateData.BearHot = RealToWordX100(ValueGenerator.GetTHotTankValue());
+
+            return stateData;
         }
 
-        static public AOUHotFeedData GetRandomHotFeedData(long time)
-        {
-            AOUHotFeedData feedData; // = new AOUModels.AOUTemperatureData();
-            AOUDataTypes.TimeMsToAOUModelTime(time, out feedData.time_min_of_week, out feedData.time_ms_of_min);
-            feedData.newFeedTemp = RealToWordX100(ValueGenerator.GetValveFeedHotValue());
-            feedData.prevFeedTemp = RealToWordX100(ValueGenerator.GetValveFeedHotValue());
-
-            return feedData;
-        }
-
-        static public AOUColdFeedData GetRandomColdFeedData(long time)
-        {
-            AOUColdFeedData feedData; // = new AOUModels.AOUTemperatureData();
-            AOUDataTypes.TimeMsToAOUModelTime(time, out feedData.time_min_of_week, out feedData.time_ms_of_min);
-            feedData.newFeedTemp = RealToWordX100(ValueGenerator.GetValveFeedColdValue());
-            feedData.prevFeedTemp = RealToWordX100(ValueGenerator.GetValveFeedColdValue());
-
-            return feedData;
-        }
-
-        static public AOUHotLevelData GetRandomHotLevelData(long time)
-        {
-            AOUHotLevelData levelData; // = new AOUModels.AOUTemperatureData();
-            AOUDataTypes.TimeMsToAOUModelTime(time, out levelData.time_min_of_week, out levelData.time_ms_of_min);
-            levelData.newLevel = RealToWordX100(ValueGenerator.GetValveFeedHotValue());
-            levelData.prevLevel = RealToWordX100(ValueGenerator.GetValveFeedHotValue());
-
-            return levelData;
-        }
-
-        static public AOUColdLevelData GetRandomColdLevelData(long time)
-        {
-            AOUColdLevelData levelData; // = new AOUModels.AOUTemperatureData();
-            AOUDataTypes.TimeMsToAOUModelTime(time, out levelData.time_min_of_week, out levelData.time_ms_of_min);
-            levelData.newLevel = RealToWordX100(ValueGenerator.GetValveFeedColdValue());
-            levelData.prevLevel = RealToWordX100(ValueGenerator.GetValveFeedColdValue());
-
-            return levelData;
-        }
-
-        static public AOUValvesData GetRandomValvesData(long time)
-        {
-            AOUValvesData valvesData; // = new AOUModels.AOUTemperatureData();
-            AOUDataTypes.TimeMsToAOUModelTime(time, out valvesData.time_min_of_week, out valvesData.time_ms_of_min);
-
-            valvesData.newValveReturnTemp = RealToWordX100(ValueGenerator.GetValveFeedHotValue());
-            valvesData.prevValveReturnTemp = RealToWordX100(ValueGenerator.GetValveFeedHotValue());
-
-            return valvesData;
-        }
-
-        static public AOUSeqData GetRandomSeqData(long time, AOUDataTypes.StateType state)
-        {
-            AOUSeqData seqData;
-            AOUDataTypes.TimeMsToAOUModelTime(time, out seqData.time_min_of_week, out seqData.time_ms_of_min);
-
-            seqData.state = (UInt16)state;
-            seqData.cycle = 0;
-
-            return seqData;
-        }
-
-        static public AOUIMMData GetRandomIMMData(long time, AOUDataTypes.IMMSettings setting)
-        {
-            AOUIMMData immData;
-
-            AOUDataTypes.TimeMsToAOUModelTime(time, out immData.time_min_of_week, out immData.time_ms_of_min);
-
-            immData.imm_setting_type = (UInt16)setting;
-            immData.imm_setting_val = 0;
-
-            return immData;
-        }
-
+        #region Get Values
         static public double GetTHotTankValue()
         {
             return ValueGenerator.GetRandomDouble(204, 235, 2);
@@ -202,55 +132,39 @@ namespace DemoPrototype
             return ValueGenerator.GetRandomDouble(250, 290, 2);
         }
 
-        static public double GetValveFeedHotValue()
-        {
-            return RandomFromDoubleArray(onOffArr, 0);  // Off=50, On=70  
-        }
-
-        static public double GetValveFeedColdValue()
-        {
-            return RandomFromDoubleArray(onOffArr, 0); 
-        }
-
-        static public double GetValveReturnValue()
-        {
-            return RandomFromDoubleArray(onOffArr, 0); // Cold=50, Hot=70  
-        }
-
         static public double GetValveCoolantValue()
         {
             return rnd.Next(50, 90); // 0-100%, 50-90  
         }
-
+ 
         static public double GetPowerHeatingValue()
         {
-            return rnd.Next(5, 12); // 0-14kW ?
+            return rnd.Next(5, 12); // 0-14kW or % ?
         }
 
-        /***********************************/
+        #endregion
 
-
-        static public long GetElapsedTime(double minResolution)
+        static public long GetElapsedTime(uint timeBetween)
         {
             if (ts_start == -1)
-                ts_start = 0; // DateTime.Now.Ticks; // First time
-
-            // TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - ts_start); // Diff ticks
+            {
+                ts_start = 0;  // First time
+            }
 
             TimeSpan ts = TimeSpan.FromMilliseconds(ts_start);
             long ret = ts_start;
-            ts_start += 1000;
+            ts_start += timeBetween;
             return ret;
-            // return (long)(Math.Round(ts.TotalMilliseconds/minResolution) * minResolution);
         }
 
-        static public Power GetRandomPower(double minResolution)
+        /*
+        static public Power GetRandomPower(uint timeBetween)
         {
             AOUDataTypes.StateType valState = (AOUDataTypes.StateType)rnd.Next(1, 11);
 
             var power = new Power()
             {
-                ElapsedTime = GetElapsedTime(minResolution),
+                ElapsedTime = GetElapsedTime(timeBetween),
                 State = valState, 
                 THotTank = GetTHotTankValue(),
                 TColdTank = GetTColdTankValue(),
@@ -272,13 +186,14 @@ namespace DemoPrototype
             return power;
         }
 
-        static public AOULogMessage GetRandomLogMsg(double minResolution)
+        static public AOULogMessage GetRandomLogMsg(uint time)
         {
-            long ts = GetElapsedTime(minResolution);
+            long ts = GetElapsedTime(time);
             uint prio = (uint)rnd.Next(1, 3);
             uint pid = (uint)rnd.Next(1038, 1965);
             string logtext = "log-" + GetRandomString(10);
             return new AOULogMessage(ts, logtext, prio, pid);
         }
+        */
     }
 }

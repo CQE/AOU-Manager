@@ -469,9 +469,7 @@ namespace DemoPrototype
             if (mainGrid.DataContext != null)
             {
                 var dc = (LineChartViewModel)mainGrid.DataContext;
-                //TODO Urban want last vaue instead of first. Next line alwys returns NaN. Is this safe?
-                // newTemp = dc.power[dc.power.Count-1].THotTank;
-                newTemp = (int)dc.power[0].THotTank;
+                newTemp = (int)dc.power[GetCurrentIndex()].THotTank;
             }
             //zero decimals
             TextBox_THotTank.Text = newTemp.ToString();
@@ -483,9 +481,9 @@ namespace DemoPrototype
             if (mainGrid.DataContext != null)
             {
                 var dc = (LineChartViewModel)mainGrid.DataContext;
-                //TODO Urban want last vaue instead of first. Next line alwys returns NaN. Is this safe?
+                int index = GetCurrentIndex();
                 // newTemp = dc.power[dc.power.Count-1].THotTank;
-                newTemp = (int)dc.power[0].TColdTank;
+                newTemp = (int)dc.power[index].TColdTank;
             }
             //zero decimals
             TextBox_TColdTank.Text = newTemp.ToString();
@@ -497,12 +495,28 @@ namespace DemoPrototype
             if (mainGrid.DataContext != null)
             {
                 var dc = (LineChartViewModel)mainGrid.DataContext;
-                //TODO Urban want last vaue instead of first. Next line alwys returns NaN. Is this safe?
-                // newTemp = dc.power[dc.power.Count-1].THotTank;
-                newTemp = (int)dc.power[0].TColdTank;
+                int index = GetCurrentIndex();
+                newTemp = (int)dc.power[index].TColdTank;
             }
             //zero decimals
             TextBox_TColdTank.Text = newTemp.ToString();
+        }
+
+        private int GetCurrentIndex()
+        {
+            //This is a dirty(?) solution TODO Urban please improve this
+            var dc = (LineChartViewModel)mainGrid.DataContext;
+            int myIndex;
+            for (myIndex = 29; myIndex > 0; myIndex--)
+            {
+                double testTemp = dc.power[myIndex].TBufferHot;
+                if (double.IsNaN(testTemp) == false)
+                {
+                    //we are done!
+                    return myIndex;
+                }
+            }            
+         return myIndex;
         }
 
 

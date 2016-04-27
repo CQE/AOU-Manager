@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Xaml.Media;
 
 namespace DemoPrototype
 {
@@ -279,6 +280,19 @@ namespace DemoPrototype
             get { return _coldCalibrate; }
             set { _coldCalibrate = value; }
         }
+    }
+
+    public static class AppColors
+    {
+        public static SolidColorBrush red {
+            get { return new SolidColorBrush(Windows.UI.Colors.DarkRed); }
+        }
+
+        public static SolidColorBrush blue { get { return new SolidColorBrush(Windows.UI.Colors.DarkSlateBlue); } }
+
+        public static SolidColorBrush green { get { return new SolidColorBrush(Windows.UI.Colors.DarkGreen); } }
+
+        public static SolidColorBrush gray { get { return new SolidColorBrush(Windows.UI.Colors.DarkSlateGray); } }
     }
 
 }

@@ -21,9 +21,12 @@ namespace DemoPrototype
         protected int currentPower = 0;
         protected uint currentEnergy = 0;
 
-        protected AOUDataTypes.UI_Buttons currentUIButtons = new AOUDataTypes.UI_Buttons();
-        protected AOUDataTypes.HT_StateType currentMode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
-        protected AOUDataTypes.IMMSettings currentIMMState = AOUDataTypes.IMMSettings.Nothing;
+        public AOUDataTypes.UI_Buttons currentUIButtons = new AOUDataTypes.UI_Buttons();
+        public AOUDataTypes.HT_StateType currentMode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
+        public AOUDataTypes.IMMSettings currentIMMState = AOUDataTypes.IMMSettings.Nothing;
+
+        public bool isUIButtonsChanged = false;
+        public bool isModesChanged = false;
 
         private double curTimeSpan = 1000; // 1 sek between 
 

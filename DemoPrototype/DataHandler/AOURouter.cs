@@ -76,6 +76,31 @@ b.      Läsa av temperaturer från kurvorna
 
         private string applogstr = "AOURouter. No run mode selected";
 
+
+        public bool UIButtonsChanged(out AOUDataTypes.UI_Buttons buttons)
+        {
+            buttons = new AOUDataTypes.UI_Buttons();
+            if (aouData.isUIButtonsChanged)
+            {
+                aouData.isUIButtonsChanged = false;
+                buttons = aouData.currentUIButtons;
+                return true;
+            }
+            return false;
+        }
+
+        public bool ModeChanged(out AOUDataTypes.HT_StateType mode)
+        {
+            mode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
+            if (aouData.isModesChanged)
+            {
+                aouData.isModesChanged = false;
+                mode = aouData.currentMode;
+                return true;
+            }
+            return false;
+        }
+
         public AOURouter()
         {
             logMessages = new List<AOULogMessage>();

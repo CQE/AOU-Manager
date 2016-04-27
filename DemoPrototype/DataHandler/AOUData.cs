@@ -316,6 +316,7 @@ namespace DemoPrototype
                         // BUTTON_CYCLE: 0x0010  // Forced Cycling; BUTTON_RUN: 0x0020  // Run with IMM
                         byte mask = AOUInputParser.HighByte(stateData.UIButtons);
                         byte state = AOUInputParser.LowByte(stateData.UIButtons);
+                        isUIButtonsChanged = true;
                         switch (mask)
                         {
                             case 0x01: currentUIButtons.OnOffButton = (AOUDataTypes.ButtonState)state; break;
@@ -341,6 +342,7 @@ namespace DemoPrototype
                         // #define HT_STATE_INVALID: -999; #define HT_STATE_COLD: -1; #define HT_STATE_UNKNOWN: 0; #define HT_STATE_HOT 1
                         Int16 mode = stateData.Mode;
                         currentMode = (AOUDataTypes.HT_StateType)mode;
+                        isModesChanged = true;
                     }
 
                 }

@@ -156,44 +156,5 @@ namespace DemoPrototype
             ts_start += timeBetween;
             return ret;
         }
-
-        /* Old simulation
-        static public Power GetRandomPower(uint timeBetween)
-        {
-            AOUDataTypes.StateType valState = (AOUDataTypes.StateType)rnd.Next(1, 11);
-
-            var power = new Power()
-            {
-                ElapsedTime = GetElapsedTime(timeBetween),
-                State = valState, 
-                THotTank = GetTHotTankValue(),
-                TColdTank = GetTColdTankValue(),
-                TReturnValve = GetTReturnValveValue(),
-                TReturnActual = GetTReturnActualValue(),
-                TReturnForecasted = GetTReturnForecastedValue(),
-                TBufferHot = GetTBufferHotValue(),
-                TBufferMid = GetTBufferMidValue(),
-                TBufferCold = GetTBufferColdValue(),
-                THeaterOilOut = GetTheaterOilOutValue(),
-
-                ValveFeedHot = GetValveFeedHotValue(),
-                ValveFeedCold = GetValveFeedColdValue(),
-                ValveReturn = GetValveReturnValue(),
-                ValveCoolant = GetValveCoolantValue(),
-                PowerHeating = GetPowerHeatingValue(),
-            };
-
-            return power;
-        }
-
-        static public AOULogMessage GetRandomLogMsg(uint time)
-        {
-            long ts = GetElapsedTime(time);
-            uint prio = (uint)rnd.Next(1, 3);
-            uint pid = (uint)rnd.Next(1038, 1965);
-            string logtext = "log-" + GetRandomString(10);
-            return new AOULogMessage(ts, logtext, prio, pid);
-        }
-        */
     }
 }

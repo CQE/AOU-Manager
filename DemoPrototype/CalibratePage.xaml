@@ -49,13 +49,15 @@
                 <chart:TimeSpanAxis Name="CalibrateDelayXAxis"></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
-                <chart:NumericalAxis Minimum="0" Interval="10" EnableAutoIntervalOnZooming="False">      
+                <chart:NumericalAxis StartRangeFromZero="False" Interval="20" EnableAutoIntervalOnZooming="False">      
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
             <chart:SfChart.Legend>
                 <chart:ChartLegend DockPosition="Floating" LegendPosition="Inside" CheckBoxVisibility="Collapsed"/>
             </chart:SfChart.Legend>
-
+            <chart:SfChart.Behaviors>
+                <chart:ChartTrackBallBehavior></chart:ChartTrackBallBehavior>
+            </chart:SfChart.Behaviors>
             <chart:SfChart.Annotations>
                 <chart:TextAnnotation X1="50" Y1="150" CoordinateUnit="Pixel" FontSize="16" FontWeight="ExtraLight" Text="Double-click to freeze/run"></chart:TextAnnotation>
                 <chart:VerticalLineAnnotation Name="CalibratePhaseVLine1"  StrokeThickness="2" CanDrag="True"  DragCompleted="CalibratePhaseVLine1_DragCompleted"  Width="2" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
@@ -127,11 +129,14 @@
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
             Margin="20,10,0,0">
+            <chart:SfChart.Behaviors>
+                <chart:ChartTrackBallBehavior></chart:ChartTrackBallBehavior>
+            </chart:SfChart.Behaviors>
             <chart:SfChart.PrimaryAxis>
                 <chart:TimeSpanAxis ></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
-                <chart:NumericalAxis Minimum="0" Interval="10" EnableAutoIntervalOnZooming="False">
+                <chart:NumericalAxis StartRangeFromZero="False" Interval="20" EnableAutoIntervalOnZooming="False">
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
             <chart:SfChart.Legend>
@@ -169,11 +174,14 @@
             Grid.RowSpan="3"
             Grid.ColumnSpan="4"
             Margin="10,10,0,0">
+            <chart:SfChart.Behaviors>
+                <chart:ChartTrackBallBehavior></chart:ChartTrackBallBehavior>
+            </chart:SfChart.Behaviors>
             <chart:SfChart.PrimaryAxis>
                 <chart:TimeSpanAxis ></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
-                <chart:NumericalAxis Minimum="0" Interval="20"  EnableAutoIntervalOnZooming="False">
+                <chart:NumericalAxis StartRangeFromZero="False" Interval="20"  EnableAutoIntervalOnZooming="False">
                    
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>

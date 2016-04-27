@@ -40,6 +40,11 @@ namespace DemoPrototype
             return str;
         }
 
+        static public int GetRandomInt(int min, int max)
+        {
+            return rnd.Next(min, max);
+        }
+
         static public double GetRandomDouble(double min, double max, double numDec)
         {
             // ToDo numDec

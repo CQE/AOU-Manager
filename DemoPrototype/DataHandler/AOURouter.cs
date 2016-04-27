@@ -171,9 +171,14 @@ b.      Läsa av temperaturer från kurvorna
                 return "";
         }
 
+        public void CreateLogMessage(string text, uint prio)
+        {
+            logMessages.Add(new AOULogMessage(AOUHelper.GetNowToMs(), text, prio, 0));
+        }
+
         public bool SendToPlc(string text)
         {
-            // logMessages.Enqueue(new AOULogMessage(AOUHelper.GetNowToMs(), "SendToPlc: "+ text, 12, 0));
+            logMessages.Add(new AOULogMessage(AOUHelper.GetNowToMs(), "SendToPlc: "+ text, 12, 0));
             if (aouData != null)
                 return aouData.SendData(text);
             else

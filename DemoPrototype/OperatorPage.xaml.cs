@@ -103,12 +103,11 @@ namespace DemoPrototype
 
             Series_ValveFeedHot.Interior = new SolidColorBrush(Colors.Red);
             Series_ValveFeedCold.Interior = new SolidColorBrush(Colors.CornflowerBlue);
-            Series_ValveCoolant.Interior = new SolidColorBrush(Colors.Lime);
+            Series_ValveCoolant.Interior = new SolidColorBrush(Colors.Pink);
 
-            Series_PowerHeating.Interior = new SolidColorBrush(Colors.DarkGray);
+            Series_PowerHeating.Interior = new SolidColorBrush(Colors.LightGray);
             Series_THeaterOilOut.Interior = new SolidColorBrush(Colors.LightYellow);
-            Series_TRetValve.Interior = new SolidColorBrush(Colors.Cyan);
-
+         
 
             //should rename these too MW
             SetHotSafeZoneLine.Y1 = GlobalVars.globThresholds.ThresholdHotTankLowLimit;
@@ -168,10 +167,10 @@ namespace DemoPrototype
                 switch (mode)
                 {
                     case AOUDataTypes.HT_StateType.HT_STATE_COLD:
-                        TextBlock_ToolTempering.Text = "Cold";
+                        TextBlock_ToolTempering.Text = "COLD";
                         TextBlock_ToolTempering.Foreground = AppColors.blue; break;
                     case AOUDataTypes.HT_StateType.HT_STATE_HOT:
-                        TextBlock_ToolTempering.Text = "Hot";
+                        TextBlock_ToolTempering.Text = "HEAT";
                         TextBlock_ToolTempering.Foreground = AppColors.red; break;
                     case AOUDataTypes.HT_StateType.HT_STATE_INVALID:
                         TextBlock_ToolTempering.Text = "Invalid";
@@ -519,15 +518,35 @@ namespace DemoPrototype
 
         private void SetToolTemperingText()
         {
-            int newTemp = 0;
+            int toolTemp = 0;
             if (mainGrid.DataContext != null)
             {
                 var dc = (LineChartViewModel)mainGrid.DataContext;
                 int index = GetCurrentIndex();
-                newTemp = (int)dc.power[index].TColdTank;
+                //newTemp = (int)dc.power[index].TColdTank;
             }
             //zero decimals
-            TextBox_TColdTank.Text = newTemp.ToString();
+            //TextBlock_ToolTempering.Text = toolTemp.ToString();
+            //this code is for debugging purposes
+            AOUDataTypes.HT_StateType mode = (AOUDataTypes.HT_StateType)toolTemp;
+            switch (mode)
+            {
+                case AOUDataTypes.HT_StateType.HT_STATE_COLD:
+                    TextBlock_ToolTempering.Text = "COLD";
+                    TextBlock_ToolTempering.Foreground = AppColors.blue; break;
+                case AOUDataTypes.HT_StateType.HT_STATE_HOT:
+                    TextBlock_ToolTempering.Text = "HEAT";
+                    TextBlock_ToolTempering.Foreground = AppColors.red; break;
+                case AOUDataTypes.HT_StateType.HT_STATE_INVALID:
+                    TextBlock_ToolTempering.Text = "Invalid";
+                    TextBlock_ToolTempering.Foreground = AppColors.gray; break;
+                case AOUDataTypes.HT_StateType.HT_STATE_UNKNOWN:
+                    TextBlock_ToolTempering.Text = "Unknown";
+                    TextBlock_ToolTempering.Foreground = AppColors.gray; break;
+                default:
+                    TextBlock_ToolTempering.Text = "Not set";
+                    TextBlock_ToolTempering.Foreground = AppColors.gray; break;
+            }
         }
 
         private int GetCurrentIndex()

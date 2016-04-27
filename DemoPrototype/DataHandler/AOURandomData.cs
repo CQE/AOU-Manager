@@ -81,11 +81,12 @@ namespace DemoPrototype
 
                     text += CreateNextValvesXMLString(time, currentHotValve, currentColdValve, currentReturnValve);
 
-                    if ((currentCount % 17) == 5)
+                    if ((currentCount % 5) == 3)
                     {
-                        text += AOURandomData.CreateModeXMLString(time, 0);
+                        int mode = ValueGenerator.GetRandomInt(0, 4);
+                        text += AOURandomData.CreateModeXMLString(time, mode);
                     }
-                    if ((currentCount % 19) == 1)
+                    if ((currentCount % 9) == 1)
                     {
                         AOUDataTypes.UI_Buttons  buttons = new AOUDataTypes.UI_Buttons();
                         buttons.OnOffButton = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
@@ -137,7 +138,15 @@ namespace DemoPrototype
 
         public static string CreateUIButtonsXMLString(uint time, AOUDataTypes.UI_Buttons buttons)
         {
-            string ui = String.Format("0303"); // Todo
+            UInt16 b = 0xFF00;
+            if (buttons.OnOffButton == AOUDataTypes.ButtonState.on) b += 1;
+            if (buttons.ButtonEmergencyOff == AOUDataTypes.ButtonState.on) b += 1;
+            if (buttons.ButtonForcedCooling == AOUDataTypes.ButtonState.on) b += 2;
+            if (buttons.ButtonForcedHeating == AOUDataTypes.ButtonState.on) b += 4;
+            if (buttons.ButtonForcedCycling == AOUDataTypes.ButtonState.on) b += 8;
+            if (buttons.ButtonRunWithIMM == AOUDataTypes.ButtonState.on) b += 16;
+
+            string ui = b.ToString("X4"); 
             string str = AOUInputParser.CreateUIXmlString(time / 100, ui);
             return str;
         }

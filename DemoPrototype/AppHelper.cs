@@ -126,6 +126,24 @@ namespace DemoPrototype
                     {
                         textbox.Text = ((SetValueDialog)dialog).GetStringValue();
                         int val = ((SetValueDialog)dialog).GetIntValue();
+                        //Handle all feeding times
+                        if (cmd == AOUDataTypes.CommandType.heatingTime)
+                        {
+                            GlobalVars.globFeedTimes.HeatingActive = val;
+                        }
+                        if (cmd == AOUDataTypes.CommandType.toolHeatingFeedPause)
+                        {
+                            GlobalVars.globFeedTimes.HeatingPause = val;
+                        }
+                        if (cmd == AOUDataTypes.CommandType.coolingTime)
+                        {
+                            GlobalVars.globFeedTimes.CoolingActive = val;
+                        }
+                        if (cmd == AOUDataTypes.CommandType.toolCoolingFeedPause)
+                        {
+                            GlobalVars.globFeedTimes.CoolingPause = val;
+                        }
+
                         //Need to handle delay time to calculate correct val
                         if (cmd == AOUDataTypes.CommandType.hotDelayTime)
                         {

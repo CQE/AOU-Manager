@@ -163,6 +163,8 @@ namespace DemoPrototype
     {
     public static GlobalThresHolds globThresholds;
     public static GlobalDelayTimes globDelayTimes;
+    public static GlobalFeedTimes globFeedTimes;
+
     // Important to call this in MainPage constructor. Program crasch If not 
     public static void Init()
     {
@@ -185,6 +187,12 @@ namespace DemoPrototype
             globDelayTimes.ColdCalibrate = 7;
             globDelayTimes.HotTune = 3;
             globDelayTimes.ColdTune = 2;
+
+            globFeedTimes = new GlobalFeedTimes();
+            globFeedTimes.HeatingActive = 20;
+            globFeedTimes.HeatingPause = 22;
+            globFeedTimes.CoolingActive = 21;
+            globFeedTimes.CoolingPause = 23;
         }
 
         public static void Save()
@@ -279,6 +287,35 @@ namespace DemoPrototype
         {
             get { return _coldCalibrate; }
             set { _coldCalibrate = value; }
+        }
+    }
+
+    public class GlobalFeedTimes
+    {
+        private int _heatingActive;
+        private int _heatingPause;
+        private int _coolingActive;
+        private int _coolingPause;
+
+        public int HeatingActive
+        {
+            get { return _heatingActive; }
+            set { _heatingActive = value; }
+        }
+        public int HeatingPause
+        {
+            get { return _heatingPause; }
+            set { _heatingPause = value; }
+        }
+        public int CoolingActive
+        {
+            get { return _coolingActive; }
+            set { _coolingActive = value; }
+        }
+        public int CoolingPause
+        {
+            get { return _coolingPause; }
+            set { _coolingPause = value; }
         }
     }
 

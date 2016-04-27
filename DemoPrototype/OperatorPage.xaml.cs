@@ -47,6 +47,12 @@ namespace DemoPrototype
             prevRunModeSelected = -1; // First time to prevent sending new mode everytime entering OperatorPage
             RunningModeCombo.SelectedIndex = GlobalAppSettings.RunningMode; // Get saved Running Mode. Idle default, Only for Run ? Global settings only
 
+            //set feed times
+            TextBox_NewActiveHeatingTime.Text = GlobalVars.globFeedTimes.HeatingActive.ToString();
+            TextBox_NewActiveCoolingTime.Text = GlobalVars.globFeedTimes.CoolingActive.ToString();
+            TextBox_NewPauseHeatingTime.Text = GlobalVars.globFeedTimes.HeatingPause.ToString();
+            TextBox_NewPauseCoolingTime.Text = GlobalVars.globFeedTimes.CoolingPause.ToString();
+
             //set and calculate delay time values
             TextBlock_HotCalibrate.Text = GlobalVars.globDelayTimes.HotCalibrate.ToString();
             HotFeedToReturnDelayCalTime.Text = GlobalVars.globDelayTimes.HotTune.ToString();

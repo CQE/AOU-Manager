@@ -38,7 +38,7 @@
         <Grid.DataContext>
             <local:LineChartViewModel/>
         </Grid.DataContext>
-
+        <!--  Operation -->
         <TextBlock  Grid.Row="0" Text="Operation" FontWeight="Bold" VerticalAlignment="Bottom"></TextBlock>
         <TextBlock Text="Running mode" Grid.Row="1" HorizontalAlignment="Left"></TextBlock>
         <ComboBox x:Name ="RunningModeCombo" Grid.Row="1" Grid.Column="1" SelectionChanged="NewModeSelected"/>
@@ -47,6 +47,7 @@
         <TextBlock Grid.Row="2" Grid.Column="1" Name="TextBlock_ToolTempering" Text="Not Yet Working" Foreground="Olive"></TextBlock>
         <Button Grid.Row="1"  Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Name="Button_Freeze_Run" Content="Freeze" Click="Button_Freeze_Run_Click"></Button>
 
+        <!--  Moulding Parameters -->
         <TextBlock Grid.Row="3"  FontWeight="Bold" Text="Moulding parameters" VerticalAlignment="Bottom"></TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Row="4" >
                 <TextBlock VerticalAlignment="Bottom" Text="Tank temperature"></TextBlock>
@@ -74,6 +75,7 @@
                 <TextBox Margin="15,0,0,0" IsReadOnly="True" Name="NewTColdTankTextBox" GotFocus="NewTColdTankTextBox_GotFocus"  Text="25"></TextBox>
         </StackPanel>
 
+        <!--  Cycle Times -->
         <TextBlock Grid.Row="7" VerticalAlignment="Bottom" Text="Cycle times (s/cycle)"></TextBlock>
                      
         <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
@@ -81,26 +83,24 @@
                 <TextBlock Margin="35,0,0,0" Text="Pause"></TextBlock>
         </StackPanel>
         
-      
         <TextBlock Grid.Row="8"  VerticalAlignment="Bottom" Text="Heating"></TextBlock>
         <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
-                <TextBox Name="NewActiveHeatingTimeTextBox" GotFocus="NewActiveHeatingTimeTextBox_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Text="26"></TextBox>
-                <TextBox Name="NewPauseHeatingTimeTextBox" GotFocus="NewPauseHeatingTimeTextBox_GotFocus" IsReadOnly="True" Margin="15,0,0,0" Text="25"></TextBox>
+                <TextBox Name="TextBox_NewActiveHeatingTime" GotFocus="NewActiveHeatingTimeTextBox_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Text="10"></TextBox>
+                <TextBox Name="TextBox_NewPauseHeatingTime" GotFocus="NewPauseHeatingTimeTextBox_GotFocus" IsReadOnly="True" Margin="15,0,0,0" Text="10"></TextBox>
         </StackPanel>
        
         <TextBlock Grid.Row="9" VerticalAlignment="Bottom" Text="Cooling"></TextBlock>
         <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
-                <TextBox Name="NewActiveCoolingTimeTextBox" GotFocus="NewActiveCoolingTimeTextBox_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Text="24"></TextBox>
-                <TextBox Name="NewPauseCoolingTimeTextBox" GotFocus="NewPauseCoolingTimeTextBox_GotFocus"  IsReadOnly="True" Margin="15,0,0,0" Text="20"></TextBox>
+                <TextBox Name="TextBox_NewActiveCoolingTime" GotFocus="NewActiveCoolingTimeTextBox_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Text="10"></TextBox>
+                <TextBox Name="TextBox_NewPauseCoolingTime" GotFocus="NewPauseCoolingTimeTextBox_GotFocus"  IsReadOnly="True" Margin="15,0,0,0" Text="10"></TextBox>
         </StackPanel>
 
-        <TextBlock Grid.Row="10" VerticalAlignment="Bottom" Text="Monitoring" FontWeight="Bold"></TextBlock>     
-       
+        <TextBlock Grid.Row="10" VerticalAlignment="Bottom" Text="Monitoring" FontWeight="Bold"></TextBlock>
 
+        <!--  Delay times -->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">
                 <TextBlock Margin="30,0,0,0" > Tempering delay time Feed-to-Return</TextBlock>
         </StackPanel>
-       <!-- <TextBlock Grid.Row="1" Grid.Column="4" Margin="0,0,0,0" > Feed - Return (s)</TextBlock> -->
             
         <TextBlock Margin="0,0,0,0" Grid.Row="2" Grid.Column="4"> Calibrate + Tune = Total</TextBlock>
 

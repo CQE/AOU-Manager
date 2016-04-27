@@ -156,11 +156,39 @@ namespace DemoPrototype
 
         void UpdateTick(object sender, object e)
         {
+            AOUDataTypes.HT_StateType mode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
+            AOUDataTypes.UI_Buttons buttons = new AOUDataTypes.UI_Buttons();
+
             DataUpdater.UpdateInputData(mainGrid.DataContext);
             //update textboxes
             SetHotTankTempText();
             SetColdTankTempText();
-            //Todo update mode?
+            if (DataUpdater.ModeChanged(out mode))
+            {
+                switch (mode)
+                {
+                    case AOUDataTypes.HT_StateType.HT_STATE_COLD:
+                        TextBlock_ToolTempering.Text = "Cold";
+                        TextBlock_ToolTempering.Foreground = AppColors.blue; break;
+                    case AOUDataTypes.HT_StateType.HT_STATE_HOT:
+                        TextBlock_ToolTempering.Text = "Hot";
+                        TextBlock_ToolTempering.Foreground = AppColors.red; break;
+                    case AOUDataTypes.HT_StateType.HT_STATE_INVALID:
+                        TextBlock_ToolTempering.Text = "Invalid";
+                        TextBlock_ToolTempering.Foreground = AppColors.gray; break;
+                    case AOUDataTypes.HT_StateType.HT_STATE_UNKNOWN:
+                        TextBlock_ToolTempering.Text = "Unknown";
+                        TextBlock_ToolTempering.Foreground = AppColors.gray; break;
+                    default:
+                        TextBlock_ToolTempering.Text = "Not set";
+                        TextBlock_ToolTempering.Foreground = AppColors.gray; break;
+                }
+            }
+
+            if (DataUpdater.UIButtonsChanged(out buttons))
+            {
+
+            }
             //Todo update tooltemp
             SetToolTemperingText();
 
@@ -518,40 +546,7 @@ namespace DemoPrototype
             }            
          return myIndex;
         }
-
-
-        /* Urban Delete?
-         public void AsyncResponseDlg(AOUTypes.CommandType cmd, bool ok) // ToDo: return value
-         {
-             if (ok)
-             {
-                 if (cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM)
-                 {
-                     GlobalAppSettings.AOURunningMode = (GlobalAppSettings.RunningMode)cmd;  // RunningModes. ToDo One CommandType
-                     prevRunModeSelected = RunningModeCombo.SelectedIndex;
-                 }
-             }
-             else
-             {
-                 if (cmd <= AOUTypes.CommandType.RunningModeAutoWidthIMM) // RunningModes. ToDo One CommandType
-                 {
-                     int oldIndex = prevRunModeSelected;
-                     prevRunModeSelected = -1; // Reset to old active mode. Prevent NewModeSelected
-                     RunningModeCombo.SelectedIndex = oldIndex;
-                 }
-                 else
-                 {
-                     switch (cmd)
-                     {
-                         case AOUTypes.CommandType.coolingTime: break; // ToDo Reset old value saved in GloabaAppSettings
-                     }
-
-                 }
-                 AppHelper.ShowMessageBox("Command not sent. Old value restored");
-             }
-         }
-         */
-
+ 
     }
 
 }

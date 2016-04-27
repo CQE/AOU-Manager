@@ -222,6 +222,26 @@ namespace DemoPrototype
             CheckDataRouterSingleton(true);
         }
 
+        public static bool UIButtonsChanged(out AOUDataTypes.UI_Buttons buttons)
+        {
+            buttons = new AOUDataTypes.UI_Buttons();
+            if (dataRouter != null)
+            {
+                return dataRouter.UIButtonsChanged(out buttons);
+            }
+            return false;
+        }
+
+        public static bool ModeChanged(out AOUDataTypes.HT_StateType mode)
+        {
+            mode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
+            if (dataRouter != null)
+            {
+                return dataRouter.ModeChanged(out mode);
+            }
+            return false;
+        }
+
         private static bool CheckDataRouterSingleton(bool restart = false)
         {
             if (dataRouter == null || restart)
@@ -292,10 +312,11 @@ namespace DemoPrototype
                     if (firstNullIndex >= 0)
                     {
                         dc.SetNewValue(dataRouter.GetLastNewPowerValue(), firstNullIndex);
-                        if (firstNullIndex > 3 && dc.power[dc.power.Count-1].ElapsedTime == 0)
+                        if (firstNullIndex > 2 && dc.power[dc.power.Count-1].ElapsedTime == 0)
                         {
+                            // Recalc time for dummy points
                             long time = dc.power[firstNullIndex - 1].ElapsedTime;
-                            long diff = (dc.power[firstNullIndex - 1].ElapsedTime - dc.power[firstNullIndex - 1].ElapsedTime) / (firstNullIndex - 1);
+                            long diff = (dc.power[firstNullIndex - 1].ElapsedTime - dc.power[0].ElapsedTime) / (firstNullIndex - 1);
                             for (int i = firstNullIndex; i < dc.power.Count; i++)
                             {
                                 Power pow = dc.power[i];
@@ -315,6 +336,7 @@ namespace DemoPrototype
 
         public static void UpdateInputDataLogMessages(object dataContext)
         {
+       
             if (dataContext != null)
             {
                 CheckDataRouterSingleton();
@@ -328,6 +350,7 @@ namespace DemoPrototype
                     dc.AddLogMessages(dataRouter.GetNewLogMessages());
                 }
            }
+
         }
     }
 }

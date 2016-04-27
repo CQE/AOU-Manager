@@ -80,6 +80,22 @@ namespace DemoPrototype
                     }
 
                     text += CreateNextValvesXMLString(time, currentHotValve, currentColdValve, currentReturnValve);
+
+                    if ((currentCount % 17) == 5)
+                    {
+                        text += AOURandomData.CreateModeXMLString(time, 0);
+                    }
+                    if ((currentCount % 19) == 1)
+                    {
+                        AOUDataTypes.UI_Buttons  buttons = new AOUDataTypes.UI_Buttons();
+                        buttons.OnOffButton = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
+                        buttons.ButtonRunWithIMM = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
+                        buttons.ButtonEmergencyOff = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
+                        buttons.ButtonForcedCooling = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
+                        buttons.ButtonForcedHeating = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
+                        buttons.ButtonForcedCycling = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
+                        text += CreateUIButtonsXMLString(time, buttons);
+                    }
                 }
                 currentCount++;
             }
@@ -110,6 +126,19 @@ namespace DemoPrototype
         public static string CreateNextValvesXMLString(uint time, uint hotValve, uint coldValve, uint retValve)
         {
             string str = AOUInputParser.CreateValvesXmlString(time / 100, hotValve, coldValve, retValve) + "\r\n";
+            return str;
+        }
+
+        public static string CreateModeXMLString(uint time, int mode)
+        {
+            string str = AOUInputParser.CreateModeXmlString(time / 100, mode) + "\r\n";
+            return str;
+        }
+
+        public static string CreateUIButtonsXMLString(uint time, AOUDataTypes.UI_Buttons buttons)
+        {
+            string ui = String.Format("0303"); // Todo
+            string str = AOUInputParser.CreateUIXmlString(time / 100, ui);
             return str;
         }
 

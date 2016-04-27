@@ -157,7 +157,7 @@ namespace DemoPrototype
             return ret;
         }
 
-        /*
+        /* Old simulation
         static public Power GetRandomPower(uint timeBetween)
         {
             AOUDataTypes.StateType valState = (AOUDataTypes.StateType)rnd.Next(1, 11);

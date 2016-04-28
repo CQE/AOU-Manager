@@ -173,19 +173,19 @@ namespace DemoPrototype
                 switch (mode)
                 {
                     case AOUDataTypes.HT_StateType.HT_STATE_COLD:
-                        TextBlock_ToolTempering.Text = "COLD";
+                        TextBlock_ToolTempering.Text = "COLD" + " " + mode.ToString();
                         TextBlock_ToolTempering.Foreground = AppColors.blue; break;
                     case AOUDataTypes.HT_StateType.HT_STATE_HOT:
-                        TextBlock_ToolTempering.Text = "HEAT";
+                        TextBlock_ToolTempering.Text = "HEAT" + " " + mode.ToString();
                         TextBlock_ToolTempering.Foreground = AppColors.red; break;
                     case AOUDataTypes.HT_StateType.HT_STATE_INVALID:
-                        TextBlock_ToolTempering.Text = "Invalid";
+                        TextBlock_ToolTempering.Text = "Invalid" + " " + mode.ToString();
                         TextBlock_ToolTempering.Foreground = AppColors.gray; break;
                     case AOUDataTypes.HT_StateType.HT_STATE_UNKNOWN:
-                        TextBlock_ToolTempering.Text = "Unknown";
+                        TextBlock_ToolTempering.Text = "Unknown " + " " + mode.ToString();
                         TextBlock_ToolTempering.Foreground = AppColors.gray; break;
                     default:
-                        TextBlock_ToolTempering.Text = "Not set";
+                        TextBlock_ToolTempering.Text = "Not set" + " " + mode.ToString();
                         TextBlock_ToolTempering.Foreground = AppColors.gray; break;
                 }
             }
@@ -194,10 +194,7 @@ namespace DemoPrototype
             {
 
             }
-            //Todo update tooltemp
-            SetToolTemperingText();
-
-        }
+         }
 
 
 
@@ -524,16 +521,10 @@ namespace DemoPrototype
 
         private void SetToolTemperingText()
         {
-            int toolTemp = 0;
-            if (mainGrid.DataContext != null)
-            {
-                var dc = (LineChartViewModel)mainGrid.DataContext;
-                int index = GetCurrentIndex();
-                //newTemp = (int)dc.power[index].TColdTank;
-            }
-            //zero decimals
-            //TextBlock_ToolTempering.Text = toolTemp.ToString();
+            int toolTemp = -1;
+            return;
             //this code is for debugging purposes
+            //How do I get the mode here?
             AOUDataTypes.HT_StateType mode = (AOUDataTypes.HT_StateType)toolTemp;
             switch (mode)
             {

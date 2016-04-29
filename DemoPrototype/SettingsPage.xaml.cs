@@ -128,8 +128,9 @@ namespace DemoPrototype
             this.Param2Text.Visibility = Visibility.Collapsed;
             this.Param2Combo.Visibility = Visibility.Collapsed;
 
-            var settings = GlobalAppSettings.FileSettings;
-            this.FileName.Text = settings.FilePath;
+            this.FileName.Text = GlobalAppSettings.FileSettingsPath;
+            //var settings = GlobalAppSettings.FileSettings;
+            // this.FileName.Text = settings.FilePath;
 
             // this.Param1Combo.SelectedItem = settings.SourceType;  // ToDo
 
@@ -169,8 +170,9 @@ namespace DemoPrototype
                     this.Param2Combo.SelectedItem = GlobalAppSettings.SerialSettings.BaudRate;
                     break;
                 case AOURouter.RunType.File:
-                    this.Param1Combo.SelectedItem = GlobalAppSettings.FileSettings.SourceType;
-                    this.Param2Combo.SelectedItem = GlobalAppSettings.FileSettings.FilePath;
+                    // this.Param1Combo.SelectedItem = GlobalAppSettings.FileSettings.SourceType;
+                    // this.Param2Combo.SelectedItem = GlobalAppSettings.FileSettings.FilePath;
+                    this.FileName.Text = GlobalAppSettings.FileSettingsPath;
                     break;
                 case AOURouter.RunType.Random:
                     this.Param1Combo.SelectedItem = GlobalAppSettings.RandomSettings.NumValues;
@@ -222,9 +224,13 @@ namespace DemoPrototype
                         break;
                     case AOURouter.RunType.File:
                         AOUSettings.FileSetting filesettings;
-                        filesettings.SourceType = Param1Combo.SelectedItem.ToString();
-                        filesettings.FilePath = Param2Combo.SelectedItem.ToString();
-                        GlobalAppSettings.FileSettings = filesettings;
+                        if (Param1Combo.SelectedIndex >= 0)
+                        {
+                            filesettings.SourceType = Param1Combo.SelectedItem.ToString();
+                        }
+                        filesettings.FilePath = this.FileName.Text;
+                        //GlobalAppSettings.FileSettings = filesettings;
+                        GlobalAppSettings.FileSettingsPath = filesettings.FilePath;
                         break;
                     case AOURouter.RunType.Random:
                         AOUSettings.RandomSetting randomsettings;
@@ -288,21 +294,36 @@ namespace DemoPrototype
 
         private async void PickFile()
         {
-            var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            picker.ViewMode = PickerViewMode.List;
-            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary; // Todo: usb, cloud
-            picker.FileTypeFilter.Add(".txt");
+            try {
+                var picker = new Windows.Storage.Pickers.FileOpenPicker();
+                string picturePath = "";
+                picker.ViewMode = PickerViewMode.List;
+                picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary; // Todo: usb, cloud
+                picker.FileTypeFilter.Add(".txt");
 
-            StorageFile file = await picker.PickSingleFileAsync();
-            if (file != null)
+                StorageFile file = await picker.PickSingleFileAsync();
+                if (file != null)
+                {
+
+                    // Save only path relative to User Pictures folder
+                    if (file.Path.IndexOf("Pictures") > 0)
+                    { 
+                        picturePath = file.Path.Substring(file.Path.IndexOf("Pictures") + ("Pictures").Length);
+                        GlobalAppSettings.FileSettingsPath = picturePath;
+                        this.FileName.Text = picturePath;
+                    }
+                    else
+                    {
+                        string errpath = file.Path;
+                    }
+                }
+            }
+            catch (Exception e)
             {
-                // Save only path relative to User Pictures folder
-                string picturePath = file.Path.Substring(file.Path.IndexOf("Pictures") + ("Pictures").Length);
-                GlobalAppSettings.FileSettings = new AOUSettings.FileSetting("Pictures", picturePath);
-
+                string err = e.Message;
             }
 
-        }
+    }
 
         private void pickButton_Click(object sender, RoutedEventArgs e)
         {

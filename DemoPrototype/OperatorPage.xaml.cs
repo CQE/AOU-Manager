@@ -14,6 +14,10 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Threading;
 using Windows.UI;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.Graphics.Imaging;
+using Windows.Graphics.Display;
+using Windows.Storage;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,8 +30,8 @@ namespace DemoPrototype
     {
         private int prevRunModeSelected = -1; // First time or
 
-        private Brush OrgTuneChartBrush;
-        private SolidColorBrush FreezeBrush;
+       // private Brush OrgTuneChartBrush;
+       // private SolidColorBrush FreezeBrush;
 
         DispatcherTimer dTimer;
 
@@ -133,7 +137,7 @@ namespace DemoPrototype
 
             //var FreezeColor = new Windows.UI.Color(); FreezeColor.R = 255; FreezeColor.G = 255; FreezeColor.B = 230; FreezeColor.A = 255;
 
-            OrgTuneChartBrush = MyTuneChart.Background;
+            //OrgTuneChartBrush = MyTuneChart.Background;
 
             //FreezeBrush = new SolidColorBrush();
             //FreezeBrush.Color = FreezeColor;
@@ -477,12 +481,12 @@ namespace DemoPrototype
                 dTimer.Stop();
                 //MyTuneChart.Background = FreezeBrush;
                 Button_Freeze_Run.Content="Run";
-
+                SaveImage();
                 //where are the lines?
                 //double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
                 //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
                 //and what is min on the X-axis?
-                Double startX = AppHelper.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
+               // Double startX = AppHelper.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
             }
             else
             {
@@ -562,7 +566,40 @@ namespace DemoPrototype
             }            
          return myIndex;
         }
- 
+
+        private async void SaveImage( )
+        {
+           // int myX = (int)toExport.ActualWidth;
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
+            await renderTargetBitmap.RenderAsync(ChartParameters, (int)ChartParameters.ActualWidth, (int)ChartParameters.ActualHeight);
+            var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
+
+
+            var localFolder = KnownFolders.PicturesLibrary;
+            var saveFile = await localFolder.CreateFileAsync("AOUChart.png", Windows.Storage.CreationCollisionOption.GenerateUniqueName);// Windows.Storage.CreationCollisionOption.OpenIfExists);
+
+           
+            using (var fileStream = await saveFile.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite))
+            {
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+
+                encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8,
+                    BitmapAlphaMode.Straight,// Ignore,
+                    (uint)renderTargetBitmap.PixelWidth,
+                    (uint)renderTargetBitmap.PixelHeight,
+                    DisplayInformation.GetForCurrentView().LogicalDpi,
+                    DisplayInformation.GetForCurrentView().LogicalDpi,
+                    pixelBuffer.ToArray());
+
+                await encoder.FlushAsync();
+            }
+        }
+
+        private void ButtonExportParameterChart_Click(object sender, RoutedEventArgs e)
+        {
+            SaveImage();
+        }
     }
 
 }

@@ -167,6 +167,7 @@
             <!-- parameter monitoring chart -->
             <chart:SfChart  
             Header="Parameter Monitoring"
+            Name="ChartParameters"    
             Margin="0,10,0,0"
            Grid.Row="11"
             Grid.RowSpan="5"
@@ -215,6 +216,9 @@
 
             </chart:SfChart>
 
+            <!-- overlaying Button for Export -->
+            <Button Name="ButtonExportParameterChart" Content="Export" Grid.Row="15" Grid.Column="2" Margin="25,0,0,25" Click="ButtonExportParameterChart_Click" VerticalAlignment="Bottom" HorizontalAlignment="Left"></Button>
+            
         <!-- overlay own text as labels for chart -->
             <StackPanel Orientation="Vertical" Grid.Row="11" Grid.RowSpan="6">
                 <TextBlock Margin="2,30,0,0" FontSize="8" Text="Unknown"></TextBlock>

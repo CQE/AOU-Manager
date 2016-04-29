@@ -250,7 +250,7 @@ namespace DemoPrototype
 
                 if (dataRunType == AOURouter.RunType.File)
                 {
-                    dataRouter = new AOURouter(GlobalAppSettings.FileSettings);
+                    dataRouter = new AOURouter(new AOUSettings.FileSetting("", GlobalAppSettings.FileSettingsPath));
                 }
                 else if (dataRunType == AOURouter.RunType.Random)
                 {

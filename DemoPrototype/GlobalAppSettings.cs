@@ -91,22 +91,22 @@ namespace DemoPrototype
             }
         }
 
-        static public AOUSettings.FileSetting FileSettings
+        static public string FileSettingsPath
         { 
             get
             {
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("FileSettings"))
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("FileSettings-path"))
                 {
-                    return (AOUSettings.FileSetting)ApplicationData.Current.LocalSettings.Values["FileSettings"];
+                    return (string)ApplicationData.Current.LocalSettings.Values["FileSettings-path"];
                 }
                 else
                 {
-                    return new AOUSettings.FileSetting("","");
+                    return "";
                 }
             }
             set
             {
-                ApplicationData.Current.LocalSettings.Values["FileSettings"] = value;
+                ApplicationData.Current.LocalSettings.Values["FileSettings-path"] = value;
             }
         }
 

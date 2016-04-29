@@ -69,7 +69,7 @@ namespace DemoPrototype
         private async void SaveExcelToFile(Syncfusion.XlsIO.IWorkbook workBook)
         {
 
-            StorageFile storageFile = await KnownFolders.PicturesLibrary.CreateFileAsync("LogMessages" + ".xlsx", CreationCollisionOption.ReplaceExisting);
+            StorageFile storageFile = await KnownFolders.PicturesLibrary.CreateFileAsync("LogMessages" + ".xlsx", Windows.Storage.CreationCollisionOption.GenerateUniqueName);
             try
             {
                 if (storageFile != null)

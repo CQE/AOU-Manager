@@ -51,6 +51,9 @@ namespace DemoPrototype
             prevRunModeSelected = -1; // First time to prevent sending new mode everytime entering OperatorPage
             RunningModeCombo.SelectedIndex = GlobalAppSettings.RunningMode; // Get saved Running Mode. Idle default, Only for Run ? Global settings only
 
+            //set tool temp mode
+            SetToolTemperingText();
+
             //set feed times
             TextBox_NewActiveHeatingTime.Text = GlobalVars.globFeedTimes.HeatingActive.ToString();
             TextBox_NewActiveCoolingTime.Text = GlobalVars.globFeedTimes.CoolingActive.ToString();
@@ -174,29 +177,14 @@ namespace DemoPrototype
             SetColdTankTempText();
             if (DataUpdater.ModeChanged(out mode))
             {
-                switch (mode)
-                {
-                    case AOUDataTypes.HT_StateType.HT_STATE_COLD:
-                        TextBlock_ToolTempering.Text = "COLD" + " " + mode.ToString();
-                        TextBlock_ToolTempering.Foreground = AppColors.blue; break;
-                    case AOUDataTypes.HT_StateType.HT_STATE_HOT:
-                        TextBlock_ToolTempering.Text = "HEAT" + " " + mode.ToString();
-                        TextBlock_ToolTempering.Foreground = AppColors.red; break;
-                    case AOUDataTypes.HT_StateType.HT_STATE_INVALID:
-                        TextBlock_ToolTempering.Text = "Invalid" + " " + mode.ToString();
-                        TextBlock_ToolTempering.Foreground = AppColors.gray; break;
-                    case AOUDataTypes.HT_StateType.HT_STATE_UNKNOWN:
-                        TextBlock_ToolTempering.Text = "Unknown " + " " + mode.ToString();
-                        TextBlock_ToolTempering.Foreground = AppColors.gray; break;
-                    default:
-                        TextBlock_ToolTempering.Text = "Not set" + " " + mode.ToString();
-                        TextBlock_ToolTempering.Foreground = AppColors.gray; break;
-                }
+                GlobalAppSettings.ToolTempMode = (int) mode;
+                SetToolTemperingText();
             }
 
             if (DataUpdater.UIButtonsChanged(out buttons))
             {
-
+                //is this the thing to do?
+                RunningModeCombo.SelectedIndex = GlobalAppSettings.RunningMode;
             }
          }
 
@@ -525,10 +513,7 @@ namespace DemoPrototype
 
         private void SetToolTemperingText()
         {
-            int toolTemp = -1;
-            return;
-            //this code is for debugging purposes
-            //How do I get the mode here?
+            int toolTemp = GlobalAppSettings.ToolTempMode;
             AOUDataTypes.HT_StateType mode = (AOUDataTypes.HT_StateType)toolTemp;
             switch (mode)
             {

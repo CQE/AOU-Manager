@@ -70,6 +70,26 @@ namespace DemoPrototype
             }
         }
 
+        public static int ToolTempMode
+        {
+            get
+            {
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("ToolTempMode"))
+                {
+                    return (int)ApplicationData.Current.LocalSettings.Values["ToolTempMode"];
+                }
+                else
+                {
+                    return (int)AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
+                }
+            }
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["ToolTempMode"] = value;
+            }
+        }
+
+
         /********************/
 
         static public AOURouter.RunType DataRunType

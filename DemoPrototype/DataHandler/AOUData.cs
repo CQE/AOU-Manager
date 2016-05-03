@@ -37,8 +37,6 @@ namespace DemoPrototype
 
         protected AOUSettings.DebugMode debugMode;
 
-        // protected string rawData = "";
-
         protected AOUData(AOUSettings.DebugMode dbgMode)
         {
             Connected = false;
@@ -211,22 +209,31 @@ namespace DemoPrototype
                         newLogMessages.Add(new AOULogMessage(GetTime_ms(), log, 8, 0));
                 }
 
-                loglines = AOUInputParser.ParseBetweenTagsMessages(tagContent);
-                foreach (string log in loglines)
-                {
-                    string logStr = log;
-                    if (logStr.Length > 0)
-                    {
-                        if (logStr[0] == ',')
-                            logStr = logStr.Substring(1);
 
-                        if (logStr[logStr.Length - 1] == ',')
-                            logStr = logStr.Substring(0, logStr.Length - 1);
+                /*
+              if (tagContent.Contains("Cycle"))
+              {
+                  string res = tagContent; // Only for debugging
+              }
+              */
+                /* 
+                 loglines = AOUInputParser.ParseBetweenTagsMessages(tagContent);
+                 foreach (string log in loglines)
+                 {
+                     string logStr = log;
+                     if (logStr.Length > 0)
+                     {
+                         if (logStr[0] == ',')
+                             logStr = logStr.Substring(1);
 
-                        log.Trim(new char[] { ',', ' ' });
-                        newLogMessages.Add(new AOULogMessage(GetTime_ms(), logStr, 9, 0));
-                    }
-                }
+                         if (logStr[logStr.Length - 1] == ',')
+                             logStr = logStr.Substring(0, logStr.Length - 1);
+
+                         log.Trim(new char[] { ',', ' ' });
+                         newLogMessages.Add(new AOULogMessage(GetTime_ms(), logStr, 9, 0));
+                     }
+                 }
+                 */
 
                 if (nextTag == AOUInputParser.tagState)
                 {
@@ -256,15 +263,15 @@ namespace DemoPrototype
                         // tempPower.ValveCoolant = (valveState & 8) != 0 ? 100 : 0; // ????
                     }
 
-                    if (stateData.hotTankTemp < 500) // Temp data. ToDo better test
+                    if (stateData.hotTankTemp < 500 || stateData.RetForTemp < 500 || stateData.retTemp < 500) // Only temperature data. ToDo better test
                     {
                         tempPower.ElapsedTime = AOUDataTypes.AOUModelTimeSecX10_to_TimeMs(stateData.time_hours, stateData.time_sek_x_10_of_hour);
                         tempPower.THotTank = stateData.hotTankTemp;
                         tempPower.TColdTank = stateData.coldTankTemp;
                         tempPower.TReturnValve = stateData.retTemp;
 
-                        tempPower.TReturnActual = stateData.retTemp;      // Todo
-                        tempPower.TReturnForecasted = stateData.retTemp;  // Todo
+                        tempPower.TReturnActual = stateData.retTemp;
+                        tempPower.TReturnForecasted = stateData.RetForTemp;  
 
                         tempPower.TBufferCold = stateData.bufColdTemp;
                         tempPower.TBufferMid = stateData.bufMidTemp;
@@ -348,6 +355,7 @@ namespace DemoPrototype
                 }
                 else if (nextTag == "seq")
                 {
+                    /* Old tag. Handle ? */
                     newLogMessages.Add(new AOULogMessage(GetTime_ms(), "seq:" + tagContent, 0, 0));
                 }
                 else if (nextTag == AOUInputParser.tagLog)

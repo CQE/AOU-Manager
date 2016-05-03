@@ -34,6 +34,8 @@ namespace DemoPrototype
         public const string tagTempSubTagHeat = "Heat";
         public const string tagTempSubTagBearHot = "BearHot";
 
+        public const string tagTempSubTagReturnForecasted = "RetFor";
+
         public const string tagPower = "Pow";
         public const string tagValves = "Valves";
         public const string tagEnergy = "Energy";
@@ -327,35 +329,36 @@ namespace DemoPrototype
 
         public static bool ParseState(string tagText, out AOUStateData stateData)
         {
+            byte mask; byte state; long temp; UInt16 tmpval;
             /* 
-            <state><Time>19</Time><temp><Heat>34</Heat><Hot>31</Hot><Ret>27</Ret><BuHot>30</BuHot><BuMid>29</BuMid><BuCold>27</BuCold><Cool>32</Cool><Cold>30</Cold><BearHot>0</BearHot>
-            <ch9>0</ch9><ch10>0</ch10><ch11>0</ch11><ch12>0</ch12><ch13>0</ch13><ch14>0</ch14><ch15>0</ch15><avg>28</avg></temp></stateData> // Arduino data
+             <state><Time>19</Time><temp><Heat>34</Heat><Hot>31</Hot><Ret>27</Ret><BuHot>30</BuHot><BuMid>29</BuMid><BuCold>27</BuCold><Cool>32</Cool><Cold>30</Cold><BearHot>0</BearHot>
+             <ch9>0</ch9><ch10>0</ch10><ch11>0</ch11><ch12>0</ch12><ch13>0</ch13><ch14>0</ch14><ch15>0</ch15><avg>28</avg></temp></stateData> // Arduino data
 
-            ASCII format from AOU. // MASK_STATE = 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”). Optional tags except Time
- 
-            <state><Time>104898416</Time>  // Number of 1/10 second ticks since RESET (32bits unsigned). Not Optional
-            <temp>  <Heat>120</Heat><Hot>122</Hot><Ret>68</Ret><BuHot>56</BuHot><BuMid>56</BuMid><BuCold>56</BuCold><Cool>40</Cool><Cold>56</Cold><BearHot>40</BearHot> </temp> // // 16bits signed
-               <Pow>127</Pow>           // 8bits unsigned
-               <Valves>MMSS</Valves>    // MASK_STATE, Bits: 0/Hot valve, 1/Cold valve, 2/Return valve
-               <Energy>MMSS</Energy>    // MASK_STATE, 
+             ASCII format from AOU. // MASK_STATE = 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”). Optional tags except Time
 
-               <UI>MMSS</UI>            // MASK_STATE, BUTTON_ONOFF = 0x0001 (Soft on/Off); BUTTON_EMERGENCYOFF = 0x0002 (Hard Off); BUTTON_MANUALOPHEAT = 0x0004 (Forced Heating);
-                                        // BUTTON_MANUALOPCOOL = 0x0008 (Forced Cooling); BUTTON_CYCLE = 0x0010 (Forced Cycling); BUTTON_RUN = 0x0020 (Run with IMM)
+             <state><Time>104898416</Time>  // Number of 1/10 second ticks since RESET (32bits unsigned). Not Optional
+             <temp>  <Heat>120</Heat><Hot>122</Hot><Ret>68</Ret><BuHot>56</BuHot><BuMid>56</BuMid><BuCold>56</BuCold><Cool>40</Cool><Cold>56</Cold><BearHot>40</BearHot> </temp> // // 16bits signed
+                <Pow>127</Pow>           // 8bits unsigned
+                <Valves>MMSS</Valves>    // MASK_STATE, Bits: 0/Hot valve, 1/Cold valve, 2/Return valve
+                <Energy>MMSS</Energy>    // MASK_STATE, 
 
-               <IMM>MMSS</IMM>          // MASK_STATE, IMM_OutIMMError = 0x01; IMM_OutIMMBlockInject = 0x02; IMM_OutIMMBlockOpen = 0x04; IMM_InIMMStop = 0x08
-                                        // IMM_InCycleAuto = 0x10; IMM_InIMMInjecting = 0x20; IMM_InIMMEjecting = 0x40; IMM_InIMMToolClosed = 0x80
+                <UI>MMSS</UI>            // MASK_STATE, BUTTON_ONOFF = 0x0001 (Soft on/Off); BUTTON_EMERGENCYOFF = 0x0002 (Hard Off); BUTTON_MANUALOPHEAT = 0x0004 (Forced Heating);
+                                         // BUTTON_MANUALOPCOOL = 0x0008 (Forced Cooling); BUTTON_CYCLE = 0x0010 (Forced Cycling); BUTTON_RUN = 0x0020 (Run with IMM)
 
-               <Mode>MMSS</Mode>        // MASK_STATE, <Mode>1</Mode>(int); HT_STATE_INVALID = -999; HT_STATE_COLD = -1; HT_STATE_UNKNOWN = 0; HT_STATE_HOT = 1
-               <Seq>117</Seq>           // 
-            </state>
- 
-            <state><Time>4711</Time>
-               <Valves>0101</Valves>      // Example Hot feed valve “on” (i.e. feeds hot tempering fluid)
-            </state>
-            <state><Time>4721</Time>  // One second (or 10 x 1/10 second) later
-               <Valves>0100</Valves>       // Hot feed valve “off” (i.e. stopped feeding hot tempering fluid)
-            </state>
-*/
+                <IMM>MMSS</IMM>          // MASK_STATE, IMM_OutIMMError = 0x01; IMM_OutIMMBlockInject = 0x02; IMM_OutIMMBlockOpen = 0x04; IMM_InIMMStop = 0x08
+                                         // IMM_InCycleAuto = 0x10; IMM_InIMMInjecting = 0x20; IMM_InIMMEjecting = 0x40; IMM_InIMMToolClosed = 0x80
+
+                <Mode>MMSS</Mode>        // MASK_STATE, <Mode>1</Mode>(int); HT_STATE_INVALID = -999; HT_STATE_COLD = -1; HT_STATE_UNKNOWN = 0; HT_STATE_HOT = 1
+                <Seq>117</Seq>           // 
+             </state>
+
+             <state><Time>4711</Time>
+                <Valves>0101</Valves>      // Example Hot feed valve “on” (i.e. feeds hot tempering fluid)
+             </state>
+             <state><Time>4721</Time>  // One second (or 10 x 1/10 second) later
+                <Valves>0100</Valves>       // Hot feed valve “off” (i.e. stopped feeding hot tempering fluid)
+             </state>
+ */
 
             stateData.time_sek_x_10_of_hour = 0;
             stateData.time_hours = 0;
@@ -363,6 +366,7 @@ namespace DemoPrototype
             stateData.coldTankTemp = AOUDataTypes.UInt16_NaN;
             stateData.hotTankTemp = AOUDataTypes.UInt16_NaN;
             stateData.retTemp = AOUDataTypes.UInt16_NaN;
+            stateData.RetForTemp = AOUDataTypes.UInt16_NaN;
 
             stateData.coolerTemp = AOUDataTypes.UInt16_NaN;
             stateData.heaterTemp = AOUDataTypes.UInt16_NaN;
@@ -394,14 +398,19 @@ namespace DemoPrototype
             ParseWord(tagTempSubTagCool, tagText, out stateData.coolerTemp);
             ParseWord(tagTempSubTagHeat, tagText, out stateData.heaterTemp);
 
+            ParseWord(tagTempSubTagReturnForecasted, tagText, out stateData.RetForTemp);
+            
+
             ParseWord(tagTempSubTagBearHot, tagText, out stateData.BearHot);
 
             
             ParseWord(tagSeqState, tagText, out stateData.seqState);
 
-            ParseWord(tagPower, tagText, out stateData.Power); 
+            if (ParseWord(tagPower, tagText, out tmpval))
+            {
+                stateData.Power = tmpval;
+            }
 
-            byte mask; byte state; long temp;
 
             if (ParseMMSS(tagValves, tagText, out mask, out state))
             {
@@ -503,17 +512,18 @@ namespace DemoPrototype
                                     time, msg); // 3 - 4
         }
 
-        public static string CreateStateTempXmlString(int Heat, int Hot, int Ret, int BuHot, int BuMid, int BuCold, int Cool, int Cold, int BearHot)
+        public static string CreateStateTempXmlString(int Heat, int Hot, int Ret, int RetFor, int BuHot, int BuMid, int BuCold, int Cool, int Cold, int BearHot)
         {
             string content = String.Format(
-                "<Heat>{0}</Heat><Hot>{1}</Hot><Ret>{2}</Ret><BuHot>{3}</BuHot><BuMid>{4}</BuMid><BuCold>{5}</BuCold><Cool>{6}</Cool><Cold>{7}</Cold><BearHot>{8}</BearHot>",
-                       Heat, Hot, Ret, BuHot, BuMid, BuCold, Cool, Cold, BearHot);
+            "<Heat>{0}</Heat><Hot>{1}</Hot><Ret>{2}</Ret><BuHot>{3}</BuHot><BuMid>{4}</BuMid><BuCold>{5}</BuCold><Cool>{6}</Cool><Cold>{7}</Cold><BearHot>{8}</BearHot>",
+             Heat, Hot, Ret, BuHot, BuMid, BuCold, Cool, Cold, BearHot);
+            content += "<RetFor>"+ RetFor + "</RetFor>";
             return "<temp>" + content + "</temp>";
         }
 
         public static string CreateStateXmlString(AOUStateData data)
         {
-            string temp = CreateStateTempXmlString(data.heaterTemp, data.hotTankTemp, data.retTemp, data.bufHotTemp, data.bufMidTemp, data.bufColdTemp, data.coolerTemp, data.coldTankTemp, data.BearHot);
+            string temp = CreateStateTempXmlString(data.heaterTemp, data.hotTankTemp, data.retTemp, data.RetForTemp, data.bufHotTemp, data.bufMidTemp, data.bufColdTemp, data.coolerTemp, data.coldTankTemp, data.BearHot);
             return "<state>" + CreateTimeXmlString(data.time_hours, data.time_sek_x_10_of_hour) + temp + "</state>";
         }
     }

@@ -82,6 +82,7 @@ namespace DemoPrototype
             stateData.coldTankTemp = RealToWordX100(ValueGenerator.GetTColdTankValue());
             stateData.hotTankTemp = RealToWordX100(ValueGenerator.GetTHotTankValue());
             stateData.retTemp = RealToWordX100(ValueGenerator.GetTReturnValveValue());
+            stateData.RetForTemp = RealToWordX100(ValueGenerator.GetTReturnValveValue());
 
             stateData.coolerTemp = RealToWordX100(ValueGenerator.GetValveCoolantValue());
             stateData.heaterTemp = RealToWordX100(ValueGenerator.GetTheaterOilOutValue());

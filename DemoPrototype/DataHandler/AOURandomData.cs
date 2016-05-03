@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DemoPrototype
 {
-    public class AOURandomData:AOUData
+    public class AOURandomData : AOUData
     {
         private AOUSettings.RandomSetting settings;
         private DateTime lastTime;
@@ -28,7 +28,7 @@ namespace DemoPrototype
         {
             TimeSpan timeFromStart = new TimeSpan(DateTime.Now.Ticks - startTime.Ticks);
             uint time = (uint)timeFromStart.TotalMilliseconds;
-            AOUInputParser.CreateLogXmlString(time, "SendData:"+data);
+            AOUInputParser.CreateLogXmlString(time, "SendData:" + data);
             return true;
         }
 
@@ -47,14 +47,22 @@ namespace DemoPrototype
                 TimeSpan timeFromStart = new TimeSpan(now.Ticks - startTime.Ticks);
                 uint time = (uint)timeFromStart.TotalMilliseconds;
                 lastTime = now;
-                text = CreateRandomTempDataXML(time);
+                if (currentCount % 20 >= 0) // Test: No return forcasted values for a while
+                {
+                    text = CreateRandomTempDataXML(time, true);
+                }
+                else
+                {
+                    text = CreateRandomTempDataXML(time, false);
+                }
+
                 text += CreateRandomLogDataXMLString(time);
                 //text += GetPowerHeatingValue(time);
 
                 if (currentCount % 5 == 3)
-                { 
+                {
                     if (currentHotValve == 1)
-                    { 
+                    {
                         currentHotValve = 0;
                         currentColdValve = 1;
                         currentReturnValve = 0;
@@ -88,7 +96,7 @@ namespace DemoPrototype
                     }
                     if ((currentCount % 9) == 1)
                     {
-                        AOUDataTypes.UI_Buttons  buttons = new AOUDataTypes.UI_Buttons();
+                        AOUDataTypes.UI_Buttons buttons = new AOUDataTypes.UI_Buttons();
                         buttons.OnOffButton = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
                         buttons.ButtonRunWithIMM = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
                         buttons.ButtonEmergencyOff = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
@@ -146,7 +154,7 @@ namespace DemoPrototype
             if (buttons.ButtonForcedCycling == AOUDataTypes.ButtonState.on) b += 8;
             if (buttons.ButtonRunWithIMM == AOUDataTypes.ButtonState.on) b += 16;
 
-            string ui = b.ToString("X4"); 
+            string ui = b.ToString("X4");
             string str = AOUInputParser.CreateUIXmlString(time / 100, ui);
             return str;
         }
@@ -157,9 +165,10 @@ namespace DemoPrototype
             return str;
         }
 
-        public static string CreateRandomTempDataXML(uint time)
+        public static string CreateRandomTempDataXML(uint time, bool createRetFor)
         {
-            AOUStateData data = ValueGenerator.GetRandomStateData(time);
+            AOUStateData data = ValueGenerator.GetRandomStateData(time, createRetFor);
+
             string xml = AOUInputParser.CreateStateXmlString(data) + "\r\n";
             return xml;
         }

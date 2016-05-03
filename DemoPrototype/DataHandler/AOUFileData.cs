@@ -10,9 +10,17 @@ namespace DemoPrototype
     {
         private TextFile dataFile;
         private AOUSettings.FileSetting setting;
+
+        string fileData = "";
         string textData;
+
+        bool fileLoaded = false;
         int textdataIndex = 0;
+
+        // ToDo. Go on time in file and add time when reading more times from file
         private int counter;
+        private const int count_max = 2;
+
 
         public AOUFileData(AOUSettings.FileSetting fileSetting, AOUSettings.DebugMode mode = AOUSettings.DebugMode.noDebug) : base(mode)
         {
@@ -20,7 +28,7 @@ namespace DemoPrototype
             dataFile = new TextFile();
             dataFile.OpenFileIfExistAndGetText(fileSetting.FilePath);
             textData = "";
-            counter = 10;
+            counter = count_max;
         }
 
         public override void UpdateData()
@@ -32,14 +40,19 @@ namespace DemoPrototype
         {
             if (counter <= 0)
             {
-                if (textData .Length == 0)
+                if (textData.Length == 0)
                 {
-                    textData = dataFile.GetTextData();
+                    if (!fileLoaded)
+                    {
+                        fileLoaded = true;
+                        fileData = dataFile.GetTextData();
+                    }
+                    textData = fileData;
                     return "";
                 }
                 else
                 {
-                    counter = 10;
+                    counter = count_max;
                     string text = "";
                     int pos = textData.IndexOf('\n');
                     if (pos > 0 && pos < textData.Length)
@@ -52,18 +65,6 @@ namespace DemoPrototype
                         text = textData;
                         textData = "";
                     }
-                    /*
-                    if (textData.Length > 100)
-                    {
-                        text = textData.Substring(0, 100);
-                        textData = textData.Substring(100);
-                    }
-                    else
-                    {
-                        text = textData;
-                        textData = "";
-                    }
-                    */
                     return text;
                 }
             }
@@ -80,3 +81,4 @@ namespace DemoPrototype
         }
     }
 }
+

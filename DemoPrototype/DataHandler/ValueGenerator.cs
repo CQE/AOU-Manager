@@ -65,14 +65,14 @@ namespace DemoPrototype
 
         #endregion
 
-        static public AOUStateData GetRandomStateData(uint time_ms)
+         static public AOUStateData GetRandomStateData(uint time_ms, bool randomRetForTemp)
         {
             AOUStateData stateData;
 
             AOUDataTypes.Time_ms_to_AOUModelTimeSecX10(time_ms, out stateData.time_hours, out stateData.time_sek_x_10_of_hour);
 
-            stateData.UIButtons = 0;  stateData.Mode = 0; stateData.IMM = 0;  stateData.Valves = 0;
-            stateData.seqState = 0;   stateData.Power = 0; stateData.Energy = 0;
+            stateData.UIButtons = 0; stateData.Mode = 0; stateData.IMM = 0; stateData.Valves = 0;
+            stateData.seqState = 0; stateData.Power = 0; stateData.Energy = 0;
 
             /* Only temperature values will be set */
             stateData.bufHotTemp = RealToWordX100(ValueGenerator.GetTBufferHotValue());
@@ -82,7 +82,18 @@ namespace DemoPrototype
             stateData.coldTankTemp = RealToWordX100(ValueGenerator.GetTColdTankValue());
             stateData.hotTankTemp = RealToWordX100(ValueGenerator.GetTHotTankValue());
             stateData.retTemp = RealToWordX100(ValueGenerator.GetTReturnValveValue());
-            stateData.RetForTemp = RealToWordX100(ValueGenerator.GetTReturnValveValue());
+
+            if (randomRetForTemp)
+            {
+                stateData.RetForTemp = RealToWordX100(ValueGenerator.GetTColdTankValue());
+            }
+            else
+            {
+                stateData.RetForTemp = AOUDataTypes.UInt16_NaN;
+            }
+
+
+
 
             stateData.coolerTemp = RealToWordX100(ValueGenerator.GetValveCoolantValue());
             stateData.heaterTemp = RealToWordX100(ValueGenerator.GetTheaterOilOutValue());
@@ -142,7 +153,7 @@ namespace DemoPrototype
         {
             return rnd.Next(50, 90); // 0-100%, 50-90  
         }
- 
+
         static public double GetPowerHeatingValue()
         {
             return rnd.Next(5, 12); // 0-14kW or % ?

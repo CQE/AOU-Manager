@@ -37,6 +37,7 @@ namespace DemoPrototype
 
         protected AOUSettings.DebugMode debugMode;
 
+
         protected AOUData(AOUSettings.DebugMode dbgMode)
         {
             Connected = false;
@@ -134,7 +135,7 @@ namespace DemoPrototype
             return text;
         }
 
-       public bool AreNewValuesAvailable()
+        public bool AreNewValuesAvailable()
         {
             if (newPowerValues.Count > 0)
             {
@@ -175,6 +176,17 @@ namespace DemoPrototype
             return (byte)(word & 0x00FF); // ???? Do mask
         }
 
+        protected double GetValidDoubleValue(UInt16 value)
+        {
+            if (AOUDataTypes.IsUInt16NaN(value))
+            {
+                return double.NaN;
+            }
+            else
+            {
+                return value;
+            }
+        }
         protected void GetTextDataList()
         {
             long time_ms = 0;
@@ -209,13 +221,12 @@ namespace DemoPrototype
                         newLogMessages.Add(new AOULogMessage(GetTime_ms(), log, 8, 0));
                 }
 
-
                 /*
-              if (tagContent.Contains("Cycle"))
-              {
-                  string res = tagContent; // Only for debugging
-              }
-              */
+               if (tagContent.Contains("Cycle"))
+               {
+                   string res = tagContent; // Only for debugging
+               }
+               */
                 /* 
                  loglines = AOUInputParser.ParseBetweenTagsMessages(tagContent);
                  foreach (string log in loglines)
@@ -266,16 +277,17 @@ namespace DemoPrototype
                     if (stateData.hotTankTemp < 500 || stateData.RetForTemp < 500 || stateData.retTemp < 500) // Only temperature data. ToDo better test
                     {
                         tempPower.ElapsedTime = AOUDataTypes.AOUModelTimeSecX10_to_TimeMs(stateData.time_hours, stateData.time_sek_x_10_of_hour);
-                        tempPower.THotTank = stateData.hotTankTemp;
-                        tempPower.TColdTank = stateData.coldTankTemp;
-                        tempPower.TReturnValve = stateData.retTemp;
 
-                        tempPower.TReturnActual = stateData.retTemp;
-                        tempPower.TReturnForecasted = stateData.RetForTemp;  
+                        tempPower.THotTank = GetValidDoubleValue(stateData.hotTankTemp);
+                        tempPower.TColdTank = GetValidDoubleValue(stateData.coldTankTemp);
+                        tempPower.TReturnValve = GetValidDoubleValue(stateData.retTemp);
 
-                        tempPower.TBufferCold = stateData.bufColdTemp;
-                        tempPower.TBufferMid = stateData.bufMidTemp;
-                        tempPower.TBufferHot = stateData.bufHotTemp;
+                        tempPower.TReturnActual = GetValidDoubleValue(stateData.retTemp);
+                        tempPower.TReturnForecasted = GetValidDoubleValue(stateData.RetForTemp);
+
+                        tempPower.TBufferCold = GetValidDoubleValue(stateData.bufColdTemp);
+                        tempPower.TBufferMid = GetValidDoubleValue(stateData.bufMidTemp);
+                        tempPower.TBufferHot = GetValidDoubleValue(stateData.bufHotTemp);
 
                         tempPower.State = currentSeqState;
 
@@ -283,7 +295,7 @@ namespace DemoPrototype
                         tempPower.ValveFeedHot = currentHotValve;
                         tempPower.ValveReturn = currentReturnValve;
 
-                        tempPower.THeaterOilOut = stateData.heaterTemp;
+                        tempPower.THeaterOilOut = GetValidDoubleValue(stateData.heaterTemp);
 
                         tempPower.PowerHeating = currentPower;
                         IsTempData = true; // Only add new power if temperature data
@@ -291,7 +303,7 @@ namespace DemoPrototype
                         /* ToDo when ????
                         tempPower.THeatExchangerCoolantOut = 0;
                         */
-                        tempPower.ValveCoolant = stateData.coolerTemp; // ????? %
+                        tempPower.ValveCoolant = GetValidDoubleValue(stateData.coolerTemp); // ????? %
                     }
 
 
@@ -362,7 +374,7 @@ namespace DemoPrototype
                 {
                     if (AOUInputParser.ParseLog(tagContent, out time_ms, out logMsg))
                     {
-                        AOULogMessage msg = new AOULogMessage(time_ms*100, logMsg);
+                        AOULogMessage msg = new AOULogMessage(time_ms * 100, logMsg);
                         if (msg.prio == 0) msg.prio = 1;
                         newLogMessages.Add(msg);
                     }

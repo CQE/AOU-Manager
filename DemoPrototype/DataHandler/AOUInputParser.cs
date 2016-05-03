@@ -399,11 +399,11 @@ namespace DemoPrototype
             ParseWord(tagTempSubTagHeat, tagText, out stateData.heaterTemp);
 
             ParseWord(tagTempSubTagReturnForecasted, tagText, out stateData.RetForTemp);
-            
+
 
             ParseWord(tagTempSubTagBearHot, tagText, out stateData.BearHot);
 
-            
+
             ParseWord(tagSeqState, tagText, out stateData.seqState);
 
             if (ParseWord(tagPower, tagText, out tmpval))
@@ -425,7 +425,7 @@ namespace DemoPrototype
             if (ParseMMSS(tagUI, tagText, out mask, out state))
             {
                 int hiAndLow = ((int)mask << 8) | state;
-                stateData.UIButtons = (UInt16)hiAndLow; 
+                stateData.UIButtons = (UInt16)hiAndLow;
             }
 
             if (ParseMMSS(tagIMM, tagText, out mask, out state))
@@ -517,7 +517,7 @@ namespace DemoPrototype
             string content = String.Format(
             "<Heat>{0}</Heat><Hot>{1}</Hot><Ret>{2}</Ret><BuHot>{3}</BuHot><BuMid>{4}</BuMid><BuCold>{5}</BuCold><Cool>{6}</Cool><Cold>{7}</Cold><BearHot>{8}</BearHot>",
              Heat, Hot, Ret, BuHot, BuMid, BuCold, Cool, Cold, BearHot);
-            content += "<RetFor>"+ RetFor + "</RetFor>";
+            content += "<RetFor>" + RetFor + "</RetFor>";
             return "<temp>" + content + "</temp>";
         }
 

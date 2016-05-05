@@ -40,22 +40,25 @@ b.      Läsa av temperaturer från kurvorna
 
         private List<AOULogMessage> logMessages;
         private List<Power> powerValues;
-
-        private Power lastPower;
+        // private List<ReturnValve> returnValveValues;
 
         public int NewPowerValuesAvailable { get; private set; }
 
         public int NewLogMessagesAvailable { get; private set; }
 
+        public int NewReturnValveValuesAvailable { get; private set; }
+
         public int TotNumValues
-        { get
+        {
+            get
             {
                 return logMessages.Count;
             }
         }
 
         public int TotNumLogMessages
-        { get
+        {
+            get
             {
                 return logMessages.Count;
             }
@@ -64,7 +67,7 @@ b.      Läsa av temperaturer från kurvorna
         private DateTime startTime;
 
         // Different Run types. File and Random are test modes
-        public enum RunType {None, Serial, File, Random, Client};
+        public enum RunType { None, Serial, File, Random, Client };
         public RunType runMode
         {
             get; private set;
@@ -89,6 +92,18 @@ b.      Läsa av temperaturer från kurvorna
             return false;
         }
 
+        public bool IMMChanged(out AOUDataTypes.IMMSettings mode)
+        {
+            mode = new AOUDataTypes.IMMSettings();
+            if (aouData.isIMMChanged)
+            {
+                aouData.isIMMChanged = false;
+                mode = aouData.currentIMMState;
+                return true;
+            }
+            return false;
+        }
+
         public bool ModeChanged(out AOUDataTypes.HT_StateType mode)
         {
             mode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
@@ -105,6 +120,7 @@ b.      Läsa av temperaturer från kurvorna
         {
             logMessages = new List<AOULogMessage>();
             powerValues = new List<Power>();
+            // returnValveValues = new List<ReturnValve>();
 
             runMode = RunType.None;
             startTime = DateTime.Now;
@@ -155,7 +171,7 @@ b.      Läsa av temperaturer från kurvorna
             if (aouData != null)
                 return aouData.GetDataLogText();
             else
-            { 
+            {
                 string text = applogstr;
                 applogstr = "";
                 return text;
@@ -173,12 +189,12 @@ b.      Läsa av temperaturer från kurvorna
 
         public void CreateLogMessage(string text, uint prio)
         {
-            logMessages.Add(new AOULogMessage(AOUHelper.GetNowToMs(), text, prio, 0));
+            logMessages.Add(new AOULogMessage(aouData.GetTime_ms(), text, prio, 0));
         }
 
         public bool SendToPlc(string text)
         {
-            logMessages.Add(new AOULogMessage(AOUHelper.GetNowToMs(), "SendToPlc: "+ text, 12, 0));
+            logMessages.Add(new AOULogMessage(aouData.GetTime_ms(), "SendToPlc: " + text, 12, 0));
             if (aouData != null)
                 return aouData.SendData(text);
             else
@@ -227,12 +243,26 @@ b.      Läsa av temperaturer från kurvorna
             if (aouData == null) return;
 
             aouData.UpdateData();
-
+            /* Test
+            if (aouData.AreNewReturnValveValuesAvailable())
+            {
+                var newValues = aouData.GetNewReturnValveValues();
+                for (int i = 0; i < newValues.Length; i++)
+                {
+                    returnValveValues.Add(newValues[i]); // Add new value
+                    NewReturnValveValuesAvailable++;
+                    if (returnValveValues.Count > MaxTotalValuesInMemory)
+                    {
+                        returnValveValues.RemoveAt(0); // Delete first Power values
+                    }
+                }
+            }
+            */
             if (aouData.AreNewValuesAvailable())
             {
                 var newValues = aouData.GetNewValues();
                 for (int i = 0; i < newValues.Length; i++)
-                { 
+                {
                     powerValues.Add(newValues[i]); // Add new value
                     NewPowerValuesAvailable++;
                     if (powerValues.Count > MaxTotalValuesInMemory)
@@ -302,7 +332,7 @@ b.      Läsa av temperaturer från kurvorna
             }
             for (int i = 0; i < numValues; i++)
             {
-                powers.Add(powerValues[powerValues.Count - numValues + i]); 
+                powers.Add(powerValues[powerValues.Count - numValues + i]);
             }
             NewPowerValuesAvailable = 0;
             if (numValues < count)
@@ -319,10 +349,10 @@ b.      Läsa av temperaturer från kurvorna
 
         public Power GetLastNewPowerValue()
         {
-            if (NewPowerValuesAvailable > 0)
+            if (NewPowerValuesAvailable > 0 && powerValues.Count > 1)
             {
-                NewPowerValuesAvailable = 0; 
-                return powerValues[powerValues.Count-1];
+                NewPowerValuesAvailable = 0;
+                return powerValues[powerValues.Count - 1];
             }
             else
             {
@@ -330,13 +360,28 @@ b.      Läsa av temperaturer från kurvorna
             }
         }
 
+        /*
+        public ReturnValve GetLastNewReturnValveValue()
+        {
+            if (NewReturnValveValuesAvailable > 0 && returnValveValues.Count > 1)
+            {
+                NewReturnValveValuesAvailable = 0;
+                return returnValveValues[returnValveValues.Count - 1];
+            }
+            else
+            {
+                return new ReturnValve(0); // Must return something
+            }
+        }
+        */
+
         /**************************
             Log Message Handling
         **************************/
         public List<AOULogMessage> GetLastLogMessages(int count)
         {
             if (logMessages.Count > 0)
-            { 
+            {
                 if (count > logMessages.Count)
                 {
                     count = logMessages.Count;

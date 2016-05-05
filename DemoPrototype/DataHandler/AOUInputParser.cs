@@ -11,13 +11,8 @@ namespace DemoPrototype
 
     public class AOUInputParser
     {
-
-        static string valvesStr = "3F01";
-        static int seqNr = 0;
-
         #region Tag Constants
         public const string tagSubTagTime = "Time"; //
-
 
         public const string tagState = "state";
         public const string tagTemp = "temp";
@@ -123,10 +118,6 @@ namespace DemoPrototype
                         textLine = "";
                     }
                 }
-                else
-                {
-                    bool dbg = true;
-                }
             } while (tag == "" && textLine.Length > 0);
             numHandled = lastTextPos;
             return tag;
@@ -183,6 +174,22 @@ namespace DemoPrototype
             return false;
         }
 
+        public static bool ParseWord(string tag, string textline, out Int16 value)
+        {
+            double dbl = double.NaN;
+            if (Parsedouble(tag, textline, out dbl))
+            {
+                value = (Int16)Math.Round(dbl);
+                if (tag == tagTempSubTagReturnForecasted)
+                {
+                    string s = textline;
+                }
+                return true;
+            }
+            value = Int16.MaxValue;
+            return false;
+        }
+
         public static bool ParseMMSS(string tag, string textline, out byte mask, out byte state)
         {
             int endpos = 0;
@@ -227,19 +234,6 @@ namespace DemoPrototype
                 return false;
             }
         }
-
-        public static Byte LowByte(UInt16 word)
-        {
-            return (Byte)(word & 0xff);
-        }
-
-        public static Byte HighByte(UInt16 word)
-        {
-            return (Byte)(word >> 8);
-        }
-
-        #endregion
-
 
         public static bool ParseTime_ms(string textline, out TimeSpan time)
         {
@@ -365,8 +359,8 @@ namespace DemoPrototype
 
             stateData.coldTankTemp = AOUDataTypes.UInt16_NaN;
             stateData.hotTankTemp = AOUDataTypes.UInt16_NaN;
-            stateData.retTemp = AOUDataTypes.UInt16_NaN;
-            stateData.RetForTemp = AOUDataTypes.UInt16_NaN;
+            stateData.retTemp = UInt16.MaxValue;
+            stateData.RetForTemp = Int16.MaxValue;
 
             stateData.coolerTemp = AOUDataTypes.UInt16_NaN;
             stateData.heaterTemp = AOUDataTypes.UInt16_NaN;
@@ -453,23 +447,43 @@ namespace DemoPrototype
             // textLine = "<log><Time>94962045</Time><Msg>Setup AOU version 1.1 ready (Plastics Unbound Ltd, Cyprus)</Msg></log>";
             return ParseLongTime(tagText, out time_ms) && ParseString(tagLogSubTagMsg, tagText, out logMsg);
         }
+        #endregion
 
-        /*
-        Create XML Strings
-        */
-        public static string CreateTimeXmlString(UInt16 time_hours, UInt16 time_sek_x_10_of_hour)
+        #region Create XML Strings
+        public static string CreateTag(string tag, string content)
         {
-            return String.Format("<Time>{0}</Time>", time_hours * 36000 + time_sek_x_10_of_hour);
+            return String.Format("<{0}>{1}</{0}>", tag, content);
+        }
+
+        public static string CreateTag(string tag, uint content)
+        {
+            return String.Format("<{0}>{1}</{0}>", tag, content);
+        }
+
+        public static string CreateTag(string tag, int content)
+        {
+            return String.Format("<{0}>{1}</{0}>", tag, content);
+        }
+
+        private static uint Time2WordToMs(UInt16 time_hours, UInt16 time_sek_x_10_of_hour)
+        {
+            return (uint)time_hours * 36000 + time_sek_x_10_of_hour;
         }
 
         public static string CreateTimeXmlString(uint time)
         {
-            return String.Format("<Time>{0}</Time>", time);
+            return CreateTag(tagSubTagTime, time.ToString());
+        }
+
+        public static string CreateTimeXmlString(UInt16 time_hours, UInt16 time_sek_x_10_of_hour)
+        {
+
+            return CreateTimeXmlString(Time2WordToMs(time_hours, time_sek_x_10_of_hour));
         }
 
         public static string CreateStateXmlString(uint time, string content)
         {
-            return "<state>" + CreateTimeXmlString(time) + content + "</state>";
+            return CreateTag(tagState, CreateTimeXmlString(time) + content);
         }
 
         public static string CreateValvesXmlString(uint time, uint hotValve, uint coldValve, uint retValve)
@@ -480,51 +494,55 @@ namespace DemoPrototype
             if (coldValve != 0) valves += 2;
             if (retValve != 0) valves += 4;
             valvesStr += String.Format("{0:X02}", valves);
-            return CreateStateXmlString(time, String.Format("<Valves>{0}</Valves>", valvesStr));
+            return CreateStateXmlString(time, CreateTag(tagValves, valvesStr));
         }
 
         public static string CreateUIXmlString(uint time, string ui)
         {
             // MASK_STATE, BUTTON_ONOFF = 0x0001 (Soft on/Off); BUTTON_EMERGENCYOFF = 0x0002 (Hard Off); BUTTON_MANUALOPHEAT = 0x0004 (Forced Heating);
             // BUTTON_MANUALOPCOOL = 0x0008 (Forced Cooling); BUTTON_CYCLE = 0x0010 (Forced Cycling); BUTTON_RUN = 0x0020 (Run with IMM)
-            return CreateStateXmlString(time, String.Format("<UI>{0}</UI>", ui));
+            return CreateStateXmlString(time, CreateTag(tagUI, ui));
+        }
+
+        public static string CreateIMMXmlString(uint time, string imm)
+        {
+            return CreateStateXmlString(time, CreateTag(tagIMM, imm));
         }
 
         public static string CreateModeXmlString(uint time, int mode)
         {
-            return CreateStateXmlString(time, String.Format("<Mode>{0}</Mode>", mode));
+            return CreateStateXmlString(time, CreateTag(tagMode, mode.ToString()));
         }
 
         public static string CreatePowXmlString(uint time, uint pow)
         {
-            return CreateStateXmlString(time, String.Format("<Pow>{0}</Pow>", pow));
+            return CreateStateXmlString(time, CreateTag(tagPower, pow));
         }
 
         public static string CreateSeqXmlString(uint time, uint seq)
         {
-            return CreateStateXmlString(time, String.Format("<Seq>{0}</Seq>", seq));
+            return CreateStateXmlString(time, CreateTag(tagSeqState, seq));
         }
 
         public static string CreateLogXmlString(uint time, string msg)
         {
-            return String.Format("<{0}><{1}>{3}</{1}><{2}>{4}</{2}></{0}>",
-                                    tagLog, tagSubTagTime, tagLogSubTagMsg, // 0 - 2
-                                    time, msg); // 3 - 4
+            string timetag = CreateTimeXmlString(time);
+            string content = timetag + CreateTag(tagLogSubTagMsg, msg);
+            return CreateTag(tagLog, content);
         }
 
-        public static string CreateStateTempXmlString(int Heat, int Hot, int Ret, int RetFor, int BuHot, int BuMid, int BuCold, int Cool, int Cold, int BearHot)
+        public static string CreateWholeTempStateXmlString(AOUStateData data)
         {
-            string content = String.Format(
-            "<Heat>{0}</Heat><Hot>{1}</Hot><Ret>{2}</Ret><BuHot>{3}</BuHot><BuMid>{4}</BuMid><BuCold>{5}</BuCold><Cool>{6}</Cool><Cold>{7}</Cold><BearHot>{8}</BearHot>",
-             Heat, Hot, Ret, BuHot, BuMid, BuCold, Cool, Cold, BearHot);
-            content += "<RetFor>" + RetFor + "</RetFor>";
-            return "<temp>" + content + "</temp>";
+            uint time_ms = Time2WordToMs(data.time_hours, data.time_sek_x_10_of_hour);
+
+            string tempContent = CreateTag(tagTempSubTagHeat, data.heaterTemp) + CreateTag(tagTempSubTagHot, data.hotTankTemp) + CreateTag(tagTempSubTagRet, data.retTemp);
+            tempContent += CreateTag(tagTempBuHot, data.bufHotTemp) + CreateTag(tagTempBuMid, data.bufMidTemp) + CreateTag(tagTempBuCold, data.bufColdTemp);
+            tempContent += CreateTag(tagTempSubTagCool, data.coolerTemp) + CreateTag(tagTempSubTagCold, data.coldTankTemp) + CreateTag(tagTempSubTagBearHot, data.BearHot);
+            tempContent += CreateTag(tagTempSubTagReturnForecasted, data.RetForTemp);
+
+            return CreateStateXmlString(time_ms, CreateTag(tagTemp, tempContent));
         }
 
-        public static string CreateStateXmlString(AOUStateData data)
-        {
-            string temp = CreateStateTempXmlString(data.heaterTemp, data.hotTankTemp, data.retTemp, data.RetForTemp, data.bufHotTemp, data.bufMidTemp, data.bufColdTemp, data.coolerTemp, data.coldTankTemp, data.BearHot);
-            return "<state>" + CreateTimeXmlString(data.time_hours, data.time_sek_x_10_of_hour) + temp + "</state>";
-        }
+        #endregion
     }
 }

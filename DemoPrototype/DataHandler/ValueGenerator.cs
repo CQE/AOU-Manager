@@ -51,10 +51,15 @@ namespace DemoPrototype
             return min + (max - min) * rnd.NextDouble();
         }
 
-        static public UInt16 RealToWordX100(double value)
+        static public UInt16 RealToUInt16(double value)
         {
             //return (UInt16)(Math.Round(value, 2)*100);
             return (UInt16)(Math.Round(value));
+        }
+
+        static public Int16 RealToInt16(double value)
+        {
+            return (Int16)(Math.Round(value));
         }
 
         static public double WordX100ToDouble(UInt16 value)
@@ -65,40 +70,45 @@ namespace DemoPrototype
 
         #endregion
 
-         static public AOUStateData GetRandomStateData(uint time_ms, bool randomRetForTemp)
+        static public UInt16 GetRandom()
+        {
+            return RealToUInt16(ValueGenerator.GetTReturnValveValue());
+        }
+
+        static public AOUStateData GetRandomStateData(uint time_ms, bool randomRetForTemp)
         {
             AOUStateData stateData;
 
             AOUDataTypes.Time_ms_to_AOUModelTimeSecX10(time_ms, out stateData.time_hours, out stateData.time_sek_x_10_of_hour);
 
-            stateData.UIButtons = 0; stateData.Mode = 0; stateData.IMM = 0; stateData.Valves = 0;
-            stateData.seqState = 0; stateData.Power = 0; stateData.Energy = 0;
+            stateData.UIButtons = 0;  stateData.Mode = 0; stateData.IMM = 0;  stateData.Valves = 0;
+            stateData.seqState = 0;   stateData.Power = 0; stateData.Energy = 0;
 
             /* Only temperature values will be set */
-            stateData.bufHotTemp = RealToWordX100(ValueGenerator.GetTBufferHotValue());
-            stateData.bufMidTemp = RealToWordX100(ValueGenerator.GetTBufferMidValue());
-            stateData.bufColdTemp = RealToWordX100(ValueGenerator.GetTColdTankValue());
+            stateData.bufHotTemp = RealToUInt16(ValueGenerator.GetTBufferHotValue());
+            stateData.bufMidTemp = RealToUInt16(ValueGenerator.GetTBufferMidValue());
+            stateData.bufColdTemp = RealToUInt16(ValueGenerator.GetTColdTankValue());
 
-            stateData.coldTankTemp = RealToWordX100(ValueGenerator.GetTColdTankValue());
-            stateData.hotTankTemp = RealToWordX100(ValueGenerator.GetTHotTankValue());
-            stateData.retTemp = RealToWordX100(ValueGenerator.GetTReturnValveValue());
+            stateData.coldTankTemp = RealToUInt16(ValueGenerator.GetTColdTankValue());
+            stateData.hotTankTemp = RealToUInt16(ValueGenerator.GetTHotTankValue());
+            stateData.retTemp = RealToUInt16(ValueGenerator.GetTReturnValveValue());
 
             if (randomRetForTemp)
             {
-                stateData.RetForTemp = RealToWordX100(ValueGenerator.GetTColdTankValue());
+                stateData.RetForTemp = RealToInt16(ValueGenerator.GetTReturnForecastedValue());
             }
             else
             {
-                stateData.RetForTemp = AOUDataTypes.UInt16_NaN;
+                stateData.RetForTemp = Int16.MaxValue;
             }
 
 
+                
 
+            stateData.coolerTemp = RealToUInt16(ValueGenerator.GetValveCoolantValue());
+            stateData.heaterTemp = RealToUInt16(ValueGenerator.GetTheaterOilOutValue());
 
-            stateData.coolerTemp = RealToWordX100(ValueGenerator.GetValveCoolantValue());
-            stateData.heaterTemp = RealToWordX100(ValueGenerator.GetTheaterOilOutValue());
-
-            stateData.BearHot = RealToWordX100(ValueGenerator.GetTHotTankValue());
+            stateData.BearHot = RealToUInt16(ValueGenerator.GetTHotTankValue());
 
             return stateData;
         }
@@ -126,7 +136,7 @@ namespace DemoPrototype
 
         static public double GetTReturnForecastedValue()
         {
-            return ValueGenerator.GetRandomDouble(40, 77, 2);
+            return ValueGenerator.GetRandomDouble(-10, 10, 2);
         }
 
         static public double GetTBufferHotValue()
@@ -153,7 +163,7 @@ namespace DemoPrototype
         {
             return rnd.Next(50, 90); // 0-100%, 50-90  
         }
-
+ 
         static public double GetPowerHeatingValue()
         {
             return rnd.Next(5, 12); // 0-14kW or % ?

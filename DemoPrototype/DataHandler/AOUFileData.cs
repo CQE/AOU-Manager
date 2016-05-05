@@ -21,6 +21,10 @@ namespace DemoPrototype
         private int counter;
         private const int count_max = 2;
 
+        long firstTimeStamp = -1;
+        long lastTimeStamp = -1;
+        long currentTimeStamp = -1;
+        uint loop = 0;
 
         public AOUFileData(AOUSettings.FileSetting fileSetting, AOUSettings.DebugMode mode = AOUSettings.DebugMode.noDebug) : base(mode)
         {
@@ -28,52 +32,69 @@ namespace DemoPrototype
             dataFile = new TextFile();
             dataFile.OpenFileIfExistAndGetText(fileSetting.FilePath);
             textData = "";
-            counter = count_max;
         }
 
         public override void UpdateData()
         {
-            base.GetTextDataList();
+             base.GetTextDataList();
         }
 
         protected override string GetTextData()
         {
-            if (counter <= 0)
+            long time;
+
+            if (textData.Length == 0)
             {
-                if (textData.Length == 0)
+                if (!fileLoaded)
                 {
-                    if (!fileLoaded)
-                    {
-                        fileLoaded = true;
-                        fileData = dataFile.GetTextData();
-                    }
-                    textData = fileData;
-                    return "";
+                    fileLoaded = true;
+                    fileData = dataFile.GetTextData();
+                    dataFile = null;
                 }
                 else
                 {
-                    counter = count_max;
-                    string text = "";
-                    int pos = textData.IndexOf('\n');
-                    if (pos > 0 && pos < textData.Length)
-                    {
-                        text = textData.Substring(0, pos + 1);
-                        textData = textData.Substring(pos + 1);
-                    }
-                    else
-                    {
-                        text = textData;
-                        textData = "";
-                    }
-                    return text;
+                    loop++;
                 }
+                textData = fileData;
+                return "";
             }
             else
             {
-                counter--;
-                return "";
+                string text = "";
+                int pos = textData.IndexOf('\n');
+                if (pos > 0 && pos < textData.Length)
+                {
+                    text = textData.Substring(0, pos + 1);
+                    textData = textData.Substring(pos + 1);
+                }
+                else
+                {
+                    text = textData;
+                    textData = "";
+                }
+                if (AOUInputParser.ParseLongTime(text, out time))
+                {
+                    if (firstTimeStamp < 0)
+                    {
+                        firstTimeStamp = time;
+                    }
+                    currentTimeStamp = time;
+                    if (loop > 0)
+                    {
+                        long newTimeStamp = time + loop * lastTimeStamp + 10;
+                        string newTime = AOUInputParser.CreateTimeXmlString((uint)newTimeStamp);
+                        text = text.Replace("<Time>" + time + "</Time>", newTime);
+                    }
+
+                }
+                if (lastTimeStamp < 0 && textData.Length == 0)
+                {
+                    lastTimeStamp = currentTimeStamp;
+                }
+
+                return text;
             }
-        }
+       }
 
         public override bool SendData(string data)
         {

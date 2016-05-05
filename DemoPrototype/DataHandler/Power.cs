@@ -41,7 +41,19 @@ namespace DemoPrototype
              TBufferMid
              TBufferCold
      */
+     /*
+    public struct ReturnValve
+    {
+        public ReturnValve(long etime)
+        {
+            ElapsedTime = etime;
+            TReturnForecasted = double.NaN;
+        }
+        public long ElapsedTime { get; set; }
 
+        public double TReturnForecasted { get; set; }
+    }
+    */
     public struct Power
     {
         public Power(long etime)
@@ -83,8 +95,8 @@ namespace DemoPrototype
         public double TColdTank { get; set; }
         public double TReturnValve { get; set; }
 
-        public double TReturnActual { get; set; }
         public double TReturnForecasted { get; set; }
+        public double TReturnActual { get; set; }
 
         public double TBufferHot { get; set; }
         public double TBufferMid { get; set; }
@@ -111,7 +123,7 @@ namespace DemoPrototype
                 // string vCool = ValveCoolant == 50 ? "off" : "on";
 
                 return String.Format(fmt, AOUHelper.msToTimeSpanStr(ElapsedTime), State.ToString(), THotTank, TColdTank, 
-                    TReturnValve, TReturnActual, TReturnForecasted,  TBufferHot, TBufferMid, TBufferCold, 
+                    TReturnValve, TReturnActual, 0, TBufferHot, TBufferMid, TBufferCold, 
                     THeatExchangerCoolantOut, THeaterOilOut, PowerHeating,  vHot, vCold, vRet, ValveCoolant);
             }
             catch (Exception e)

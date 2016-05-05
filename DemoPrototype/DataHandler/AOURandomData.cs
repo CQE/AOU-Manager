@@ -11,10 +11,13 @@ namespace DemoPrototype
         private AOUSettings.RandomSetting settings;
         private DateTime lastTime;
 
-        private uint currentSeqState = 0;
-        private uint currentHotValve = 0;
-        private uint currentColdValve = 0;
-        private uint currentReturnValve = 0;
+        private uint curSeqState = 0;
+        private uint curHotValve = 0;
+        private uint curColdValve = 0;
+        private uint curReturnValve = 0;
+        private int btnMode = 0;
+        private int immMode = 0;
+
         private uint currentCount = 0;
 
         public AOURandomData(AOUSettings.RandomSetting rndSettings, AOUSettings.DebugMode dbgMode = AOUSettings.DebugMode.noDebug) : base(dbgMode)
@@ -61,51 +64,74 @@ namespace DemoPrototype
 
                 if (currentCount % 5 == 3)
                 {
-                    if (currentHotValve == 1)
+                    if (curHotValve == 1)
                     {
-                        currentHotValve = 0;
-                        currentColdValve = 1;
-                        currentReturnValve = 0;
+                        curHotValve = 0;
+                        curColdValve = 1;
+                        curColdValve = 0;
                     }
-                    else if (currentColdValve == 1)
+                    else if (curColdValve == 1)
                     {
-                        currentHotValve = 0;
-                        currentColdValve = 0;
-                        currentReturnValve = 1;
+                        curHotValve = 0;
+                        curColdValve = 0;
+                        curColdValve = 1;
                     }
                     else
                     {
-                        currentSeqState++;
-                        text += CreateNextSeqXMLString(time, currentSeqState);
-                        if (currentSeqState > 10)
+                        curSeqState++;
+                        text += CreateNextSeqXMLString(time, curSeqState);
+                        if (curSeqState > 10)
                         {
-                            currentSeqState = 1;
+                            curSeqState = 1;
                         }
 
-                        currentHotValve = 1;
-                        currentColdValve = 0;
-                        currentReturnValve = 0;
+                        curHotValve = 1;
+                        curColdValve = 0;
+                        curColdValve = 0;
                     }
 
-                    text += CreateNextValvesXMLString(time, currentHotValve, currentColdValve, currentReturnValve);
-
-                    if ((currentCount % 5) == 3)
-                    {
-                        int mode = ValueGenerator.GetRandomInt(0, 4);
-                        text += AOURandomData.CreateModeXMLString(time, mode);
-                    }
-                    if ((currentCount % 9) == 1)
-                    {
-                        AOUDataTypes.UI_Buttons buttons = new AOUDataTypes.UI_Buttons();
-                        buttons.OnOffButton = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
-                        buttons.ButtonRunWithIMM = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
-                        buttons.ButtonEmergencyOff = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
-                        buttons.ButtonForcedCooling = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
-                        buttons.ButtonForcedHeating = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
-                        buttons.ButtonForcedCycling = ValueGenerator.GetRandomOk(2) ? AOUDataTypes.ButtonState.on : AOUDataTypes.ButtonState.off;
-                        text += CreateUIButtonsXMLString(time, buttons);
-                    }
+                    text += CreateNextValvesXMLString(time, curHotValve, curColdValve, curReturnValve);
                 }
+                if ((currentCount % 8) == 2)
+                {
+                    int mode = ValueGenerator.GetRandomInt(0, 4);
+                    text += AOURandomData.CreateModeXMLString(time, mode);
+                }
+                if ((currentCount % 9) == 1)
+                {
+                    byte mask = 0; byte mode = 0;
+
+                    // ToDo onoff and emerg
+
+                    int lastbtnMode = btnMode;
+                    btnMode = ValueGenerator.GetRandomInt(2, 5);
+                    if (lastbtnMode >= 2)
+                    {
+                        mode = DelBit(mode, lastbtnMode);
+                        mask = AddBit(mask, lastbtnMode);
+                    }
+                    mode = AddBit(mode, btnMode);
+                    mask = AddBit(mask, btnMode);
+
+                    text += CreateUIButtonsXMLString(time, mask, mode);
+                }
+                if ((currentCount % 9) == 5)
+                {
+                    byte mask = 0; byte mode = 0;
+                    int lastimmMode = immMode;
+                    immMode = ValueGenerator.GetRandomInt(1, 8);
+                    if (lastimmMode != immMode)
+                        if (lastimmMode > 0)
+                        {
+                            mode = DelBit(mode, lastimmMode);
+                            mask = AddBit(mask, lastimmMode);
+                        }
+                    mode = AddBit(mode, immMode);
+                    mask = AddBit(mask, immMode);
+
+                    text += CreateIMMModeXMLString(time, mask, mode);
+                }
+
                 currentCount++;
             }
             return text;
@@ -144,18 +170,25 @@ namespace DemoPrototype
             return str;
         }
 
-        public static string CreateUIButtonsXMLString(uint time, AOUDataTypes.UI_Buttons buttons)
+        public string CreateHexString(UInt16 word)
         {
-            UInt16 b = 0xFF00;
-            if (buttons.OnOffButton == AOUDataTypes.ButtonState.on) b += 1;
-            if (buttons.ButtonEmergencyOff == AOUDataTypes.ButtonState.on) b += 1;
-            if (buttons.ButtonForcedCooling == AOUDataTypes.ButtonState.on) b += 2;
-            if (buttons.ButtonForcedHeating == AOUDataTypes.ButtonState.on) b += 4;
-            if (buttons.ButtonForcedCycling == AOUDataTypes.ButtonState.on) b += 8;
-            if (buttons.ButtonRunWithIMM == AOUDataTypes.ButtonState.on) b += 16;
+            return word.ToString("X4");
+        }
 
-            string ui = b.ToString("X4");
-            string str = AOUInputParser.CreateUIXmlString(time / 100, ui);
+        public string CreateHexString(byte mask, byte mode)
+        {
+            return (CombineToWord(mask, mode)).ToString("X4");
+        }
+
+        public string CreateUIButtonsXMLString(uint time, byte mask, byte mode)
+        {
+            string str = AOUInputParser.CreateUIXmlString(time / 100, CreateHexString(mask, mode)) + "\r\n";
+            return str;
+        }
+
+        public string CreateIMMModeXMLString(uint time, byte mask, byte mode)
+        {
+            string str = AOUInputParser.CreateIMMXmlString(time / 100, CreateHexString(mask, mode)) + "\r\n";
             return str;
         }
 
@@ -169,7 +202,7 @@ namespace DemoPrototype
         {
             AOUStateData data = ValueGenerator.GetRandomStateData(time, createRetFor);
 
-            string xml = AOUInputParser.CreateStateXmlString(data) + "\r\n";
+            string xml = AOUInputParser.CreateWholeTempStateXmlString(data) + "\r\n";
             return xml;
         }
     }

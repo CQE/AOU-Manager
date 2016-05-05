@@ -13,6 +13,7 @@ namespace DemoPrototype
 
         protected List<AOULogMessage> newLogMessages;
         protected List<Power> newPowerValues;
+        // protected List<ReturnValve> newReturnValveValues;
 
         protected AOUDataTypes.StateType currentSeqState;
         protected int currentHotValve = 50; // 50, 70
@@ -21,22 +22,72 @@ namespace DemoPrototype
         protected int currentPower = 0;
         protected uint currentEnergy = 0;
 
+        protected double lastTReturnForecasted = double.NaN;
+        protected bool newLastTReturnForecasted = false;
+
         public AOUDataTypes.UI_Buttons currentUIButtons = new AOUDataTypes.UI_Buttons();
         public AOUDataTypes.HT_StateType currentMode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
         public AOUDataTypes.IMMSettings currentIMMState = AOUDataTypes.IMMSettings.Nothing;
 
+        public bool isIMMChanged = false;
         public bool isUIButtonsChanged = false;
         public bool isModesChanged = false;
+
+        bool UpdateDataRunning = false;
 
         private double curTimeSpan = 1000; // 1 sek between 
 
         protected DateTime startTime;
 
-
         public bool Connected { get; protected set; }
 
         protected AOUSettings.DebugMode debugMode;
 
+
+        protected Byte LowByte(UInt16 word)
+        {
+            return (Byte)(word & 0xff);
+        }
+
+        protected Byte HighByte(UInt16 word)
+        {
+            return (Byte)(word >> 8);
+        }
+
+        protected UInt16 CombineToWord(byte mask, byte mode)
+        {
+            UInt16 word = (UInt16)(mask << 8);
+            word += mode;
+            return word;
+        }
+
+        protected byte AddBit(byte data, int bitnr)
+        {
+            int bit = 1;
+            int value = bit << bitnr;
+            value |= data;
+            return (byte)value;
+        }
+
+        protected byte DelBit(byte data, int bitnr)
+        {
+            int bit = 1;
+            int value = data;
+            int mask = bit << bitnr;
+            value &= ~mask;
+            return (byte)value;
+        }
+
+        protected int BitNum(byte value)
+        {
+            int val = value;
+            int num = 0;
+            while ((val = val >> 1) != 0)
+            {
+                ++num;
+            }
+            return num;
+         }
 
         protected AOUData(AOUSettings.DebugMode dbgMode)
         {
@@ -47,6 +98,7 @@ namespace DemoPrototype
 
             newLogMessages = new List<AOULogMessage>();
             newPowerValues = new List<Power>();
+            // newReturnValveValues = new List<ReturnValve>();
 
             startTime = DateTime.Now;
         }
@@ -57,7 +109,7 @@ namespace DemoPrototype
             return (long)(ts.TotalMilliseconds / 100);
         }
 
-        protected long GetTime_ms()
+        public long GetTime_ms()
         {
             TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - startTime.Ticks);
             long ms = (long)(ts.TotalMilliseconds);
@@ -151,6 +203,23 @@ namespace DemoPrototype
             return powers;
         }
 
+        /*
+        public bool AreNewReturnValveValuesAvailable()
+        {
+            if (newReturnValveValues.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public ReturnValve[] GetNewReturnValveValues()
+        {
+            ReturnValve[] values = newReturnValveValues.ToArray();
+            newReturnValveValues.Clear();
+            return values;
+        }
+        */
         public bool AreNewLogMessagesAvailable()
         {
             return newLogMessages.Count > 0;
@@ -170,12 +239,6 @@ namespace DemoPrototype
             return GetTextData();
         }
 
-        protected byte GetStateByte(UInt16 word)
-        {
-            byte mask = (byte)(word >> 8);
-            return (byte)(word & 0x00FF); // ???? Do mask
-        }
-
         protected double GetValidDoubleValue(UInt16 value)
         {
             if (AOUDataTypes.IsUInt16NaN(value))
@@ -187,8 +250,45 @@ namespace DemoPrototype
                 return value;
             }
         }
+
+        protected double GetValidDoubleValue(Int16 value)
+        {
+            if (AOUDataTypes.IsInt16NaN(value))
+            {
+                return double.NaN;
+            }
+            else
+            {
+                return value;
+            }
+        }
+
+        protected bool IsStateSet(byte state, byte mask)
+        {
+            int res = state & mask;
+            return (res != 0);
+        }
+
+        protected AOUDataTypes.ButtonState GetButtonState(byte state, byte mask)
+        {
+            if (IsStateSet(state, mask))
+            {
+                return AOUDataTypes.ButtonState.on;
+            }
+            else
+            {
+                return AOUDataTypes.ButtonState.off;
+            }
+         }
+
         protected void GetTextDataList()
         {
+            if (UpdateDataRunning)
+            {
+                return;
+            }
+
+            UpdateDataRunning = true;
             long time_ms = 0;
             string logMsg = "";
 
@@ -201,6 +301,7 @@ namespace DemoPrototype
 
             newPowerValues = new List<Power>();
             newLogMessages = new List<AOULogMessage>();
+            // newReturnValveValues = new List<ReturnValve>();
 
             string textDataStream = GetTextData();
             int prevTextLength = textDataStream.Length;
@@ -208,7 +309,9 @@ namespace DemoPrototype
             while (prevTextLength > 0)
             {
                 Power tempPower = new Power(0);
+                // ReturnValve tempReturnValve = new ReturnValve(0);
                 bool IsTempData = false;
+                // bool IsReturnValveData = false;
 
                 int count = 0;
                 string tagContent;
@@ -220,31 +323,6 @@ namespace DemoPrototype
                     if (log.Length > 0)
                         newLogMessages.Add(new AOULogMessage(GetTime_ms(), log, 8, 0));
                 }
-
-                /*
-               if (tagContent.Contains("Cycle"))
-               {
-                   string res = tagContent; // Only for debugging
-               }
-               */
-                /* 
-                 loglines = AOUInputParser.ParseBetweenTagsMessages(tagContent);
-                 foreach (string log in loglines)
-                 {
-                     string logStr = log;
-                     if (logStr.Length > 0)
-                     {
-                         if (logStr[0] == ',')
-                             logStr = logStr.Substring(1);
-
-                         if (logStr[logStr.Length - 1] == ',')
-                             logStr = logStr.Substring(0, logStr.Length - 1);
-
-                         log.Trim(new char[] { ',', ' ' });
-                         newLogMessages.Add(new AOULogMessage(GetTime_ms(), logStr, 9, 0));
-                     }
-                 }
-                 */
 
                 if (nextTag == AOUInputParser.tagState)
                 {
@@ -274,7 +352,13 @@ namespace DemoPrototype
                         // tempPower.ValveCoolant = (valveState & 8) != 0 ? 100 : 0; // ????
                     }
 
-                    if (stateData.hotTankTemp < 500 || stateData.RetForTemp < 500 || stateData.retTemp < 500) // Only temperature data. ToDo better test
+                    if (stateData.RetForTemp < 1000 && stateData.RetForTemp > -100) 
+                    {
+                        lastTReturnForecasted = GetValidDoubleValue(stateData.RetForTemp);
+                        newLastTReturnForecasted = true;
+                    }
+
+                    if (stateData.hotTankTemp < 1000) // Only temperature data. ToDo better test
                     {
                         tempPower.ElapsedTime = AOUDataTypes.AOUModelTimeSecX10_to_TimeMs(stateData.time_hours, stateData.time_sek_x_10_of_hour);
 
@@ -282,9 +366,14 @@ namespace DemoPrototype
                         tempPower.TColdTank = GetValidDoubleValue(stateData.coldTankTemp);
                         tempPower.TReturnValve = GetValidDoubleValue(stateData.retTemp);
 
-                        tempPower.TReturnActual = GetValidDoubleValue(stateData.retTemp);
-                        tempPower.TReturnForecasted = GetValidDoubleValue(stateData.RetForTemp);
+                       // if (newLastTReturnForecasted)
+                        {
+                            tempPower.TReturnForecasted = lastTReturnForecasted;
+                            newLastTReturnForecasted = false; 
+                        }
 
+                        tempPower.TReturnActual = GetValidDoubleValue(stateData.retTemp);
+ 
                         tempPower.TBufferCold = GetValidDoubleValue(stateData.bufColdTemp);
                         tempPower.TBufferMid = GetValidDoubleValue(stateData.bufMidTemp);
                         tempPower.TBufferHot = GetValidDoubleValue(stateData.bufHotTemp);
@@ -312,7 +401,9 @@ namespace DemoPrototype
                         // <IMM>MMSS</IMM>, 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
                         // IMM_OutIMMError: 0x01; IMM_OutIMMBlockInject: 0x02; IMM_OutIMMBlockOpen: 0x04; IMM_InIMMStop: 0x08;
                         // IMM_InCycleAuto: 0x10; IMM_InIMMInjecting: 0x20; IMM_InIMMEjecting: 0x40; IMM_InIMMToolClosed: 0x80;
-                        switch (stateData.IMM)
+                        byte mask = HighByte(stateData.IMM);
+                        byte state = LowByte(stateData.IMM);
+                        switch (mask)
                         {
                             case 0x01: currentIMMState = AOUDataTypes.IMMSettings.OutIMMError; break;
                             case 0x02: currentIMMState = AOUDataTypes.IMMSettings.OutIMMBlockInject; break;
@@ -324,6 +415,7 @@ namespace DemoPrototype
                             case 0x80: currentIMMState = AOUDataTypes.IMMSettings.InIMMToolClosed; break;
                             default: currentIMMState = AOUDataTypes.IMMSettings.Nothing; break;
                         }
+                        isIMMChanged = true;
                     }
 
 
@@ -333,20 +425,16 @@ namespace DemoPrototype
                         // BUTTON_ONOFF: 0x0001  // Soft on/Off;  BUTTON_EMERGENCYOFF: 0x0002  // Hard Off
                         // BUTTON_MANUALOPHEAT: 0x0004  // Forced Heating; BUTTON_MANUALOPCOOL  0x0008  // Forced Cooling
                         // BUTTON_CYCLE: 0x0010  // Forced Cycling; BUTTON_RUN: 0x0020  // Run with IMM
-                        byte mask = AOUInputParser.HighByte(stateData.UIButtons);
-                        byte state = AOUInputParser.LowByte(stateData.UIButtons);
+                        byte mask = HighByte(stateData.UIButtons);
+                        byte state = LowByte(stateData.UIButtons);
+
+                        if (IsStateSet(state, 0x01)) currentUIButtons.OnOffButton = GetButtonState(state, 0x01);
+                        if (IsStateSet(state, 0x02)) currentUIButtons.ButtonEmergencyOff = GetButtonState(state, 0x02);
+                        if (IsStateSet(state, 0x04)) currentUIButtons.ButtonForcedHeating = GetButtonState(state, 0x04);
+                        if (IsStateSet(state, 0x08)) currentUIButtons.ButtonForcedCooling = GetButtonState(state, 0x08);
+                        if (IsStateSet(state, 0x10)) currentUIButtons.ButtonForcedCycling = GetButtonState(state, 0x10);
+                        if (IsStateSet(state, 0x11)) currentUIButtons.ButtonRunWithIMM = GetButtonState(state, 0x11);
                         isUIButtonsChanged = true;
-                        switch (mask)
-                        {
-                            case 0x01: currentUIButtons.OnOffButton = (AOUDataTypes.ButtonState)state; break;
-                            case 0x02: currentUIButtons.ButtonEmergencyOff = (AOUDataTypes.ButtonState)state; break;
-                            case 0x04: currentUIButtons.ButtonForcedHeating = (AOUDataTypes.ButtonState)state; break;
-                            case 0x08: currentUIButtons.ButtonForcedCooling = (AOUDataTypes.ButtonState)state; break;
-                            case 0x10: currentUIButtons.ButtonForcedCycling = (AOUDataTypes.ButtonState)state; break;
-                            case 0x20: currentUIButtons.ButtonRunWithIMM = (AOUDataTypes.ButtonState)state; break;
-                            default: break;
-                        }
-                        // ToDo: Send message changed
                     }
 
                     if (!AOUDataTypes.IsUInt16NaN(stateData.Energy))
@@ -374,7 +462,7 @@ namespace DemoPrototype
                 {
                     if (AOUInputParser.ParseLog(tagContent, out time_ms, out logMsg))
                     {
-                        AOULogMessage msg = new AOULogMessage(time_ms * 100, logMsg);
+                        AOULogMessage msg = new AOULogMessage(time_ms * 100, logMsg); // Transform time to ms
                         if (msg.prio == 0) msg.prio = 1;
                         newLogMessages.Add(msg);
                     }
@@ -391,6 +479,12 @@ namespace DemoPrototype
                     {
                         newPowerValues.Add(tempPower);
                     }
+                    /*
+                    if (IsReturnValveData)
+                    {
+                        newReturnValveValues.Add(tempReturnValve);
+                    }
+                    */
                 }
                 if (count == 0) // No more valid tags. Wait for more data
                 {
@@ -401,6 +495,7 @@ namespace DemoPrototype
                     textDataStream = textDataStream.Substring(count); // Delete handled tag
                 }
             }
+            UpdateDataRunning = false;
         }
     }
 }

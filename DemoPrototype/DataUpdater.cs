@@ -232,6 +232,16 @@ namespace DemoPrototype
             return false;
         }
 
+        public static bool IMMStatusChanged(out AOUDataTypes.IMMSettings status)
+        {
+            status = new AOUDataTypes.IMMSettings();
+            if (dataRouter != null)
+            {
+                return dataRouter.IMMChanged(out status);
+            }
+            return false;
+        }
+
         public static bool ModeChanged(out AOUDataTypes.HT_StateType mode)
         {
             mode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
@@ -292,7 +302,6 @@ namespace DemoPrototype
             }
             return -1;
         }
-
 
         public static void UpdateInputData(object dataContext)
         {

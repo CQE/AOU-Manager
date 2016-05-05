@@ -172,9 +172,11 @@ namespace DemoPrototype
             AOUDataTypes.UI_Buttons buttons = new AOUDataTypes.UI_Buttons();
 
             DataUpdater.UpdateInputData(mainGrid.DataContext);
+
             //update textboxes
             SetHotTankTempText();
             SetColdTankTempText();
+
             if (DataUpdater.ModeChanged(out mode))
             {
                 GlobalAppSettings.ToolTempMode = (int) mode;
@@ -183,8 +185,7 @@ namespace DemoPrototype
 
             if (DataUpdater.UIButtonsChanged(out buttons))
             {
-                //is this the thing to do?
-                RunningModeCombo.SelectedIndex = GlobalAppSettings.RunningMode;
+                UpdateFromUIButtons(buttons);
             }
          }
 
@@ -585,6 +586,53 @@ namespace DemoPrototype
         {
             SaveImage();
         }
+
+
+        private void UpdateFromUIButtons(AOUDataTypes.UI_Buttons buttons)
+        {
+            int runningMode = 0;
+
+            if (buttons.OnOffButton == AOUDataTypes.ButtonState.on)
+            {
+                string s = "On";
+            }
+            else
+            {
+                string s = "Off";
+            }
+
+            if (buttons.ButtonEmergencyOff == AOUDataTypes.ButtonState.on)
+            {
+                // What to display when emergency button is pushed
+            }
+
+            if (buttons.ButtonForcedHeating == AOUDataTypes.ButtonState.on)
+            {
+                runningMode = 1;
+            }
+            else if (buttons.ButtonForcedCooling == AOUDataTypes.ButtonState.on)
+            {
+                runningMode = 2;
+            }
+            else if (buttons.ButtonForcedCycling == AOUDataTypes.ButtonState.on)
+            {
+                runningMode = 3;
+            }
+            else if (buttons.ButtonRunWithIMM == AOUDataTypes.ButtonState.on)
+            {
+                runningMode = 4;
+            }
+
+            if (runningMode >= 0 && RunningModeCombo.SelectedIndex != runningMode)
+            {
+                prevRunModeSelected = -1;
+                GlobalAppSettings.RunningMode = runningMode;
+                RunningModeCombo.SelectedIndex = runningMode;
+            }
+
+
+        }
+
     }
 
 }

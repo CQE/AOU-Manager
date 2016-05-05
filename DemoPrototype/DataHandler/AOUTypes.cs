@@ -69,6 +69,11 @@ namespace DemoPrototype
             return value == UInt16_NaN;
         }
 
+        public static bool IsInt16NaN(Int16 value)
+        {
+            return value == Int16.MaxValue;
+        }
+
         public static void Time_ms_to_AOUModelTimeSecX10(long time_ms, out UInt16 time_hours, out UInt16 time_sek_x_10)
         {
             // 1 hour = 60 sek * 10 * 60 min = 36000 (sek x 10) = 3600000 ms

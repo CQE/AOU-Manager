@@ -181,18 +181,19 @@ namespace DemoPrototype
     /// </summary>
     public static class GlobalVars
     {
-    public static GlobalThresHolds globThresholds;
-    public static GlobalDelayTimes globDelayTimes;
-    public static GlobalFeedTimes globFeedTimes;
+        public static GlobalThresHolds globThresholds;
+        public static GlobalDelayTimes globDelayTimes;
+        public static GlobalFeedTimes globFeedTimes;
+        public static GlobalValveChartValues globValveChartValues;
 
-    // Important to call this in MainPage constructor. Program crasch If not 
-    public static void Init()
-    {
-    /* Where - this values
-        220
-        60
-    */
-        globThresholds = new GlobalThresHolds();
+        // Important to call this in MainPage constructor. Program crasch If not 
+        public static void Init()
+        {
+        /* Where - this values
+            220
+            60
+        */
+            globThresholds = new GlobalThresHolds();
             globThresholds.ThresholdHot2Cold = 100;
             globThresholds.ThresholdCold2Hot = 110;
             globThresholds.ThresholdHotTankLowLimit = 120;
@@ -213,9 +214,23 @@ namespace DemoPrototype
             globFeedTimes.HeatingPause = 22;
             globFeedTimes.CoolingActive = 21;
             globFeedTimes.CoolingPause = 23;
-        }
 
-        public static void Save()
+            globValveChartValues = new GlobalValveChartValues();
+            globValveChartValues.HotValveLow = 30;
+            globValveChartValues.HotValveHi = 50;
+
+            globValveChartValues.ColdValveLow = 35;
+            globValveChartValues.ColdValveHi = 55;
+
+            globValveChartValues.ReturnValveLow = 40;
+            globValveChartValues.ReturnValveHi = 60;
+
+            globValveChartValues.CoolantValveLow = 45;
+            globValveChartValues.CoolantValveHi = 65;
+
+    }
+
+    public static void Save()
         {
             //  To do in future, Maybe for uniqe parameters as mould
         }
@@ -308,6 +323,67 @@ namespace DemoPrototype
             get { return _coldCalibrate; }
             set { _coldCalibrate = value; }
         }
+    }
+
+    public class GlobalValveChartValues
+    { 
+        private int _hotValveLow;
+        private int _hotValveHi;
+
+        private int _coldValveLow;
+        private int _coldValveHi;
+
+        private int _returnValveLow;
+        private int _returnValveHi;
+
+        private int _coolantValveLow;
+        private int _coolantValveHi;
+
+
+        public int HotValveLow
+        {
+            get { return _hotValveLow; }
+            set { _hotValveLow = value; }
+        }
+        public int HotValveHi
+        {
+            get { return _hotValveHi; }
+            set { _hotValveHi = value; }
+        }
+
+        public int ColdValveLow
+        {
+            get { return _coldValveLow; }
+            set { _coldValveLow = value; }
+        }
+        public int ColdValveHi
+        {
+            get { return _coldValveHi; }
+            set { _coldValveHi = value; }
+        }
+
+        public int ReturnValveLow
+        {
+            get { return _returnValveLow; }
+            set { _returnValveLow = value; }
+        }
+        public int ReturnValveHi
+        {
+            get { return _returnValveHi; }
+            set { _returnValveHi = value; }
+        }
+
+        public int CoolantValveLow
+        {
+            get { return _coolantValveLow; }
+            set { _coolantValveLow = value; }
+        }
+        public int CoolantValveHi
+        {
+            get { return _coolantValveHi; }
+            set { _coolantValveHi = value; }
+        }
+
     }
 
     public class GlobalFeedTimes

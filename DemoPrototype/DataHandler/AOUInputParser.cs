@@ -190,19 +190,19 @@ namespace DemoPrototype
             return false;
         }
 
-        public static bool ParseMMSS(string tag, string textline, out byte mask, out byte state)
+        public static bool ParseMMSS(string tag, string textline, out UInt16 mmss)
         {
             int endpos = 0;
             string tagValue = "";
-            mask = 0; state = 0;
-
+ 
             if (FindTagAndExtractText(tag, textline, out tagValue, out endpos) && tagValue.Length == 4)
             {
-                string mm = tagValue.Substring(0, 2);
-                string ss = tagValue.Substring(2, 2);
-                return (byte.TryParse(mm, System.Globalization.NumberStyles.HexNumber, null, out mask) &&
-                        byte.TryParse(ss, System.Globalization.NumberStyles.HexNumber, null, out state));
+                if (UInt16.TryParse(tagValue, System.Globalization.NumberStyles.HexNumber, null, out mmss))
+                {
+                    return true;
+                }
             }
+            mmss = 0;
             return false;
         }
 
@@ -323,7 +323,7 @@ namespace DemoPrototype
 
         public static bool ParseState(string tagText, out AOUStateData stateData)
         {
-            byte mask; byte state; long temp; UInt16 tmpval;
+            long temp; UInt16 tmpval;
             /* 
              <state><Time>19</Time><temp><Heat>34</Heat><Hot>31</Hot><Ret>27</Ret><BuHot>30</BuHot><BuMid>29</BuMid><BuCold>27</BuCold><Cool>32</Cool><Cold>30</Cold><BearHot>0</BearHot>
              <ch9>0</ch9><ch10>0</ch10><ch11>0</ch11><ch12>0</ch12><ch13>0</ch13><ch14>0</ch14><ch15>0</ch15><avg>28</avg></temp></stateData> // Arduino data
@@ -406,30 +406,29 @@ namespace DemoPrototype
             }
 
 
-            if (ParseMMSS(tagValves, tagText, out mask, out state))
+            if (ParseMMSS(tagValves, tagText, out tmpval))
             {
-                stateData.Valves = state;
+                stateData.Valves = tmpval;
             }
 
-            if (ParseMMSS(tagEnergy, tagText, out mask, out state))
+            if (ParseMMSS(tagEnergy, tagText, out tmpval))
             {
-                stateData.Energy = state;
+                stateData.Energy = tmpval;
             }
 
-            if (ParseMMSS(tagUI, tagText, out mask, out state))
+            if (ParseMMSS(tagUI, tagText, out tmpval))
             {
-                int hiAndLow = ((int)mask << 8) | state;
-                stateData.UIButtons = (UInt16)hiAndLow;
+                stateData.UIButtons = tmpval;
             }
 
-            if (ParseMMSS(tagIMM, tagText, out mask, out state))
+            if (ParseMMSS(tagIMM, tagText, out tmpval))
             {
-                stateData.IMM = state;
+                stateData.IMM = tmpval;
             }
 
-            if (ParseMMSS(tagMode, tagText, out mask, out state))
+            if (ParseMMSS(tagMode, tagText, out tmpval))
             {
-                stateData.Mode = state;
+                stateData.Mode = (Int16)tmpval;
             }
             else if (ParseLong(tagMode, tagText, out temp))
             {

@@ -8,6 +8,20 @@ namespace DemoPrototype
 {
     public class AOUData
     {
+
+        public const int VALVE_HOT = 0x01;
+        public const int VALVE_COLD = 0x02;
+        public const int VALVE_RET = 0x04;
+        public const int VALVE_COOL = 0x10;
+
+        public const int BUTTON_ONOFF = 0x01;  // Soft on/Off;
+        public const int BUTTON_EMERGENCYOFF = 0x02;  // Hard Off
+        public const int BUTTON_MANUALOPHEAT = 0x04;  // Forced Heating; 
+        public const int BUTTON_MANUALOPCOOL = 0x08;  // Forced Cooling
+        public const int BUTTON_CYCLE = 0x10;  // Forced Cycling; 
+        public const int BUTTON_RUN = 0x0020;  // Run with IMM
+
+
         private string dataLogStr = "";
         private string dataErrStr = "";
 
@@ -16,9 +30,11 @@ namespace DemoPrototype
         // protected List<ReturnValve> newReturnValveValues;
 
         protected AOUDataTypes.StateType currentSeqState;
-        protected int currentHotValve = 50; // 50, 70
-        protected int currentColdValve = 50;
-        protected int currentReturnValve = 50;
+        protected int currentHotValve = GlobalVars.globValveChartValues.HotValveLow;
+        protected int currentColdValve = GlobalVars.globValveChartValues.ColdValveLow;
+        protected int currentReturnValve = GlobalVars.globValveChartValues.ReturnValveLow;
+        protected int currentCoolantValve = GlobalVars.globValveChartValues.CoolantValveLow; 
+
         protected int currentPower = 0;
         protected uint currentEnergy = 0;
 
@@ -203,23 +219,6 @@ namespace DemoPrototype
             return powers;
         }
 
-        /*
-        public bool AreNewReturnValveValuesAvailable()
-        {
-            if (newReturnValveValues.Count > 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public ReturnValve[] GetNewReturnValveValues()
-        {
-            ReturnValve[] values = newReturnValveValues.ToArray();
-            newReturnValveValues.Clear();
-            return values;
-        }
-        */
         public bool AreNewLogMessagesAvailable()
         {
             return newLogMessages.Count > 0;
@@ -233,7 +232,6 @@ namespace DemoPrototype
         }
 
         // dbgMode
-
         public string GetRawData()
         {
             return GetTextData();
@@ -280,6 +278,32 @@ namespace DemoPrototype
                 return AOUDataTypes.ButtonState.off;
             }
          }
+
+        protected int GetValveState(byte state, byte mask)
+        {
+            if (IsStateSet(state, mask))
+            {
+                switch (mask)
+                {
+                    case VALVE_HOT: return GlobalVars.globValveChartValues.HotValveHi;
+                    case VALVE_COLD: return GlobalVars.globValveChartValues.ColdValveHi;
+                    case VALVE_RET: return GlobalVars.globValveChartValues.ReturnValveHi;
+                    case VALVE_COOL: return GlobalVars.globValveChartValues.CoolantValveHi;
+                    default: return 999; // Must have default value. Error if reached.
+                }
+            }
+            else
+            {
+                switch (mask)
+                {
+                    case VALVE_HOT: return GlobalVars.globValveChartValues.HotValveLow;
+                    case VALVE_COLD: return GlobalVars.globValveChartValues.ColdValveLow;
+                    case VALVE_RET: return GlobalVars.globValveChartValues.ReturnValveLow;
+                    case VALVE_COOL: return GlobalVars.globValveChartValues.CoolantValveLow;
+                    default: return 999;
+                }
+            }
+        }
 
         protected void GetTextDataList()
         {
@@ -345,11 +369,14 @@ namespace DemoPrototype
 
                     if (!AOUDataTypes.IsUInt16NaN(stateData.Valves))
                     {
-                        // -- VALVES -- <Valves>MMSS</Valves> MASK (e.g. “3F”), STATE Bits: 0/Hot valve, 1/Cold valve, 2/Return valve
-                        currentHotValve = (stateData.Valves & 1) != 0 ? 70 : 50;  // Off=50, On=70  
-                        currentColdValve = (stateData.Valves & 2) != 0 ? 70 : 50;  // Off=50, On=70  
-                        currentReturnValve = (stateData.Valves & 4) != 0 ? 70 : 50;  // Cold=50, Hot=70  
-                        // tempPower.ValveCoolant = (valveState & 8) != 0 ? 100 : 0; // ????
+                        // -- VALVES -- <Valves>MMSS</Valves> MASK (e.g. “3F”), STATE Bits: 0/Hot valve, 1/Cold valve, 2/Return valve, 4/Coolant valve
+                        byte mask = HighByte(stateData.Valves);
+                        byte state = LowByte(stateData.Valves);
+
+                        if (IsStateSet(mask, VALVE_HOT)) currentHotValve = GetValveState(state, VALVE_HOT);
+                        if (IsStateSet(mask, VALVE_COLD)) currentColdValve = GetValveState(state, VALVE_COLD);
+                        if (IsStateSet(mask, VALVE_RET)) currentReturnValve = GetValveState(state, VALVE_RET);
+                        if (IsStateSet(mask, VALVE_COOL)) currentCoolantValve = GetValveState(state, VALVE_COOL);
                     }
 
                     if (stateData.RetForTemp < 1000 && stateData.RetForTemp > -100) 
@@ -383,21 +410,21 @@ namespace DemoPrototype
                         tempPower.ValveFeedCold = currentColdValve;
                         tempPower.ValveFeedHot = currentHotValve;
                         tempPower.ValveReturn = currentReturnValve;
+                        tempPower.ValveCoolant = currentCoolantValve;
 
                         tempPower.THeaterOilOut = GetValidDoubleValue(stateData.heaterTemp);
 
                         tempPower.PowerHeating = currentPower;
-                        IsTempData = true; // Only add new power if temperature data
 
-                        /* ToDo when ????
-                        tempPower.THeatExchangerCoolantOut = 0;
-                        */
-                        tempPower.ValveCoolant = GetValidDoubleValue(stateData.coolerTemp); // ????? %
+                        tempPower.THeatExchangerCoolantOut = GetValidDoubleValue(stateData.coolerTemp);
+
+                        IsTempData = true; // Only add new power if temperature data
                     }
 
 
                     if (!AOUDataTypes.IsUInt16NaN(stateData.IMM))
                     {
+                        // TODO when IMM data
                         // <IMM>MMSS</IMM>, 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
                         // IMM_OutIMMError: 0x01; IMM_OutIMMBlockInject: 0x02; IMM_OutIMMBlockOpen: 0x04; IMM_InIMMStop: 0x08;
                         // IMM_InCycleAuto: 0x10; IMM_InIMMInjecting: 0x20; IMM_InIMMEjecting: 0x40; IMM_InIMMToolClosed: 0x80;
@@ -422,18 +449,15 @@ namespace DemoPrototype
                     if (!AOUDataTypes.IsUInt16NaN(stateData.UIButtons))
                     {
                         // UI>MMSS</UI> (hex) MM=8bit mask, SS=8bits. 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
-                        // BUTTON_ONOFF: 0x0001  // Soft on/Off;  BUTTON_EMERGENCYOFF: 0x0002  // Hard Off
-                        // BUTTON_MANUALOPHEAT: 0x0004  // Forced Heating; BUTTON_MANUALOPCOOL  0x0008  // Forced Cooling
-                        // BUTTON_CYCLE: 0x0010  // Forced Cycling; BUTTON_RUN: 0x0020  // Run with IMM
                         byte mask = HighByte(stateData.UIButtons);
                         byte state = LowByte(stateData.UIButtons);
 
-                        if (IsStateSet(state, 0x01)) currentUIButtons.OnOffButton = GetButtonState(state, 0x01);
-                        if (IsStateSet(state, 0x02)) currentUIButtons.ButtonEmergencyOff = GetButtonState(state, 0x02);
-                        if (IsStateSet(state, 0x04)) currentUIButtons.ButtonForcedHeating = GetButtonState(state, 0x04);
-                        if (IsStateSet(state, 0x08)) currentUIButtons.ButtonForcedCooling = GetButtonState(state, 0x08);
-                        if (IsStateSet(state, 0x10)) currentUIButtons.ButtonForcedCycling = GetButtonState(state, 0x10);
-                        if (IsStateSet(state, 0x11)) currentUIButtons.ButtonRunWithIMM = GetButtonState(state, 0x11);
+                        if (IsStateSet(mask, BUTTON_ONOFF)) currentUIButtons.OnOffButton = GetButtonState(state, BUTTON_ONOFF);
+                        if (IsStateSet(mask, BUTTON_EMERGENCYOFF)) currentUIButtons.ButtonEmergencyOff = GetButtonState(state, BUTTON_EMERGENCYOFF);
+                        if (IsStateSet(mask, BUTTON_MANUALOPHEAT)) currentUIButtons.ButtonForcedHeating = GetButtonState(state, BUTTON_MANUALOPHEAT);
+                        if (IsStateSet(mask, BUTTON_MANUALOPCOOL)) currentUIButtons.ButtonForcedCooling = GetButtonState(state, BUTTON_MANUALOPCOOL);
+                        if (IsStateSet(mask, BUTTON_CYCLE)) currentUIButtons.ButtonForcedCycling = GetButtonState(state, BUTTON_CYCLE);
+                        if (IsStateSet(mask, BUTTON_RUN)) currentUIButtons.ButtonRunWithIMM = GetButtonState(state, BUTTON_RUN);
                         isUIButtonsChanged = true;
                     }
 

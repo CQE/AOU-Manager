@@ -51,7 +51,7 @@ namespace DemoPrototype
         }
 
         #region Common
-        public static string GetNextTag(string text, out string tagContent, out List<string> logs, out int numHandled)
+        public static string GetNextTag(string text, out long time_ms, out string tagContent, out List<string> logs, out int numHandled)
         {
             Regex rTag = new Regex("<[a-zA-Z]+>");
             logs = new List<string>();
@@ -120,6 +120,11 @@ namespace DemoPrototype
                 }
             } while (tag == "" && textLine.Length > 0);
             numHandled = lastTextPos;
+
+            long time = 0;
+            ParseLong(tagSubTagTime, textLine, out time);
+            time_ms = time * 100; // Transform deciseconds to milliseconds
+
             return tag;
         }
 
@@ -235,43 +240,6 @@ namespace DemoPrototype
             }
         }
 
-        public static bool ParseTime_ms(string textline, out TimeSpan time)
-        {
-
-            long time_ms = 0;
-            if (ParseLong(tagSubTagTime, textline, out time_ms))
-            {
-                time = TimeSpan.FromMilliseconds(time_ms);
-                return true;
-            }
-            else
-            {
-                time = TimeSpan.Zero;
-                return false;
-            }
-        }
-
-        /*
-        public static bool ParseWordTime(string textline, out UInt16 time_min_of_week, out UInt16 time_ms_of_min) 
-        {
-            long time_ms = 0;
-            if (ParseLong(tagSubTagTime, textline, out time_ms))
-            {
-                if (time_ms > 283200)
-                {
-                    long t2 = time_ms;
-                }
-                AOUDataTypes.AOUModelTimeSecX10_to_TimeMs(time_ms, out time_min_of_week, out time_ms_of_min);
-                return true;
-            }
-            else
-            {
-                time_min_of_week = 0;
-                time_ms_of_min = 0;
-                return false;
-            }
-        }
-        */
 
         public static bool ParseWordTime_sek_x_10(string textline, out UInt16 time_hours, out UInt16 time_sek_x_10)
         {
@@ -294,6 +262,7 @@ namespace DemoPrototype
             return ParseLong(tagSubTagTime, textline, out time_ms);
         }
 
+        /*
         public static List<string> ParseBetweenTagsMessages(string tagText)
         {
             List<string> logs = new List<string>();
@@ -319,7 +288,7 @@ namespace DemoPrototype
             }
             return logs;
         }
-
+        */
 
         public static bool ParseState(string tagText, out AOUStateData stateData)
         {
@@ -439,13 +408,15 @@ namespace DemoPrototype
             return true;
         }
 
-        public static bool ParseLog(string tagText, out long time_ms, out string logMsg)
+        public static bool ParseLog(string tagText, out string logMsg, out int prio, out int pid)
         {
-            time_ms = 0;
             logMsg = "-";
+            prio = 1;
+            pid = 0;
             // textLine = "<log><Time>94962045</Time><Msg>Setup AOU version 1.1 ready (Plastics Unbound Ltd, Cyprus)</Msg></log>";
-            return ParseLongTime(tagText, out time_ms) && ParseString(tagLogSubTagMsg, tagText, out logMsg);
+            return ParseString(tagLogSubTagMsg, tagText, out logMsg);
         }
+
         #endregion
 
         #region Create XML Strings

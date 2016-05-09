@@ -217,16 +217,16 @@ namespace DemoPrototype
 
             globValveChartValues = new GlobalValveChartValues();
             globValveChartValues.HotValveLow = 30;
-            globValveChartValues.HotValveHi = 50;
+            globValveChartValues.HotValveHi = 33;
 
-            globValveChartValues.ColdValveLow = 35;
-            globValveChartValues.ColdValveHi = 55;
+            globValveChartValues.ColdValveLow = 32;
+            globValveChartValues.ColdValveHi = 35;
 
-            globValveChartValues.ReturnValveLow = 40;
-            globValveChartValues.ReturnValveHi = 60;
+            globValveChartValues.ReturnValveLow = 34;
+            globValveChartValues.ReturnValveHi = 37;
 
-            globValveChartValues.CoolantValveLow = 45;
-            globValveChartValues.CoolantValveHi = 65;
+            globValveChartValues.CoolantValveLow = 36;
+            globValveChartValues.CoolantValveHi = 39;
 
     }
 

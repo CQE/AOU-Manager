@@ -8,6 +8,7 @@ namespace DemoPrototype
 {
     public class AOUData
     {
+        private const double curTimeSpan_ms = 100; // For adjusting to nearest time
 
         public const int VALVE_HOT = 0x01;
         public const int VALVE_COLD = 0x02;
@@ -21,13 +22,11 @@ namespace DemoPrototype
         public const int BUTTON_CYCLE = 0x10;  // Forced Cycling; 
         public const int BUTTON_RUN = 0x0020;  // Run with IMM
 
-
         private string dataLogStr = "";
         private string dataErrStr = "";
 
         protected List<AOULogMessage> newLogMessages;
         protected List<Power> newPowerValues;
-        // protected List<ReturnValve> newReturnValveValues;
 
         protected AOUDataTypes.StateType currentSeqState;
         protected int currentHotValve = GlobalVars.globValveChartValues.HotValveLow;
@@ -51,7 +50,8 @@ namespace DemoPrototype
 
         bool UpdateDataRunning = false;
 
-        private double curTimeSpan = 1000; // 1 sek between 
+        private DateTime lastDataRealTime;
+        private long lastDataTime_ms;
 
         protected DateTime startTime;
 
@@ -114,22 +114,19 @@ namespace DemoPrototype
 
             newLogMessages = new List<AOULogMessage>();
             newPowerValues = new List<Power>();
-            // newReturnValveValues = new List<ReturnValve>();
 
             startTime = DateTime.Now;
+            lastDataRealTime = startTime;
+            lastDataTime_ms = 0;
         }
 
-        protected long GetTimeSecx10()
+        public long GetAOUTime_ms()
         {
-            TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - startTime.Ticks);
-            return (long)(ts.TotalMilliseconds / 100);
-        }
-
-        public long GetTime_ms()
-        {
-            TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - startTime.Ticks);
-            long ms = (long)(ts.TotalMilliseconds);
-            return AOUHelper.ToCurTimeStep(ms, curTimeSpan);
+           // TimeSpan.Zero;
+ 
+            TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - lastDataRealTime.Ticks);
+            long ms = lastDataTime_ms + (long)(ts.TotalMilliseconds);
+            return AOUHelper.ToCurTimeStep(ms, curTimeSpan_ms);
         }
 
         /* Virtual functions */
@@ -314,7 +311,6 @@ namespace DemoPrototype
 
             UpdateDataRunning = true;
             long time_ms = 0;
-            string logMsg = "";
 
             if (this.debugMode == AOUSettings.DebugMode.rawData)
             {
@@ -341,11 +337,19 @@ namespace DemoPrototype
                 string tagContent;
                 List<string> loglines;
 
-                string nextTag = AOUInputParser.GetNextTag(textDataStream, out tagContent, out loglines, out count);
+                string nextTag = AOUInputParser.GetNextTag(textDataStream, out time_ms, out tagContent, out loglines, out count);
+
+                // Save last AOU time
+                lastDataRealTime = DateTime.Now;
+                if (time_ms > lastDataTime_ms)
+                {
+                    lastDataTime_ms = time_ms;
+                }
+
+                // Add text lines without tags as log message
                 foreach (string log in loglines)
                 {
-                    if (log.Length > 0)
-                        newLogMessages.Add(new AOULogMessage(GetTime_ms(), log, 8, 0));
+                   newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), log, 8, 0));
                 }
 
                 if (nextTag == AOUInputParser.tagState)
@@ -480,20 +484,20 @@ namespace DemoPrototype
                 else if (nextTag == "seq")
                 {
                     /* Old tag. Handle ? */
-                    newLogMessages.Add(new AOULogMessage(GetTime_ms(), "seq:" + tagContent, 0, 0));
+                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "seq:" + tagContent, 0, 0));
                 }
                 else if (nextTag == AOUInputParser.tagLog)
                 {
-                    if (AOUInputParser.ParseLog(tagContent, out time_ms, out logMsg))
+                    string logMsg = ""; int pid = 0; int prio = 0;
+                    if (AOUInputParser.ParseLog(tagContent, out logMsg, out prio, out pid))
                     {
-                        AOULogMessage msg = new AOULogMessage(time_ms * 100, logMsg); // Transform time to ms
-                        if (msg.prio == 0) msg.prio = 1;
-                        newLogMessages.Add(msg);
+                        newLogMessages.Add(new AOULogMessage(time_ms, logMsg, prio, pid));
                     }
                 }
                 else if (nextTag.Length > 0)
                 {
-                    newLogMessages.Add(new AOULogMessage(GetTime_ms(), "Unknown tag:" + nextTag + " = " + tagContent, 0, 0));
+                    // Unknow tag. Add log message
+                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "Unknown tag:" + nextTag + " = " + tagContent, 0, 0));
                 }
 
 

@@ -38,7 +38,7 @@ namespace DemoPrototype
                 timestr += ts.Hours.ToString("00") + ":" + ts.Minutes.ToString("00") + ":" + ts.Seconds.ToString("00");
                 if (ts.Milliseconds > 0)
                 {
-                    timestr += "." + ts.Milliseconds.ToString("000");
+                    timestr += "." + ts.Milliseconds / 100;
                 }
             }
             catch (Exception e)

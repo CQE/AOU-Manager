@@ -38,10 +38,12 @@ namespace DemoPrototype
             this.InitializeComponent();
 
             InitDispatcherTimer();
+
+            // LogGrid.HeaderStyle.Setters.
             //just testing 
-           // AOULogMessage msg = new AOULogMessage((long)1000, "just testing");
-        //    LogMessageViewModel. logMessages.add(msg);
-            
+            // AOULogMessage msg = new AOULogMessage((long)1000, "just testing");
+            //    LogMessageViewModel. logMessages.add(msg);
+
         }
 
         private void MaintenancePage_Unloaded(object sender, RoutedEventArgs e)

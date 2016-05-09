@@ -187,14 +187,14 @@ b.      Läsa av temperaturer från kurvorna
                 return "";
         }
 
-        public void CreateLogMessage(string text, uint prio)
+        public void CreateLogMessage(string text, int prio)
         {
-            logMessages.Add(new AOULogMessage(aouData.GetTime_ms(), text, prio, 0));
+            logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), text, prio, 0));
         }
 
         public bool SendToPlc(string text)
         {
-            logMessages.Add(new AOULogMessage(aouData.GetTime_ms(), "SendToPlc: " + text, 12, 0));
+            logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), "SendToPlc: " + text, 12, 0));
             if (aouData != null)
                 return aouData.SendData(text);
             else
@@ -243,21 +243,7 @@ b.      Läsa av temperaturer från kurvorna
             if (aouData == null) return;
 
             aouData.UpdateData();
-            /* Test
-            if (aouData.AreNewReturnValveValuesAvailable())
-            {
-                var newValues = aouData.GetNewReturnValveValues();
-                for (int i = 0; i < newValues.Length; i++)
-                {
-                    returnValveValues.Add(newValues[i]); // Add new value
-                    NewReturnValveValuesAvailable++;
-                    if (returnValveValues.Count > MaxTotalValuesInMemory)
-                    {
-                        returnValveValues.RemoveAt(0); // Delete first Power values
-                    }
-                }
-            }
-            */
+
             if (aouData.AreNewValuesAvailable())
             {
                 var newValues = aouData.GetNewValues();
@@ -360,21 +346,6 @@ b.      Läsa av temperaturer från kurvorna
             }
         }
 
-        /*
-        public ReturnValve GetLastNewReturnValveValue()
-        {
-            if (NewReturnValveValuesAvailable > 0 && returnValveValues.Count > 1)
-            {
-                NewReturnValveValuesAvailable = 0;
-                return returnValveValues[returnValveValues.Count - 1];
-            }
-            else
-            {
-                return new ReturnValve(0); // Must return something
-            }
-        }
-        */
-
         /**************************
             Log Message Handling
         **************************/
@@ -386,7 +357,7 @@ b.      Läsa av temperaturer från kurvorna
                 {
                     count = logMessages.Count;
                 }
-                NewPowerValuesAvailable = 0;
+                NewLogMessagesAvailable = 0;
                 return logMessages.GetRange(logMessages.Count - count, count);
             }
             else
@@ -397,7 +368,7 @@ b.      Läsa av temperaturer från kurvorna
 
         public List<AOULogMessage> GetNewLogMessages()
         {
-            if (NewPowerValuesAvailable > 0)
+            if (NewLogMessagesAvailable > 0)
             {
                 var logs = logMessages.GetRange(logMessages.Count - NewLogMessagesAvailable, NewLogMessagesAvailable);
                 NewLogMessagesAvailable = 0;

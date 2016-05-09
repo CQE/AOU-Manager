@@ -9,7 +9,7 @@ namespace DemoPrototype
 
     public class AOULogMessage
     {
-        public TimeSpan time
+        public string time
         {
             get; set;
         }
@@ -19,27 +19,27 @@ namespace DemoPrototype
             get; set;
         }
 
-        public uint pid
+        public int pid
         {
             get; set;
         }
 
-        public uint prio
+        public int prio
         {
             get; set;
         }
 
         public AOULogMessage(long logTime, string logMsg)
         {
-            time = AOUHelper.msToTimeSpan(logTime);
+            time = AOUHelper.msToTimeSpanStr(logTime);
             message = logMsg;
             prio = 0;
             pid = 0;
         }
 
-        public AOULogMessage(long logTime, string logMsg, uint logPrio, uint logProcessId)
+        public AOULogMessage(long logTime, string logMsg, int logPrio, int logProcessId)
         {
-            time = AOUHelper.msToTimeSpan(logTime);
+            time = AOUHelper.msToTimeSpanStr(logTime);
             message = logMsg;
             prio = logPrio;
             pid = logProcessId;
@@ -47,7 +47,7 @@ namespace DemoPrototype
 
         public override string ToString()
         {
-            return String.Format("{0}, {1}, {2}, {3}", AOUHelper.msToTimeSpanStr((long)time.TotalMilliseconds), message, prio, pid);
+            return String.Format("{0}, {1}, {2}, {3}", time, message, prio, pid);
         }
     }
 }

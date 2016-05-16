@@ -8,32 +8,16 @@ namespace DemoPrototype
 {
     class AOUValuesFile
     {
-        /* Todo. Redo to binary file
-        private TextFile dataFile;
+        // ToDo.Binary file
 
-        public AOUValuesFile()
+        static void Save(AOUStateData[] data, string path)
         {
-            dataFile = new TextFile();
+
         }
 
-        public void SaveValuesToFile(Power[] powers)
+        AOUStateData[] Load(DateTime start, int num)
         {
-            string dateStr = DateTime.Today.ToString("yyMMdd");
-
-            foreach (var pwr in powers)
-            {
-                string ts = pwr.ElapsedTime.ToString() + ',';
-                dataFile.AddToFile("AOU\\TBufferCold\\", "TBufferCold-" + dateStr + ".txt", ts + pwr.TBufferCold);
-                dataFile.AddToFile("AOU\\TBufferMid\\", "TBufferMid-" + dateStr + ".txt", ts + pwr.TBufferMid);
-                dataFile.AddToFile("AOU\\TBufferHot\\", "TBufferHot-" + dateStr + ".txt", ts + pwr.TBufferHot);
-                dataFile.AddToFile("AOU\\TCoolTank\\", "TCoolTank-" + dateStr + ".txt", ts + pwr.TColdTank);
-                dataFile.AddToFile("AOU\\THotTank\\", "THotTank-" + dateStr + ".txt", ts + pwr.THotTank);
-                dataFile.AddToFile("AOU\\State\\", "State-" + dateStr + ".txt", ts + pwr.State.ToString());
-                dataFile.AddToFile("AOU\\TReturnActual\\", "TReturnActual-" + dateStr + ".txt", ts + pwr.TReturnActual);
-                dataFile.AddToFile("AOU\\TReturnForecasted\\", "TReturnForecasted-" + dateStr + ".txt", ts + pwr.TReturnForecasted);
-                dataFile.AddToFile("AOU\\TReturnValve\\", "TReturnValve-" + dateStr + ".txt", ts + pwr.TReturnValve);
-            }
+            return null;
         }
-        */
     }
 }

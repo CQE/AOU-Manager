@@ -19,7 +19,7 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>DemoPrototype_TemporaryKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>068288594B630ADD367DD8A903142A1D4332B58F</PackageCertificateThumbprint>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
   </PropertyGroup>
@@ -133,7 +133,6 @@
     <Compile Include="DataHandler\AOUTypes.cs" />
     <Compile Include="DataHandler\AOUValuesFile.cs" />
     <Compile Include="DataHandler\Power.cs" />
-    <Compile Include="DataHandler\SerialData.cs" />
     <Compile Include="DataHandler\TextFile.cs" />
     <Compile Include="DataHandler\ValueGenerator.cs" />
     <Compile Include="DataUpdater.cs" />

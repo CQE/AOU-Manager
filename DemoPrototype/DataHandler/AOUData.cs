@@ -60,6 +60,53 @@ namespace DemoPrototype
         protected AOUSettings.DebugMode debugMode;
 
 
+        // Base constructor
+        protected AOUData(AOUSettings.DebugMode dbgMode)
+        {
+            Connected = false;
+            debugMode = dbgMode;
+
+            currentSeqState = AOUDataTypes.StateType.NOTHING;
+
+            newLogMessages = new List<AOULogMessage>();
+            newPowerValues = new List<Power>();
+
+            startTime = DateTime.Now;
+            lastDataRealTime = startTime;
+            lastDataTime_ms = 0;
+        }
+
+        /* Virtual functions to be overrided by child classes */
+        public virtual void Connect()
+        {
+            Connected = true;
+        }
+
+        public virtual void Disconnect()
+        {
+            Connected = false;
+        }
+
+        protected virtual string GetTextData()
+        {
+            // Receive latest text from data source. Must be overrided by child classes
+            throw new Exception("AOUData.GetTextData Not overrided");
+        }
+
+        public virtual bool SendData(string data)
+        {
+            // Send text to data source. Must be overrided by child classes
+            throw new Exception("AOUData.SendData Not overrided");
+        }
+
+        public virtual void UpdateData()
+        {
+            // Update newLogMessages and newPowerValues by child instances
+            throw new Exception("AOUData.UpdateData Not overrided");
+        }
+
+
+        #region bit methods
         protected Byte LowByte(UInt16 word)
         {
             return (Byte)(word & 0xff);
@@ -105,75 +152,17 @@ namespace DemoPrototype
             return num;
          }
 
-        protected AOUData(AOUSettings.DebugMode dbgMode)
+        protected bool IsStateSet(byte state, byte mask)
         {
-            Connected = false;
-            debugMode = dbgMode;
-
-            currentSeqState = AOUDataTypes.StateType.NOTHING;
-
-            newLogMessages = new List<AOULogMessage>();
-            newPowerValues = new List<Power>();
-
-            startTime = DateTime.Now;
-            lastDataRealTime = startTime;
-            lastDataTime_ms = 0;
+            int res = state & mask;
+            return (res != 0);
         }
 
-        public long GetAOUTime_ms()
-        {
-           // TimeSpan.Zero;
+        #endregion
  
-            TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - lastDataRealTime.Ticks);
-            long ms = lastDataTime_ms + (long)(ts.TotalMilliseconds);
-            return AOUHelper.ToCurTimeStep(ms, curTimeSpan_ms);
-        }
+        #region Public methods
 
-        /* Virtual functions */
-        public virtual void Connect()
-        {
-            Connected = true;
-        }
-
-        public virtual void Disconnect()
-        {
-            Connected = false;
-        }
-
-        protected virtual string GetTextData()
-        {
-            throw new Exception("AOUData.GetTextData Not overrided");
-        }
-
-        public virtual bool SendData(string data)
-        {
-            throw new Exception("AOUData.SendData Not overrided");
-        }
-
-        public virtual void UpdateData()
-        {
-            /*
-            Update newLogMessages and newPowerValues
-            */
-            throw new Exception("AOUData.UpdateData Not overrided");
-        }
-
-        /* Protected methods */
-        protected void AddDataLogText(string text)
-        {
-            if (dataLogStr.Length > 0)
-                dataLogStr += Environment.NewLine;
-            dataLogStr += text;
-        }
-
-        protected void AddDataErrText(string text)
-        {
-            if (dataErrStr.Length > 0)
-                dataErrStr += Environment.NewLine;
-            dataErrStr += text;
-        }
-
-        /* Public methods */
+        /* Log end error tracking */
         public bool HaveErrors()
         {
             return dataErrStr.Length > 0;
@@ -200,6 +189,13 @@ namespace DemoPrototype
             return text;
         }
 
+        // Get raw text data
+        public string GetRawData()
+        {
+            return GetTextData();
+        }
+
+        /* Get new Power values */
         public bool AreNewValuesAvailable()
         {
             if (newPowerValues.Count > 0)
@@ -216,6 +212,7 @@ namespace DemoPrototype
             return powers;
         }
 
+        /* Get new log messages */
         public bool AreNewLogMessagesAvailable()
         {
             return newLogMessages.Count > 0;
@@ -228,12 +225,35 @@ namespace DemoPrototype
             return logs;
         }
 
-        // dbgMode
-        public string GetRawData()
+        // Used to get valid time for log messages when time stamp is missing
+        public long GetAOUTime_ms()
         {
-            return GetTextData();
+            // TimeSpan.Zero;
+            TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - lastDataRealTime.Ticks);
+            long ms = lastDataTime_ms + (long)(ts.TotalMilliseconds);
+            return AOUHelper.ToCurTimeStep(ms, curTimeSpan_ms);
         }
 
+        #endregion
+
+        #region protected help methods
+        /* Protected methods to be used by child classes */
+
+        protected void AddDataLogText(string text)
+        {
+            if (dataLogStr.Length > 0)
+                dataLogStr += Environment.NewLine;
+            dataLogStr += text;
+        }
+
+        protected void AddDataErrText(string text)
+        {
+            if (dataErrStr.Length > 0)
+                dataErrStr += Environment.NewLine;
+            dataErrStr += text;
+        }
+
+        // Convert to double
         protected double GetValidDoubleValue(UInt16 value)
         {
             if (AOUDataTypes.IsUInt16NaN(value))
@@ -258,12 +278,7 @@ namespace DemoPrototype
             }
         }
 
-        protected bool IsStateSet(byte state, byte mask)
-        {
-            int res = state & mask;
-            return (res != 0);
-        }
-
+        // Converting special types
         protected AOUDataTypes.ButtonState GetButtonState(byte state, byte mask)
         {
             if (IsStateSet(state, mask))
@@ -302,6 +317,7 @@ namespace DemoPrototype
             }
         }
 
+        // Main converting loop. XML Text to Power and Log message lists
         protected void GetTextDataList()
         {
             if (UpdateDataRunning)
@@ -321,7 +337,6 @@ namespace DemoPrototype
 
             newPowerValues = new List<Power>();
             newLogMessages = new List<AOULogMessage>();
-            // newReturnValveValues = new List<ReturnValve>();
 
             string textDataStream = GetTextData();
             int prevTextLength = textDataStream.Length;
@@ -329,9 +344,7 @@ namespace DemoPrototype
             while (prevTextLength > 0)
             {
                 Power tempPower = new Power(0);
-                // ReturnValve tempReturnValve = new ReturnValve(0);
                 bool IsTempData = false;
-                // bool IsReturnValveData = false;
 
                 int count = 0;
                 string tagContent;
@@ -507,13 +520,7 @@ namespace DemoPrototype
                     {
                         newPowerValues.Add(tempPower);
                     }
-                    /*
-                    if (IsReturnValveData)
-                    {
-                        newReturnValveValues.Add(tempReturnValve);
-                    }
-                    */
-                }
+                 }
                 if (count == 0) // No more valid tags. Wait for more data
                 {
                     break;
@@ -525,5 +532,6 @@ namespace DemoPrototype
             }
             UpdateDataRunning = false;
         }
+        #endregion
     }
 }

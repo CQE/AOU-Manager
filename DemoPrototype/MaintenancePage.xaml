@@ -234,7 +234,7 @@
 
                 <sfgrid:SfDataGrid.Columns>
 
-                    <sfgrid:GridTextColumn MappingName="time" Width="100" AllowSorting="True" AllowFiltering="False">
+                    <sfgrid:GridTextColumn MappingName="time" Width="100" AllowSorting="False" AllowFiltering="False">
                         <sfgrid:GridTextColumn.CellStyle>
                             <Style TargetType="sfgrid:GridCell">
                                 <Setter Property="FontSize" Value="12" />
@@ -242,7 +242,7 @@
                         </sfgrid:GridTextColumn.CellStyle>
                     </sfgrid:GridTextColumn>
 
-                    <sfgrid:GridNumericColumn MappingName="prio"  Width="70" AllowSorting="True" AllowFiltering="True">
+                    <sfgrid:GridNumericColumn MappingName="prio"  Width="70" AllowSorting="False" AllowFiltering="False">
                         <sfgrid:GridNumericColumn.CellStyle>
                             <Style TargetType="sfgrid:GridCell">
                                 <Setter Property="FontSize" Value="12" />
@@ -250,7 +250,7 @@
                         </sfgrid:GridNumericColumn.CellStyle>
                     </sfgrid:GridNumericColumn>
 
-                    <sfgrid:GridTextColumn MappingName="message" ColumnSizer="Star" AllowSorting="True" AllowFiltering="True">
+                    <sfgrid:GridTextColumn MappingName="message" ColumnSizer="Star" AllowSorting="False" AllowFiltering="False">
                         <sfgrid:GridTextColumn.CellStyle>
                             <Style TargetType="sfgrid:GridCell">
                                 <Setter Property="FontSize" Value="12" />

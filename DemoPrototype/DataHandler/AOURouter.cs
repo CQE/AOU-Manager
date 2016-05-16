@@ -7,120 +7,31 @@ using System.Diagnostics;
 
 namespace DemoPrototype
 {
-    /*
-f.     Visning ”Tool tempering” (HEAT/COOL/IDLE) styrd av FA-DUINO (beräknas löpande av FA-DUINO)
-    Funkar inte
-
-g.       Visning ”Running mode” (Heating/Cooling/Fxed cyclig/AOU with IMM/Idle) styrd av FA-DUINO (i.e. knapparna på AOU frontpanel)
-    Funkar inte, kan ändra och kommandot skickas. Vi tar ej emot
-
-h.      Visning ”AOU/IMM interaction” styrd av FA-DUINO
-    Dessa kom inte förut 
-
-i.         Logg-meddelandena från FA-DUINO visas löpande i logglistan på GUI
-    Funkar i debug kraschade nyss i release. Urban tror han har fixat
-
-2.       Önskvärt:
-
-a.       Kunna använda vår display med touch ansluten till denna PC
-    Ingen aning hur jag skulle kunna fixa det. Skärmen är hos Urban just nu. Jag kan fråga honom hur det fungerar hos honom.
-
-b.      Läsa av temperaturer från kurvorna
-    Ska titta på det
-
-3.       Bra att ha:
-    a.       Händelselogg-filer (någon besökare an tänkas fråga)
-        Tror textfiler sparas, excel fungerar inte just nu
-    */
-
     public class AOURouter
     {
-        public const int MaxTotalValuesInMemory = 1000;
+        public const int MaxTotalValuesInMemory = 300;
         public const int MaxTotalLogMessagesInMemory = 1000;
 
         private List<AOULogMessage> logMessages;
         private List<Power> powerValues;
-        // private List<ReturnValve> returnValveValues;
-
+ 
         public int NewPowerValuesAvailable { get; private set; }
-
         public int NewLogMessagesAvailable { get; private set; }
-
-        public int NewReturnValveValuesAvailable { get; private set; }
-
-        public int TotNumValues
-        {
-            get
-            {
-                return logMessages.Count;
-            }
-        }
-
-        public int TotNumLogMessages
-        {
-            get
-            {
-                return logMessages.Count;
-            }
-        }
 
         private DateTime startTime;
 
-        // Different Run types. File and Random are test modes
-        public enum RunType { None, Serial, File, Random, Client };
-        public RunType runMode
-        {
-            get; private set;
-        }
+        public enum RunType { None, Serial, File, Random};
+        public RunType runMode {get; private set;}
 
         private AOUData aouData;
-
         private AOULogFile aouLogFile;
 
         private string applogstr = "AOURouter. No run mode selected";
-
-
-        public bool UIButtonsChanged(out AOUDataTypes.UI_Buttons buttons)
-        {
-            buttons = new AOUDataTypes.UI_Buttons();
-            if (aouData.isUIButtonsChanged)
-            {
-                aouData.isUIButtonsChanged = false;
-                buttons = aouData.currentUIButtons;
-                return true;
-            }
-            return false;
-        }
-
-        public bool IMMChanged(out AOUDataTypes.IMMSettings mode)
-        {
-            mode = new AOUDataTypes.IMMSettings();
-            if (aouData.isIMMChanged)
-            {
-                aouData.isIMMChanged = false;
-                mode = aouData.currentIMMState;
-                return true;
-            }
-            return false;
-        }
-
-        public bool ModeChanged(out AOUDataTypes.HT_StateType mode)
-        {
-            mode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
-            if (aouData.isModesChanged)
-            {
-                aouData.isModesChanged = false;
-                mode = aouData.currentMode;
-                return true;
-            }
-            return false;
-        }
 
         public AOURouter()
         {
             logMessages = new List<AOULogMessage>();
             powerValues = new List<Power>();
-            // returnValveValues = new List<ReturnValve>();
 
             runMode = RunType.None;
             startTime = DateTime.Now;
@@ -131,49 +42,68 @@ b.      Läsa av temperaturer från kurvorna
         {
             runMode = RunType.Random;
             aouData = new AOURandomData(randomSetting);
-            aouData.Connect();
-        }
+       }
 
         public AOURouter(AOUSettings.FileSetting fileSetting) : this()
         {
             runMode = RunType.File;
             aouData = new AOUFileData(fileSetting);
-            aouData.Connect();
         }
 
         public AOURouter(AOUSettings.SerialSetting serialSetting, AOUSettings.DebugMode dbgMode) : this()
         {
             runMode = RunType.Serial;
             aouData = new AOUSerialData(serialSetting, dbgMode);
-            aouData.Connect();
         }
 
         public AOURouter(AOUSettings.RemoteSetting remoteSetting) : this()
         {
             runMode = RunType.Serial;
             aouData = new AOURemoteData(remoteSetting);
-            aouData.Connect();
         }
 
         ~AOURouter()
         {
             Stop();
+            aouData = null;
+        }
+
+
+        public bool IsInitiated
+        {
+            get { return aouData != null; }
+        }
+
+        public bool IsConnected
+        {
+            get { return IsInitiated && aouData.Connected; }
+        }
+
+        public void Start()
+        {
+            if (IsInitiated && !IsConnected)
+            {
+                aouData.Connect();
+            }
         }
 
         public void Stop()
         {
-            if (aouData != null)
+            if (IsConnected)
+            {
                 aouData.Disconnect();
+            }
         }
 
         public string GetLogStr()
         {
-            if (aouData != null)
+            if (IsConnected)
+            {
                 return aouData.GetDataLogText();
+            }
             else
             {
                 string text = applogstr;
-                applogstr = "";
                 return text;
             }
 
@@ -187,11 +117,7 @@ b.      Läsa av temperaturer från kurvorna
                 return "";
         }
 
-        public void CreateLogMessage(string text, int prio)
-        {
-            logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), text, prio, 0));
-        }
-
+        // Send data
         public bool SendToPlc(string text)
         {
             logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), "SendToPlc: " + text, 12, 0));
@@ -233,11 +159,7 @@ b.      Läsa av temperaturer från kurvorna
             }
         }
 
-        private void AddLogToFile(AOULogMessage[] logs)
-        {
-            aouLogFile.AddLogMessages(logs);
-        }
-
+        // Update data. Get new Power values and Log messages
         public void Update()
         {
             if (aouData == null) return;
@@ -274,76 +196,115 @@ b.      Läsa av temperaturer från kurvorna
             }
         }
 
-        public long GetTimeBetween(List<Power> powers, long defaultTimeBetween)
+        /**************************
+          Power values handling
+       **************************/
+        public List<Power> GetLastPowerValues(int count, out int lastPowerIndex, int defaultTimeBetween)
         {
-            int firstNullTime = -1;
-            for (int i = 0; i < powers.Count; i++)
-            {
-                if (powers[i].ElapsedTime == 0 && i > 0)
-                {
-                    firstNullTime = i;
-                    break;
-                }
-            }
-            if (firstNullTime > 2 && firstNullTime < powers.Count) // Minimum number of real values to calculate time between
-            {
+            List<Power> powerList = new List<Power>();
+            int firstNullIndex = -1;
 
-                // Replace time in dummy values with expected time values
-                long diff = powers[firstNullTime - 1].ElapsedTime - powers[0].ElapsedTime;
-                if (diff > (100 * firstNullTime)) // minimum accepted
-                {
-                    long newTimeBetween = diff / (firstNullTime - 1);
-                    long time = powers[firstNullTime - 1].ElapsedTime; // last real time
-                    for (int i = firstNullTime; i < powers.Count; i++)
-                    {
-                        time += newTimeBetween;
-                        Power pow = powers[i];
-                        pow.ElapsedTime = time;
-                        powers[i] = pow;
-                    }
-                    return newTimeBetween;
-                }
-            }
-            return defaultTimeBetween;
-        }
-
-        public List<Power> GetLastPowerValues(int count, out int timeBetween, int defaultTimeBetween)
-        {
-            timeBetween = defaultTimeBetween;
-            List<Power> powers = new List<Power>();
             int numValues = count;
             if (numValues > powerValues.Count)
             {
                 numValues = powerValues.Count;
             }
+
+            // Add existng values
             for (int i = 0; i < numValues; i++)
             {
-                powers.Add(powerValues[powerValues.Count - numValues + i]);
+                powerList.Add(powerValues[powerValues.Count - numValues + i]);
             }
-            NewPowerValuesAvailable = 0;
+
+            // Add dummy values with expected time
             if (numValues < count)
             {
                 for (int i = numValues; i < count; i++)
                 {
-                    powers.Add(new Power(0));
+                    powerList.Add(new Power(0));
                 }
-                GetTimeBetween(powers, defaultTimeBetween);
+                powerList = RecalcTime(powerList, new Power(0), out firstNullIndex, defaultTimeBetween);
             }
 
-            return powers;
+            NewPowerValuesAvailable = 0;
+
+            lastPowerIndex = firstNullIndex == -1 ? count - 1 : firstNullIndex - 1;
+
+            return powerList;
         }
 
-        public Power GetLastNewPowerValue()
+        /*
+        public Power GetLastNewPowerValues()
         {
+            Power power  = new Power(0);
             if (NewPowerValuesAvailable > 0 && powerValues.Count > 1)
             {
                 NewPowerValuesAvailable = 0;
-                return powerValues[powerValues.Count - 1];
+                power = powerValues[powerValues.Count - 1];
             }
-            else
+            return power; 
+        }
+        */
+
+        public List<Power> GetLastNewPowerValues()
+        {
+            List<Power> powerList = new List<Power>();
+            if (NewPowerValuesAvailable > 0 && powerValues.Count > 1)
             {
-                return new Power(0); // Must return something
+                powerList.AddRange(powerValues.GetRange(powerValues.Count- NewPowerValuesAvailable, NewPowerValuesAvailable));
+                NewPowerValuesAvailable = 0;
             }
+            return powerList;
+        }
+
+        private static bool IsDummyValue(Power power)
+        {
+            return double.IsNaN(power.THotTank) || power.THotTank < 1;
+        }
+
+        private static int GetFirstNullIndex(List<Power> powerList)
+        {
+            // Get first dummy values. IsNan values
+            for (int i = 0; i < powerList.Count; i++)
+            {
+                if (IsDummyValue(powerList[i]))
+                {
+                    return i;
+                }
+            }
+            return powerList.Count - 1;
+        }
+
+        public List<Power> RecalcTime(IEnumerable<Power> powers, Power newPower, out int firstNullIndex, long defaultTimeBetween)
+        {
+            List<Power> powerList = powers.ToList();
+            firstNullIndex = GetFirstNullIndex(powerList);
+
+            // Replace new value in first dummy index if new Power
+            if (!IsDummyValue(newPower))
+            {
+                powerList[firstNullIndex] = newPower;
+                firstNullIndex++;
+            }
+
+            if (firstNullIndex > 1 && firstNullIndex < powerList.Count) // Minimum number of real values to calculate time between
+            {
+                // Replace time in dummy values with expected time values
+                long diff = powerList[firstNullIndex - 1].ElapsedTime - powerList[0].ElapsedTime; // time span between first and last real time
+                if (diff > (100 * firstNullIndex)) // minimum difference in time accepted
+                {
+                    long newTimeBetween = diff / (firstNullIndex - 1); // Average value
+                    long time = powerList[firstNullIndex - 1].ElapsedTime; // last real time
+                    for (int i = firstNullIndex; i < powerList.Count; i++)
+                    {
+                        time += newTimeBetween; // next timestamp
+                        Power pow = powerList[i];
+                        pow.ElapsedTime = time; // replace time with new timestamp
+                        powerList[i] = pow;
+                    }
+                }
+            }
+            return powerList;
         }
 
         /**************************
@@ -379,5 +340,58 @@ b.      Läsa av temperaturer från kurvorna
                 return new List<AOULogMessage>();
             }
         }
+
+        // Create app log message
+        public void CreateLogMessage(string text, int prio)
+        {
+            logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), text, prio, 0));
+        }
+
+        // Save to files in Image folder
+        private void AddLogToFile(AOULogMessage[] logs) 
+        {
+            aouLogFile.AddLogMessages(logs);
+        }
+
+        /**********************************************/
+        // Are UI buttons, IMM and Mode states changed
+        /**********************************************/
+        public bool UIButtonsChanged(out AOUDataTypes.UI_Buttons buttons)
+        {
+            buttons = new AOUDataTypes.UI_Buttons();
+            if (aouData.isUIButtonsChanged)
+            {
+                aouData.isUIButtonsChanged = false;
+                buttons = aouData.currentUIButtons;
+                return true;
+            }
+            return false;
+        }
+
+        public bool IMMChanged(out AOUDataTypes.IMMSettings mode)
+        {
+            mode = new AOUDataTypes.IMMSettings();
+            if (aouData.isIMMChanged)
+            {
+                aouData.isIMMChanged = false;
+                mode = aouData.currentIMMState;
+                return true;
+            }
+            return false;
+        }
+
+        public bool ModeChanged(out AOUDataTypes.HT_StateType mode)
+        {
+            mode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
+            if (aouData.isModesChanged)
+            {
+                aouData.isModesChanged = false;
+                mode = aouData.currentMode;
+                return true;
+            }
+            return false;
+        }
+
+
     }
 }

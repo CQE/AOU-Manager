@@ -139,9 +139,7 @@ namespace DemoPrototype
             }
 
             //var FreezeColor = new Windows.UI.Color(); FreezeColor.R = 255; FreezeColor.G = 255; FreezeColor.B = 230; FreezeColor.A = 255;
-
             //OrgTuneChartBrush = MyTuneChart.Background;
-
             //FreezeBrush = new SolidColorBrush();
             //FreezeBrush.Color = FreezeColor;
 
@@ -162,7 +160,6 @@ namespace DemoPrototype
         {
             dTimer = new DispatcherTimer();
             dTimer.Tick += UpdateTick;
-            // dTimer.Interval = new TimeSpan(0, 0, 1); // Seconds
             dTimer.Interval = new TimeSpan(0, 0, 0, 1, 0); // milliseconds
         }
 
@@ -188,8 +185,6 @@ namespace DemoPrototype
                 UpdateFromUIButtons(buttons);
             }
          }
-
-
 
         /****************************************************************************
         ** Reset methods when Cancel in Modal Dialogs
@@ -239,7 +234,6 @@ namespace DemoPrototype
         }
 
         //--------------------------------------------------------------------------------
-
         private void NewModeSelected(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
@@ -270,7 +264,6 @@ namespace DemoPrototype
             string message = "You are about to set new threshold value to "; 
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TReturnThresholdCold2Hot, HLineSet_ThresholdCold2Hot, this);
         }
-
         
         private void HLineSet_ThresholdMidTank_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
@@ -488,28 +481,26 @@ namespace DemoPrototype
 
         private void SetHotTankTempText()
         {
-            int newTemp = 0;
-            if (mainGrid.DataContext != null)
+            if (DataUpdater.LastPowerIndex >= 0)
             {
-                var dc = (LineChartViewModel)mainGrid.DataContext;
-                newTemp = (int)dc.power[GetCurrentIndex()].THotTank;
+                TextBox_THotTank.Text = ((int)Math.Round(DataUpdater.LastPower.THotTank)).ToString();
             }
-            //zero decimals
-            TextBox_THotTank.Text = newTemp.ToString();
+            else
+            {
+                TextBox_THotTank.Text = "-";
+            }
         }
 
         private void SetColdTankTempText()
         {
-            int newTemp = 0;
-            if (mainGrid.DataContext != null)
+            if (DataUpdater.LastPowerIndex >= 0)
             {
-                var dc = (LineChartViewModel)mainGrid.DataContext;
-                int index = GetCurrentIndex();
-                // newTemp = dc.power[dc.power.Count-1].THotTank;
-                newTemp = (int)dc.power[index].TColdTank;
+                TextBox_TColdTank.Text = ((int)Math.Round(DataUpdater.LastPower.TColdTank)).ToString();
             }
-            //zero decimals
-            TextBox_TColdTank.Text = newTemp.ToString();
+            else
+            {
+                TextBox_TColdTank.Text = "-";
+            }
         }
 
         private void SetToolTemperingText()
@@ -534,23 +525,6 @@ namespace DemoPrototype
                     TextBlock_ToolTempering.Text = "Not set";
                     TextBlock_ToolTempering.Foreground = AppColors.gray; break;
             }
-        }
-
-        private int GetCurrentIndex()
-        {
-            //This is a dirty(?) solution TODO Urban please improve this
-            var dc = (LineChartViewModel)mainGrid.DataContext;
-            int myIndex;
-            for (myIndex = 29; myIndex > 0; myIndex--)
-            {
-                double testTemp = dc.power[myIndex].TBufferHot;
-                if (double.IsNaN(testTemp) == false)
-                {
-                    //we are done!
-                    return myIndex;
-                }
-            }            
-         return myIndex;
         }
 
         private async void SaveImage( )

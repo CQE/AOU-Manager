@@ -34,12 +34,17 @@ namespace DemoPrototype
         /// </summary>
         public App()
         {
+            GlobalVars.Init(); // Initate global variabels for current session
+
             Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
                 Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
 
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            DataUpdater.Init();
+            DataUpdater.Start();
         }
 
         private void Timer_Tick(ThreadPoolTimer timer)

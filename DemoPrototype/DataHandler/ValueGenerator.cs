@@ -102,9 +102,6 @@ namespace DemoPrototype
                 stateData.RetForTemp = Int16.MaxValue;
             }
 
-
-                
-
             stateData.coolerTemp = RealToUInt16(ValueGenerator.GetValveCoolantValue());
             stateData.heaterTemp = RealToUInt16(ValueGenerator.GetTheaterOilOutValue());
 

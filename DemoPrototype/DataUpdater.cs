@@ -13,15 +13,78 @@ namespace DemoPrototype
 {
     public static class DataUpdater
     {
-        // Todo ms to sek
-
         public enum VerifyDialogType {VeryfyOkCancelOnly, VerifyIntValue, VerifySliderValue};
 
-        private static AOURouter dataRouter;
+        private static AOURouter dataRouter = null;
 
         private static int timeBetween;
         private const int defaultTimeBetween = 1000;
         private const int maxPowerCount = 30;
+
+        private static bool started = false;
+
+        public static bool IsStarted
+        {
+            get { return started && dataRouter != null; }
+        }
+
+        private static int lastPowerIndex = -1;
+        private static Power lastPower = new Power(0);
+
+        public static Power LastPower
+        {
+            get { return lastPower; }
+            private set { lastPower = value; }
+        }
+
+
+        public static int LastPowerIndex
+        {
+            get { return lastPowerIndex; }
+            private set { lastPowerIndex = value; }
+        }
+
+        public static void Init()
+        {
+            AOURouter.RunType dataRunType = GlobalAppSettings.DataRunType;
+
+            if (dataRunType == AOURouter.RunType.File)
+            {
+                dataRouter = new AOURouter(new AOUSettings.FileSetting("", GlobalAppSettings.FileSettingsPath));
+            }
+            else if (dataRunType == AOURouter.RunType.Random)
+            {
+                dataRouter = new AOURouter(GlobalAppSettings.RandomSettings);
+            }
+            else if (dataRunType == AOURouter.RunType.Serial)
+            {
+                dataRouter = new AOURouter(GlobalAppSettings.SerialSettings, AOUSettings.DebugMode.noDebug);
+            }
+        }
+
+        public static void Start()
+        {
+            started = true;
+            dataRouter.Start();
+        }
+
+        public static void Stop()
+        {
+            started = false;
+            if (IsStarted)
+            {
+                dataRouter.Stop();
+                dataRouter = null; 
+            }
+        }
+
+        public static void Update()
+        {
+            if (IsStarted)
+            {
+                dataRouter.Update();
+            }
+        }
 
         public static string GetLog()
         {
@@ -31,8 +94,13 @@ namespace DemoPrototype
             }
             else
             {
-                return "No Datasource";
+                return "No datasource selected";
             }
+        }
+
+        public static void CreateLogMessage(string source, string text)
+        {
+            dataRouter.CreateLogMessage(source + " - " + text, 9);
         }
 
         /************************************************
@@ -41,7 +109,7 @@ namespace DemoPrototype
 
         public static void SetCommand(AOUDataTypes.CommandType cmd)
         {
-            if (dataRouter != null)
+            if (IsStarted)
             {
                 dataRouter.SendCommandToPlc(cmd, 0);
             }
@@ -50,7 +118,7 @@ namespace DemoPrototype
         public static void SetCommandValue(AOUDataTypes.CommandType cmd, int value)
         {
 
-            if (dataRouter != null)
+            if (IsStarted)
             {
                 dataRouter.SendCommandToPlc(cmd, value);
             }
@@ -58,7 +126,7 @@ namespace DemoPrototype
 
         public static void StartHotStep(int time)
         {
-            if (dataRouter != null)
+            if (IsStarted)
             {
                 //dataRouter.SendCommandToPlc(AOUTypes.CommandType.hotDelayTime, time); // ToDo
                 dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.CmdTypeToDo, time);
@@ -67,7 +135,7 @@ namespace DemoPrototype
 
         public static void StartColdStep(int time)
         {
-            if (dataRouter != null)
+            if (IsStarted)
             {
                 dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.CmdTypeToDo, time); // ToDo
             }
@@ -90,23 +158,10 @@ namespace DemoPrototype
 
         */
 
-        public static bool IsStarted()
-        {
-            return dataRouter != null;
-        }
-
-
-        public static void Stop()
-        {
-            if (dataRouter != null)
-            {
-                dataRouter.Stop();
-                dataRouter = null; //
-            }
-        }
-
         public static async void VerifySendToAOUDlg(string title, string message, AOUDataTypes.CommandType cmd, Page pg, int val)
         {
+            if (!IsStarted) return;
+
             var dlg = new ContentDialog();
             dlg.Title = title;
             dlg.Content = message;
@@ -217,12 +272,7 @@ namespace DemoPrototype
         /*****************************************************
         ** Router Engine
         *****************************************************/
-        public static void Restart()
-        {
-            CheckDataRouterSingleton(true);
-        }
-
-        public static bool UIButtonsChanged(out AOUDataTypes.UI_Buttons buttons)
+         public static bool UIButtonsChanged(out AOUDataTypes.UI_Buttons buttons)
         {
             buttons = new AOUDataTypes.UI_Buttons();
             if (dataRouter != null)
@@ -252,93 +302,50 @@ namespace DemoPrototype
             return false;
         }
 
-        private static bool CheckDataRouterSingleton(bool restart = false)
-        {
-            if (dataRouter == null || restart)
-            {
-                AOURouter.RunType dataRunType = GlobalAppSettings.DataRunType;
-
-                if (dataRunType == AOURouter.RunType.File)
-                {
-                    dataRouter = new AOURouter(new AOUSettings.FileSetting("", GlobalAppSettings.FileSettingsPath));
-                }
-                else if (dataRunType == AOURouter.RunType.Random)
-                {
-                    dataRouter = new AOURouter(GlobalAppSettings.RandomSettings);
-                }
-                else if (dataRunType == AOURouter.RunType.Serial)
-                {
-                    dataRouter = new AOURouter(GlobalAppSettings.SerialSettings, AOUSettings.DebugMode.noDebug);
-                }
-
-                return false;
-            }
-            return true;
-        }
-
-        public static void Update()
-        {
-            try
-            { 
-                if (CheckDataRouterSingleton())
-                {
-                    dataRouter.Update();
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
-
-        public static int GetFirstNullIndex(LineChartViewModel lc)
-        {
-            for (int i = 0; i < lc.power.Count; i++)
-            {
-                if (double.IsNaN(lc.power[i].THotTank) || lc.power[i].THotTank < 1)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
         public static void UpdateInputData(object dataContext)
         {
-            if (dataContext != null)
+            if (dataContext != null && IsStarted)
             {
-                CheckDataRouterSingleton();
                 var dc = (LineChartViewModel)dataContext;
-                if (dc.power.Count == 0)
-                {
-                    // If first time then get all last values
-                    var values = dataRouter.GetLastPowerValues(maxPowerCount, out timeBetween, defaultTimeBetween);
-                    dc.SetValues(values);
-                }
-                else if (dataRouter.NewPowerValuesAvailable > 0)
-                {
-                    int firstNullIndex = GetFirstNullIndex(dc);
-                    if (firstNullIndex >= 0)
+                int firstNullIndex = -1;
+
+                try {
+                    if (dc.power.Count == 0)
                     {
-                        dc.SetNewValue(dataRouter.GetLastNewPowerValue(), firstNullIndex);
-                        if (firstNullIndex > 2 && dc.power[dc.power.Count-1].ElapsedTime == 0)
+                        // If the first time then get all last values
+                        var values = dataRouter.GetLastPowerValues(maxPowerCount, out firstNullIndex, defaultTimeBetween);
+                        dc.SetValues(values);
+                    }
+                    else if (dataRouter.NewPowerValuesAvailable > 0)
+                    {
+                        List<Power> powerList = dataRouter.GetLastNewPowerValues();
+                        if (powerList.Count > 0)
                         {
-                            // Recalc time for dummy points
-                            long time = dc.power[firstNullIndex - 1].ElapsedTime;
-                            long diff = (dc.power[firstNullIndex - 1].ElapsedTime - dc.power[0].ElapsedTime) / (firstNullIndex - 1);
-                            for (int i = firstNullIndex; i < dc.power.Count; i++)
+                            lastPower = powerList.Last();
+
+                            var newPowerList = dataRouter.RecalcTime(dc.power, lastPower, out firstNullIndex, defaultTimeBetween);
+
+                            if (firstNullIndex < (maxPowerCount - 1) && firstNullIndex >= 0)
                             {
-                                Power pow = dc.power[i];
-                                time += diff;
-                                pow.ElapsedTime = time;
-                                dc.power[i] = pow;
+                                // Replace with calculated null/dummy values
+                                for (int i = 0; i < (powerList.Count); i++)
+                                {
+                                    dc.power[i + firstNullIndex - 1] = powerList[i];
+                                }
+                                lastPowerIndex = firstNullIndex - 1;
+                            }
+                            else
+                            {
+                                // Normal handling. No dummy values. Add new values and delete first values
+                                dc.UpdateNewValues(powerList);
+                                lastPowerIndex = dc.power.Count - 1;
                             }
                         }
                     }
-                    else
-                    { 
-                        dc.UpdateNewValue(dataRouter.GetLastNewPowerValue());
-                    }
+                }
+                catch (Exception e)
+                {
+                    CreateLogMessage("DataUpdater.UpdateInputData", e.Message);
                 }
             }
         }
@@ -346,9 +353,8 @@ namespace DemoPrototype
         public static void UpdateInputDataLogMessages(object dataContext)
         {
        
-            if (dataContext != null)
+            if (dataContext != null && IsStarted)
             {
-                CheckDataRouterSingleton();
                 var dc = (LogMessageViewModel)dataContext;
                 if (dc.logMessages.Count == 0)
                 {

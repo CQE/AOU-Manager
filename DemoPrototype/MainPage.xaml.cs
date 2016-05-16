@@ -37,11 +37,7 @@ namespace DemoPrototype
 
         public MainPage()
         {
-            GlobalVars.Init(); // Initate global variabels for current session
-
             this.InitializeComponent();
-            TitleTextBlock.Text = "AOU Control System Main View";
-
             BackButton.Visibility = Visibility.Collapsed;
 
             //want to start with Operator page, is there a better way then change

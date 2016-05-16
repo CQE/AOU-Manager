@@ -15,8 +15,6 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace DemoPrototype
 {
     /// <summary>
@@ -41,7 +39,7 @@ namespace DemoPrototype
             AOUDataSourceTypesCombo.Items.Add("Serial input");
             AOUDataSourceTypesCombo.Items.Add("File input");
             AOUDataSourceTypesCombo.Items.Add("Random input");
-            AOUDataSourceTypesCombo.Items.Add("Remote Client");
+           // AOUDataSourceTypesCombo.Items.Add("Remote Client"); // Future option
 
             if (GlobalAppSettings.DataRunType == AOURouter.RunType.Serial)
             {
@@ -56,7 +54,7 @@ namespace DemoPrototype
                 AOUDataSourceTypesCombo.SelectedIndex = 2;
             }
 
-            if (DataUpdater.IsStarted())
+            if (DataUpdater.IsStarted)
             {
                 DisableChangeDataSource();
 
@@ -129,11 +127,6 @@ namespace DemoPrototype
             this.Param2Combo.Visibility = Visibility.Collapsed;
 
             this.FileName.Text = GlobalAppSettings.FileSettingsPath;
-            //var settings = GlobalAppSettings.FileSettings;
-            // this.FileName.Text = settings.FilePath;
-
-            // this.Param1Combo.SelectedItem = settings.SourceType;  // ToDo
-
         }
 
         private void initRandom()
@@ -162,25 +155,6 @@ namespace DemoPrototype
             this.Param2Combo.Items.Add("1000");
             this.Param2Combo.Items.Add("1500");
             this.Param2Combo.Items.Add("2000");
-
-            switch (GlobalAppSettings.DataRunType)
-            {
-                case AOURouter.RunType.Serial:
-                    this.Param1Combo.SelectedItem = GlobalAppSettings.SerialSettings.ComPort;
-                    this.Param2Combo.SelectedItem = GlobalAppSettings.SerialSettings.BaudRate;
-                    break;
-                case AOURouter.RunType.File:
-                    // this.Param1Combo.SelectedItem = GlobalAppSettings.FileSettings.SourceType;
-                    // this.Param2Combo.SelectedItem = GlobalAppSettings.FileSettings.FilePath;
-                    this.FileName.Text = GlobalAppSettings.FileSettingsPath;
-                    break;
-                case AOURouter.RunType.Random:
-                    this.Param1Combo.SelectedItem = GlobalAppSettings.RandomSettings.NumValues;
-                    this.Param2Combo.SelectedItem = GlobalAppSettings.RandomSettings.MsBetween;
-                    break;
-            default:
-                    break;
-            }
         }
 
         void UpdateTick(object sender, object e)
@@ -189,7 +163,6 @@ namespace DemoPrototype
             if (s.Length > 0)
             {
                 SourceStatus.Text = s;
-                // AppHelper.ShowMessageBox(s);
             }
         }
 
@@ -224,25 +197,20 @@ namespace DemoPrototype
                         break;
                     case AOURouter.RunType.File:
                         AOUSettings.FileSetting filesettings;
-                        if (Param1Combo.SelectedIndex >= 0)
-                        {
-                            filesettings.SourceType = Param1Combo.SelectedItem.ToString();
-                        }
                         filesettings.FilePath = this.FileName.Text;
-                        //GlobalAppSettings.FileSettings = filesettings;
                         GlobalAppSettings.FileSettingsPath = filesettings.FilePath;
                         break;
                     case AOURouter.RunType.Random:
                         AOUSettings.RandomSetting randomsettings;
-                        // uint numValues = uint.Parse(Param1Combo.SelectedItem.ToString());
-                        //uint msBetween = uint.Parse(Param2Combo.SelectedItem.ToString());
-                        GlobalAppSettings.RandomSettings = new AOUSettings.RandomSetting(30, 1000);
+                        uint numValues = 30; // uint.Parse(Param1Combo.SelectedItem.ToString());
+                        uint msBetween = 1000; // uint.Parse(Param2Combo.SelectedItem.ToString());
+                        GlobalAppSettings.RandomSettings = new AOUSettings.RandomSetting(numValues, msBetween);
                         break;
                     default:
                         break;
                 }
 
-                DataUpdater.Restart();
+                DataUpdater.Start();
                 DisableChangeDataSource();
 
             }

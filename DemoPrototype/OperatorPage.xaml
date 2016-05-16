@@ -200,7 +200,7 @@
             <chart:SfChart.Legend>
                     <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Visible"/>
             </chart:SfChart.Legend>
-                <chart:FastLineBitmapSeries Name="Series_TRetActual" LegendIcon="Diamond" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TRetActual" ItemsSource="{Binding power}"/>
+                <chart:FastLineBitmapSeries Name="Series_TRetActual" LegendIcon="Diamond" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries Name="Series_THotTank" LegendIcon="Diamond" Label="THotTank"  XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries Name="Series_TColdTank" LegendIcon="Diamond" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank"  ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries Name="Series_THotBuffer" LegendIcon="Diamond" Label="THotBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"/>
@@ -212,7 +212,7 @@
                 <chart:StepLineSeries Name="Series_ValveCoolant" LegendIcon="Circle" Label="ValveCoolant"   XBindingPath="ElapsedTime" YBindingPath="ValveCoolant" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries Name="Series_PowerHeating" LegendIcon="Diamond" Label="PowerHeating"   XBindingPath="ElapsedTime" YBindingPath="PowerHeating" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries Name="Series_THeaterOilOut" LegendIcon="Diamond" Label="THeaterOilOut"  XBindingPath="ElapsedTime" YBindingPath="THeaterOilOut" ItemsSource="{Binding power}"/>
-                <chart:StepLineSeries Name="Series_TRetForecasted" LegendIcon="Diamond" Label="TRetForecasted" XBindingPath="ElapsedTime" YBindingPath="TRetForecasted" ItemsSource="{Binding power}"/>
+                <chart:StepLineSeries Name="Series_TRetForecasted" LegendIcon="Diamond" Label="TRetForecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"/>
 
             </chart:SfChart>
 

@@ -137,8 +137,15 @@ namespace DemoPrototype
                 if (ApplicationData.Current.LocalSettings.Values.ContainsKey("SerialSettings-comport"))
                 {
                     string comport = (string)ApplicationData.Current.LocalSettings.Values["SerialSettings-comport"];
-                    uint baudrate = (uint)ApplicationData.Current.LocalSettings.Values["SerialSettings-baudrate"];
-                    return new AOUSettings.SerialSetting(comport, baudrate);
+                    var baudrate = ApplicationData.Current.LocalSettings.Values["SerialSettings-baudrate"];
+
+                    uint b = 0;
+                    if (baudrate is int)
+                        b = (uint)(int)baudrate;
+                    else
+                        b = (uint)baudrate;
+
+                    return new AOUSettings.SerialSetting(comport, b);
                 }
                 else
                 {

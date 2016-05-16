@@ -247,31 +247,13 @@ namespace DemoPrototype
             //need to know new starting value for x-axis
             //get curent time value
             TimeSpan TNow;
-            if (CalibrateGrid.DataContext != null)
+            if (DataUpdater.LastPowerIndex >= 0)
             {
-                var dc = (LineChartViewModel)CalibrateGrid.DataContext;
-                if (dc.power.Count > 0)
-                {
-                    //This is a dirty(?) solution TODO Urban please improve this
-                    int myIndex = 0;
-                    double testTemp = dc.power[myIndex].TBufferHot;
-                    while (double.IsNaN(testTemp)==false && myIndex<29) //29 is the max index in power
-                    {
-                        myIndex++;
-                        testTemp = dc.power[myIndex].TBufferHot;
-                    }
-                    TNow = TimeSpan.FromMilliseconds(dc.power[myIndex - 1].ElapsedTime);
-                    //TNow = TimeSpan.FromMilliseconds(dc.power[dc.power.Count-1].ElapsedTime);
-                }
-                else
-                {
-                    TNow = new TimeSpan(100); // OBS. ticks not ms
-                }
-
+                TNow = TimeSpan.FromMilliseconds(DataUpdater.LastPower.ElapsedTime);
             }
             else
             {
-                TNow = new TimeSpan(0);
+                TNow = new TimeSpan(100); // OBS. ticks not ms
             }
 
             //save this code a bit longer
@@ -300,8 +282,6 @@ namespace DemoPrototype
             AppHelper.ShowMessageBox("Not yet implemented: Cycle");
         }
 
-       
-
         private void ColdToHotLineAnnotation_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             //ask user if new threshold is OK
@@ -311,6 +291,7 @@ namespace DemoPrototype
             TextBox_ColdToHotThreshold.Text = AppHelper.SafeConvertToInt(ColdToHotLineAnnotation.Y1).ToString();
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TReturnThresholdCold2Hot, ColdToHotLineAnnotation, this);
         }
+
         // need to handle cancel button press in this page too
         public void Reset_ThresholdHot2Cold()
         {

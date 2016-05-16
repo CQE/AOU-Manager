@@ -32,8 +32,7 @@ namespace DemoPrototype
             }
             catch (Exception e)
             {
-                var errmsg = e.Message;
-                // ToDo logging
+                DataUpdater.CreateLogMessage("LineChartViewModel.SetValues", e.Message);
             }
         }
 
@@ -45,32 +44,56 @@ namespace DemoPrototype
             }
             catch (Exception e)
             {
-                var errmsg = e.Message;
-                // ToDo logging
+                DataUpdater.CreateLogMessage("LineChartViewModel.SetNewValue", e.Message);
             }
         }
 
+        /* Replaced by UpdateNewValues
         public void UpdateNewValue(Power pow)
         {
             power.Add(pow);
             power.RemoveAt(0);
         }
+        */
 
-        /*
-        public TimeSpan GetActualTimeSpan()
+        /* ToDo
+        public void SetNewValues(List<Power> powerList, int startIndex)
         {
-            // Todo 
-            if (power.Count > 0)
+            try
             {
-                if (realValueCount < power.Count)
-                    return TimeSpan.FromMilliseconds(power[realValueCount - 1].ElapsedTime);
-                else
-                    return TimeSpan.FromMilliseconds(power[power.Count - 1].ElapsedTime);
+                int count = powerList.Count;
+                if (startIndex+count < 30)
+                {
+                  // ToDo
+                }
+                for (int i = 0; i < powerList.Count; i++)
+                {
+                    power[startIndex + i] = powerList[i];
+                }
             }
-            else
-                return new TimeSpan(0);
+            catch (Exception e)
+            {
+                DataUpdater.CreateLogMessage("LineChartViewModel.SetNewValues", e.Message);
+            }
         }
         */
+
+        public void UpdateNewValues(List<Power> powerList)
+        {
+            try
+            {
+                for (int i = 0; i < powerList.Count; i++)
+                {
+                    power.Add(powerList[i]);
+                    power.RemoveAt(0);
+                }
+            }
+            catch (Exception e)
+            {
+                DataUpdater.CreateLogMessage("LineChartViewModel.UpdateNewValues", e.Message);
+            }
+        }
+
     }
 
     public class LogMessageViewModel

@@ -79,6 +79,15 @@ namespace DemoPrototype
         /* Virtual functions to be overrided by child classes */
         public virtual void Connect()
         {
+            newLogMessages.Clear();
+            newPowerValues.Clear();
+
+            startTime = DateTime.Now;
+            lastDataRealTime = startTime;
+            lastDataTime_ms = 0;
+
+            currentSeqState = AOUDataTypes.StateType.NOTHING;
+
             Connected = true;
         }
 

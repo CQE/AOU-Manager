@@ -29,9 +29,21 @@ namespace DemoPrototype
         public AOUFileData(AOUSettings.FileSetting fileSetting, AOUSettings.DebugMode mode = AOUSettings.DebugMode.noDebug) : base(mode)
         {
             setting = fileSetting;
+        }
+
+        public override void Connect()
+        {
+            base.Connect();
             dataFile = new TextFile();
-            dataFile.OpenFileIfExistAndGetText(fileSetting.FilePath);
+            dataFile.OpenFileIfExistAndGetText(setting.FilePath);
             textData = "";
+            AddDataLogText("File data started: " + setting.FilePath);
+        }
+
+        public override void Disconnect()
+        {
+            base.Disconnect();
+            AddDataLogText("File data stopped");
         }
 
         public override void UpdateData()

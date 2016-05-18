@@ -32,51 +32,47 @@ namespace DemoPrototype
             }
             catch (Exception e)
             {
-                DataUpdater.CreateLogMessage("LineChartViewModel.SetValues", e.Message);
+                Data.Updater.CreateLogMessage("LineChartViewModel.SetValues", e.Message);
             }
         }
 
-        public void SetNewValue(Power pow, int index)
+        public int SetNewValues(List<Power> powerList, int firstNullIndex)
         {
-            try
-            {
-                power[index] = pow;
-            }
-            catch (Exception e)
-            {
-                DataUpdater.CreateLogMessage("LineChartViewModel.SetNewValue", e.Message);
-            }
-        }
+            int newLastIndex = Data.Updater.PowerCount - 1;
 
-        /* Replaced by UpdateNewValues
-        public void UpdateNewValue(Power pow)
-        {
-            power.Add(pow);
-            power.RemoveAt(0);
-        }
-        */
-
-        /* ToDo
-        public void SetNewValues(List<Power> powerList, int startIndex)
-        {
             try
             {
                 int count = powerList.Count;
-                if (startIndex+count < 30)
+                if (firstNullIndex + count > Data.Updater.PowerCount)
                 {
-                  // ToDo
+                    count = Data.Updater.PowerCount - count;
                 }
-                for (int i = 0; i < powerList.Count; i++)
+                else
                 {
-                    power[startIndex + i] = powerList[i];
+                    newLastIndex = firstNullIndex + powerList.Count - 1;
                 }
+
+                // Replace dummyvalues
+                for (int i = 0; i < count; i++)
+                {
+                    power[firstNullIndex + i] = powerList[i];
+                }
+
+                // Add new values and delete first values when max count of power values
+                for (int i = count; i < powerList.Count; i++)
+                {
+                    power.Add(powerList[i]);
+                    power.RemoveAt(0);
+                }
+
             }
             catch (Exception e)
             {
-                DataUpdater.CreateLogMessage("LineChartViewModel.SetNewValues", e.Message);
+                Data.Updater.CreateLogMessage("LineChartViewModel.SetNewValues", e.Message);
             }
+            return newLastIndex;
         }
-        */
+
 
         public void UpdateNewValues(List<Power> powerList)
         {
@@ -90,7 +86,7 @@ namespace DemoPrototype
             }
             catch (Exception e)
             {
-                DataUpdater.CreateLogMessage("LineChartViewModel.UpdateNewValues", e.Message);
+                Data.Updater.CreateLogMessage("LineChartViewModel.UpdateNewValues", e.Message);
             }
         }
 

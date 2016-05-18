@@ -90,7 +90,7 @@ namespace DemoPrototype
             serialPort.StopBits = SerialStopBitCount.One;
             serialPort.DataBits = 8;
             serialPort.Handshake = SerialHandshake.None;
-            serialPort.IsRequestToSendEnabled = false;
+            // serialPort.IsRequestToSendEnabled = false;
 
             AddDataLogText("ProdId:" + serialPort.UsbProductId + ", " + "vendorId:" + serialPort.UsbVendorId);
             AddDataLogText("Baudrate:" + serialPort.BaudRate + ", Parity:" + serialPort.Parity + ", Databits:" + serialPort.DataBits + ", Stopbits:" + serialPort.StopBits + ", No Handshake");

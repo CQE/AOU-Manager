@@ -32,19 +32,16 @@ namespace DemoPrototype
 
         public struct FileSetting
         {
-            public string SourceType;
             public string FilePath;
 
             public FileSetting(FileSetting setting)
             {
-                SourceType = setting.SourceType;
                 FilePath = setting.FilePath;
             }
 
-            public FileSetting(string sourceType, string filePath)
+            public FileSetting(string filePath)
             {
-                SourceType = sourceType;
-                FilePath = filePath;
+                 FilePath = filePath;
             }
         }
 

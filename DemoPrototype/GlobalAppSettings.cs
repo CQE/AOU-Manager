@@ -163,7 +163,7 @@ namespace DemoPrototype
         { 
             get
             {
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("RandomSettings"))
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("RandomSettings-msBetween"))
                 {
                     uint msBetween = (uint)ApplicationData.Current.LocalSettings.Values["RandomSettings-msBetween"];
                     uint numValues = (uint)ApplicationData.Current.LocalSettings.Values["RandomSettings-numValues"];
@@ -179,6 +179,17 @@ namespace DemoPrototype
                 ApplicationData.Current.LocalSettings.Values["RandomSettings-msBetween"] = value.MsBetween;
                 ApplicationData.Current.LocalSettings.Values["RandomSettings-numValues"] = value.NumValues;
             }
+        }
+
+    }
+
+    public static class Data
+    {
+        public static DataUpdater Updater;
+
+        public static void Init()
+        {
+            Updater = new DataUpdater();
         }
 
     }

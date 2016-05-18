@@ -32,9 +32,15 @@
                        RelativePanel.RightOf="BackButton"
                        FontSize="28"
                        FontWeight="Bold"
-                       Margin="100,5,0,0"
+                       Margin="150,5,0,0"
                        ></TextBlock>
-            
+            <TextBlock Name="InfoTextBlock"
+                       RelativePanel.RightOf="BackButton"
+                       FontSize="11"
+                       FontWeight="Bold"
+                       Margin="10,25,0,0"
+                       ></TextBlock>
+
         </RelativePanel>
         <SplitView Name="MySplitView" 
                    Grid.Row="1"

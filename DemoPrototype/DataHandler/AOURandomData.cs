@@ -22,10 +22,22 @@ namespace DemoPrototype
 
         public AOURandomData(AOUSettings.RandomSetting rndSettings, AOUSettings.DebugMode dbgMode = AOUSettings.DebugMode.noDebug) : base(dbgMode)
         {
-            AddDataLogText("Random Data Ready - num values:" + rndSettings.NumValues + ", ms between:" + rndSettings.MsBetween);
             settings = rndSettings;
             lastTime = startTime;
         }
+
+        public override void Connect()
+        {
+            base.Connect();
+            AddDataLogText("Random data started - num values:" + settings.NumValues + ", ms between:" + settings.MsBetween);
+        }
+
+        public override void Disconnect()
+        {
+            base.Disconnect();
+            AddDataLogText("Random Data stopped");
+        }
+
 
         public override bool SendData(string data)
         {

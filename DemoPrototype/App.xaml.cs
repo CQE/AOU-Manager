@@ -43,13 +43,13 @@ namespace DemoPrototype
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
-            DataUpdater.Init();
-            DataUpdater.Start();
+            Data.Init();
+            Data.Updater.Start();
         }
 
         private void Timer_Tick(ThreadPoolTimer timer)
         {
-           DataUpdater.Update();
+            Data.Updater.Update();
         }
 
         /// <summary>
@@ -59,8 +59,6 @@ namespace DemoPrototype
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-
-
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,

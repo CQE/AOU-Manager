@@ -11,94 +11,136 @@ using Windows.UI.Xaml.Controls;
 
 namespace DemoPrototype
 {
-    public static class DataUpdater
+    public class DataUpdater
     {
         public enum VerifyDialogType {VeryfyOkCancelOnly, VerifyIntValue, VerifySliderValue};
 
-        private static AOURouter dataRouter = null;
+        private AOURouter dataRouter = null;
 
-        private static int timeBetween;
         private const int defaultTimeBetween = 1000;
-        private const int maxPowerCount = 30;
+        private const int defaultPowerCount = 30;
 
-        private static bool started = false;
+        private int timeBetween = defaultTimeBetween;
+        private int powerCount = defaultPowerCount;
 
-        public static bool IsStarted
+        private int lastPowerIndex = -1;
+        private Power lastPower = new Power(0);
+
+        public int TimeBetween
         {
-            get { return started && dataRouter != null; }
+            get { return timeBetween; }
+            private set { timeBetween = value; }
         }
 
-        private static int lastPowerIndex = -1;
-        private static Power lastPower = new Power(0);
+        public int PowerCount
+        {
+            get { return powerCount; }
+            private set { powerCount = value; }
+        }
 
-        public static Power LastPower
+        public Power LastPower
         {
             get { return lastPower; }
             private set { lastPower = value; }
         }
 
-
-        public static int LastPowerIndex
+        public int LastPowerIndex
         {
             get { return lastPowerIndex; }
             private set { lastPowerIndex = value; }
         }
 
-        public static void Init()
+        public DataUpdater()
         {
+            dataRouter = new AOURouter();
+        }
+
+        public void Init()
+        {
+            timeBetween = defaultTimeBetween;
+            powerCount = defaultPowerCount;
+
             AOURouter.RunType dataRunType = GlobalAppSettings.DataRunType;
 
             if (dataRunType == AOURouter.RunType.File)
             {
-                dataRouter = new AOURouter(new AOUSettings.FileSetting("", GlobalAppSettings.FileSettingsPath));
+                AOUSettings.FileSetting fileSetting;
+                fileSetting.FilePath = GlobalAppSettings.FileSettingsPath;
+                dataRouter.Initialize(AOURouter.RunType.File, fileSetting);
             }
             else if (dataRunType == AOURouter.RunType.Random)
             {
-                dataRouter = new AOURouter(GlobalAppSettings.RandomSettings);
+                dataRouter.Initialize(AOURouter.RunType.Random, GlobalAppSettings.RandomSettings);
             }
             else if (dataRunType == AOURouter.RunType.Serial)
             {
-                dataRouter = new AOURouter(GlobalAppSettings.SerialSettings, AOUSettings.DebugMode.noDebug);
+                dataRouter.Initialize(AOURouter.RunType.Serial, GlobalAppSettings.SerialSettings);
             }
         }
 
-        public static void Start()
+        public string GetRunningModeStatus()
         {
-            started = true;
-            dataRouter.Start();
-        }
+            AOURouter.RunType mode = GlobalAppSettings.DataRunType;
+            string text = "";
 
-        public static void Stop()
-        {
-            started = false;
-            if (IsStarted)
+
+            if (mode == AOURouter.RunType.File)
             {
-                dataRouter.Stop();
-                dataRouter = null; 
+                text += "File";
             }
-        }
-
-        public static void Update()
-        {
-            if (IsStarted)
+            else if (mode == AOURouter.RunType.Serial)
             {
-                dataRouter.Update();
+                text += "Serial";
             }
-        }
+            else if (mode == AOURouter.RunType.Random)
+            {
+                text += "Random";
+            }
 
-        public static string GetLog()
-        {
-            if (dataRouter != null)
-            { 
-                return dataRouter.GetLogStr();
+            text += " data ";
+            if (dataRouter.IsConnected)
+            {
+                text += "started";
             }
             else
             {
-                return "No datasource selected";
+                text += "not started";
             }
+
+            return text;
         }
 
-        public static void CreateLogMessage(string source, string text)
+        public bool RouterIsStarted()
+        {
+            return dataRouter.IsConnected;
+        }
+
+        public void Start()
+        {
+            if (!dataRouter.IsInitialized)
+            {
+                Init();
+            }
+
+            dataRouter.Start();
+        }
+
+        public void Stop()
+        {
+            dataRouter.Stop();
+        }
+
+        public void Update()
+        {
+            dataRouter.Update();
+        }
+
+        public string GetLog()
+        {
+            return dataRouter.GetLogStr();
+        }
+
+        public void CreateLogMessage(string source, string text)
         {
             dataRouter.CreateLogMessage(source + " - " + text, 9);
         }
@@ -107,35 +149,34 @@ namespace DemoPrototype
         ** Commands to AOU
         *************************************************/
 
-        public static void SetCommand(AOUDataTypes.CommandType cmd)
+        public void SetCommand(AOUDataTypes.CommandType cmd)
         {
-            if (IsStarted)
+            if (dataRouter.IsConnected)
             {
                 dataRouter.SendCommandToPlc(cmd, 0);
             }
         }
 
-        public static void SetCommandValue(AOUDataTypes.CommandType cmd, int value)
+        public void SetCommandValue(AOUDataTypes.CommandType cmd, int value)
         {
 
-            if (IsStarted)
+            if (dataRouter.IsConnected)
             {
                 dataRouter.SendCommandToPlc(cmd, value);
             }
         }
 
-        public static void StartHotStep(int time)
+        public void StartHotStep(int time)
         {
-            if (IsStarted)
+            if (dataRouter.IsConnected)
             {
-                //dataRouter.SendCommandToPlc(AOUTypes.CommandType.hotDelayTime, time); // ToDo
-                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.CmdTypeToDo, time);
+                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.CmdTypeToDo, time); // ToDo
             }
         }
 
-        public static void StartColdStep(int time)
+        public void StartColdStep(int time)
         {
-            if (IsStarted)
+            if (dataRouter.IsConnected)
             {
                 dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.CmdTypeToDo, time); // ToDo
             }
@@ -158,9 +199,9 @@ namespace DemoPrototype
 
         */
 
-        public static async void VerifySendToAOUDlg(string title, string message, AOUDataTypes.CommandType cmd, Page pg, int val)
+        public async void VerifySendToAOUDlg(string title, string message, AOUDataTypes.CommandType cmd, Page pg, int val)
         {
-            if (!IsStarted) return;
+            if (!dataRouter.IsConnected) return;
 
             var dlg = new ContentDialog();
             dlg.Title = title;
@@ -272,49 +313,52 @@ namespace DemoPrototype
         /*****************************************************
         ** Router Engine
         *****************************************************/
-         public static bool UIButtonsChanged(out AOUDataTypes.UI_Buttons buttons)
+         public bool UIButtonsChanged(out AOUDataTypes.UI_Buttons buttons)
         {
             buttons = new AOUDataTypes.UI_Buttons();
-            if (dataRouter != null)
+            if (dataRouter.IsConnected)
             {
                 return dataRouter.UIButtonsChanged(out buttons);
             }
             return false;
         }
 
-        public static bool IMMStatusChanged(out AOUDataTypes.IMMSettings status)
+        public bool IMMStatusChanged(out AOUDataTypes.IMMSettings status)
         {
             status = new AOUDataTypes.IMMSettings();
-            if (dataRouter != null)
+            if (dataRouter.IsConnected)
             {
                 return dataRouter.IMMChanged(out status);
             }
             return false;
         }
 
-        public static bool ModeChanged(out AOUDataTypes.HT_StateType mode)
+        public bool ModeChanged(out AOUDataTypes.HT_StateType mode)
         {
             mode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
-            if (dataRouter != null)
+            if (dataRouter.IsConnected)
             {
                 return dataRouter.ModeChanged(out mode);
             }
             return false;
         }
 
-        public static void UpdateInputData(object dataContext)
+        public void UpdateInputData(object dataContext)
         {
-            if (dataContext != null && IsStarted)
+            if (dataContext != null && dataRouter.IsConnected)
             {
                 var dc = (LineChartViewModel)dataContext;
-                int firstNullIndex = -1;
 
                 try {
                     if (dc.power.Count == 0)
                     {
                         // If the first time then get all last values
-                        var values = dataRouter.GetLastPowerValues(maxPowerCount, out firstNullIndex, defaultTimeBetween);
-                        dc.SetValues(values);
+                        var values = dataRouter.GetLastPowerValues(powerCount, out lastPowerIndex, timeBetween);
+                        if (values.Count > 0 && lastPowerIndex >= 0)
+                        {
+                            dc.SetValues(values);
+                            lastPower = dc.power[lastPowerIndex];
+                        }
                     }
                     else if (dataRouter.NewPowerValuesAvailable > 0)
                     {
@@ -323,16 +367,20 @@ namespace DemoPrototype
                         {
                             lastPower = powerList.Last();
 
-                            var newPowerList = dataRouter.RecalcTime(dc.power, lastPower, out firstNullIndex, defaultTimeBetween);
-
-                            if (firstNullIndex < (maxPowerCount - 1) && firstNullIndex >= 0)
+                            int firstNullIndex = AOURouter.GetFirstNullIndex(dc.power.ToList());
+                            if (firstNullIndex > -1)
                             {
-                                // Replace with calculated null/dummy values
-                                for (int i = 0; i < (powerList.Count); i++)
+                                lastPowerIndex = dc.SetNewValues(powerList, firstNullIndex);
+
+                                if ((lastPowerIndex > 1 && lastPowerIndex < 6) && lastPowerIndex < (dc.power.Count-1)) // Minimum number of real values to calculate time between
                                 {
-                                    dc.power[i + firstNullIndex - 1] = powerList[i];
+                                    firstNullIndex = AOURouter.GetFirstNullIndex(dc.power.ToList());
+                                    var newPowerList = dataRouter.RecalcTime(dc.power.ToList(), firstNullIndex, timeBetween);
+                                    for (int i = firstNullIndex; i < dc.power.Count; i++)
+                                    {
+                                        dc.power[i] = newPowerList[i];
+                                    }
                                 }
-                                lastPowerIndex = firstNullIndex - 1;
                             }
                             else
                             {
@@ -350,10 +398,10 @@ namespace DemoPrototype
             }
         }
 
-        public static void UpdateInputDataLogMessages(object dataContext)
+        public void UpdateInputDataLogMessages(object dataContext)
         {
        
-            if (dataContext != null && IsStarted)
+            if (dataContext != null && dataRouter.IsConnected)
             {
                 var dc = (LogMessageViewModel)dataContext;
                 if (dc.logMessages.Count == 0)

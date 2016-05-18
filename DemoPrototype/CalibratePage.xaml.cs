@@ -100,7 +100,7 @@ namespace DemoPrototype
 
         void UpdateTick(object sender, object e)
         {
-            DataUpdater.UpdateInputData(CalibrateGrid.DataContext);
+            Data.Updater.UpdateInputData(CalibrateGrid.DataContext);
             if (doStepTimer > 0)
             {
                 doStepTimer--;
@@ -108,7 +108,7 @@ namespace DemoPrototype
                 {
                     dTimer.Stop();
                     //todo: set back to Idle
-                    DataUpdater.SetCommandValue(AOUDataTypes.CommandType.RunningMode, (int)AOUDataTypes.AOURunningMode.Idle);
+                    Data.Updater.SetCommandValue(AOUDataTypes.CommandType.RunningMode, (int)AOUDataTypes.AOURunningMode.Idle);
                     HotStepButton.IsEnabled = true;
                     ColdStepButton.IsEnabled = true;
                 }
@@ -153,7 +153,7 @@ namespace DemoPrototype
                 //sent command and value to AOU 
                 //plot Hot Step response for x seconds
                 doStepTimer = hotStepLength;
-                DataUpdater.StartHotStep(hotStepLength);
+                Data.Updater.StartHotStep(hotStepLength);
                 HotStepButton.IsEnabled = false;
                 ColdStepButton.IsEnabled = false;
                 //done! Freeze output in grid 
@@ -177,7 +177,7 @@ namespace DemoPrototype
             {
                 SetAxisRangeForTempStep(coldStepLength);
                 doStepTimer = coldStepLength;
-                DataUpdater.StartColdStep(coldStepLength);
+                Data.Updater.StartColdStep(coldStepLength);
                 HotStepButton.IsEnabled = false;
                 ColdStepButton.IsEnabled = false;
                 //done! 
@@ -247,9 +247,9 @@ namespace DemoPrototype
             //need to know new starting value for x-axis
             //get curent time value
             TimeSpan TNow;
-            if (DataUpdater.LastPowerIndex >= 0)
+            if (Data.Updater.LastPowerIndex >= 0)
             {
-                TNow = TimeSpan.FromMilliseconds(DataUpdater.LastPower.ElapsedTime);
+                TNow = TimeSpan.FromMilliseconds(Data.Updater.LastPower.ElapsedTime);
             }
             else
             {

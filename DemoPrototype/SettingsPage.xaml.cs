@@ -54,12 +54,12 @@ namespace DemoPrototype
                 AOUDataSourceTypesCombo.SelectedIndex = 2;
             }
 
-            if (DataUpdater.IsStarted)
+            if (Data.Updater.RouterIsStarted())
             {
                 DisableChangeDataSource();
 
             }
-            else if (StartStopButton.Content.ToString() == "Stop")
+            else
             {
                 EnableChangeDataSource();
             }
@@ -155,11 +155,14 @@ namespace DemoPrototype
             this.Param2Combo.Items.Add("1000");
             this.Param2Combo.Items.Add("1500");
             this.Param2Combo.Items.Add("2000");
+
+            Param1Combo.SelectedValue = GlobalAppSettings.RandomSettings.NumValues.ToString();
+            Param2Combo.SelectedValue = GlobalAppSettings.RandomSettings.MsBetween.ToString();
         }
 
         void UpdateTick(object sender, object e)
         {
-            string s = DataUpdater.GetLog();
+            string s = Data.Updater.GetLog();
             if (s.Length > 0)
             {
                 SourceStatus.Text = s;
@@ -202,21 +205,22 @@ namespace DemoPrototype
                         break;
                     case AOURouter.RunType.Random:
                         AOUSettings.RandomSetting randomsettings;
-                        uint numValues = 30; // uint.Parse(Param1Combo.SelectedItem.ToString());
-                        uint msBetween = 1000; // uint.Parse(Param2Combo.SelectedItem.ToString());
+                        uint numValues = uint.Parse(Param1Combo.SelectedItem.ToString());
+                        uint msBetween = uint.Parse(Param2Combo.SelectedItem.ToString());
                         GlobalAppSettings.RandomSettings = new AOUSettings.RandomSetting(numValues, msBetween);
                         break;
                     default:
                         break;
                 }
 
-                DataUpdater.Start();
+                Data.Updater.Init();
+                Data.Updater.Start();
                 DisableChangeDataSource();
 
             }
             else if(StartStopButton.Content.ToString() == "Stop")
             {
-                DataUpdater.Stop();
+                Data.Updater.Stop();
                 EnableChangeDataSource();
             }
         }
@@ -288,7 +292,7 @@ namespace DemoPrototype
             }
             catch (Exception e)
             {
-                string err = e.Message;
+                Data.Updater.CreateLogMessage("Pick File", e.Message);
             }
 
     }

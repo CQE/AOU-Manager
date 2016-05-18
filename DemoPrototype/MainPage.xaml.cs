@@ -45,14 +45,17 @@ namespace DemoPrototype
 
             // MyFrame.Navigate(typeof(SettingsPage));
             TitleTextBlock.Text = "Run Injection moulding";
-
+ 
             //create these only once
             webView = new WebView();
             myResolver = new StreamUriWinRTResolver();
 
+            InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
+
             //set window title
             var applicationView = ApplicationView.GetForCurrentView();
             string version = GetAppVersion();
+
             applicationView.Title = "AOU version " + version;
         }
 
@@ -73,6 +76,7 @@ namespace DemoPrototype
         {
             if (OperatorListBox.IsSelected)
             {
+                InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(OperatorPage));
                 TitleTextBlock.Text = "Run Injection moulding";
                 BackButton.Visibility = Visibility.Collapsed;
@@ -80,18 +84,21 @@ namespace DemoPrototype
 
             else if (SettingsListBoxItem.IsSelected)
             {
+                InfoTextBlock.Text = "";
                 MyFrame.Navigate(typeof(SettingsPage));
                 TitleTextBlock.Text = "System settings";
                 BackButton.Visibility = Visibility.Visible;
             }
             else if (CalibrateListBoxItem.IsSelected)
             {
+                InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(CalibratePage));
                 TitleTextBlock.Text = "Calibrate system";
                 BackButton.Visibility = Visibility.Visible;
             }
             else if (MaintenanceListBoxItem.IsSelected)
             {
+                InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(MaintenancePage));
                 TitleTextBlock.Text = "System maintenance";
                 BackButton.Visibility = Visibility.Visible;

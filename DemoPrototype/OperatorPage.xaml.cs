@@ -168,19 +168,19 @@ namespace DemoPrototype
             AOUDataTypes.HT_StateType mode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
             AOUDataTypes.UI_Buttons buttons = new AOUDataTypes.UI_Buttons();
 
-            DataUpdater.UpdateInputData(mainGrid.DataContext);
+            Data.Updater.UpdateInputData(mainGrid.DataContext);
 
             //update textboxes
             SetHotTankTempText();
             SetColdTankTempText();
 
-            if (DataUpdater.ModeChanged(out mode))
+            if (Data.Updater.ModeChanged(out mode))
             {
                 GlobalAppSettings.ToolTempMode = (int) mode;
                 SetToolTemperingText();
             }
 
-            if (DataUpdater.UIButtonsChanged(out buttons))
+            if (Data.Updater.UIButtonsChanged(out buttons))
             {
                 UpdateFromUIButtons(buttons);
             }
@@ -242,7 +242,7 @@ namespace DemoPrototype
                 {
                     string modeTitle = RunningModeCombo.Items[RunningModeCombo.SelectedIndex].ToString();
                     string message = "You are about to change running mode";
-                    DataUpdater.VerifySendToAOUDlg(modeTitle, message, AOUDataTypes.CommandType.RunningMode, this, RunningModeCombo.SelectedIndex);
+                    Data.Updater.VerifySendToAOUDlg(modeTitle, message, AOUDataTypes.CommandType.RunningMode, this, RunningModeCombo.SelectedIndex);
                 }
                 else
                 {
@@ -481,9 +481,9 @@ namespace DemoPrototype
 
         private void SetHotTankTempText()
         {
-            if (DataUpdater.LastPowerIndex >= 0)
+            if (Data.Updater.LastPowerIndex >= 0)
             {
-                TextBox_THotTank.Text = ((int)Math.Round(DataUpdater.LastPower.THotTank)).ToString();
+                TextBox_THotTank.Text = ((int)Math.Round(Data.Updater.LastPower.THotTank)).ToString();
             }
             else
             {
@@ -493,9 +493,9 @@ namespace DemoPrototype
 
         private void SetColdTankTempText()
         {
-            if (DataUpdater.LastPowerIndex >= 0)
+            if (Data.Updater.LastPowerIndex >= 0)
             {
-                TextBox_TColdTank.Text = ((int)Math.Round(DataUpdater.LastPower.TColdTank)).ToString();
+                TextBox_TColdTank.Text = ((int)Math.Round(Data.Updater.LastPower.TColdTank)).ToString();
             }
             else
             {

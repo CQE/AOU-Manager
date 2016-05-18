@@ -65,13 +65,13 @@ namespace DemoPrototype
 
         void UpdateTick(object sender, object e)
         {
-           DataUpdater.UpdateInputDataLogMessages(LogGrid.DataContext);
+           Data.Updater.UpdateInputDataLogMessages(LogGrid.DataContext);
         }
 
         private async void SaveExcelToFile(Syncfusion.XlsIO.IWorkbook workBook)
         {
-
-            StorageFile storageFile = await KnownFolders.PicturesLibrary.CreateFileAsync("LogMessages" + ".xlsx", Windows.Storage.CreationCollisionOption.GenerateUniqueName);
+            string fileName = "LogMessages" + ".xlsx";
+            StorageFile storageFile = await KnownFolders.PicturesLibrary.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.GenerateUniqueName);
             try
             {
                 if (storageFile != null)
@@ -79,7 +79,7 @@ namespace DemoPrototype
             }
             catch (Exception e)
             {
-                string err = e.Message;
+               Data.Updater.CreateLogMessage("Save Excel To File " + fileName, e.Message);
             }
         }
 

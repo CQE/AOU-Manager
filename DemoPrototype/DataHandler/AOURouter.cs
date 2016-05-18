@@ -18,15 +18,13 @@ namespace DemoPrototype
         public int NewPowerValuesAvailable { get; private set; }
         public int NewLogMessagesAvailable { get; private set; }
 
-        private DateTime startTime;
-
         public enum RunType { None, Serial, File, Random};
         public RunType runMode {get; private set;}
 
         private AOUData aouData;
-        private AOULogFile aouLogFile;
+        private AOULogFile aouLogFile ;
 
-        private string applogstr = "AOURouter. No run mode selected";
+        private string notInitializedStr = "AOU Router not initialized";
 
         public AOURouter()
         {
@@ -34,32 +32,6 @@ namespace DemoPrototype
             powerValues = new List<Power>();
 
             runMode = RunType.None;
-            startTime = DateTime.Now;
-            aouLogFile = new AOULogFile(startTime);
-        }
-
-        public AOURouter(AOUSettings.RandomSetting randomSetting) : this()
-        {
-            runMode = RunType.Random;
-            aouData = new AOURandomData(randomSetting);
-       }
-
-        public AOURouter(AOUSettings.FileSetting fileSetting) : this()
-        {
-            runMode = RunType.File;
-            aouData = new AOUFileData(fileSetting);
-        }
-
-        public AOURouter(AOUSettings.SerialSetting serialSetting, AOUSettings.DebugMode dbgMode) : this()
-        {
-            runMode = RunType.Serial;
-            aouData = new AOUSerialData(serialSetting, dbgMode);
-        }
-
-        public AOURouter(AOUSettings.RemoteSetting remoteSetting) : this()
-        {
-            runMode = RunType.Serial;
-            aouData = new AOURemoteData(remoteSetting);
         }
 
         ~AOURouter()
@@ -69,19 +41,50 @@ namespace DemoPrototype
         }
 
 
-        public bool IsInitiated
+        public void Initialize(RunType runType, Object settings)
+        {
+            powerValues.Clear();
+            logMessages.Clear();
+
+            aouLogFile = new AOULogFile(DateTime.Now);
+
+            if (runType == RunType.Random)
+            {
+                aouData = new AOURandomData((AOUSettings.RandomSetting)settings);
+            }
+            else if (runType == RunType.Serial)
+            {
+                aouData = new AOUSerialData((AOUSettings.SerialSetting)settings);
+            }
+            else if (runType == RunType.File)
+            {
+                aouData = new AOUFileData((AOUSettings.FileSetting)settings);
+            }
+            /*
+            else if (runMode == RunType.Remote)
+            {
+                aouData = new AOUFileData((AOUSettings.RemoteSetting)settings);
+            }
+            */
+            else
+            {
+                aouData = null;
+            }
+        }
+
+        public bool IsInitialized
         {
             get { return aouData != null; }
         }
 
         public bool IsConnected
         {
-            get { return IsInitiated && aouData.Connected; }
+            get { return IsInitialized && aouData.Connected; }
         }
 
         public void Start()
         {
-            if (IsInitiated && !IsConnected)
+            if (IsInitialized && !IsConnected)
             {
                 aouData.Connect();
             }
@@ -97,21 +100,19 @@ namespace DemoPrototype
 
         public string GetLogStr()
         {
-            if (IsConnected)
+            if (!IsInitialized)
             {
-                return aouData.GetDataLogText();
+                return notInitializedStr;
             }
             else
             {
-                string text = applogstr;
-                return text;
+                return aouData.GetDataLogText();
             }
-
         }
 
         public string GetRawData()
         {
-            if (aouData != null)
+            if (IsConnected)
                 return aouData.GetRawData();
             else
                 return "";
@@ -120,11 +121,15 @@ namespace DemoPrototype
         // Send data
         public bool SendToPlc(string text)
         {
-            logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), "SendToPlc: " + text, 12, 0));
-            if (aouData != null)
+            if (IsConnected)
+            {
+                logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), "SendToPlc: " + text, 12, 0));
                 return aouData.SendData(text);
+            }
             else
+            {
                 return false;
+            }
         }
 
         public void SendTagCommandToPlc(string subTag, int value)
@@ -162,7 +167,7 @@ namespace DemoPrototype
         // Update data. Get new Power values and Log messages
         public void Update()
         {
-            if (aouData == null) return;
+            if (!IsConnected) return; // Can not update data
 
             aouData.UpdateData();
 
@@ -201,19 +206,22 @@ namespace DemoPrototype
        **************************/
         public List<Power> GetLastPowerValues(int count, out int lastPowerIndex, int defaultTimeBetween)
         {
-            List<Power> powerList = new List<Power>();
+            var lastPowerValues = powerValues; // Take last. Can be updateded when running this method
+            int lastPowerCount = lastPowerValues.Count;
+
+            List<Power> powerList = new List<Power>(); // New Power list to return
             int firstNullIndex = -1;
 
             int numValues = count;
-            if (numValues > powerValues.Count)
+            if (numValues > lastPowerCount)
             {
-                numValues = powerValues.Count;
+                numValues = lastPowerCount; // Have not count values
             }
 
             // Add existng values
             for (int i = 0; i < numValues; i++)
             {
-                powerList.Add(powerValues[powerValues.Count - numValues + i]);
+                powerList.Add(powerValues[lastPowerCount - numValues + i]); // Add last power values. Not more then count
             }
 
             // Add dummy values with expected time
@@ -223,7 +231,13 @@ namespace DemoPrototype
                 {
                     powerList.Add(new Power(0));
                 }
-                powerList = RecalcTime(powerList, new Power(0), out firstNullIndex, defaultTimeBetween);
+                firstNullIndex = GetFirstNullIndex(powerList);
+
+                if (firstNullIndex > 1 && firstNullIndex < powerList.Count) // Minimum number of real values to calculate time between
+                {
+
+                    powerList = RecalcTime(powerList, firstNullIndex, defaultTimeBetween);
+                }
             }
 
             NewPowerValuesAvailable = 0;
@@ -233,27 +247,16 @@ namespace DemoPrototype
             return powerList;
         }
 
-        /*
-        public Power GetLastNewPowerValues()
-        {
-            Power power  = new Power(0);
-            if (NewPowerValuesAvailable > 0 && powerValues.Count > 1)
-            {
-                NewPowerValuesAvailable = 0;
-                power = powerValues[powerValues.Count - 1];
-            }
-            return power; 
-        }
-        */
-
         public List<Power> GetLastNewPowerValues()
         {
+            var lastPowerValues = powerValues; // Take last. Can be updateded when running this method
+            int lastPowerCount = lastPowerValues.Count;
+
             List<Power> powerList = new List<Power>();
-            if (NewPowerValuesAvailable > 0 && powerValues.Count > 1)
-            {
-                powerList.AddRange(powerValues.GetRange(powerValues.Count- NewPowerValuesAvailable, NewPowerValuesAvailable));
-                NewPowerValuesAvailable = 0;
-            }
+            powerList.AddRange(lastPowerValues.GetRange(lastPowerCount - NewPowerValuesAvailable, NewPowerValuesAvailable));
+
+            NewPowerValuesAvailable = 0;
+
             return powerList;
         }
 
@@ -262,7 +265,7 @@ namespace DemoPrototype
             return double.IsNaN(power.THotTank) || power.THotTank < 1;
         }
 
-        private static int GetFirstNullIndex(List<Power> powerList)
+        public static int GetFirstNullIndex(List<Power> powerList)
         {
             // Get first dummy values. IsNan values
             for (int i = 0; i < powerList.Count; i++)
@@ -272,36 +275,23 @@ namespace DemoPrototype
                     return i;
                 }
             }
-            return powerList.Count - 1;
+            return -1;
         }
 
-        public List<Power> RecalcTime(IEnumerable<Power> powers, Power newPower, out int firstNullIndex, long defaultTimeBetween)
+        public List<Power> RecalcTime(List<Power> powerList, int firstNullIndex, long defaultTimeBetween)
         {
-            List<Power> powerList = powers.ToList();
-            firstNullIndex = GetFirstNullIndex(powerList);
-
-            // Replace new value in first dummy index if new Power
-            if (!IsDummyValue(newPower))
+            // Replace time in dummy values with expected time values
+            long diff = powerList[firstNullIndex - 1].ElapsedTime - powerList[0].ElapsedTime; // time span between first and last real time
+            if (diff > (100 * firstNullIndex)) // minimum difference in time accepted
             {
-                powerList[firstNullIndex] = newPower;
-                firstNullIndex++;
-            }
-
-            if (firstNullIndex > 1 && firstNullIndex < powerList.Count) // Minimum number of real values to calculate time between
-            {
-                // Replace time in dummy values with expected time values
-                long diff = powerList[firstNullIndex - 1].ElapsedTime - powerList[0].ElapsedTime; // time span between first and last real time
-                if (diff > (100 * firstNullIndex)) // minimum difference in time accepted
+                long newTimeBetween = diff / (firstNullIndex - 1); // Average value
+                long time = powerList[firstNullIndex - 1].ElapsedTime; // last real time
+                for (int i = firstNullIndex; i < powerList.Count; i++)
                 {
-                    long newTimeBetween = diff / (firstNullIndex - 1); // Average value
-                    long time = powerList[firstNullIndex - 1].ElapsedTime; // last real time
-                    for (int i = firstNullIndex; i < powerList.Count; i++)
-                    {
-                        time += newTimeBetween; // next timestamp
-                        Power pow = powerList[i];
-                        pow.ElapsedTime = time; // replace time with new timestamp
-                        powerList[i] = pow;
-                    }
+                    time += newTimeBetween; // next timestamp
+                    Power pow = powerList[i];
+                    pow.ElapsedTime = time; // replace time with new timestamp
+                    powerList[i] = pow;
                 }
             }
             return powerList;
@@ -344,7 +334,12 @@ namespace DemoPrototype
         // Create app log message
         public void CreateLogMessage(string text, int prio)
         {
-            logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), text, prio, 0));
+            long time = 0;
+            if (IsInitialized)
+            {
+                time = aouData.GetAOUTime_ms();
+            }
+            logMessages.Add(new AOULogMessage(time, text, prio, 0));
         }
 
         // Save to files in Image folder
@@ -359,7 +354,7 @@ namespace DemoPrototype
         public bool UIButtonsChanged(out AOUDataTypes.UI_Buttons buttons)
         {
             buttons = new AOUDataTypes.UI_Buttons();
-            if (aouData.isUIButtonsChanged)
+            if (IsConnected && aouData.isUIButtonsChanged)
             {
                 aouData.isUIButtonsChanged = false;
                 buttons = aouData.currentUIButtons;
@@ -371,7 +366,7 @@ namespace DemoPrototype
         public bool IMMChanged(out AOUDataTypes.IMMSettings mode)
         {
             mode = new AOUDataTypes.IMMSettings();
-            if (aouData.isIMMChanged)
+            if (IsConnected && aouData.isIMMChanged)
             {
                 aouData.isIMMChanged = false;
                 mode = aouData.currentIMMState;
@@ -383,7 +378,7 @@ namespace DemoPrototype
         public bool ModeChanged(out AOUDataTypes.HT_StateType mode)
         {
             mode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
-            if (aouData.isModesChanged)
+            if (IsConnected && aouData.isModesChanged)
             {
                 aouData.isModesChanged = false;
                 mode = aouData.currentMode;

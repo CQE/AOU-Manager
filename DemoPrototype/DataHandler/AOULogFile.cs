@@ -29,7 +29,17 @@ namespace DemoPrototype
             }
 
             foreach (var log in logs)
-                aouLogFile.AddToFile(subPath, curAOULogFileName, log.ToString());
+            {
+                if (log == null)
+                {
+                    aouLogFile.AddToFile(subPath, curAOULogFileName, "NULL");
+                }
+                else
+                {
+                    aouLogFile.AddToFile(subPath, curAOULogFileName, log.ToString());
+                }
+            }
+                
         }
 
     }

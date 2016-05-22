@@ -32,7 +32,7 @@ namespace DemoPrototype
         {
             //add new data point here
             //Power MyNewpoint = new Power() { ElapsedTime= 11, THotTank = 243, TCoolTank = 39, TReturnValve = 57 };
-            MyXAxis.Interval = 2;
+          //  MyXAxis.Interval = 2;
             //call graphics memory
             //Bitmap b = new Bitmap(10, 10);
         }

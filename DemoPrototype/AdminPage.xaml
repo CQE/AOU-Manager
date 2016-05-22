@@ -18,22 +18,6 @@
             <local:LineChartViewModel/> 
         </Grid.DataContext>
         <!-- insert chart here -->
-        <chart:SfChart  
-            Header="Chart Header, select what to show under settings"
-            Grid.Row="1"
-            Margin="20,30,0,0">
-            <chart:SfChart.PrimaryAxis>
-                <chart:CategoryAxis Name="MyXAxis"></chart:CategoryAxis>
-            </chart:SfChart.PrimaryAxis>
-            <chart:SfChart.SecondaryAxis>
-                <chart:NumericalAxis Name="MyYAxis" Interval="10" Maximum="400" EnableAutoIntervalOnZooming="False"> </chart:NumericalAxis>
-            </chart:SfChart.SecondaryAxis>
-            <chart:LineSeries XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"> </chart:LineSeries>
-            <chart:LineSeries Label="This is a Label"  XBindingPath="ElapsedTime" YBindingPath="TCoolTank"  ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries  Label="This is a Label"  XBindingPath="ElapsedTime" YBindingPath="TReturnValve" ItemsSource="{Binding power}"> </chart:LineSeries>
-            <chart:LineSeries XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:LineSeries>
-            <chart:LineSeries XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:LineSeries>
-        </chart:SfChart>
         <Button Grid.Row="2" Content="Add Point" Click="NewDataPointButton_Click"></Button>
     </Grid>
 </Page>

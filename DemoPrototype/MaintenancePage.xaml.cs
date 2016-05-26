@@ -19,31 +19,30 @@ using System.IO.IsolatedStorage;
 using System.Collections.ObjectModel;
 using Syncfusion.UI.Xaml.Grid.Converter;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace DemoPrototype
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MaintenancePage : Page
     {
         private DispatcherTimer dTimer;
-       
+        private LogMessageViewModel logMsgModel;
+
         public MaintenancePage()
         {
+            this.logMsgModel = new LogMessageViewModel();
+
             this.Loaded += MaintenancePage_Loaded;
             this.Unloaded += MaintenancePage_Unloaded;
 
             this.InitializeComponent();
 
+            // Connect Operetor page data context to LogMessageViewModel logMsgModel
+            LogGrid.DataContext = logMsgModel;
+
+
+
+            UpdateLogMessages(true);
+
             InitDispatcherTimer();
-
-            // LogGrid.HeaderStyle.Setters.
-            //just testing 
-            // AOULogMessage msg = new AOULogMessage((long)1000, "just testing");
-            //    LogMessageViewModel. logMessages.add(msg);
-
         }
 
         private void MaintenancePage_Unloaded(object sender, RoutedEventArgs e)
@@ -60,12 +59,73 @@ namespace DemoPrototype
         {
             dTimer = new DispatcherTimer();
             dTimer.Tick += UpdateTick;
-            dTimer.Interval = new TimeSpan(0, 0, 1);
+            dTimer.Interval = new TimeSpan(0, 0, 1); // Every second
+        }
+
+
+        private void UpdateLogMessages(bool all)
+        {
+            try
+            {
+                var logs = Data.Updater.GetLogMessages(all);
+                if (logs.Count > 0)
+                {
+                    logMsgModel.AddLogMessages(logs);
+                    int cnt = logMsgModel.logMessages.Count - 1;
+                    LogGrid.ScrollInView((new Syncfusion.UI.Xaml.ScrollAxis.RowColumnIndex() { RowIndex = cnt, ColumnIndex = 0 }));
+                }
+            }
+            catch (Exception e)
+            {
+               // tempHeaderText.Text = e.Message;
+            }
+        }
+
+        private string GetStringValue(double val)
+        {
+            if (!double.IsNaN(val))
+            {
+                return val.ToString();
+            }
+            else
+            {
+                return "-";
+            }
+        }
+
+        private bool GetValveState(double value, int onValue)
+        {
+            return (int)value >= onValue;
         }
 
         void UpdateTick(object sender, object e)
         {
-           Data.Updater.UpdateInputDataLogMessages(LogGrid.DataContext);
+            UpdateLogMessages(false);
+
+            var t1 = GetStringValue(Data.Updater.LastPower.TReturnActual);
+            var t2 = GetStringValue(Data.Updater.LastPower.TReturnForecasted);
+
+            hotTankTemp.Text = GetStringValue(Data.Updater.LastPower.THotTank);
+            coldTankTemp.Text = GetStringValue(Data.Updater.LastPower.TColdTank);
+            returnValveTemp.Text = GetStringValue(Data.Updater.LastPower.TReturnValve);
+
+            oilHotSideTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferHot);
+            oilMiddleTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferMid);
+            oilColdSideTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferCold);
+
+            oilInletTemp.Text = GetStringValue(double.NaN); ;
+            oilOutletTemp.Text = GetStringValue(Data.Updater.LastPower.THeaterOilOut);
+
+            oilExchangeInletTemp.Text = GetStringValue(double.NaN);
+            oilExchangeOutletTemp.Text = GetStringValue(double.NaN);
+
+            coolantWaterExchangeInletTemp.Text = GetStringValue(double.NaN);
+            coolantWaterExchangeOutletTemp.Text = GetStringValue(Data.Updater.LastPower.THeatExchangerCoolantOut);
+
+            hotFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedHot, GlobalVars.globValveChartValues.HotValveHi);
+            coldFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedCold, GlobalVars.globValveChartValues.ColdValveHi);
+            returnValve.IsOn = GetValveState(Data.Updater.LastPower.ValveReturn, GlobalVars.globValveChartValues.ReturnValveHi);
+            coolantValve.IsOn = GetValveState(Data.Updater.LastPower.ValveCoolant, GlobalVars.globValveChartValues.CoolantValveHi);
         }
 
         private async void SaveExcelToFile(Syncfusion.XlsIO.IWorkbook workBook)
@@ -89,89 +149,6 @@ namespace DemoPrototype
             options.ExcelVersion = Syncfusion.XlsIO.ExcelVersion.Excel2013;
             var excelEngine = LogGrid.ExportToExcel(LogGrid.View, options);
             SaveExcelToFile(excelEngine.Excel.Workbooks[0]);
-        }
-    }
-
-    public class OrderInfo
-    {
-        int orderID;
-        string customerId;
-        string country;
-        string customerName;
-        string shippingCity;
-
-        public int OrderID
-        {
-            get { return orderID; }
-            set { orderID = value; }
-        }
-
-        public string CustomerID
-        {
-            get { return customerId; }
-            set { customerId = value; }
-        }
-
-        public string CustomerName
-        {
-            get { return customerName; }
-            set { customerName = value; }
-        }
-
-
-
-        public string Country
-        {
-            get { return country; }
-            set { country = value; }
-        }
-
-
-
-        public string ShipCity
-        {
-            get { return shippingCity; }
-            set { shippingCity = value; }
-        }
-
-        public OrderInfo(int orderId, string customerName, string country, string customerId, string shipCity)
-        {
-            this.OrderID = orderId;
-            this.CustomerName = customerName;
-            this.Country = country;
-            this.CustomerID = customerId;
-            this.ShipCity = shipCity;
-        }
-    }
-
-    public class OrderInfoRepository
-    {
-        ObservableCollection<OrderInfo> orderCollection;
-
-        public ObservableCollection<OrderInfo> OrderInfoCollection
-        {
-            get { return orderCollection; }
-            set { orderCollection = value; }
-        }
-
-        public OrderInfoRepository()
-        {
-            orderCollection = new ObservableCollection<OrderInfo>();
-            this.GenerateOrders();
-        }
-
-        private void GenerateOrders()
-        {
-            orderCollection.Add(new OrderInfo(1001, "Maria Anders", "Germany", "ALFKI", "Berlin"));
-            orderCollection.Add(new OrderInfo(1002, "Ana Trujilo", "Mexico", "ANATR", "México D.F."));
-            orderCollection.Add(new OrderInfo(1003, "Antonio Moreno", "Mexico", "ANTON", "México D.F."));
-            orderCollection.Add(new OrderInfo(1004, "Thomas Hardy", "UK", "AROUT", "London"));
-            orderCollection.Add(new OrderInfo(1005, "Christina Berglund", "Sweden", "BERGS", "Luleå"));
-            orderCollection.Add(new OrderInfo(1006, "Hanna Moos", "Germany", "BLAUS", "Mannheim"));
-            orderCollection.Add(new OrderInfo(1007, "Frédérique Citeaux", "France", "BLONP", "Strasbourg"));
-            orderCollection.Add(new OrderInfo(1008, "Martin Sommer", "Spain", "BOLID", "Madrid"));
-            orderCollection.Add(new OrderInfo(1009, "Laurence Lebihan", "France", "BONAP", "Marseille"));
-            orderCollection.Add(new OrderInfo(1010, "Elizabeth Lincoln", "Canada", "BOTTM", "Tsawassen"));
         }
     }
 

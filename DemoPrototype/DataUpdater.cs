@@ -26,6 +26,8 @@ namespace DemoPrototype
         private int lastPowerIndex = -1;
         private Power lastPower = new Power(0);
 
+        private AOULogFile logFile = null;
+
         public int TimeBetween
         {
             get { return timeBetween; }
@@ -62,27 +64,34 @@ namespace DemoPrototype
 
             AOURouter.RunType dataRunType = GlobalAppSettings.DataRunType;
 
+            // OBS!!!! only for debug logging
+            logFile = new AOULogFile(DateTime.Now, "DemoPrototype");
+
             if (dataRunType == AOURouter.RunType.File)
             {
                 AOUSettings.FileSetting fileSetting;
                 fileSetting.FilePath = GlobalAppSettings.FileSettingsPath;
-                dataRouter.Initialize(AOURouter.RunType.File, fileSetting);
+                dataRouter.Initialize(AOURouter.RunType.File, fileSetting, 1000);
             }
             else if (dataRunType == AOURouter.RunType.Random)
             {
-                dataRouter.Initialize(AOURouter.RunType.Random, GlobalAppSettings.RandomSettings);
+                dataRouter.Initialize(AOURouter.RunType.Random, GlobalAppSettings.RandomSettings, (int)GlobalAppSettings.RandomSettings.MsBetween);
             }
             else if (dataRunType == AOURouter.RunType.Serial)
             {
-                dataRouter.Initialize(AOURouter.RunType.Serial, GlobalAppSettings.SerialSettings);
+                dataRouter.Initialize(AOURouter.RunType.Serial, GlobalAppSettings.SerialSettings, 1000);
             }
+        }
+
+        public void AddDebugLogLine(string className, string methodName, string text)
+        {
+            logFile.AddLog(0, className + " - " + methodName + " - " + text);
         }
 
         public string GetRunningModeStatus()
         {
             AOURouter.RunType mode = GlobalAppSettings.DataRunType;
             string text = "";
-
 
             if (mode == AOURouter.RunType.File)
             {
@@ -343,21 +352,27 @@ namespace DemoPrototype
             return false;
         }
 
+        /* old solution */
         public void UpdateInputData(object dataContext)
         {
             if (dataContext != null && dataRouter.IsConnected)
             {
                 var dc = (LineChartViewModel)dataContext;
 
-                try {
+                try
+                {
                     if (dc.power.Count == 0)
                     {
                         // If the first time then get all last values
-                        var values = dataRouter.GetLastPowerValues(powerCount, out lastPowerIndex, timeBetween);
+                        var values = dataRouter.GetLastPowerValues(powerCount, out lastPowerIndex);
                         if (values.Count > 0 && lastPowerIndex >= 0)
+  
+                        // if (lastPowerIndex > 2)
                         {
                             dc.SetValues(values);
                             lastPower = dc.power[lastPowerIndex];
+                            // AddDebugLogLine("DataUpdater", "UpdateInputData.start.first", lastPower.ToString());
+                            // AddDebugLogLine("DataUpdater", "UpdateInputData.start.last", lastPower.ToString());
                         }
                     }
                     else if (dataRouter.NewPowerValuesAvailable > 0)
@@ -372,13 +387,14 @@ namespace DemoPrototype
                             {
                                 lastPowerIndex = dc.SetNewValues(powerList, firstNullIndex);
 
-                                if ((lastPowerIndex > 1 && lastPowerIndex < 6) && lastPowerIndex < (dc.power.Count-1)) // Minimum number of real values to calculate time between
+                                if ((lastPowerIndex > 1 && lastPowerIndex < 6) && lastPowerIndex < (dc.power.Count - 1)) // Minimum number of real values to calculate time between
                                 {
                                     firstNullIndex = AOURouter.GetFirstNullIndex(dc.power.ToList());
                                     var newPowerList = dataRouter.RecalcTime(dc.power.ToList(), firstNullIndex, timeBetween);
                                     for (int i = firstNullIndex; i < dc.power.Count; i++)
                                     {
                                         dc.power[i] = newPowerList[i];
+                                        // AddDebugLogLine("DataUpdater", "UpdateInputData.replace:"+i, dc.power[i].ToString());
                                     }
                                 }
                             }
@@ -398,22 +414,66 @@ namespace DemoPrototype
             }
         }
 
-        public void UpdateInputDataLogMessages(object dataContext)
+
+        public List<Power> GetNextPowerValues()
         {
-       
-            if (dataContext != null && dataRouter.IsConnected)
+            var values = new List<Power>();
+            /*
+            ToDo. No working in realwease
+            */
+            return values;
+        }
+
+        public List<Power> GetAllPowerValues()
+        {
+            var values = new List<Power>();
+            
+            // Must be connected
+            if (dataRouter.IsConnected)
             {
-                var dc = (LogMessageViewModel)dataContext;
-                if (dc.logMessages.Count == 0)
+                try
                 {
-                    dc.AddLogMessages(dataRouter.GetLastLogMessages(100));
+                    values = dataRouter.GetLastPowerValues(powerCount, out lastPowerIndex);
+                    if (values.Count > 0 && lastPowerIndex >= 0)
+                    {
+                        lastPower = values[lastPowerIndex];
+                    }
+                }
+                catch (Exception e)
+                {
+                    CreateLogMessage("DataUpdater.GetAllPowerValues", e.Message);
+                }
+            }
+            return values;
+        }
+
+        public List<AOULogMessage> GetLogMessages(bool all)
+        {
+
+            if (dataRouter.IsInitialized)
+            {
+                // If new power values then set the last power values property to last values
+                if (dataRouter.NewPowerValuesAvailable > 0)
+                {
+                    List<Power> powerList = dataRouter.GetLastNewPowerValues();
+                    if (powerList.Count > 0)
+                    {
+                        lastPower = powerList.Last();
+                    }
+                }
+
+                if (all)
+                {
+                    return dataRouter.GetLastLogMessages(100);
                 }
                 else if (dataRouter.NewLogMessagesAvailable > 0)
                 {
-                    dc.AddLogMessages(dataRouter.GetNewLogMessages());
+                    return dataRouter.GetNewLogMessages();
                 }
-           }
 
+            }
+            return new List<AOULogMessage>(); // return empty list when no new log messages
         }
+
     }
 }

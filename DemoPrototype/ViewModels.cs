@@ -116,4 +116,88 @@ namespace DemoPrototype
         }
 
      }
+
+    // For test only
+    public class OrderInfo
+    {
+        int orderID;
+        string customerId;
+        string country;
+        string customerName;
+        string shippingCity;
+
+        public int OrderID
+        {
+            get { return orderID; }
+            set { orderID = value; }
+        }
+
+        public string CustomerID
+        {
+            get { return customerId; }
+            set { customerId = value; }
+        }
+
+        public string CustomerName
+        {
+            get { return customerName; }
+            set { customerName = value; }
+        }
+
+        public string Country
+        {
+            get { return country; }
+            set { country = value; }
+        }
+
+
+
+        public string ShipCity
+        {
+            get { return shippingCity; }
+            set { shippingCity = value; }
+        }
+
+        public OrderInfo(int orderId, string customerName, string country, string customerId, string shipCity)
+        {
+            this.OrderID = orderId;
+            this.CustomerName = customerName;
+            this.Country = country;
+            this.CustomerID = customerId;
+            this.ShipCity = shipCity;
+        }
+    }
+
+    public class OrderInfoRepository
+    {
+        ObservableCollection<OrderInfo> orderCollection;
+
+        public ObservableCollection<OrderInfo> OrderInfoCollection
+        {
+            get { return orderCollection; }
+            set { orderCollection = value; }
+        }
+
+        public OrderInfoRepository()
+        {
+            orderCollection = new ObservableCollection<OrderInfo>();
+            this.GenerateOrders();
+        }
+
+        private void GenerateOrders()
+        {
+            orderCollection.Add(new OrderInfo(1001, "Maria Anders", "Germany", "ALFKI", "Berlin"));
+            orderCollection.Add(new OrderInfo(1002, "Ana Trujilo", "Mexico", "ANATR", "México D.F."));
+            orderCollection.Add(new OrderInfo(1003, "Antonio Moreno", "Mexico", "ANTON", "México D.F."));
+            orderCollection.Add(new OrderInfo(1004, "Thomas Hardy", "UK", "AROUT", "London"));
+            orderCollection.Add(new OrderInfo(1005, "Christina Berglund", "Sweden", "BERGS", "Luleå"));
+            orderCollection.Add(new OrderInfo(1006, "Hanna Moos", "Germany", "BLAUS", "Mannheim"));
+            orderCollection.Add(new OrderInfo(1007, "Frédérique Citeaux", "France", "BLONP", "Strasbourg"));
+            orderCollection.Add(new OrderInfo(1008, "Martin Sommer", "Spain", "BOLID", "Madrid"));
+            orderCollection.Add(new OrderInfo(1009, "Laurence Lebihan", "France", "BONAP", "Marseille"));
+            orderCollection.Add(new OrderInfo(1010, "Elizabeth Lincoln", "Canada", "BOTTM", "Tsawassen"));
+        }
+    }
+
+
 }

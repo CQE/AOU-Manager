@@ -9,8 +9,8 @@ namespace DemoPrototype
 {
     public class AOURouter
     {
-        public const int MaxTotalValuesInMemory = 300;
-        public const int MaxTotalLogMessagesInMemory = 1000;
+        public const int MaxTotalValuesInMemory = 100;
+        public const int MaxTotalLogMessagesInMemory = 100;
 
         private List<AOULogMessage> logMessages;
         private List<Power> powerValues;
@@ -22,7 +22,9 @@ namespace DemoPrototype
         public RunType runMode {get; private set;}
 
         private AOUData aouData;
-        private AOULogFile aouLogFile ;
+        private AOULogFile aouLogFile;
+
+        private int defaultTimeBetween = 1000;
 
         private string notInitializedStr = "AOU Router not initialized";
 
@@ -41,10 +43,12 @@ namespace DemoPrototype
         }
 
 
-        public void Initialize(RunType runType, Object settings)
+        public void Initialize(RunType runType, Object settings, int timeBetween)
         {
             powerValues.Clear();
             logMessages.Clear();
+
+            defaultTimeBetween = timeBetween;
 
             aouLogFile = new AOULogFile(DateTime.Now);
 
@@ -204,12 +208,14 @@ namespace DemoPrototype
         /**************************
           Power values handling
        **************************/
-        public List<Power> GetLastPowerValues(int count, out int lastPowerIndex, int defaultTimeBetween)
+        public List<Power> GetLastPowerValues(int count, out int lastPowerIndex)
         {
+            List<Power> powerList = new List<Power>(); // New Power list to return
+            lastPowerIndex = 0;
+
             var lastPowerValues = powerValues; // Take last. Can be updateded when running this method
             int lastPowerCount = lastPowerValues.Count;
 
-            List<Power> powerList = new List<Power>(); // New Power list to return
             int firstNullIndex = -1;
 
             int numValues = count;

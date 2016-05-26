@@ -9,17 +9,7 @@
     mc:Ignorable="d">
 
     <Grid x:Name="MaintenanceGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-     <!--  <Grid.DataContext>
-            <local:LogMessageViewModel x:Name="data"/>
-        </Grid.DataContext>-->
-
-        <Grid.DataContext>
-            <!--<local:OrderInfoRepository/>  this row works-->
-            <local:LogMessageViewModel></local:LogMessageViewModel>
-        </Grid.DataContext>
-
-        <Grid.ColumnDefinitions>
+       <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -29,21 +19,22 @@
         <StackPanel Margin="10,10,0,0" Orientation="Vertical" Width="220" HorizontalAlignment="Left">
             <TextBlock FontWeight="SemiBold" Text="Force valves (On/Off)"></TextBlock>
             <StackPanel Orientation="Horizontal">
-                <TextBlock  Width="110"  VerticalAlignment="Center" Text="Hot feed valve"></TextBlock>
-                <ToggleSwitch IsEnabled="False" Margin="5,0,0,0" HorizontalAlignment="Right"></ToggleSwitch>
+                <TextBlock Width="110"  VerticalAlignment="Center" Text="Hot feed valve"></TextBlock>
+                <ToggleSwitch Name="hotFeedValve" IsEnabled="False" Margin="5,0,0,0" HorizontalAlignment="Right"></ToggleSwitch>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock  Width="110" VerticalAlignment="Center" Text="Cold feed valve"></TextBlock>
-                <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
+                <TextBlock Width="110" VerticalAlignment="Center" Text="Cold feed valve"></TextBlock>
+                <ToggleSwitch Name="coldFeedValve" IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="110" VerticalAlignment="Center" Text="Return valve"></TextBlock>
-                <ToggleSwitch IsEnabled="False" IsOn="True" Margin="5,0,0,0" HorizontalAlignment="Right"></ToggleSwitch>
+                <ToggleSwitch Name="returnValve" IsEnabled="False" IsOn="True" Margin="5,0,0,0" HorizontalAlignment="Right"></ToggleSwitch>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="110" VerticalAlignment="Center" Text="Coolant valve"></TextBlock>
-                <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
+                <ToggleSwitch Name="coolantValve" IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
             </StackPanel>
+            
             <TextBlock FontWeight="SemiBold" Margin="0,10,0,0" Text="Force pumps (On/Off)"></TextBlock>
             <StackPanel Orientation="Horizontal">
                 <TextBlock  Width="110"  VerticalAlignment="Center" Text="Pump hot"></TextBlock>
@@ -53,6 +44,7 @@
                 <TextBlock  Width="110" VerticalAlignment="Center" Text="Pump cold"></TextBlock>
                 <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
             </StackPanel>
+            
             <TextBlock FontWeight="SemiBold" Margin="0,10,0,0" Text="Available heating bars (On/Off)"></TextBlock>
             <StackPanel Orientation="Horizontal">
                 <TextBlock  Width="110"  VerticalAlignment="Center" Text="Bar 1"></TextBlock>
@@ -88,58 +80,61 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Margin='10,10,0,0'>
-            <TextBlock FontWeight="SemiBold" Text="Temperature (C) will work soon"></TextBlock>
+        <StackPanel Grid.Column="1" Margin='5,10,0,0'>
+            <TextBlock Name="tempHeaderText" FontWeight="SemiBold" Text="Temperature (C)"></TextBlock>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Hot tank"></TextBlock>
-                <TextBox IsEnabled="False" Text="100"></TextBox>
+                <TextBox Name="hotTankTemp" IsEnabled="False" Text="-" Width="30"></TextBox>
             </StackPanel>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Cold tank"></TextBlock>
-                <TextBox IsEnabled="False" Text="100"></TextBox>
+                <TextBox Name="coldTankTemp" IsEnabled="False" Text="-" Width="40"></TextBox>
             </StackPanel>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Return valve"></TextBlock>
-                <TextBox IsEnabled="False" Text="100"></TextBox>
+                <TextBox Name="returnValveTemp" IsEnabled="False" Text="-" Width="50"></TextBox>
             </StackPanel>
-            <TextBlock Margin="5,5,0,0" Text="Buffer tank"></TextBlock>
+
+            <TextBlock FontWeight="SemiBold" Margin="5,10,0,0" Text="Buffer tank"></TextBlock>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Oil hot side"></TextBlock>
-                <TextBox IsEnabled="False" Text="100"></TextBox>
+                <TextBox Name="oilHotSideTemp" IsEnabled="False" Text="100"></TextBox>
             </StackPanel>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Oil middle"></TextBlock>
-                <TextBox IsEnabled="False" Text="100"></TextBox>
+                <TextBox Name="oilMiddleTemp" IsEnabled="False" Text="100"></TextBox>
             </StackPanel>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Oil cold side"></TextBlock>
-                <TextBox IsEnabled="False" Text="100"></TextBox>
+                <TextBox Name="oilColdSideTemp" IsEnabled="False" Text="100"></TextBox>
             </StackPanel>
-            <TextBlock Margin="5,5,0,0" Text="Heating cartridge"></TextBlock>
+
+            <TextBlock FontWeight="SemiBold" Margin="5,10,0,0" Text="Heating cartridge"></TextBlock>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Oil inlet"></TextBlock>
-                <TextBox IsEnabled="False" Text="100"></TextBox>
+                <TextBox Name="oilInletTemp" IsEnabled="False" Text="100"></TextBox>
             </StackPanel>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Oil outlet"></TextBlock>
-                <TextBox IsEnabled="False" Text="100"></TextBox>
+                <TextBox Name="oilOutletTemp" IsEnabled="False" Text="100"></TextBox>
             </StackPanel>
-            <TextBlock Margin="5,5,0,0" Text="Heat exchanger cartridge"></TextBlock>
+            
+            <TextBlock FontWeight="SemiBold" Margin="5,10,0,0" Text="Heat exchanger cartridge"></TextBlock>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Oil inlet"></TextBlock>
-                <TextBox IsEnabled="False" Text="100"></TextBox>
+                <TextBox Name="oilExchangeInletTemp" IsEnabled="False" Text="100"></TextBox>
             </StackPanel>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Oil outlet"></TextBlock>
-                <TextBox IsEnabled="False" Text="100"></TextBox>
+                <TextBox Name="oilExchangeOutletTemp" IsEnabled="False" Text="100"></TextBox>
             </StackPanel>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Coolant water inlet"></TextBlock>
-                <TextBox IsEnabled="False" Text="100"></TextBox>
+                <TextBox Name="coolantWaterExchangeInletTemp" IsEnabled="False" Text="100"></TextBox>
             </StackPanel>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Coolant water outlet"></TextBlock>
-                <TextBox IsEnabled="False" Text="100"></TextBox>
+                <TextBox Name="coolantWaterExchangeOutletTemp" IsEnabled="False" Text="100"></TextBox>
             </StackPanel>
         </StackPanel>
 
@@ -147,7 +142,7 @@
             <TextBlock FontWeight="SemiBold" Text="Flow (lpm)"></TextBlock>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Coolant water"></TextBlock>
-                <TextBox IsEnabled="False" Text="55"></TextBox>
+                <TextBox Name="CoolantWater" IsEnabled="False" Text="55"></TextBox>
             </StackPanel>
             <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Heat transfer oil"></TextBlock>
@@ -192,28 +187,28 @@
         <StackPanel Grid.Column="3" Margin='20,0,0,0' -->
             <Line Stroke="#FF4D4D4D" StrokeThickness="3" Height="5"/>
             <TextBlock Margin="0,20,0,0" FontWeight="SemiBold" Text="Current (A)"></TextBlock>
-            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+            <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Heating bars Phase1"></TextBlock>
                 <TextBox IsEnabled="False" Text="22"></TextBox>
             </StackPanel>
-            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+            <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Heating bars Phase2"></TextBlock>
                 <TextBox IsEnabled="False" Text="22"></TextBox>
             </StackPanel>
-            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+            <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Heating bars Phase3"></TextBlock>
                 <TextBox IsEnabled="False" Text="22"></TextBox>
             </StackPanel>
             <TextBlock FontWeight="SemiBold" Text="Voltage (On/Off)"></TextBlock>
-            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+            <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Electric Phase L1"></TextBlock>
                 <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
             </StackPanel>
-            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+            <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Electric Phase L2"></TextBlock>
                 <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
             </StackPanel>
-            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+            <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Width="140" Text="Electric Phase L3"></TextBlock>
                 <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
             </StackPanel>
@@ -222,8 +217,8 @@
 
         <StackPanel Grid.Column="3" Margin="5,10,0,5" >
 
-            <sfgrid:SfDataGrid x:Name="LogGrid"  Height='800' HeaderRowHeight="30" RowHeight="25" AutoGenerateColumns="False"
-                               ItemsSource="{Binding logMessages}" >
+            <sfgrid:SfDataGrid x:Name="LogGrid"  Height='800' HeaderRowHeight="30" RowHeight="25" 
+                               AutoGenerateColumns="False" ItemsSource="{Binding logMessages}">
 
                 <sfgrid:SfDataGrid.HeaderStyle >
                     <Style  TargetType="sfgrid:GridHeaderCellControl">
@@ -242,7 +237,7 @@
                         </sfgrid:GridTextColumn.CellStyle>
                     </sfgrid:GridTextColumn>
 
-                    <sfgrid:GridNumericColumn MappingName="prio"  Width="70" AllowSorting="False" AllowFiltering="False">
+                    <sfgrid:GridNumericColumn MappingName="prio"  Width="70" AllowSorting="True" AllowFiltering="True">
                         <sfgrid:GridNumericColumn.CellStyle>
                             <Style TargetType="sfgrid:GridCell">
                                 <Setter Property="FontSize" Value="12" />
@@ -250,7 +245,7 @@
                         </sfgrid:GridNumericColumn.CellStyle>
                     </sfgrid:GridNumericColumn>
 
-                    <sfgrid:GridTextColumn MappingName="message" ColumnSizer="Star" AllowSorting="False" AllowFiltering="False">
+                    <sfgrid:GridTextColumn MappingName="message" ColumnSizer="Star" AllowSorting="True" AllowFiltering="True">
                         <sfgrid:GridTextColumn.CellStyle>
                             <Style TargetType="sfgrid:GridCell">
                                 <Setter Property="FontSize" Value="12" />

@@ -26,7 +26,7 @@ namespace DemoPrototype
     {
         private ThreadPoolTimer timer;
 
-        private const int timer_tick_period = 500;
+        private const int timer_tick_period = 667;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code

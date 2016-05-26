@@ -30,6 +30,8 @@ namespace DemoPrototype
     {
         private int prevRunModeSelected = -1; // First time or
 
+        private LineChartViewModel chartModel;
+
        // private Brush OrgTuneChartBrush;
        // private SolidColorBrush FreezeBrush;
 
@@ -37,11 +39,37 @@ namespace DemoPrototype
 
         public OperatorPage()
         {
+            // Create oservable for syncfusion prívate instance of o LineChartViewModel
+
+           //  this.chartModel = new LineChartViewModel();
+
             this.Loaded += MaintenancePage_Loaded;
             this.Unloaded += MaintenancePage_Unloaded;
 
+            // Init xaml
             this.InitializeComponent();
+
+            ShowProgress();
+
             this.Name = "OperatorPage";
+
+            /* test
+            try
+            {
+                // Connect Datacontest to chartModel
+                mainGrid.DataContext = chartModel;
+
+                // If power values are existing  return all 30 last
+                var powers = Data.Updater.GetAllPowerValues();
+                chartModel.SetNewValues(powers, 0);
+
+                //toDoDbg.Text = ok;
+            }
+            catch (Exception e)
+            {
+                //toDoDbg.Text = e.Message;
+            }
+            */
 
             foreach (string mode in GlobalAppSettings.RunningModeStrings)
             {
@@ -160,7 +188,19 @@ namespace DemoPrototype
         {
             dTimer = new DispatcherTimer();
             dTimer.Tick += UpdateTick;
-            dTimer.Interval = new TimeSpan(0, 0, 0, 1, 0); // milliseconds
+            dTimer.Interval = new TimeSpan(0, 0, 0, 1, 0); //1 second
+        }
+
+        private void ShowProgress()
+        {
+            mainGridProgresRing.IsActive = false;
+            mainGridProgresRing.IsEnabled = false;
+        }
+
+        private void HideProgress()
+        {
+            mainGridProgresRing.IsActive = false;
+            mainGridProgresRing.IsEnabled = false;
         }
 
         void UpdateTick(object sender, object e)
@@ -168,8 +208,15 @@ namespace DemoPrototype
             AOUDataTypes.HT_StateType mode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
             AOUDataTypes.UI_Buttons buttons = new AOUDataTypes.UI_Buttons();
 
+            //Data.Updater.UpdateInputData(mainGrid.DataContext);
             Data.Updater.UpdateInputData(mainGrid.DataContext);
-
+/*
+            var newValues = Data.Updater.GetNextPowerValues();
+            if (newValues.Count > 0)
+            {
+                HideProgress();
+            }
+            */
             //update textboxes
             SetHotTankTempText();
             SetColdTankTempText();

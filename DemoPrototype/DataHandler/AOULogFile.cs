@@ -20,6 +20,18 @@ namespace DemoPrototype
             curAOULogFileName = "AOULog-" + startTime.ToString("yyMMdd-hhmmss") + ".txt";
         }
 
+        public AOULogFile(DateTime StartTime, string name)
+        {
+            aouLogFile = new TextFile();
+            this.startTime = StartTime;
+            curAOULogFileName = name + "-" + startTime.ToString("yyMMdd-hhmmss") + ".txt";
+        }
+
+        public void AddLog(long time, string text)
+        {
+            aouLogFile.AddToFile(subPath, curAOULogFileName, ">" + time + "," + text);
+        }
+
         public void AddLogMessages(AOULogMessage[] logs)
         {
             var newTime = DateTime.Now;

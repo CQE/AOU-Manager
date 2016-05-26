@@ -100,7 +100,9 @@ namespace DemoPrototype
 
         void UpdateTick(object sender, object e)
         {
+            /*
             Data.Updater.UpdateInputData(CalibrateGrid.DataContext);
+            */
             if (doStepTimer > 0)
             {
                 doStepTimer--;

@@ -17,6 +17,8 @@ namespace DemoPrototype
 
         private AOURouter dataRouter = null;
 
+        private bool isRecalculated = false;
+
         private const int defaultTimeBetween = 1000;
         private const int defaultPowerCount = 30;
 
@@ -50,6 +52,11 @@ namespace DemoPrototype
         {
             get { return lastPowerIndex; }
             private set { lastPowerIndex = value; }
+        }
+
+        public bool IsChartFilled()
+        {
+            return LastPowerIndex < PowerCount-1;
         }
 
         public DataUpdater()
@@ -352,57 +359,65 @@ namespace DemoPrototype
             return false;
         }
 
-        /* old solution */
-        public void UpdateInputData(object dataContext)
-        {
-            if (dataContext != null && dataRouter.IsConnected)
-            {
-                var dc = (LineChartViewModel)dataContext;
 
+        public List<Power> GetNewPowerValues()
+        {
+            var values = new List<Power>();
+
+            // Must be connected
+            if (dataRouter.IsConnected && dataRouter.NewPowerValuesAvailable > 0)
+            {
                 try
                 {
-                    if (dc.power.Count == 0)
+                    values = dataRouter.GetLastNewPowerValues();
+                    if (values.Count > 0)
                     {
-                        // If the first time then get all last values
-                        var values = dataRouter.GetLastPowerValues(powerCount, out lastPowerIndex);
-                        if (values.Count > 0 && lastPowerIndex >= 0)
-  
-                        // if (lastPowerIndex > 2)
-                        {
-                            dc.SetValues(values);
-                            lastPower = dc.power[lastPowerIndex];
-                            // AddDebugLogLine("DataUpdater", "UpdateInputData.start.first", lastPower.ToString());
-                            // AddDebugLogLine("DataUpdater", "UpdateInputData.start.last", lastPower.ToString());
-                        }
+                        lastPower = values.Last();
+                        lastPowerIndex = powerCount-1;
                     }
-                    else if (dataRouter.NewPowerValuesAvailable > 0)
+                }
+                catch (Exception e)
+                {
+                    CreateLogMessage("DataUpdater.GetAllPowerValues", e.Message);
+                }
+            }
+            return values;
+        }
+
+        public void UpdatePowerValues(LineChartViewModel model)
+        {
+            if (dataRouter.IsConnected)
+            {
+                try
+                {
+                    if (dataRouter.NewPowerValuesAvailable > 0)
                     {
                         List<Power> powerList = dataRouter.GetLastNewPowerValues();
                         if (powerList.Count > 0)
                         {
                             lastPower = powerList.Last();
+                            int firstNullIndex = AOURouter.GetFirstNullIndex(model.power.ToList());
+                            lastPowerIndex = firstNullIndex + powerList.Count - 1;
 
-                            int firstNullIndex = AOURouter.GetFirstNullIndex(dc.power.ToList());
-                            if (firstNullIndex > -1)
+                            if (isRecalculated || firstNullIndex < 2)
                             {
-                                lastPowerIndex = dc.SetNewValues(powerList, firstNullIndex);
-
-                                if ((lastPowerIndex > 1 && lastPowerIndex < 6) && lastPowerIndex < (dc.power.Count - 1)) // Minimum number of real values to calculate time between
+                                for (int i = 0; i < powerList.Count; i++)
                                 {
-                                    firstNullIndex = AOURouter.GetFirstNullIndex(dc.power.ToList());
-                                    var newPowerList = dataRouter.RecalcTime(dc.power.ToList(), firstNullIndex, timeBetween);
-                                    for (int i = firstNullIndex; i < dc.power.Count; i++)
+                                    int pos = firstNullIndex + i;
+                                    if (pos < model.power.Count)
                                     {
-                                        dc.power[i] = newPowerList[i];
-                                        // AddDebugLogLine("DataUpdater", "UpdateInputData.replace:"+i, dc.power[i].ToString());
+                                        model.power[pos] = powerList[i];
                                     }
                                 }
                             }
                             else
                             {
-                                // Normal handling. No dummy values. Add new values and delete first values
-                                dc.UpdateNewValues(powerList);
-                                lastPowerIndex = dc.power.Count - 1;
+                                var newPowerList = dataRouter.RecalcTime(model.power.ToList(), firstNullIndex, timeBetween);
+                                for (int i = firstNullIndex; i < model.power.Count; i++)
+                                {
+                                    model.power[i] = newPowerList[i];
+                                }
+                                isRecalculated = true;
                             }
                         }
                     }
@@ -412,17 +427,7 @@ namespace DemoPrototype
                     CreateLogMessage("DataUpdater.UpdateInputData", e.Message);
                 }
             }
-        }
-
-
-        public List<Power> GetNextPowerValues()
-        {
-            var values = new List<Power>();
-            /*
-            ToDo. No working in realwease
-            */
-            return values;
-        }
+       }
 
         public List<Power> GetAllPowerValues()
         {

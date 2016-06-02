@@ -41,7 +41,7 @@ namespace DemoPrototype
         {
             // Create oservable for syncfusion prívate instance of o LineChartViewModel
 
-           //  this.chartModel = new LineChartViewModel();
+           this.chartModel = new LineChartViewModel();
 
             this.Loaded += MaintenancePage_Loaded;
             this.Unloaded += MaintenancePage_Unloaded;
@@ -53,7 +53,6 @@ namespace DemoPrototype
 
             this.Name = "OperatorPage";
 
-            /* test
             try
             {
                 // Connect Datacontest to chartModel
@@ -61,15 +60,18 @@ namespace DemoPrototype
 
                 // If power values are existing  return all 30 last
                 var powers = Data.Updater.GetAllPowerValues();
-                chartModel.SetNewValues(powers, 0);
+                if (Data.Updater.LastPowerIndex > 2)
+                {
+                    HideProgress();
+                    chartModel.SetValues(powers);
+                }
 
-                //toDoDbg.Text = ok;
             }
             catch (Exception e)
             {
-                //toDoDbg.Text = e.Message;
+                Data.Updater.CreateLogMessage("OperatorPage", "chartModel - " + e.Message);
             }
-            */
+           
 
             foreach (string mode in GlobalAppSettings.RunningModeStrings)
             {
@@ -193,8 +195,8 @@ namespace DemoPrototype
 
         private void ShowProgress()
         {
-            mainGridProgresRing.IsActive = false;
-            mainGridProgresRing.IsEnabled = false;
+            mainGridProgresRing.IsActive = true;
+            mainGridProgresRing.IsEnabled = true;
         }
 
         private void HideProgress()
@@ -208,15 +210,29 @@ namespace DemoPrototype
             AOUDataTypes.HT_StateType mode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
             AOUDataTypes.UI_Buttons buttons = new AOUDataTypes.UI_Buttons();
 
-            //Data.Updater.UpdateInputData(mainGrid.DataContext);
-            Data.Updater.UpdateInputData(mainGrid.DataContext);
-/*
-            var newValues = Data.Updater.GetNextPowerValues();
-            if (newValues.Count > 0)
+            if (chartModel.power.Count == 0)
             {
-                HideProgress();
+                var powers = Data.Updater.GetAllPowerValues();
+                if (Data.Updater.LastPowerIndex > 2)
+                {
+                    chartModel.SetValues(powers);
+                    HideProgress();
+                }
+
             }
-            */
+            else if (Data.Updater.IsChartFilled()) // special uppdating
+            {
+                Data.Updater.UpdatePowerValues(chartModel);
+            }
+            else
+            {
+                var newValues = Data.Updater.GetNewPowerValues();
+                if (newValues.Count > 0)
+                {
+                    chartModel.UpdateNewValues(newValues);
+                }
+            }
+
             //update textboxes
             SetHotTankTempText();
             SetColdTankTempText();

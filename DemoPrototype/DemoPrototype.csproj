@@ -117,6 +117,7 @@
     <Compile Include="CalibratePage.xaml.cs">
       <DependentUpon>CalibratePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataHandler\AOUBackup.cs" />
     <Compile Include="DataHandler\AOUCalibrate.cs" />
     <Compile Include="DataHandler\AOUData.cs" />
     <Compile Include="DataHandler\AOUFileData.cs" />

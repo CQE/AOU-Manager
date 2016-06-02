@@ -27,6 +27,8 @@ namespace DemoPrototype
 
         private int doStepTimer = 0;
 
+        private LineChartViewModel chartModel;
+
         public CalibratePage()
         {
             this.Loaded += MaintenancePage_Loaded;
@@ -34,6 +36,26 @@ namespace DemoPrototype
 
             this.InitializeComponent();
             this.Name = "CalibratePage";
+
+            try
+            {
+                chartModel = new LineChartViewModel();
+                // Connect Datacontext to chartModel
+                CalibrateGrid.DataContext = chartModel;
+
+                // If power values are existing  return all 30 last
+                var powers = Data.Updater.GetAllPowerValues();
+                if (Data.Updater.LastPowerIndex > 2)
+                {
+                    // HideProgress();
+                    chartModel.SetValues(powers);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Data.Updater.CreateLogMessage("OperatorPage", "chartModel - " + e.Message);
+            }
 
             InitDispatcherTimer();
 
@@ -100,9 +122,30 @@ namespace DemoPrototype
 
         void UpdateTick(object sender, object e)
         {
-            /*
-            Data.Updater.UpdateInputData(CalibrateGrid.DataContext);
-            */
+            if (chartModel.power.Count == 0)
+            {
+                var powers = Data.Updater.GetAllPowerValues();
+                if (Data.Updater.LastPowerIndex > 2)
+                {
+                    chartModel.SetValues(powers);
+                    // HideProgress();
+                }
+
+            }
+            else if (Data.Updater.IsChartFilled()) // special uppdating
+            {
+                Data.Updater.UpdatePowerValues(chartModel);
+            }
+            else
+            {
+                var newValues = Data.Updater.GetNewPowerValues();
+                if (newValues.Count > 0)
+                {
+                    chartModel.UpdateNewValues(newValues);
+                }
+            }
+
+
             if (doStepTimer > 0)
             {
                 doStepTimer--;

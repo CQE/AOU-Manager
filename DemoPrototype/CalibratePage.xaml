@@ -32,10 +32,6 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Grid.DataContext>
-            <local:LineChartViewModel/>
-        </Grid.DataContext>
-
         <chart:SfChart  
             Header="Feed and Return delay timings (s)"
             Grid.Row="1"

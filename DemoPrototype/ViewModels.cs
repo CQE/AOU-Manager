@@ -58,7 +58,6 @@ namespace DemoPrototype
                     power[firstNullIndex + i] = powerList[i];
                 }
 
-                // Add new values and delete first values when max count of power values
                 for (int i = count; i < powerList.Count; i++)
                 {
                     power.Add(powerList[i]);
@@ -78,6 +77,7 @@ namespace DemoPrototype
         {
             try
             {
+                // Add new values and delete first values when max count of power values
                 for (int i = 0; i < powerList.Count; i++)
                 {
                     power.Add(powerList[i]);

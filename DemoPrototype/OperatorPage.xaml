@@ -139,10 +139,10 @@
                     <chart:TimeSpanAxis Name="OperatorDelayXAxis" ></chart:TimeSpanAxis>
                 </chart:SfChart.PrimaryAxis>
                 
-                <chart:SfChart.Behaviors>
+    <!--            <chart:SfChart.Behaviors>
                     <chart:ChartTrackBallBehavior LabelDisplayMode="NearestPoint" ></chart:ChartTrackBallBehavior>
                 </chart:SfChart.Behaviors>
-                <chart:SfChart.Legend>
+        -->        <chart:SfChart.Legend>
                     
                  <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Collapsed"/>
                 </chart:SfChart.Legend>
@@ -162,8 +162,8 @@
                     <chart:VerticalLineAnnotation  Stroke="Blue" StrokeThickness="2" CanDrag="True" ShowToolTip="True" ToolTipContent="Measure difference" Name="MouldingDelayVLine1"  DragCompleted="MouldingDelayVLine1_DragCompleted" CoordinateUnit="Pixel" X1="20"></chart:VerticalLineAnnotation>
                     <chart:VerticalLineAnnotation Stroke="Blue" StrokeThickness="2" CanDrag="True" ShowToolTip="True" ToolTipContent="Measure difference" Name="MouldingDelayVLine2" DragCompleted="MouldingDelayVLine2_DragCompleted" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
                 </chart:SfChart.Annotations>
-              <!--  <chart:FastLineSeries  Name="Series_Delay_TRetActual" LegendIcon="Diamond" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:FastLineSeries>
-                <chart:StepLineSeries Name="Series_Delay_TRetForecasted" LegendIcon="Diamond" Label="TRetForecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:StepLineSeries>
+             <chart:FastLineBitmapSeries  Name="Series_Delay_TRetActual" LegendIcon="Diamond" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+                <!--     <chart:StepLineSeries Name="Series_Delay_TRetForecasted" LegendIcon="Diamond" Label="TRetForecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:StepLineSeries>
           -->  </chart:SfChart>
             <!-- Make a textbox overlay the grid above-->
             <TextBox Name="PhaseDiffResult" Grid.Row="2" Background="Yellow" BorderThickness="0" Grid.Column="2" HorizontalAlignment="Center"  VerticalAlignment="Center" Text="Diff = 5"></TextBox>
@@ -180,10 +180,10 @@
             <chart:SfChart.PrimaryAxis>
                 <chart:TimeSpanAxis ></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
-                <chart:SfChart.Behaviors>
+ <!--               <chart:SfChart.Behaviors>
                     <chart:ChartTrackBallBehavior LabelDisplayMode="NearestPoint" ></chart:ChartTrackBallBehavior>
                 </chart:SfChart.Behaviors>
-                <chart:SfChart.SecondaryAxis>
+          -->      <chart:SfChart.SecondaryAxis>
                     <chart:NumericalAxis  StartRangeFromZero="False" Interval="20"  EnableAutoIntervalOnZooming="False">
                     <chart:NumericalAxis.StripLines>
                         <chart:ChartStripLine Name="HotSafeZone" Start="200" Width="25"  Background="PaleGreen"></chart:ChartStripLine>
@@ -209,19 +209,19 @@
              <chart:FastLineBitmapSeries Name="Series_TRetActual" LegendIcon="Diamond" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries Name="Series_THotTank" LegendIcon="Diamond" Label="THotTank"  XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries Name="Series_TColdTank" LegendIcon="Diamond" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank"  ItemsSource="{Binding power}"/>
-                <chart:FastLineBitmapSeries Name="Series_THotBuffer" LegendIcon="Diamond" Label="THotBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"/>
+        <!--        <chart:FastLineBitmapSeries Name="Series_THotBuffer" LegendIcon="Diamond" Label="THotBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries Name="Series_TMidBuffer" LegendIcon="Diamond" Label="TMidBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries Name="Series_TColdBuffer" LegendIcon="Diamond" Label="TColdBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"/>
-                <chart:StepLineSeries Name="Series_ValveFeedHot" LegendIcon="Circle" Label="ValveFeedHot"  XBindingPath="ElapsedTime" YBindingPath="ValveFeedHot" ItemsSource="{Binding power}"/>
+  -->    <!--          <chart:StepLineSeries Name="Series_ValveFeedHot" LegendIcon="Circle" Label="ValveFeedHot"  XBindingPath="ElapsedTime" YBindingPath="ValveFeedHot" ItemsSource="{Binding power}"/>
                 <chart:StepLineSeries Name="Series_ValveFeedCold" LegendIcon="Circle" Label="ValveFeedCold"   XBindingPath="ElapsedTime" YBindingPath="ValveFeedCold" ItemsSource="{Binding power}"/>
                 <chart:StepLineSeries Name="Series_ValveReturn" LegendIcon="Circle" Label="ValveReturn"   XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"/>
                 <chart:StepLineSeries Name="Series_ValveCoolant" LegendIcon="Circle" Label="ValveCoolant"   XBindingPath="ElapsedTime" YBindingPath="ValveCoolant" ItemsSource="{Binding power}"/>
-                <chart:FastLineBitmapSeries Name="Series_PowerHeating" LegendIcon="Diamond" Label="PowerHeating"   XBindingPath="ElapsedTime" YBindingPath="PowerHeating" ItemsSource="{Binding power}"/>
+        --> <!--       <chart:FastLineBitmapSeries Name="Series_PowerHeating" LegendIcon="Diamond" Label="PowerHeating"   XBindingPath="ElapsedTime" YBindingPath="PowerHeating" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries Name="Series_THeaterOilOut" LegendIcon="Diamond" Label="THeaterOilOut"  XBindingPath="ElapsedTime" YBindingPath="THeaterOilOut" ItemsSource="{Binding power}"/>
                 <chart:StepLineSeries Name="Series_TRetForecasted" LegendIcon="Diamond" Label="TRetForecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries/>
                 
-            </chart:SfChart>
+    -->        </chart:SfChart>
 
             <!-- overlaying Button for Export -->
             <Button Name="ButtonExportParameterChart" Content="Export" Grid.Row="15" Grid.Column="2" Margin="30,0,0,25" Click="ButtonExportParameterChart_Click" VerticalAlignment="Bottom" HorizontalAlignment="Left"></Button>
@@ -249,10 +249,10 @@
             Grid.RowSpan="6"
             Grid.ColumnSpan="2"
             Margin="30,10,0,0">
-                <chart:SfChart.Behaviors>
+  <!--              <chart:SfChart.Behaviors>
                     <chart:ChartTrackBallBehavior></chart:ChartTrackBallBehavior>
                 </chart:SfChart.Behaviors>
-                <chart:SfChart.PrimaryAxis>
+       -->         <chart:SfChart.PrimaryAxis>
                 <chart:TimeSpanAxis ShowTrackBallInfo="True" ShowGridLines="True" EnableAutoIntervalOnZooming="False"></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
@@ -277,10 +277,10 @@
                 <chart:SfChart.PrimaryAxis>
                     <chart:TimeSpanAxis ></chart:TimeSpanAxis>
                 </chart:SfChart.PrimaryAxis>
-                <chart:SfChart.Behaviors>
+    <!--            <chart:SfChart.Behaviors>
                     <chart:ChartTrackBallBehavior LabelDisplayMode="NearestPoint" ></chart:ChartTrackBallBehavior>
                 </chart:SfChart.Behaviors>
-                <chart:SfChart.Legend>
+     -->           <chart:SfChart.Legend>
                     <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Collapsed"/>
                 </chart:SfChart.Legend>
                 <chart:SfChart.SecondaryAxis>
@@ -300,10 +300,10 @@
                 </chart:SfChart.Annotations>
 
                 <!-- Want to show a trendline for the mid buffer temperature could not find howto -->
-          <!--      <chart:FastLineSeries Name="Series_VB_THotBuffer" LegendIcon="InvertedTriangle" Label="THotBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:FastLineSeries>
-                <chart:FastLineSeries Name="Series_VB_TMidBuffer" LegendIcon="Diamond" Label="TMidBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:FastLineSeries>
+                <chart:FastLineSeries Name="Series_VB_THotBuffer" LegendIcon="InvertedTriangle" Label="THotBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:FastLineSeries>
+       <!--         <chart:FastLineSeries Name="Series_VB_TMidBuffer" LegendIcon="Diamond" Label="TMidBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:FastLineSeries>
                 <chart:FastLineSeries Name="Series_VB_TColdBuffer" LegendIcon="Triangle" Label="TColdBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:FastLineSeries>
-          -->  </chart:SfChart>
+     -->       </chart:SfChart>
 
             <!-- energy balance chart -->
             <chart:SfChart  
@@ -334,11 +334,11 @@
                     <chart:HorizontalLineAnnotation Name="HLineSet_ThresholdCold2Hot" ShowToolTip="True"  Stroke="DarkBlue" StrokeThickness="2" CanDrag="True"  DragCompleted="HLineSet_ThresholdCold2Hot_Dragged" CoordinateUnit="Axis"></chart:HorizontalLineAnnotation>
                 </chart:SfChart.Annotations>
                 <!-- Return Valve not yet simulated showing another curve -->
-                <chart:FastLineSeries Name="Series_EB_TRetActual" LegendIcon="Diamond"  Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:FastLineSeries>
-                <chart:FastLineSeries Name="Series_EB_THotTank" LegendIcon="Diamond"  Label="THotTank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:FastLineSeries>
-                <chart:FastLineSeries Name="Series_EB_TColdTank" LegendIcon="Diamond"  Label="TColdTank" XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:FastLineSeries>
-                <chart:StepLineSeries Name="Series_EB_ValveReturn" LegendIcon="Circle"  Label="ValveReturn" XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"></chart:StepLineSeries>
-           </chart:SfChart>
+     <!--           <chart:FastLineSeries Name="Series_EB_TRetActual" LegendIcon="Diamond"  Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:FastLineSeries>
+        -->        <chart:FastLineBitmapSeries Name="Series_EB_THotTank" LegendIcon="Diamond"  Label="THotTank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+                <chart:FastLineBitmapSeries Name="Series_EB_TColdTank" LegendIcon="Diamond"  Label="TColdTank" XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+        <!--        <chart:StepLineSeries Name="Series_EB_ValveReturn" LegendIcon="Circle"  Label="ValveReturn" XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"></chart:StepLineSeries>
+ -->          </chart:SfChart>
         </Grid>
 
     </ScrollViewer>

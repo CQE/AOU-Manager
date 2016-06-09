@@ -60,7 +60,6 @@ namespace DemoPrototype
         }
 
         //----------------------------------------------------------------------------------------------------------------------------
-
         // The same as double.IsNaN for UInt16
         public const UInt16 UInt16_NaN = UInt16.MaxValue;
 
@@ -86,22 +85,5 @@ namespace DemoPrototype
         {
             return (long)(time_hours * 36000 + time_sek_x_10) * 100;
         }
-
-        /* Old ms format
-        public const long msInWeek = 60000 * 10080; // 1 week = 7*24*60 = 10 080 min
-
-        public static void TimeMsToAOUModelTime(long time_ms, out UInt16 time_minutes_of_week, out UInt16 time_ms_of_minute)
-        {
-            time_ms_of_minute = (UInt16)(time_ms % 60000); // 1 min = 60 000 ms
-            time_minutes_of_week = (UInt16)((time_ms % msInWeek) / 60000);
-            
-        }
-
-        public static long AOUModelTimeToTimeMs(UInt16 time_minutes_of_week, UInt16 time_ms_of_minute)
-        {
-            return time_minutes_of_week * 60000 + time_ms_of_minute;
-        }
-        */
-
     }
 }

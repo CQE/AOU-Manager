@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.ApplicationModel;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
@@ -57,6 +58,9 @@ namespace DemoPrototype
             string version = GetAppVersion();
 
             applicationView.Title = "AOU version " + version;
+            
+            // Set High prio for menu buttons
+            Dispatcher.CurrentPriority = CoreDispatcherPriority.High;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

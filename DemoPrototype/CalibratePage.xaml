@@ -51,20 +51,20 @@
             <chart:SfChart.Legend>
                 <chart:ChartLegend DockPosition="Floating" LegendPosition="Inside" CheckBoxVisibility="Collapsed"/>
             </chart:SfChart.Legend>
-            <chart:SfChart.Behaviors>
+       <!--     <chart:SfChart.Behaviors>
                 <chart:ChartTrackBallBehavior></chart:ChartTrackBallBehavior>
             </chart:SfChart.Behaviors>
-            <chart:SfChart.Annotations>
+        -->    <chart:SfChart.Annotations>
                 <chart:TextAnnotation X1="50" Y1="150" CoordinateUnit="Pixel" FontSize="16" FontWeight="ExtraLight" Text="Double-click to freeze/run"></chart:TextAnnotation>
                 <chart:VerticalLineAnnotation Name="CalibratePhaseVLine1"  StrokeThickness="2" CanDrag="True"  DragCompleted="CalibratePhaseVLine1_DragCompleted"  Width="2" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
                 <chart:VerticalLineAnnotation Name="CalibratePhaseVLine2" StrokeThickness="2" CanDrag="True"  DragCompleted="CalibratePhaseVLine2_DragCompleted" CoordinateUnit="Pixel" X1="30"></chart:VerticalLineAnnotation>
             </chart:SfChart.Annotations>
             
-         <!--   <chart:FastLineSeries Name="Series_Delay_TRetActual" LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:FastLineSeries>
+   <!--         <chart:FastLineSeries Name="Series_Delay_TRetActual" LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:FastLineSeries>
             <chart:StepLineSeries Name="Series_Delay_TRetForecasted" LegendIcon="Circle" Label="TRetForecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:StepLineSeries>
-            <chart:FastLineSeries Name="Series_Delay_THotTank" LegendIcon="Circle" Label="THotTank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:FastLineSeries>
-            <chart:FastLineSeries Name="Series_Delay_TColdTank" LegendIcon="Circle" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:FastLineSeries>
-      -->  </chart:SfChart>
+      -->      <chart:FastLineBitmapSeries Name="Series_Delay_THotTank" LegendIcon="Circle" Label="THotTank" XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+            <chart:FastLineBitmapSeries Name="Series_Delay_TColdTank" LegendIcon="Circle" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+        </chart:SfChart>
         <!-- Use overlay textbox for showing diff result -->
         <TextBox Grid.Column="0" Grid.Row="3" Name="CalibratePhaseDiffResult" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="2.31 s"></TextBox>
 
@@ -125,10 +125,10 @@
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
             Margin="20,10,0,0">
-            <chart:SfChart.Behaviors>
+ <!--           <chart:SfChart.Behaviors>
                 <chart:ChartTrackBallBehavior></chart:ChartTrackBallBehavior>
             </chart:SfChart.Behaviors>
-            <chart:SfChart.PrimaryAxis>
+        -->    <chart:SfChart.PrimaryAxis>
                 <chart:TimeSpanAxis ></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
@@ -143,11 +143,11 @@
                 <chart:HorizontalLineAnnotation Name="ColdToHotLineAnnotation"  ShowLine="True" ShowToolTip="True"  CanDrag="True" DragCompleted="ColdToHotLineAnnotation_DragCompleted"  Width="2" CoordinateUnit="Axis" Y1="25"></chart:HorizontalLineAnnotation>
                 <chart:HorizontalLineAnnotation Name="HotToColdLineAnnotation" CanDrag="True"  ShowToolTip="True"  DragCompleted="HotToColdLineAnnotation_DragCompleted" Width="3" CoordinateUnit="Axis" Y1="215"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
-            <chart:FastLineSeries Name="Series_EB_THotTank" LegendIcon="Circle" Label="THotTank"  XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:FastLineSeries>
-            <chart:FastLineSeries Name="Series_EB_TRetActual" LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:FastLineSeries>
-            <chart:FastLineSeries Name="Series_EB_TColdTank" LegendIcon="Circle" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:FastLineSeries>
-            <chart:StepLineSeries Name="Series_EB_ValveReturn" LegendIcon="Circle"  Label="ValveReturn" XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"></chart:StepLineSeries>
-
+            <chart:FastLineBitmapSeries Name="Series_EB_THotTank" LegendIcon="Circle" Label="THotTank"  XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+   <!--         <chart:FastLineSeries Name="Series_EB_TRetActual" LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:FastLineSeries>
+   -->         <chart:FastLineBitmapSeries Name="Series_EB_TColdTank" LegendIcon="Circle" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+     <!--       <chart:StepLineSeries Name="Series_EB_ValveReturn" LegendIcon="Circle"  Label="ValveReturn" XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"></chart:StepLineSeries>
+-->
         </chart:SfChart>
         <!-- Use overlay textbox for showing diff result         <TextBox Grid.Column="0" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="42"></TextBox>
         -->
@@ -170,10 +170,10 @@
             Grid.RowSpan="3"
             Grid.ColumnSpan="4"
             Margin="10,10,0,0">
-            <chart:SfChart.Behaviors>
+  <!--          <chart:SfChart.Behaviors>
                 <chart:ChartTrackBallBehavior></chart:ChartTrackBallBehavior>
             </chart:SfChart.Behaviors>
-            <chart:SfChart.PrimaryAxis>
+      -->      <chart:SfChart.PrimaryAxis>
                 <chart:TimeSpanAxis ></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
@@ -192,10 +192,10 @@
                 <chart:HorizontalLineAnnotation Name="TBufColdHLine" CanDrag="True"  ShowAxisLabel="True" DragCompleted="TBufColdHLine_DragCompleted" ShowToolTip="True"   CoordinateUnit="Axis"></chart:HorizontalLineAnnotation>
             </chart:SfChart.Annotations>
 
-  <!--          <chart:FastLineSeries Name="Series_VB_THotBuffer" LegendIcon="Circle" Label="THotBuf" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:FastLineSeries>
-            <chart:FastLineSeries Name="Series_VB_TMidBuffer" LegendIcon="Circle" Label="TMidBuf" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:FastLineSeries>
+            <chart:FastLineBitmapSeries Name="Series_VB_THotBuffer" LegendIcon="Circle" Label="THotBuf" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
+   <!--         <chart:FastLineSeries Name="Series_VB_TMidBuffer" LegendIcon="Circle" Label="TMidBuf" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"></chart:FastLineSeries>
             <chart:FastLineSeries Name="Series_VB_TColdBuffer" LegendIcon="Circle" Label="TColdBuf" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:FastLineSeries>
-    -->    </chart:SfChart>
+--></chart:SfChart>
       
         <TextBlock Margin="30,0,0,0" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="9" VerticalAlignment="Center" Text="Buffertank mid threshold value:"></TextBlock>
         <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="9">

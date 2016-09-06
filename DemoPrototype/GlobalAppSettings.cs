@@ -204,6 +204,8 @@ namespace DemoPrototype
         public static GlobalFeedTimes globFeedTimes;
         public static GlobalValveChartValues globValveChartValues;
 
+        public static GlobalTestSettings globTestSettings; // Only for testing performance
+
         // Important to call this in MainPage constructor. Program crasch If not 
         public static void Init()
         {
@@ -246,9 +248,20 @@ namespace DemoPrototype
             globValveChartValues.CoolantValveLow = 36;
             globValveChartValues.CoolantValveHi = 39;
 
-    }
 
-    public static void Save()
+            globTestSettings = new GlobalTestSettings();
+            globTestSettings.ChartParameterMonitoringEnabled = true;
+            globTestSettings.EnergyBalanceChartEnabled = true;
+            globTestSettings.MyTuneChartEnabled = true;
+            globTestSettings.StateChartEnabled = true;
+            globTestSettings.VolumeBalanceChartEnabled = true;
+            globTestSettings.TimeLoggingEnabled = true;
+
+            globTestSettings.DataTimeSpanTicks = 0;
+
+        }
+
+        public static void Save()
         {
             //  To do in future, Maybe for uniqe parameters as mould
         }
@@ -257,179 +270,234 @@ namespace DemoPrototype
         {
             //  To do in future, Maybe for uniqe parameters
         }
-    }
 
-    public class GlobalThresHolds
-    {
-        private int _thresholdHot2Cold;
-        private int _ThresholdCold2Hot;
-        private int _ThresholdHotTankLowLimit;
-        private int _ThresholdColdTankUpperLimit;
-        private int _ThresholdHotTankAlarm;
-        private int _ThresholdColdTankAlarm;
-        private int _ThresholdMidTankAlarm;
-
-        public int ThresholdHot2Cold
+        public class GlobalThresHolds
         {
-            get { return _thresholdHot2Cold; }
-            set { _thresholdHot2Cold = value; }
+            private int _thresholdHot2Cold;
+            private int _ThresholdCold2Hot;
+            private int _ThresholdHotTankLowLimit;
+            private int _ThresholdColdTankUpperLimit;
+            private int _ThresholdHotTankAlarm;
+            private int _ThresholdColdTankAlarm;
+            private int _ThresholdMidTankAlarm;
+
+            public int ThresholdHot2Cold
+            {
+                get { return _thresholdHot2Cold; }
+                set { _thresholdHot2Cold = value; }
+            }
+
+            public int ThresholdCold2Hot
+            {
+                get { return _ThresholdCold2Hot; }
+                set { _ThresholdCold2Hot = value; }
+            }
+
+            public int ThresholdHotTankLowLimit
+            {
+                get { return _ThresholdHotTankLowLimit; }
+                set { _ThresholdHotTankLowLimit = value; }
+            }
+
+            public int ThresholdColdTankUpperLimit
+            {
+                get { return _ThresholdColdTankUpperLimit; }
+                set { _ThresholdColdTankUpperLimit = value; }
+            }
+
+            /* Buffer tank */
+            public int ThresholdColdTankBuffAlarmLimit
+            {
+                get { return _ThresholdColdTankAlarm; }
+                set { _ThresholdColdTankAlarm = value; }
+            }
+
+            public int ThresholdHotBuffTankAlarmLimit
+            {
+                get { return _ThresholdHotTankAlarm; }
+                set { _ThresholdHotTankAlarm = value; }
+            }
+
+            public int ThresholdMidBuffTankAlarmLimit
+            {
+                get { return _ThresholdMidTankAlarm; }
+                set { _ThresholdMidTankAlarm = value; }
+            }
+
         }
 
-        public int ThresholdCold2Hot
+        public class GlobalDelayTimes
         {
-            get { return _ThresholdCold2Hot; }
-            set { _ThresholdCold2Hot = value; }
+            private int _hotTune;
+            private int _hotCalibrate;
+            private int _coldTune;
+            private int _coldCalibrate;
+
+            public int HotTune
+            {
+                get { return _hotTune;}
+                set { _hotTune = value; }
+            }
+            public int HotCalibrate
+            {
+                get { return _hotCalibrate; }
+                set { _hotCalibrate = value; }
+            }
+            public int ColdTune
+            {
+                get { return _coldTune; }
+                set { _coldTune = value; }
+            }
+            public int ColdCalibrate
+            {
+                get { return _coldCalibrate; }
+                set { _coldCalibrate = value; }
+            }
         }
 
-        public int ThresholdHotTankLowLimit
-        {
-            get { return _ThresholdHotTankLowLimit; }
-            set { _ThresholdHotTankLowLimit = value; }
-        }
+        public class GlobalValveChartValues
+        { 
+            private int _hotValveLow;
+            private int _hotValveHi;
 
-        public int ThresholdColdTankUpperLimit
-        {
-            get { return _ThresholdColdTankUpperLimit; }
-            set { _ThresholdColdTankUpperLimit = value; }
-        }
+            private int _coldValveLow;
+            private int _coldValveHi;
 
-        /* Buffer tank */
-        public int ThresholdColdTankBuffAlarmLimit
-        {
-            get { return _ThresholdColdTankAlarm; }
-            set { _ThresholdColdTankAlarm = value; }
-        }
+            private int _returnValveLow;
+            private int _returnValveHi;
 
-        public int ThresholdHotBuffTankAlarmLimit
-        {
-            get { return _ThresholdHotTankAlarm; }
-            set { _ThresholdHotTankAlarm = value; }
-        }
-
-        public int ThresholdMidBuffTankAlarmLimit
-        {
-            get { return _ThresholdMidTankAlarm; }
-            set { _ThresholdMidTankAlarm = value; }
-        }
-
-    }
-
-    public class GlobalDelayTimes
-    {
-        private int _hotTune;
-        private int _hotCalibrate;
-        private int _coldTune;
-        private int _coldCalibrate;
-
-        public int HotTune
-        {
-            get { return _hotTune;}
-            set { _hotTune = value; }
-        }
-        public int HotCalibrate
-        {
-            get { return _hotCalibrate; }
-            set { _hotCalibrate = value; }
-        }
-        public int ColdTune
-        {
-            get { return _coldTune; }
-            set { _coldTune = value; }
-        }
-        public int ColdCalibrate
-        {
-            get { return _coldCalibrate; }
-            set { _coldCalibrate = value; }
-        }
-    }
-
-    public class GlobalValveChartValues
-    { 
-        private int _hotValveLow;
-        private int _hotValveHi;
-
-        private int _coldValveLow;
-        private int _coldValveHi;
-
-        private int _returnValveLow;
-        private int _returnValveHi;
-
-        private int _coolantValveLow;
-        private int _coolantValveHi;
+            private int _coolantValveLow;
+            private int _coolantValveHi;
 
 
-        public int HotValveLow
-        {
-            get { return _hotValveLow; }
-            set { _hotValveLow = value; }
-        }
-        public int HotValveHi
-        {
-            get { return _hotValveHi; }
-            set { _hotValveHi = value; }
+            public int HotValveLow
+            {
+                get { return _hotValveLow; }
+                set { _hotValveLow = value; }
+            }
+            public int HotValveHi
+            {
+                get { return _hotValveHi; }
+                set { _hotValveHi = value; }
+            }
+
+            public int ColdValveLow
+            {
+                get { return _coldValveLow; }
+                set { _coldValveLow = value; }
+            }
+            public int ColdValveHi
+            {
+                get { return _coldValveHi; }
+                set { _coldValveHi = value; }
+            }
+
+            public int ReturnValveLow
+            {
+                get { return _returnValveLow; }
+                set { _returnValveLow = value; }
+            }
+            public int ReturnValveHi
+            {
+                get { return _returnValveHi; }
+                set { _returnValveHi = value; }
+            }
+
+            public int CoolantValveLow
+            {
+                get { return _coolantValveLow; }
+                set { _coolantValveLow = value; }
+            }
+            public int CoolantValveHi
+            {
+                get { return _coolantValveHi; }
+                set { _coolantValveHi = value; }
+            }
+
         }
 
-        public int ColdValveLow
+        public class GlobalFeedTimes
         {
-            get { return _coldValveLow; }
-            set { _coldValveLow = value; }
-        }
-        public int ColdValveHi
-        {
-            get { return _coldValveHi; }
-            set { _coldValveHi = value; }
+            private int _heatingActive;
+            private int _heatingPause;
+            private int _coolingActive;
+            private int _coolingPause;
+
+            public int HeatingActive
+            {
+                get { return _heatingActive; }
+                set { _heatingActive = value; }
+            }
+            public int HeatingPause
+            {
+                get { return _heatingPause; }
+                set { _heatingPause = value; }
+            }
+            public int CoolingActive
+            {
+                get { return _coolingActive; }
+                set { _coolingActive = value; }
+            }
+            public int CoolingPause
+            {
+                get { return _coolingPause; }
+                set { _coolingPause = value; }
+            }
         }
 
-        public int ReturnValveLow
+        public class GlobalTestSettings
         {
-            get { return _returnValveLow; }
-            set { _returnValveLow = value; }
-        }
-        public int ReturnValveHi
-        {
-            get { return _returnValveHi; }
-            set { _returnValveHi = value; }
-        }
+            private bool _ChartParameterMonitoringEnabled;
+            private bool _MyTuneChartEnabled;
+            private bool _StateChartEnabled;
+            private bool _VolumeBalanceChartEnabled;
+            private bool _EnergyBalanceChartEnabled;
+            private bool _TimeLoggingEnabled;
 
-        public int CoolantValveLow
-        {
-            get { return _coolantValveLow; }
-            set { _coolantValveLow = value; }
-        }
-        public int CoolantValveHi
-        {
-            get { return _coolantValveHi; }
-            set { _coolantValveHi = value; }
-        }
+            private long _dataTimeSpanTicks;
 
-    }
+            public bool ChartParameterMonitoringEnabled
+            {
+                get { return _ChartParameterMonitoringEnabled; }
+                set { _ChartParameterMonitoringEnabled = value; }
+            }
 
-    public class GlobalFeedTimes
-    {
-        private int _heatingActive;
-        private int _heatingPause;
-        private int _coolingActive;
-        private int _coolingPause;
+            public bool MyTuneChartEnabled
+            {
+                get { return _MyTuneChartEnabled; }
+                set { _MyTuneChartEnabled = value; }
+            }
 
-        public int HeatingActive
-        {
-            get { return _heatingActive; }
-            set { _heatingActive = value; }
-        }
-        public int HeatingPause
-        {
-            get { return _heatingPause; }
-            set { _heatingPause = value; }
-        }
-        public int CoolingActive
-        {
-            get { return _coolingActive; }
-            set { _coolingActive = value; }
-        }
-        public int CoolingPause
-        {
-            get { return _coolingPause; }
-            set { _coolingPause = value; }
+            public bool StateChartEnabled
+            {
+                get { return _StateChartEnabled; }
+                set { _StateChartEnabled = value; }
+            }
+
+            public bool VolumeBalanceChartEnabled
+            {
+                get { return _VolumeBalanceChartEnabled; }
+                set { _VolumeBalanceChartEnabled = value; }
+            }
+
+            public bool EnergyBalanceChartEnabled
+            {
+                get { return _EnergyBalanceChartEnabled; }
+                set { _EnergyBalanceChartEnabled = value; }
+            }
+
+            public bool TimeLoggingEnabled
+            {
+                get { return _TimeLoggingEnabled; }
+                set { _TimeLoggingEnabled = value; }
+            }
+
+            public long DataTimeSpanTicks
+            {
+                get { return _dataTimeSpanTicks; }
+                set { _dataTimeSpanTicks = value; }
+            }
+
         }
     }
 

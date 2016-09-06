@@ -49,10 +49,18 @@ namespace DemoPrototype
 
         private void Timer_Tick(ThreadPoolTimer timer)
         {
+            long ticks1 = DateTime.Now.Ticks;
+
             Data.Updater.Update();
+            if (GlobalVars.globTestSettings.TimeLoggingEnabled)
+            {
+                long diff = DateTime.Now.Ticks - ticks1;
+                if (diff > 0)
+                    GlobalVars.globTestSettings.DataTimeSpanTicks = diff;
+            }
         }
 
-       protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 

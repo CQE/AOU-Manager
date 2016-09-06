@@ -122,12 +122,12 @@ namespace DemoPrototype
             HLineSet_ThresholdColdTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
 
             //Set lineSeries colors
-            //Series_THotTank.Interior = new SolidColorBrush(Colors.Red);
+            Series_THotTank.Interior = new SolidColorBrush(Colors.Red);
             //Series_EB_THotTank.Interior = new SolidColorBrush(Colors.Red);
             //Series_THotBuffer.Interior = new SolidColorBrush(Colors.OrangeRed);
             //Series_VB_THotBuffer.Interior = new SolidColorBrush(Colors.OrangeRed);
 
-            //Series_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            Series_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
             //Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
             //Series_TColdBuffer.Interior = new SolidColorBrush(Colors.LightBlue);
             //Series_VB_TColdBuffer.Interior = new SolidColorBrush(Colors.LightBlue);
@@ -135,8 +135,8 @@ namespace DemoPrototype
             //Series_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
             //Series_VB_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
 
-            //Series_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
-            //Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
+            Series_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
+            Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
             //Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
             //Series_TRetForecasted.Interior = new SolidColorBrush(Colors.Purple);
             //Series_Delay_TRetForecasted.Interior = new SolidColorBrush(Colors.Purple);
@@ -179,6 +179,12 @@ namespace DemoPrototype
         private void MaintenancePage_Unloaded(object sender, RoutedEventArgs e)
         {
             dTimer.Stop();
+            //clean data
+            Series_THotTank.ItemsSource = null;
+            Series_TColdTank.ItemsSource = null;
+            Series_TRetActual.ItemsSource = null;
+            Series_Delay_TRetActual.ItemsSource = null;
+            
         }
 
         private void MaintenancePage_Loaded(object sender, RoutedEventArgs e)
@@ -190,7 +196,7 @@ namespace DemoPrototype
         {
             dTimer = new DispatcherTimer();
             dTimer.Tick += UpdateTick;
-            dTimer.Interval = new TimeSpan(0, 0, 0, 1, 0); //1 second
+            dTimer.Interval = new TimeSpan(0, 0, 0, 0, 400); //0,4 second
         }
 
         private void ShowProgress()

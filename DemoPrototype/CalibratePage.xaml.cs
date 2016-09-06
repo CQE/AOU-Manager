@@ -89,14 +89,14 @@ namespace DemoPrototype
             ColdToHotLineAnnotation.ToolTipContent = "Threshold TRetActual cold" + " ↗ " + "hot";
 
             //Set lineSeries colors
-            //Series_Delay_THotTank.Interior = new SolidColorBrush(Colors.Red);
-            //Series_EB_THotTank.Interior = new SolidColorBrush(Colors.Red);
+            Series_Delay_THotTank.Interior = new SolidColorBrush(Colors.Red);
+            Series_EB_THotTank.Interior = new SolidColorBrush(Colors.Red);
             //Series_VB_THotBuffer.Interior = new SolidColorBrush(Colors.OrangeRed);
-            //Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
-            //Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
             //Series_VB_TColdBuffer.Interior = new SolidColorBrush(Colors.LightBlue);
             //Series_VB_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
-            //Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
+            Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
             //Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
             //Series_Delay_TRetForecasted.Interior = new SolidColorBrush(Colors.Purple);
             //Series_EB_ValveReturn.Interior = new SolidColorBrush(Colors.LightGreen);
@@ -106,6 +106,13 @@ namespace DemoPrototype
         private void MaintenancePage_Unloaded(object sender, RoutedEventArgs e)
         {
             dTimer.Stop();
+            //clean data
+            Series_EB_THotTank.ItemsSource = null;
+            Series_EB_TColdTank.ItemsSource = null;
+            //Series_EB_TRetActual.ItemsSource = null;
+            Series_Delay_TRetActual.ItemsSource = null;
+            Series_Delay_TColdTank.ItemsSource = null;
+            Series_Delay_THotTank.ItemsSource = null;
         }
 
         private void MaintenancePage_Loaded(object sender, RoutedEventArgs e)
@@ -117,7 +124,7 @@ namespace DemoPrototype
         {
             dTimer = new DispatcherTimer();
             dTimer.Tick += UpdateTick;
-            dTimer.Interval = new TimeSpan(0, 0, 1);
+            dTimer.Interval = new TimeSpan(0, 0, 1); //1 seconds
         }
 
         void UpdateTick(object sender, object e)

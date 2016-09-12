@@ -162,7 +162,7 @@
                     <chart:VerticalLineAnnotation  Stroke="Blue" StrokeThickness="2" CanDrag="True" ShowToolTip="True" ToolTipContent="Measure difference" Name="MouldingDelayVLine1"  DragCompleted="MouldingDelayVLine1_DragCompleted" CoordinateUnit="Pixel" X1="20"></chart:VerticalLineAnnotation>
                     <chart:VerticalLineAnnotation Stroke="Blue" StrokeThickness="2" CanDrag="True" ShowToolTip="True" ToolTipContent="Measure difference" Name="MouldingDelayVLine2" DragCompleted="MouldingDelayVLine2_DragCompleted" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
                 </chart:SfChart.Annotations>
-             <chart:SplineSeries  Name="Series_Delay_TRetActual" LegendIcon="Diamond" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:SplineSeries>
+             <chart:SplineSeries EnableAnimation="True" AnimationDuration="00:00:20" Name="Series_Delay_TRetActual" LegendIcon="Diamond" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:SplineSeries>
  <!--                  <chart:StepLineSeries Name="Series_Delay_TRetForecasted" LegendIcon="Diamond" Label="TRetForecasted" XBindingPath="ElapsedTime" YBindingPath="TReturnForecasted" ItemsSource="{Binding power}"></chart:StepLineSeries>
      -->      </chart:SfChart>
             <!-- Make a textbox overlay the grid above-->

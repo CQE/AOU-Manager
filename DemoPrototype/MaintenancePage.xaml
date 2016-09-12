@@ -217,7 +217,7 @@
 
         <StackPanel Grid.Column="3" Margin="5,10,0,5" >
 
-            <sfgrid:SfDataGrid x:Name="LogGrid"  Height='800' HeaderRowHeight="30" RowHeight="25" 
+            <sfgrid:SfDataGrid x:Name="LogGrid"  Height='600' HeaderRowHeight="30" RowHeight="25" 
                                AutoGenerateColumns="False" ItemsSource="{Binding logMessages}">
 
                 <sfgrid:SfDataGrid.HeaderStyle >

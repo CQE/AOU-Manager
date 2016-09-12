@@ -130,7 +130,8 @@ namespace DemoPrototype
 
         private async void SaveExcelToFile(Syncfusion.XlsIO.IWorkbook workBook)
         {
-            string fileName = "LogMessages" + ".xlsx";
+            string today = DateTime.Now.ToString("yyMMdd");
+            string fileName = "LogMessages" + today + ".xlsx";
             StorageFile storageFile = await KnownFolders.PicturesLibrary.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.GenerateUniqueName);
             try
             {

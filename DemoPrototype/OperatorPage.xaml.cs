@@ -184,6 +184,16 @@ namespace DemoPrototype
             Series_TColdTank.ItemsSource = null;
             Series_TRetActual.ItemsSource = null;
             Series_Delay_TRetActual.ItemsSource = null;
+            Series_PowerHeating.ItemsSource = null;
+            Series_TColdBuffer.ItemsSource = null;
+            Series_THeaterOilOut.ItemsSource = null;
+            Series_THotBuffer.ItemsSource = null;
+            Series_TRetForecasted.ItemsSource = null;
+            Series_ValveCoolant.ItemsSource = null;
+            Series_ValveFeedCold.ItemsSource = null;
+            Series_ValveFeedHot.ItemsSource = null;
+            Series_ValveReturn.ItemsSource = null;
+            Series_Delay_TRetActual.ItemsSource = null;
             
         }
 

@@ -47,7 +47,8 @@ namespace DemoPrototype
 
         public override string ToString()
         {
-            return String.Format("{0}, {1}, {2}, {3}", time, message, prio, pid);
+            // return String.Format("{0}, {1}, {2}, {3}", time, message, prio, pid);
+            return String.Format("{0}; {1}; {2}; {3}", time, message, prio, pid);   //new separator needed message can include ","
         }
     }
 }

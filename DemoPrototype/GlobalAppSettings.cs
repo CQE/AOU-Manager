@@ -230,23 +230,23 @@ namespace DemoPrototype
             globDelayTimes.ColdTune = 2;
 
             globFeedTimes = new GlobalFeedTimes();
-            globFeedTimes.HeatingActive = 20;
-            globFeedTimes.HeatingPause = 22;
-            globFeedTimes.CoolingActive = 21;
-            globFeedTimes.CoolingPause = 23;
+            globFeedTimes.HeatingActive = 0;// 20;
+            globFeedTimes.HeatingPause = 0;// 22;
+            globFeedTimes.CoolingActive = 0; //21;
+            globFeedTimes.CoolingPause = 0;// 23;
 
             globValveChartValues = new GlobalValveChartValues();
-            globValveChartValues.HotValveLow = 30;
-            globValveChartValues.HotValveHi = 33;
+            globValveChartValues.HotValveLow = 20;
+            globValveChartValues.HotValveHi = 24;
 
-            globValveChartValues.ColdValveLow = 32;
-            globValveChartValues.ColdValveHi = 35;
+            globValveChartValues.ColdValveLow = 26;
+            globValveChartValues.ColdValveHi = 32;
 
             globValveChartValues.ReturnValveLow = 34;
-            globValveChartValues.ReturnValveHi = 37;
+            globValveChartValues.ReturnValveHi = 38;
 
-            globValveChartValues.CoolantValveLow = 36;
-            globValveChartValues.CoolantValveHi = 39;
+            globValveChartValues.CoolantValveLow = 40;
+            globValveChartValues.CoolantValveHi = 44;
 
 
             globTestSettings = new GlobalTestSettings();

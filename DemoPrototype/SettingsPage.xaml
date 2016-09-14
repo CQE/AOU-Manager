@@ -33,7 +33,7 @@
 
         <StackPanel Margin="2,5,0,0" Grid.Row="2" Orientation="Horizontal">
             <TextBlock Width="200" VerticalAlignment="Center" Text="Log events to remote system"></TextBlock>
-            <ToggleSwitch  Margin="5,0,0,0" IsOn="False"></ToggleSwitch>
+            <ToggleSwitch  Margin="5,0,0,0"  IsOn="False"></ToggleSwitch>
             <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" Text="Remote logger:"></TextBlock>
             <TextBox Margin="5,0,0,0" Text="IP name or number"></TextBox>
         </StackPanel>

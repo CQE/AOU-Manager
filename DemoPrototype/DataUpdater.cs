@@ -182,6 +182,15 @@ namespace DemoPrototype
             }
         }
 
+        public void AskCommandValue(AOUDataTypes.CommandType cmd)
+        {
+
+            if (dataRouter.IsConnected)
+            {
+                dataRouter.SendCommandToPlc(cmd,-1); //-1 means ask not set
+            }
+        }
+
         public void StartHotStep(int time)
         {
             if (dataRouter.IsConnected)

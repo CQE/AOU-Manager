@@ -186,6 +186,15 @@ namespace DemoPrototype
             }
         }
 
+        public static void AskAOUForMouldingTimes()
+        {
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.heatingTime);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coolingTime);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotDelayTime);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
+        }
+
+
         public static async void ShowMessageBox(string text)
         {
             var dialog = new Windows.UI.Popups.MessageDialog(text);

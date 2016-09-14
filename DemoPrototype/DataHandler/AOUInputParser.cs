@@ -39,6 +39,8 @@ namespace DemoPrototype
         public const string tagMode = "Mode";
         public const string tagSeqState = "Seq";
 
+       // public const string tagRetValue = "ret";
+
         public const string tagLog = "log";
         public const string tagLogSubTagMsg = "Msg";
 

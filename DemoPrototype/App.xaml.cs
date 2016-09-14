@@ -45,6 +45,8 @@ namespace DemoPrototype
 
             Data.Init();
             Data.Updater.Start();
+            //ask for AOU settings
+            AppHelper.AskAOUForMouldingTimes();
         }
 
         private void Timer_Tick(ThreadPoolTimer timer)

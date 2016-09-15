@@ -160,6 +160,9 @@
     <Compile Include="SetValueDialog.xaml.cs">
       <DependentUpon>SetValueDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TunePage.xaml.cs">
+      <DependentUpon>TunePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -224,6 +227,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SetValueDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TunePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

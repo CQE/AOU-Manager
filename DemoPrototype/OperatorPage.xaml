@@ -125,7 +125,8 @@
             </StackPanel>
 
 <!-- delay timing chart -->
-            <chart:SfChart  
+            <chart:SfChart
+            Visibility="Collapsed"    
             Name="MyTuneChart"    
             Header="Feed and Return delay timings"
             Grid.Row="0"
@@ -175,8 +176,8 @@
             Margin="0,10,0,0"
            Grid.Row="11"
             Grid.RowSpan="5"
-            Grid.Column="2"
-            Grid.ColumnSpan="3">
+            Grid.Column="0"
+            Grid.ColumnSpan="4">
             <chart:SfChart.PrimaryAxis>
                 <chart:TimeSpanAxis ></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
@@ -226,7 +227,7 @@
             <!-- overlaying Button for Export -->
             <Button Name="ButtonExportParameterChart" Content="Export" Grid.Row="15" Grid.Column="2" Margin="30,0,0,25" Click="ButtonExportParameterChart_Click" VerticalAlignment="Bottom" HorizontalAlignment="Left"></Button>
             
-        <!-- overlay own text as labels for chart -->
+        <!-- overlay own text as labels for chart 
             <StackPanel Orientation="Vertical" Grid.Row="11" Grid.RowSpan="6">
                 <TextBlock Margin="2,30,0,0" FontSize="8" Text="Unknown"></TextBlock>
                 <TextBlock Margin="2,10,0,0" Text="OpenEnd" FontSize="8"></TextBlock>
@@ -240,13 +241,14 @@
                 <TextBlock Margin="2,10,0,0" Text="HotAtMEntry" FontSize="8"></TextBlock>
                 <TextBlock Margin="2,10,0,0" Text="Initial" FontSize="8"></TextBlock>
                 <TextBlock Margin="2,10,0,0" Text="Idle" FontSize="8"></TextBlock>
-            </StackPanel>
+            </StackPanel> -->
 
             <!-- state chart -->
             <chart:SfChart  
             Header="AOU / IMM Interaction"
-            Grid.Row="11"
-            Grid.RowSpan="6"
+            Grid.Row="0"
+            Grid.RowSpan="8"
+            Grid.Column="2"    
             Grid.ColumnSpan="2"
             Margin="30,10,0,0">
   <!--              <chart:SfChart.Behaviors>
@@ -266,8 +268,10 @@
             <chart:StepLineSeries XBindingPath="ElapsedTime" YBindingPath="State" ItemsSource="{Binding power}"></chart:StepLineSeries>
         </chart:SfChart>
 
+             
             <!-- volume balance chart -->
             <chart:SfChart  
+            Visibility="Collapsed"    
             Header="Buffer tank Volume balance"
             Grid.Row="6"
             Grid.RowSpan="5"
@@ -284,7 +288,7 @@
                     <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Collapsed"/>
                 </chart:SfChart.Legend>
                 <chart:SfChart.SecondaryAxis>
-                    <chart:NumericalAxis StartRangeFromZero="False" Interval="20"  EnableAutoIntervalOnZooming="False">
+                    <chart:NumericalAxis StartRangeFromZero="False" Interval="20"   EnableAutoIntervalOnZooming="False">
                         <chart:NumericalAxis.StripLines>
                             <chart:ChartStripLine IsSegmented="True" SegmentStartValue="11" SegmentEndValue="15" Start="60" Width="30" Label="60" Background="Yellow"></chart:ChartStripLine>
                         </chart:NumericalAxis.StripLines>
@@ -306,7 +310,8 @@
      -->       </chart:SfChart>
 
             <!-- energy balance chart -->
-            <chart:SfChart  
+            <chart:SfChart
+            Visibility="Collapsed"    
             Header="Hot and Cold tanks Energy balance"
             Grid.Row="6"
             Grid.RowSpan="5"
@@ -339,6 +344,7 @@
                 <chart:FastLineBitmapSeries Name="Series_EB_TColdTank" LegendIcon="Diamond"  Label="TColdTank" XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:FastLineBitmapSeries>
     --> <!--           <chart:StepLineSeries Name="Series_EB_ValveReturn" LegendIcon="Circle"  Label="ValveReturn" XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"></chart:StepLineSeries>
     -->       </chart:SfChart>
+             
         </Grid>
 
     </ScrollViewer>

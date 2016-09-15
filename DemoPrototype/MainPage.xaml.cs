@@ -100,6 +100,14 @@ namespace DemoPrototype
                 TitleTextBlock.Text = "Calibrate system";
                 BackButton.Visibility = Visibility.Visible;
             }
+            else if (TuneListBoxItem.IsSelected)
+            {
+                InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
+                MyFrame.Navigate(typeof(TunePage));
+                TitleTextBlock.Text = "Tune system";
+                BackButton.Visibility = Visibility.Visible;
+            }
+
             else if (MaintenanceListBoxItem.IsSelected)
             {
                 InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();

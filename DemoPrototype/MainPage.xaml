@@ -64,6 +64,13 @@
                         </StackPanel>
                     </ListBoxItem>
 
+                    <ListBoxItem Name="TuneListBoxItem">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="36" Text="&#xE189;"></TextBlock>
+                            <TextBlock FontSize="24" Margin="10,0,0,0">Tune</TextBlock>
+                        </StackPanel>
+                    </ListBoxItem>
+
                     <ListBoxItem Name="SettingsListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="36" Text="&#xE713;"></TextBlock>

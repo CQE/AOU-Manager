@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Syncfusion.UI.Xaml.Charts;
+using Windows.UI;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -75,48 +76,141 @@ namespace DemoPrototype
             Series_Delay_TRetActual.Label = "TRetActual";
             Series_Delay_TRetActual.XBindingPath = "ElapsedTime";
             Series_Delay_TRetActual.YBindingPath = "TReturnActual";
+            Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.Brown);
             myTuneChart.Series.Add(Series_Delay_TRetActual);
 
+            SplineSeries Series_Delay_THotTank = new SplineSeries();
+            Series_Delay_THotTank.ItemsSource = chartModel.power;
+            Series_Delay_THotTank.Label = "THotTank";
+            Series_Delay_THotTank.XBindingPath = "ElapsedTime";
+            Series_Delay_THotTank.YBindingPath = "THotTank";
+            Series_Delay_THotTank.Interior = new SolidColorBrush(Colors.Red);
+            myTuneChart.Series.Add(Series_Delay_THotTank);
+            
+            SplineSeries Series_Delay_TColdTank = new SplineSeries();
+            Series_Delay_TColdTank.ItemsSource = chartModel.power;
+            Series_Delay_TColdTank.Label = "TColdTank";
+            Series_Delay_TColdTank.XBindingPath = "ElapsedTime";
+            Series_Delay_TColdTank.YBindingPath = "TColdTank";
+            Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            myTuneChart.Series.Add(Series_Delay_TColdTank);
 
 
+            //add legends
+            ChartLegend myDelayLegend = new ChartLegend();
+            myTuneChart.Legend = myDelayLegend;
 
             //add chart to grid
             this.TuneGrid.Children.Add(myTuneChart);
-            Grid.SetRow(myTuneChart, 1);
-            Grid.SetColumn(myTuneChart, 1);
-
-            //Energy Balande Chart
+            Grid.SetRow(myTuneChart, 2);
+            Grid.SetRowSpan(myTuneChart, 2);
+            Grid.SetColumn(myTuneChart, 0);
+            Grid.SetColumnSpan(myTuneChart, 2);
+           
+           
+            //Energy Balance Chart
             SfChart myEnergyChart = new SfChart();
-            myEnergyChart.Header = "Energy Balance";
+            myEnergyChart.Header = "Buffer Tank Energy Balance";
             
             //Adding horizontal and vertical axis to the chart
             TimeSpanAxis energyChartCategoryAxis = new TimeSpanAxis();
             energyChartCategoryAxis.Name = "OperatorDelayAxis";
             myEnergyChart.PrimaryAxis = energyChartCategoryAxis;
-            NumericalAxis energyChartNumericalAxis = new NumericalAxis() { Minimum = 0, Maximum = 200 };
+            NumericalAxis energyChartNumericalAxis = new NumericalAxis();
             myEnergyChart.SecondaryAxis = energyChartNumericalAxis;
          
-
             //add series to chart
             SplineSeries Series_EB_TRetActual = new SplineSeries();
-            Series_Delay_TRetActual.ItemsSource = chartModel.power;
-            Series_Delay_TRetActual.Label = "TRetActual";
-            Series_Delay_TRetActual.XBindingPath = "ElapsedTime";
-            Series_Delay_TRetActual.YBindingPath = "TReturnActual";
+            Series_EB_TRetActual.ItemsSource = chartModel.power;
+            Series_EB_TRetActual.Label = "TRetActual";
+            Series_EB_TRetActual.XBindingPath = "ElapsedTime";
+            Series_EB_TRetActual.YBindingPath = "TReturnActual";
             myEnergyChart.Series.Add(Series_EB_TRetActual);
 
             SplineSeries Series_EB_THotTank = new SplineSeries();
-            Series_Delay_TRetActual.ItemsSource = chartModel.power;
-            Series_Delay_TRetActual.Label = "THotTank";
-            Series_Delay_TRetActual.XBindingPath = "ElapsedTime";
-            Series_Delay_TRetActual.YBindingPath = "THotTank";
+            Series_EB_THotTank.ItemsSource = chartModel.power;
+            Series_EB_THotTank.Label = "THotTank";
+            Series_EB_THotTank.XBindingPath = "ElapsedTime";
+            Series_EB_THotTank.YBindingPath = "THotTank";
+            Series_EB_THotTank.Interior = new SolidColorBrush(Colors.Red);
             myEnergyChart.Series.Add(Series_EB_THotTank);
+
+            SplineSeries Series_EB_TColdTank = new SplineSeries();
+            Series_EB_TColdTank.ItemsSource = chartModel.power;
+            Series_EB_TColdTank.Label = "TColdTank";
+            Series_EB_TColdTank.XBindingPath = "ElapsedTime";
+            Series_EB_TColdTank.YBindingPath = "TColdTank";
+            Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            myEnergyChart.Series.Add(Series_EB_TColdTank);
+            
+            //add legends
+            ChartLegend myEBLegend = new ChartLegend();
+            myEnergyChart.Legend = myEBLegend;
             
             //add chart to grid
             this.TuneGrid.Children.Add(myEnergyChart);
-            Grid.SetRow(myEnergyChart, 2);
-            Grid.SetColumn(myEnergyChart, 1);
+            Grid.SetRow(myEnergyChart, 0);
+            Grid.SetRowSpan(myEnergyChart, 2);
+            Grid.SetColumn(myEnergyChart, 2);
+            Grid.SetColumnSpan(myEnergyChart, 2);
+
+
+            //Volume Balande Chart
+            SfChart myVolumeChart = new SfChart();
+            myVolumeChart.Header = "Buffer tank volume balance";
+
+            TimeSpanAxis volumeChartCategorAxis = new TimeSpanAxis();
+            myVolumeChart.PrimaryAxis = volumeChartCategorAxis;
+
+            NumericalAxis volumeChartNumericalAxis = new NumericalAxis();
+            myVolumeChart.SecondaryAxis = volumeChartNumericalAxis;
+
+            SplineSeries Series_VB_THotBuffer = new SplineSeries();
+            Series_VB_THotBuffer.ItemsSource = chartModel.power;
+            Series_VB_THotBuffer.Label = "TBufHot";
+            Series_VB_THotBuffer.XBindingPath = "ElapsedTime";
+            Series_VB_THotBuffer.YBindingPath = "TBufferHot";
+            Series_VB_THotBuffer.Interior = new SolidColorBrush(Colors.Red);
+            myVolumeChart.Series.Add(Series_VB_THotBuffer);
+
+            SplineSeries Series_VB_TColdBuffer = new SplineSeries();
+            Series_VB_TColdBuffer.ItemsSource = chartModel.power;
+            Series_VB_TColdBuffer.Label = "TBufCold";
+            Series_VB_TColdBuffer.XBindingPath = "ElapsedTime";
+            Series_VB_TColdBuffer.YBindingPath = "TBufferCold";
+            Series_VB_TColdBuffer.Interior = new SolidColorBrush(Colors.Blue);
+            myVolumeChart.Series.Add(Series_VB_TColdBuffer);
+
+            SplineSeries Series_VB_TMidBuffer = new SplineSeries();
+            Series_VB_TMidBuffer.ItemsSource = chartModel.power;
+            Series_VB_TMidBuffer.Label = "TBufMid";
+            Series_VB_TMidBuffer.XBindingPath = "ElapsedTime";
+            Series_VB_TMidBuffer.YBindingPath = "TBufferMid";
+            myVolumeChart.Series.Add(Series_VB_TMidBuffer);
+
+            //add legends
+            ChartLegend myVBLegend = new ChartLegend();
+            myVolumeChart.Legend = myVBLegend;
+
+
+            this.TuneGrid.Children.Add(myVolumeChart);
+            Grid.SetRow(myVolumeChart,2);
+            Grid.SetRowSpan(myVolumeChart,2);
+            Grid.SetColumn(myVolumeChart,2);
+            Grid.SetColumnSpan(myVolumeChart, 2);
             
+
+            //set and calculate delay time values
+            TextBlock_HotCalibrate.Text = GlobalVars.globDelayTimes.HotCalibrate.ToString();
+            HotFeedToReturnDelayCalTime.Text = GlobalVars.globDelayTimes.HotTune.ToString();
+            int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
+            TextBlock_SumHotDelayTime.Text = sum.ToString();
+            TextBlock_ColdCalibrate.Text = GlobalVars.globDelayTimes.ColdCalibrate.ToString();
+            ColdFeedToReturnDelayCalTime.Text = GlobalVars.globDelayTimes.ColdTune.ToString();
+            sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
+            TextBlock_SumColdDelayTime.Text = sum.ToString();
+
+
             InitDispatcherTimer();
         }
 
@@ -124,9 +218,16 @@ namespace DemoPrototype
         {
             dTimer.Stop();
             //clean data
-            
-            //Series_EB_TRetActual.ItemsSource = null;
-            
+            /*Series_EB_THotTank.ItemsSource = null;
+            Series_EB_TColdTank.ItemsSource = null;
+            Series_EB_TRetActual.ItemsSource = null;
+            Series_Delay_TRetActual.ItemsSource = null;
+            Series_Delay_TColdTank.ItemsSource = null;
+            Series_Delay_THotTank.ItemsSource = null;
+            Series_VB_THotBuffer.ItemsSource = null;
+            Series_VB_TMidBuffer.ItemsSource = null;
+            Series_VB_TColdBuffer.ItemsSource = null;
+            */
         }
 
         private void TunePage_Loaded(object sender, RoutedEventArgs e)
@@ -180,7 +281,28 @@ namespace DemoPrototype
             }
         }
 
+        private void HotFeedToReturnDelayCalTime_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //calculate and show new sum
+            int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
+            TextBlock_SumHotDelayTime.Text = sum.ToString();
+        }
 
+        private void ColdFeedToReturnDelayCalTime_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //calculate and show new sum
+            int sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
+            TextBlock_SumColdDelayTime.Text = sum.ToString();
+        }
 
+        private void ColdFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void HotFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

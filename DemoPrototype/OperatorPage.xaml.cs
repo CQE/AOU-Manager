@@ -90,15 +90,7 @@ namespace DemoPrototype
             TextBox_NewPauseHeatingTime.Text = GlobalVars.globFeedTimes.HeatingPause.ToString();
             TextBox_NewPauseCoolingTime.Text = GlobalVars.globFeedTimes.CoolingPause.ToString();
 
-            //set and calculate delay time values
-            TextBlock_HotCalibrate.Text = GlobalVars.globDelayTimes.HotCalibrate.ToString();
-            HotFeedToReturnDelayCalTime.Text = GlobalVars.globDelayTimes.HotTune.ToString();
-            int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
-            TextBlock_SumHotDelayTime.Text = sum.ToString();
-            TextBlock_ColdCalibrate.Text = GlobalVars.globDelayTimes.ColdCalibrate.ToString();
-            ColdFeedToReturnDelayCalTime.Text = GlobalVars.globDelayTimes.ColdTune.ToString();
-            sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
-            TextBlock_SumColdDelayTime.Text = sum.ToString();
+          
             
             // Set tooltip contents
             HLineSet_ThresholdHot2Cold.ToolTipContent = "Threshold TRetActual hot"+ " ↘ " + "cold";
@@ -135,7 +127,7 @@ namespace DemoPrototype
             //Series_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
             //Series_VB_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
 
-            Series_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
+            //Series_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
             Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
             //Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
             //Series_TRetForecasted.Interior = new SolidColorBrush(Colors.Purple);
@@ -182,9 +174,9 @@ namespace DemoPrototype
             //clean data
             Series_THotTank.ItemsSource = null;
             Series_TColdTank.ItemsSource = null;
-            Series_TRetActual.ItemsSource = null;
+            //Series_TRetActual.ItemsSource = null;
             Series_Delay_TRetActual.ItemsSource = null;
-            Series_PowerHeating.ItemsSource = null;
+            /*Series_PowerHeating.ItemsSource = null;
             Series_TColdBuffer.ItemsSource = null;
             Series_THeaterOilOut.ItemsSource = null;
             Series_THotBuffer.ItemsSource = null;
@@ -193,7 +185,7 @@ namespace DemoPrototype
             Series_ValveFeedCold.ItemsSource = null;
             Series_ValveFeedHot.ItemsSource = null;
             Series_ValveReturn.ItemsSource = null;
-            Series_Delay_TRetActual.ItemsSource = null;
+          */  Series_Delay_TRetActual.ItemsSource = null;
             
         }
 
@@ -252,6 +244,13 @@ namespace DemoPrototype
             //update textboxes
             SetHotTankTempText();
             SetColdTankTempText();
+
+            //insert condition here if new times should be read
+            SetHeatingTimeText();
+          /*  SetColdFeedTimeText();
+            SetHotDelayTimeText();
+            SetColdDelayTimeText();
+            */
 
             if (Data.Updater.ModeChanged(out mode))
             {
@@ -524,14 +523,14 @@ namespace DemoPrototype
         {
             //calculate and show new sum
             int sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
-            TextBlock_SumColdDelayTime.Text = sum.ToString();
+         //   TextBlock_SumColdDelayTime.Text = sum.ToString();
         }
 
         private void HotFeedToReturnDelayCalTime_TextChanged(object sender, TextChangedEventArgs e)
         {
             //calculate and show new sum
             int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
-            TextBlock_SumHotDelayTime.Text = sum.ToString();
+          //  TextBlock_SumHotDelayTime.Text = sum.ToString();
         }
 
         private void Button_Freeze_Run_Click(object sender, RoutedEventArgs e)
@@ -605,6 +604,62 @@ namespace DemoPrototype
                     TextBlock_ToolTempering.Foreground = AppColors.gray; break;
             }
         }
+
+        private void SetHeatingTimeText()
+        {
+            if (Data.Updater.LastPowerIndex >= 0)
+            {
+
+                TextBox_NewActiveHeatingTime.Text = GlobalVars.globFeedTimes.HeatingActive.ToString();
+              }
+            else
+            {
+                TextBox_NewActiveHeatingTime.Text  = "-";
+            }
+        }
+
+        private void SetCoolingTimeText()
+        {
+            if (Data.Updater.LastPowerIndex >= 0)
+            {
+
+                TextBox_NewActiveCoolingTime.Text = GlobalVars.globFeedTimes.CoolingActive.ToString();
+            }
+            else
+            {
+                TextBox_NewActiveCoolingTime.Text = "-";
+            }
+        }
+
+        private void SetPauseHeatingTimeText()
+        {
+            if (Data.Updater.LastPowerIndex >= 0)
+            {
+
+                TextBox_NewPauseHeatingTime.Text = GlobalVars.globFeedTimes.HeatingPause.ToString();
+            }
+            else
+            {
+                TextBox_NewPauseHeatingTime.Text = "-";
+            }
+        }
+
+        private void SetPauseCoolingTimeText()
+        {
+            if (Data.Updater.LastPowerIndex >= 0)
+            {
+
+                TextBox_NewPauseCoolingTime.Text = GlobalVars.globFeedTimes.CoolingPause.ToString();
+            }
+            else
+            {
+                TextBox_NewPauseCoolingTime.Text = "-";
+            }
+        }
+
+
+
+
 
         private async void SaveImage( )
         {

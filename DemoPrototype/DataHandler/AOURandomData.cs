@@ -19,11 +19,16 @@ namespace DemoPrototype
         private int immMode = 0;
 
         private uint currentCount = 0;
+        private bool justStarted = true;
+
+        private List<string> commandsToReplyList;
 
         public AOURandomData(AOUSettings.RandomSetting rndSettings, AOUSettings.DebugMode dbgMode = AOUSettings.DebugMode.noDebug) : base(dbgMode)
         {
             settings = rndSettings;
             lastTime = startTime;
+
+            commandsToReplyList = new List<string>();
         }
 
         public override void Connect()
@@ -44,6 +49,7 @@ namespace DemoPrototype
             TimeSpan timeFromStart = new TimeSpan(DateTime.Now.Ticks - startTime.Ticks);
             uint time = (uint)timeFromStart.TotalMilliseconds;
             AOUInputParser.CreateLogXmlString(time, "SendData:" + data);
+            commandsToReplyList.Add(data);
             return true;
         }
 
@@ -59,16 +65,56 @@ namespace DemoPrototype
             TimeSpan ts = new TimeSpan(now.Ticks - lastTime.Ticks);
             if (ts.TotalMilliseconds > settings.MsBetween)
             {
+                // Get simulated time in ms
                 TimeSpan timeFromStart = new TimeSpan(now.Ticks - startTime.Ticks);
                 uint time = (uint)timeFromStart.TotalMilliseconds;
                 lastTime = now;
+
+                // Simulate <ret> reply when <cmd>
+                if (commandsToReplyList.Count > 0)
+                {
+                    string tag = "";
+                    string content = "";
+                    string value = "";
+                    int pos = 0;
+                    foreach (var txt in commandsToReplyList)
+                    {
+                        if (AOUInputParser.FindTagAndExtractText("cmd", txt, out content, out pos))
+                        {
+                            if (AOUInputParser.GetTagAndContent(content, out tag, out value))
+                            {
+                                if (value.Length == 0)
+                                    value = "0"; // ToDo: current value when ask for value
+                                text += CreateCmdRetXMLString(time, tag, value);
+                            }
+
+                        }
+                    }
+                    commandsToReplyList.Clear(); // Remove all when handled
+                }
+
+                // When started, simulate to send current values for all command parameters
+                if (justStarted)
+                {
+                    justStarted = false;
+                    foreach (var cmd in GlobalVars.aouCommands)
+                    {
+                        if (cmd.Key != AOUDataTypes.CommandType.runModeAutoWithIMM && cmd.Key != AOUDataTypes.CommandType.runModeCooling && cmd.Key != AOUDataTypes.CommandType.runModeFixedCycling
+                            && cmd.Key != AOUDataTypes.CommandType.runModeHeating && cmd.Key != AOUDataTypes.CommandType.runModeIdle && cmd.Key != AOUDataTypes.CommandType.runModeAOU)
+                        {
+                            text += CreateCmdRetXMLString(time, cmd.Value, ValueGenerator.GetRandomCommandValue(cmd.Key).ToString());
+                        }
+                    }
+                }
+
+
                 if (currentCount % 20 >= 0) // Test: No return forcasted values for a while
                 {
-                    text = CreateRandomTempDataXML(time, true);
+                    text += CreateRandomTempDataXML(time, true);
                 }
                 else
                 {
-                    text = CreateRandomTempDataXML(time, false);
+                    text += CreateRandomTempDataXML(time, false);
                 }
 
                 text += CreateRandomLogDataXMLString(time);
@@ -179,6 +225,12 @@ namespace DemoPrototype
         public static string CreateModeXMLString(uint time, int mode)
         {
             string str = AOUInputParser.CreateModeXmlString(time / 100, mode) + "\r\n";
+            return str;
+        }
+
+        public static string CreateCmdRetXMLString(uint time, string retCmd, string value)
+        {
+            string str = AOUInputParser.CreateCmdRetXmlString(time / 100, retCmd, value) + "\r\n";
             return str;
         }
 

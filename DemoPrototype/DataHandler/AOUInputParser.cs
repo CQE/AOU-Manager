@@ -39,7 +39,7 @@ namespace DemoPrototype
         public const string tagMode = "Mode";
         public const string tagSeqState = "Seq";
 
-       // public const string tagRetValue = "ret";
+        public const string tagRetValue = "ret";
 
         public const string tagLog = "log";
         public const string tagLogSubTagMsg = "Msg";
@@ -55,7 +55,6 @@ namespace DemoPrototype
         #region Common
         public static string GetNextTag(string text, out long time_ms, out string tagContent, out List<string> logs, out int numHandled)
         {
-            Regex rTag = new Regex("<[a-zA-Z]+>");
             logs = new List<string>();
             tagContent = "";
             numHandled = 0;
@@ -106,13 +105,9 @@ namespace DemoPrototype
 
                 if (!eot && textLine.Length > 0)
                 {
-                    Match m = rTag.Match(textLine, 0);
-                    if (m.Success)
+                    if (GetTagAndContent(textLine, out tag, out tagContent))
                     {
-                        tag = m.Groups[0].Value.Substring(1, m.Groups[0].Value.Length - 2);
-                        int tagEndPos = 0;
-                        FindTagAndExtractText(tag, textLine, out tagContent, out tagEndPos);
-                        break;
+                        break; // Found tag and it´s content
                     }
                     else
                     {
@@ -124,10 +119,31 @@ namespace DemoPrototype
             numHandled = lastTextPos;
 
             long time = 0;
-            ParseLong(tagSubTagTime, textLine, out time);
+            if (ParseLong(tagSubTagTime, textLine, out time))
+            {
+               // tagContent = tagContent.Substring(tagContent.IndexOf("</Time>") + 7); // Handled
+            }
             time_ms = time * 100; // Transform deciseconds to milliseconds
 
             return tag;
+        }
+
+        public static bool GetTagAndContent(string text, out string tag, out string content)
+        {
+            tag = "";
+            content = text;
+
+            Regex rTag = new Regex("<[a-zA-Z]+>");
+            Match m = rTag.Match(text, 0);
+
+            if (m.Success)
+            {
+                tag = m.Groups[0].Value.Substring(1, m.Groups[0].Value.Length - 2);
+                int tagEndPos = 0;
+                FindTagAndExtractText(tag, text, out content, out tagEndPos);
+                return true;
+            }
+            return false;
         }
 
         public static bool FindTag(string tag, string textLine)
@@ -485,6 +501,14 @@ namespace DemoPrototype
         {
             return CreateStateXmlString(time, CreateTag(tagMode, mode.ToString()));
         }
+
+        public static string CreateCmdRetXmlString(uint time, string command, string value = "")
+        {
+            // <ret><Time>time_ds</Time><"ParameterName">value</"ParameterName"></ret>
+            string content = CreateTimeXmlString(time) + CreateTag(command, value);
+            return CreateTag(tagRetValue, content);
+        }
+
 
         public static string CreatePowXmlString(uint time, uint pow)
         {

@@ -44,6 +44,32 @@ namespace DemoPrototype
         public AOUDataTypes.HT_StateType currentMode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
         public AOUDataTypes.IMMSettings currentIMMState = AOUDataTypes.IMMSettings.Nothing;
 
+        /*
+            -- Set value --
+            <cmd><"ParameterName">value</"ParameterName"></cmd>
+
+            -- Ask for value --
+            <cmd><"ParameterName"></"ParameterName"></cmd>
+
+            -- Get command return with value when set or ask for value --
+            <ret><Time>time_ds</Time><"ParameterName">value</"ParameterName"></ret>
+        */
+        public struct CommandReturn
+        {
+            public long time_ms;
+            public string parameter;
+            public string value;
+
+            public CommandReturn(long time, string param, string val)
+            {
+                time_ms = time;
+                parameter = param;
+                value = val;
+            }
+        }
+
+        private List<CommandReturn> CommandReturns;
+
         public bool isIMMChanged = false;
         public bool isUIButtonsChanged = false;
         public bool isModesChanged = false;
@@ -70,6 +96,7 @@ namespace DemoPrototype
 
             newLogMessages = new List<AOULogMessage>();
             newPowerValues = new List<Power>();
+            CommandReturns = new List<CommandReturn>();
 
             startTime = DateTime.Now;
             lastDataRealTime = startTime;
@@ -227,6 +254,44 @@ namespace DemoPrototype
             return newLogMessages.Count > 0;
         }
 
+        public bool AreNewCommandReturnsAvailable()
+        {
+            return CommandReturns.Count > 0;
+        }
+
+        public CommandReturn GetNextCommandReturn()
+        {
+            if (CommandReturns.Count > 0)
+            {
+                CommandReturn ret = CommandReturns[0];
+                CommandReturns.RemoveAt(0);
+                return ret;
+            }
+            return new CommandReturn();
+        }
+
+        public bool GetNextCommandReturnStrValue(AOUDataTypes.CommandType cmd, out string value)
+        {
+            value = "";
+            string str = GlobalVars.aouCommands.StringValue(cmd);
+            int n = CommandReturns.FindIndex(0, CommandReturns.Count, cr => cr.parameter == str);
+            if (n >= 0)
+            {
+                CommandReturn ret = CommandReturns[n];
+                CommandReturns.RemoveAt(n);
+                value = ret.value;
+                return true;
+            }
+            return false;
+        }
+
+        public bool GetNextCommandReturnIntValue(AOUDataTypes.CommandType cmd, out int value)
+        {
+            string strval = "";
+            value = 0;
+            return GetNextCommandReturnStrValue(cmd, out strval) && int.TryParse(strval, out value);
+        }
+
         public AOULogMessage[] GetNewLogMessages()
         {
             AOULogMessage[] logs = newLogMessages.ToArray();
@@ -374,7 +439,16 @@ namespace DemoPrototype
                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), log, 8, 0));
                 }
 
-                if (nextTag == AOUInputParser.tagState)
+                if (nextTag == AOUInputParser.tagRetValue)
+                {
+                    string tag = "";
+                    string content = "";
+                    if (AOUInputParser.GetTagAndContent(tagContent.Substring(tagContent.IndexOf("</Time>") + 7), out tag, out content))
+                    {
+                        CommandReturns.Add(new CommandReturn(time_ms, tag, content)); 
+                    }
+                }
+                else if (nextTag == AOUInputParser.tagState)
                 {
                     AOUInputParser.ParseState(tagContent, out stateData);
 

@@ -14,12 +14,12 @@ namespace DemoPrototype
 
         private List<AOULogMessage> logMessages;
         private List<Power> powerValues;
- 
+
         public int NewPowerValuesAvailable { get; private set; }
         public int NewLogMessagesAvailable { get; private set; }
 
-        public enum RunType { None, Serial, File, Random};
-        public RunType runMode {get; private set;}
+        public enum RunType { None, Serial, File, Random };
+        public RunType runMode { get; private set; }
 
         private AOUData aouData;
         private AOULogFile aouLogFile;
@@ -28,10 +28,27 @@ namespace DemoPrototype
 
         private string notInitializedStr = "AOU Router not initialized";
 
+        // Is this needed when saved in logs. Save <cmd> sent in list. Remove when <ret>. 
+        public struct CommandSent
+        {
+            public string parameter;
+            public string value;
+
+            public CommandSent(string param, string val)
+            {
+                parameter = param;
+                value = val;
+            }
+        }
+
+        public List<CommandSent> CommandSentLst;
+
+
         public AOURouter()
         {
             logMessages = new List<AOULogMessage>();
             powerValues = new List<Power>();
+            CommandSentLst = new List<CommandSent>();
 
             runMode = RunType.None;
         }
@@ -123,7 +140,7 @@ namespace DemoPrototype
         }
 
         // Send data
-        public bool SendToPlc(string text)
+        private bool SendToPlc(string text)
         {
             if (IsConnected)
             {
@@ -136,36 +153,20 @@ namespace DemoPrototype
             }
         }
 
-        public void SendTagCommandToPlc(string subTag, int value)
+        private void SendTagCommandToPlc(string subTag, string value = "")
         {
             SendToPlc(String.Format("<cmd><{0}>{1}</{0}></cmd>", subTag, value));
+            CommandSentLst.Add(new CommandSent(subTag, value));
         }
 
-        public void SendCommandToPlc(AOUDataTypes.CommandType cmd, int value)
+        public void SendCommandToPlc(AOUDataTypes.CommandType cmd, int value) 
         {
-            /*
-                (temperature in C)	<cmd><tempHotTankFeedSet>195</tempHotTankFeedSet></cmd>	
-                (temperature in C)	<cmd><tempColdTankFeedSet>25</tempColdTankFeedSet></cmd>	
-                (s/cycle)	        <cmd><coolingTime>15</coolingTime></cmd>	
-                (s/cycle)	        <cmd><heatingTime>10</heatingTime></cmd>	
-                (s/cycle)	        <cmd><toolHeatingFeedPause>5</toolHeatingFeedPause></cmd>	
-            */
+            SendTagCommandToPlc(GlobalVars.aouCommands.StringValue(cmd), value.ToString());
+        }
 
-            switch (cmd)
-            {
-                case AOUDataTypes.CommandType.tempHotTankFeedSet:
-                    SendTagCommandToPlc("tempHotTankFeedSet", value); break;
-                case AOUDataTypes.CommandType.tempColdTankFeedSet:
-                    SendTagCommandToPlc("tempColdTankFeedSet", value); break;
-                case AOUDataTypes.CommandType.coolingTime:
-                    SendTagCommandToPlc("coolingTime", value); break;
-                case AOUDataTypes.CommandType.heatingTime:
-                    SendTagCommandToPlc("heatingTime", value); break;
-                case AOUDataTypes.CommandType.toolHeatingFeedPause:
-                    SendTagCommandToPlc("toolHeatingFeedPause", value); break;
-                default:
-                    SendTagCommandToPlc(cmd.ToString(), value); break;
-            }
+        public void AskCommandValueFromPlc(AOUDataTypes.CommandType cmd)
+        {
+            SendTagCommandToPlc(GlobalVars.aouCommands.StringValue(cmd));
         }
 
         // Update data. Get new Power values and Log messages
@@ -174,6 +175,20 @@ namespace DemoPrototype
             if (!IsConnected) return; // Can not update data
 
             aouData.UpdateData();
+
+            // Command Values received. Set new values in GlobalVars
+            if (IsConnected && aouData.AreNewCommandReturnsAvailable())
+            {
+                while (aouData.AreNewCommandReturnsAvailable())
+                {
+                    AOUData.CommandReturn ret = aouData.GetNextCommandReturn();
+                    AOUDataTypes.CommandType cmd = GlobalVars.aouCommands.Command(ret.parameter);
+
+                    logMessages.Add(new AOULogMessage(ret.time_ms, "RetFromPlc: " + ret.parameter + "=" + ret.value, 13, 0));
+                    GlobalVars.SetCommandValue(cmd,ret.value);
+                    // ToDo: (Check if Waiting and) notice page that new value have received
+                }
+            }
 
             if (aouData.AreNewValuesAvailable())
             {
@@ -349,7 +364,7 @@ namespace DemoPrototype
         }
 
         // Save to files in Image folder
-        private void AddLogToFile(AOULogMessage[] logs) 
+        private void AddLogToFile(AOULogMessage[] logs)
         {
             aouLogFile.AddLogMessages(logs);
         }
@@ -394,5 +409,23 @@ namespace DemoPrototype
         }
 
 
+        public bool CmdRetValueChanged(AOUDataTypes.CommandType cmd, out int value)
+        {
+            // Todo: Check changed in  GlobalVars instead
+            /*
+            if (IsConnected && aouData.AreNewCommandReturnsAvailable())
+            {
+                return aouData.GetNextCommandReturnIntValue(cmd, out value);
+            }
+            */
+            value = 0;
+            return false;
+            /*
+            tempHotTankFeedSet, tempColdTankFeedSet, coolingTime, heatingTime,
+            toolHeatingFeedPause, toolCoolingFeedPause,  hotDelayTime, coldDelayTime,
+            */
+          // Data.Updater.HotTimeChanged, HotDelayChanged, CoolTimeChanged, CoolDelayChanged
+
+        }
     }
 }

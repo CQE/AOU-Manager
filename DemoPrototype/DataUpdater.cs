@@ -175,19 +175,25 @@ namespace DemoPrototype
 
         public void SetCommandValue(AOUDataTypes.CommandType cmd, int value)
         {
-
             if (dataRouter.IsConnected)
             {
                 dataRouter.SendCommandToPlc(cmd, value);
             }
         }
 
-        public void AskCommandValue(AOUDataTypes.CommandType cmd)
+        public void SetRunningMode(AOUDataTypes.AOURunningMode mode)
         {
-
             if (dataRouter.IsConnected)
             {
-                dataRouter.SendCommandToPlc(cmd,-1); //-1 means ask not set
+                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.runModeAOU, (int)mode); // ToDo: Right way
+            }
+        }
+
+        public void AskCommandValue(AOUDataTypes.CommandType cmd)
+        {
+            if (dataRouter.IsConnected)
+            {
+                dataRouter.AskCommandValueFromPlc(cmd); 
             }
         }
 
@@ -195,7 +201,7 @@ namespace DemoPrototype
         {
             if (dataRouter.IsConnected)
             {
-                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.CmdTypeToDo, time); // ToDo
+                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.hotDelayTime, time); // ToDo: Right way
             }
         }
 
@@ -203,7 +209,7 @@ namespace DemoPrototype
         {
             if (dataRouter.IsConnected)
             {
-                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.CmdTypeToDo, time); // ToDo
+                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.coldDelayTime, time); // ToDo: Right way
             }
         }
 
@@ -242,37 +248,31 @@ namespace DemoPrototype
                     //Store new value and send to AOU
                     switch (cmd)
                     {
-                        case AOUDataTypes.CommandType.RunningMode:
+                        case AOUDataTypes.CommandType.runModeAOU:
                             dataRouter.SendCommandToPlc(cmd, val);
                             GlobalAppSettings.RunningMode = val;
                             break;
                         case AOUDataTypes.CommandType.THotTankAlarmLowThreshold:
                             dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.THotTankAlarmLowThreshold, val);
-                            GlobalVars.globThresholds.ThresholdHotTankLowLimit = val;
+                            // ToDo: Globalvars.AddCommandSent(AOUDataTypes.CommandType.THotTankAlarmLowThreshold, val);
                             break;
                         case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold:
                             dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TColdTankAlarmHighThreshold, val);
-                            GlobalVars.globThresholds.ThresholdColdTankUpperLimit = val;
                             break;
                         case AOUDataTypes.CommandType.TReturnThresholdCold2Hot:
                             dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TReturnThresholdCold2Hot, val);
-                            GlobalVars.globThresholds.ThresholdCold2Hot = val;
                             break;
                         case AOUDataTypes.CommandType.TReturnThresholdHot2Cold:
                             dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TReturnThresholdHot2Cold, val);
-                            GlobalVars.globThresholds.ThresholdHot2Cold = val;
                             break;
                         case AOUDataTypes.CommandType.TBufferHotLowerLimit:
                             dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TBufferHotLowerLimit, val);
-                            GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit = val;
                             break;
                         case AOUDataTypes.CommandType.TBufferMidRefThreshold:
                             dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TBufferMidRefThreshold, val);
-                            GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit = val;
                             break;
                         case AOUDataTypes.CommandType.TBufferColdUpperLimit:
                             dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TBufferColdUpperLimit, val);
-                            GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit = val;
                             break;
                         default:
                             break;
@@ -282,7 +282,7 @@ namespace DemoPrototype
                 {
                     switch (cmd)
                     {
-                        case AOUDataTypes.CommandType.RunningMode:
+                        case AOUDataTypes.CommandType.runModeAOU:
                             if (pg.Name == "OperatorPage")
                                 ((OperatorPage)pg).Reset_RunningMode();
                             break;
@@ -368,6 +368,50 @@ namespace DemoPrototype
             return false;
         }
 
+
+        public bool HotTimeChanged(out int time)
+        {
+            time = 0;
+            if (dataRouter.IsConnected)
+            // ToDo: Check changed in GlobalVars instead
+            {
+                return dataRouter.CmdRetValueChanged(AOUDataTypes.CommandType.heatingTime, out time);
+            }
+            return false;
+        }
+
+        public bool HotDelayChanged(out int time)
+        {
+            time = 0;
+            // ToDo: Check changed in GlobalVars instead
+            if (dataRouter.IsConnected)
+            {
+                return dataRouter.CmdRetValueChanged(AOUDataTypes.CommandType.hotDelayTime, out time);
+            }
+            return false;
+        }
+
+        public bool CoolTimeChanged(out int time)
+        {
+            time = 0;
+            // ToDo: Check changed in GlobalVars instead
+            if (dataRouter.IsConnected)
+            {
+                return dataRouter.CmdRetValueChanged(AOUDataTypes.CommandType.coolingTime, out time);
+            }
+            return false;
+        }
+
+        public bool CoolDelayChanged(out int time)
+        {
+            time = 0;
+            // ToDo: Check changed in GlobalVars instead
+            if (dataRouter.IsConnected)
+            {
+                return dataRouter.CmdRetValueChanged(AOUDataTypes.CommandType.coldDelayTime, out time);
+            }
+            return false;
+        }
 
         public List<Power> GetNewPowerValues()
         {

@@ -204,39 +204,65 @@ namespace DemoPrototype
         public static GlobalFeedTimes globFeedTimes;
         public static GlobalValveChartValues globValveChartValues;
 
+        public static AOUCommands aouCommands;
+        // Todo: List sent cmd to change value or list new values received from <ret> or both
+
         public static GlobalTestSettings globTestSettings; // Only for testing performance
 
         // Important to call this in MainPage constructor. Program crasch If not 
+
+        public static void GetCommandValue(AOUDataTypes.CommandType cmd)
+        {
+            // Todo if needed
+        }
+
+        public static bool IsCommandValueChanged(AOUDataTypes.CommandType cmd, out int value)
+        {
+            value = 0;
+            return false;
+            // Todo if needed
+        }
+
+        public static void SetCommandValue(AOUDataTypes.CommandType cmd, string value)
+        {
+            int ival = int.Parse(value);
+            // ToDo: Perhaps Add cmd and ival to list of changed values
+            switch (cmd)
+            {
+                case AOUDataTypes.CommandType.coldDelayTime: globDelayTimes.ColdCalibrate = ival; break;
+                case AOUDataTypes.CommandType.hotDelayTime: globDelayTimes.HotCalibrate = ival; break;
+
+                case AOUDataTypes.CommandType.coolingTime: globDelayTimes.ColdTune = ival; break;
+                case AOUDataTypes.CommandType.heatingTime: globDelayTimes.HotTune = ival; break;
+
+                case AOUDataTypes.CommandType.TBufferColdUpperLimit: globThresholds.ThresholdColdTankUpperLimit = ival; break;
+                case AOUDataTypes.CommandType.TBufferHotLowerLimit: globThresholds.ThresholdHotTankLowLimit = ival; break;
+                case AOUDataTypes.CommandType.TBufferMidRefThreshold: globThresholds.ThresholdMidBuffTankAlarmLimit = ival; break;
+
+                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: globThresholds.ThresholdColdTankBuffAlarmLimit = ival; break;
+                case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: globThresholds.ThresholdHotBuffTankAlarmLimit = ival; break;
+
+                case AOUDataTypes.CommandType.TReturnThresholdCold2Hot: globThresholds.ThresholdCold2Hot = ival; break;
+                case AOUDataTypes.CommandType.TReturnThresholdHot2Cold:; globThresholds.ThresholdHot2Cold = ival;  break;
+
+                case AOUDataTypes.CommandType.tempColdTankFeedSet: globFeedTimes.CoolingActive = ival; break;
+                case AOUDataTypes.CommandType.tempHotTankFeedSet: globFeedTimes.HeatingActive = ival;  break;
+
+                case AOUDataTypes.CommandType.toolCoolingFeedPause: globFeedTimes.CoolingPause = ival;  break;
+                case AOUDataTypes.CommandType.toolHeatingFeedPause: globFeedTimes.HeatingPause = ival;  break;
+            }
+        }
+
         public static void Init()
         {
-        /* Where - this values
-            220
-            60
-        */
+            aouCommands = new AOUCommands();
+
             globThresholds = new GlobalThresHolds();
-            globThresholds.ThresholdHot2Cold = 100;
-            globThresholds.ThresholdCold2Hot = 110;
-            globThresholds.ThresholdHotTankLowLimit = 120;
-            globThresholds.ThresholdColdTankUpperLimit = 80;
-
-            globThresholds.ThresholdHotBuffTankAlarmLimit = 110;
-            globThresholds.ThresholdMidBuffTankAlarmLimit = 100;
-            globThresholds.ThresholdColdTankBuffAlarmLimit = 90;
-
             globDelayTimes = new GlobalDelayTimes();
-            globDelayTimes.HotCalibrate = 8;
-            globDelayTimes.ColdCalibrate = 7;
-            globDelayTimes.HotTune = 3;
-            globDelayTimes.ColdTune = 2;
-
             globFeedTimes = new GlobalFeedTimes();
-            globFeedTimes.HeatingActive = 0;// 20;
-            globFeedTimes.HeatingPause = 0;// 22;
-            globFeedTimes.CoolingActive = 0; //21;
-            globFeedTimes.CoolingPause = 0;// 23;
 
             globValveChartValues = new GlobalValveChartValues();
-            globValveChartValues.HotValveLow = 20;
+            globValveChartValues.HotValveLow = 20; // ToDo: Trim
             globValveChartValues.HotValveHi = 24;
 
             globValveChartValues.ColdValveLow = 26;
@@ -258,7 +284,6 @@ namespace DemoPrototype
             globTestSettings.TimeLoggingEnabled = true;
 
             globTestSettings.DataTimeSpanTicks = 0;
-
         }
 
         public static void Save()
@@ -281,10 +306,31 @@ namespace DemoPrototype
             private int _ThresholdColdTankAlarm;
             private int _ThresholdMidTankAlarm;
 
+            public GlobalThresHolds()
+            {
+                _thresholdHot2Cold = int.MinValue;
+                _ThresholdCold2Hot = int.MinValue;
+                _ThresholdHotTankLowLimit = int.MinValue;
+                _ThresholdColdTankUpperLimit = int.MinValue;
+                _ThresholdHotTankAlarm = int.MinValue;
+                _ThresholdColdTankAlarm = int.MinValue;
+                _ThresholdMidTankAlarm = int.MinValue;
+            }
+
             public int ThresholdHot2Cold
             {
                 get { return _thresholdHot2Cold; }
                 set { _thresholdHot2Cold = value; }
+            }
+
+            public string ThresholdHot2ColdStr
+            {
+                get {
+                    if (_thresholdHot2Cold == int.MinValue)
+                        return "-";
+                    else
+                        return _thresholdHot2Cold.ToString();
+                }
             }
 
             public int ThresholdCold2Hot
@@ -333,6 +379,36 @@ namespace DemoPrototype
             private int _coldTune;
             private int _coldCalibrate;
 
+            public GlobalDelayTimes()
+            {
+                _hotTune = int.MinValue;
+                _hotCalibrate = int.MinValue;
+                _coldTune = int.MinValue;
+                _coldCalibrate = int.MinValue;
+            }
+
+            public string ColdDelayTimeSumStr
+            {
+                get
+                {
+                    if (_coldTune == int.MinValue && _coldCalibrate == int.MinValue)
+                        return "-";
+                    else
+                        return ( _coldCalibrate + _coldTune).ToString();
+                }
+            }
+
+            public string HotDelayTimeSumStr
+            {
+                get
+                {
+                    if (_hotTune == int.MinValue && _hotCalibrate == int.MinValue)
+                        return "-";
+                    else
+                        return (_hotCalibrate + _hotTune).ToString();
+                }
+            }
+
             public int HotTune
             {
                 get { return _hotTune;}
@@ -352,6 +428,130 @@ namespace DemoPrototype
             {
                 get { return _coldCalibrate; }
                 set { _coldCalibrate = value; }
+            }
+
+            public string HotTuneStr
+            {
+                get
+                {
+                    if (_hotTune == int.MinValue)
+                        return "-";
+                    else
+                        return _hotTune.ToString();
+                }
+            }
+
+            public string HotCalibrateStr
+            {
+                get
+                {
+                    if (_hotTune == int.MinValue)
+                        return "-";
+                    else
+                        return _hotTune.ToString();
+                }
+            }
+
+            public string ColdTuneStr
+            {
+                get
+                {
+                    if (_coldTune == int.MinValue)
+                        return "-";
+                    else
+                        return _hotTune.ToString();
+                }
+            }
+
+            public string ColdCalibrateStr
+            {
+                get
+                {
+                    if (_coldCalibrate == int.MinValue)
+                        return "-";
+                    else
+                        return _coldCalibrate.ToString();
+                }
+            }
+
+
+        }
+
+        public class GlobalFeedTimes
+        {
+            private int _heatingActive;
+            private int _heatingPause;
+            private int _coolingActive;
+            private int _coolingPause;
+
+            public GlobalFeedTimes()
+            {
+                _heatingActive = int.MinValue;
+                _heatingPause = int.MinValue;
+                _coolingActive = int.MinValue;
+                _coolingPause = int.MinValue;
+            }
+
+            public int HeatingActive
+            {
+                get { return _heatingActive; }
+                set { _heatingActive = value; }
+            }
+            public int HeatingPause
+            {
+                get { return _heatingPause; }
+                set { _heatingPause = value; }
+            }
+            public int CoolingActive
+            {
+                get { return _coolingActive; }
+                set { _coolingActive = value; }
+            }
+            public int CoolingPause
+            {
+                get { return _coolingPause; }
+                set { _coolingPause = value; }
+            }
+
+            public string HeatingActiveStr
+            {
+                get
+                {
+                    if (_heatingActive == int.MinValue)
+                        return "-";
+                    else
+                        return _heatingActive.ToString();
+                }
+            }
+            public string HeatingPauseStr
+            {
+                get
+                {
+                    if (_heatingPause == int.MinValue)
+                        return "-";
+                    else
+                        return _heatingPause.ToString();
+                }
+            }
+            public string CoolingActiveStr
+            {
+                get
+                {
+                    if (_coolingActive == int.MinValue)
+                        return "-";
+                    else
+                        return _coolingActive.ToString();
+                }
+            }
+            public string CoolingPauseStr
+            {
+                get
+                {
+                    if (_coolingPause == int.MinValue)
+                        return "-";
+                    else
+                        return _coolingPause.ToString();
+                }
             }
         }
 
@@ -414,35 +614,6 @@ namespace DemoPrototype
                 set { _coolantValveHi = value; }
             }
 
-        }
-
-        public class GlobalFeedTimes
-        {
-            private int _heatingActive;
-            private int _heatingPause;
-            private int _coolingActive;
-            private int _coolingPause;
-
-            public int HeatingActive
-            {
-                get { return _heatingActive; }
-                set { _heatingActive = value; }
-            }
-            public int HeatingPause
-            {
-                get { return _heatingPause; }
-                set { _heatingPause = value; }
-            }
-            public int CoolingActive
-            {
-                get { return _coolingActive; }
-                set { _coolingActive = value; }
-            }
-            public int CoolingPause
-            {
-                get { return _coolingPause; }
-                set { _coolingPause = value; }
-            }
         }
 
         public class GlobalTestSettings

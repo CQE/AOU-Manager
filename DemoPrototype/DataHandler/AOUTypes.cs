@@ -6,22 +6,104 @@ using System.Threading.Tasks;
 
 namespace DemoPrototype
 {
+    public class AOUCommands : List<KeyValuePair<AOUDataTypes.CommandType, string>>
+    {
+        /*  Arduino command string list
+           char* cmdList[] = {
+          "idleMode", "heatingMode", "coolingMode", "fixedCyclingMode", "autoWidthIMMMode", "aouMode",
+          "hotDelayTime", "coldDelayTime",
+          "THotTankAlarmLowThreshold", "TColdTankAlarmHighThreshold", "TReturnThresholdCold2Hot", "TReturnThresholdHot2Cold",
+          "TBufferHotLowerLimit", "TBufferMidRefThreshold", "TBufferColdUpperLimit",
+          "tempHotTankFeedSet", "tempColdTankFeedSet",
+          "heatingTime",  "coolingTime",  "toolHeatingFeedPause",  "toolCoolingFeedPause",
+        }; 
+        */
+        public AOUCommands()
+        {
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.runModeIdle, "idleMode"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.runModeHeating, "heatingMode"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.runModeCooling, "coolingMode"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.runModeFixedCycling, "fixedCyclingMode"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.runModeAutoWithIMM, "autoWidthIMMMode"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.runModeAOU, "aouMode"));
+
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.hotDelayTime, "hotDelayTime"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.coldDelayTime, "coldDelayTime"));
+
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.THotTankAlarmLowThreshold, "THotTankAlarmLowThreshold"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.TColdTankAlarmHighThreshold, "TColdTankAlarmHighThreshold"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.TReturnThresholdCold2Hot, "TReturnThresholdCold2Hot"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.TReturnThresholdHot2Cold, "TReturnThresholdHot2Cold"));
+
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.TBufferHotLowerLimit, "TBufferHotLowerLimit"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.TBufferMidRefThreshold, "TBufferMidRefThreshold"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.TBufferColdUpperLimit, "TBufferColdUpperLimit"));
+
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.tempHotTankFeedSet, "tempHotTankFeedSet"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.tempColdTankFeedSet, "tempColdTankFeedSet"));
+
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.heatingTime, "heatingTime"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.coolingTime, "coolingTime"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.toolHeatingFeedPause, "toolHeatingFeedPause"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.toolCoolingFeedPause, "toolCoolingFeedPause"));
+        }
+
+        public string StringValue(AOUDataTypes.CommandType cmd)
+        {
+            var kvp = this.Find(kv => kv.Key == cmd);
+            return kvp.Value;
+        }
+
+        public AOUDataTypes.CommandType Command(string cmdStr)
+        {
+            var kvp = this.Find(kv => kv.Value == cmdStr);
+            return kvp.Key;
+        }
+    }
+
     public static class AOUDataTypes
     {
         public enum AOURunningMode { Idle = 0, Heating, Cooling, FixedCycling, AutoWithIMM }
 
+        /*  Arduino command Constants
+            #define CMD_IDLEMODE 0
+            #define CMD_HEATINGMODE 1
+            #define CMD_COOLINGMODE 2
+            #define CMD_FIXEDCYCLINGMODE 3
+            #define CMD_AUTOWIDTHIMMMODE 4
+            #define CMD_AOUMODE 5
+
+            #define CMD_HOTDELAYTIME 6
+            #define CMD_COLDDELAYTIME 7
+
+            #define CMD_THOTTANKALARMLOWTHRESHOLD 8
+            #define CMD_TCOLDTANKALARMHIGHTHRESHOLD 9
+            #define CMD_TRETURNTHRESHOLDCOLD2HOT 10
+            #define CMD_TRETURNTHRESHOLDHOT2COLD 11
+            #define CMD_TBUFFERHOTLOWERLIMIT 12
+            #define CMD_TBUFFERMIDREFTHRESHOLD 13
+            #define CMD_TBUFFERCOLDUPPERLIMIT 14
+
+            #define CMD_TEMPHOTTANKFEEDSET 15
+            #define CMD_TEMPCOLDTANKFEEDSET 16
+            #define CMD_HEATINGTIME 17
+            #define CMD_COOLINGTIME 18
+            #define CMD_TOOLHEATINGFEEDPAUSE 19
+            #define CMD_TOOLCOOLINGFEEDPAUSE 20
+        */
         public enum CommandType
         {
-            CmdTypeToDo /* To use when not know */,    RunningMode,
-
-            tempHotTankFeedSet, tempColdTankFeedSet, coolingTime, heatingTime,
-            toolHeatingFeedPause, toolCoolingFeedPause,  hotDelayTime, coldDelayTime,
-
+            RunningMode = -1,
+            runModeIdle = 0, runModeHeating, runModeCooling, runModeFixedCycling, runModeAutoWithIMM, runModeAOU,
+            hotDelayTime, coldDelayTime,
             THotTankAlarmLowThreshold, TColdTankAlarmHighThreshold,
             TReturnThresholdCold2Hot, TReturnThresholdHot2Cold,
-            TBufferHotLowerLimit, TBufferMidRefThreshold, TBufferColdUpperLimit
-        }
+            TBufferHotLowerLimit, TBufferMidRefThreshold, TBufferColdUpperLimit,
+            tempHotTankFeedSet, tempColdTankFeedSet,
+            heatingTime, coolingTime,
+            toolHeatingFeedPause, toolCoolingFeedPause,  
 
+        }
 //----------------------------------------------------------------------------------------------------------------------------
         public enum HT_StateType {
             HT_STATE_NOT_SET = -99, HT_STATE_INVALID = -999, HT_STATE_COLD = -1, HT_STATE_UNKNOWN = 0,  HT_STATE_HOT = 1

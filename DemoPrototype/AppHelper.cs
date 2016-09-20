@@ -126,6 +126,8 @@ namespace DemoPrototype
                     {
                         textbox.Text = ((SetValueDialog)dialog).GetStringValue();
                         int val = ((SetValueDialog)dialog).GetIntValue();
+
+                        /* ToDo: Set when ret
                         //Handle all feeding times
                         if (cmd == AOUDataTypes.CommandType.heatingTime)
                         {
@@ -170,7 +172,7 @@ namespace DemoPrototype
                             GlobalVars.globThresholds.ThresholdHot2Cold = val;
                             //and now what? MW
                         }
-
+                        */
                         Data.Updater.SetCommandValue(cmd, val);
                     }
                     if (nextControl != null)

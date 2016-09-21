@@ -194,6 +194,25 @@ namespace DemoPrototype
 
     }
 
+    public struct CommandReceived
+    {
+        public AOUDataTypes.CommandType command;
+
+        // public string valueSent;
+        // public DateTime sent;
+
+        public int valueReceived;
+        public DateTime received;
+
+        public CommandReceived(AOUDataTypes.CommandType cmd, int val)
+        {
+            command = cmd;
+            valueReceived = val;
+            received = DateTime.Now;
+        }
+    }
+
+
     /// <summary>
     /// Global variables for current session.
     /// </summary>
@@ -206,6 +225,7 @@ namespace DemoPrototype
 
         public static AOUCommands aouCommands;
         // Todo: List sent cmd to change value or list new values received from <ret> or both
+        public static List<CommandReceived> retReceived;
 
         public static GlobalTestSettings globTestSettings; // Only for testing performance
 
@@ -218,15 +238,22 @@ namespace DemoPrototype
 
         public static bool IsCommandValueChanged(AOUDataTypes.CommandType cmd, out int value)
         {
-            value = 0;
+            value = 0; // Init
+            int index = retReceived.FindIndex(cr => cr.command == cmd);
+            if (index >= 0)
+            {
+                value = retReceived[index].valueReceived;
+                retReceived.RemoveAt(index); // Delete from list when catched
+                return true;
+            }
             return false;
-            // Todo if needed
         }
 
         public static void SetCommandValue(AOUDataTypes.CommandType cmd, string value)
         {
             int ival = int.Parse(value);
-            // ToDo: Perhaps Add cmd and ival to list of changed values
+            // Add ret cmd and ival to list of changed values. Perhaps cmd sent too
+            retReceived.Add(new CommandReceived(cmd, ival));
             switch (cmd)
             {
                 case AOUDataTypes.CommandType.coldDelayTime: globDelayTimes.ColdCalibrate = ival; break;
@@ -235,27 +262,28 @@ namespace DemoPrototype
                 case AOUDataTypes.CommandType.coolingTime: globDelayTimes.ColdTune = ival; break;
                 case AOUDataTypes.CommandType.heatingTime: globDelayTimes.HotTune = ival; break;
 
+                case AOUDataTypes.CommandType.toolCoolingFeedPause: globFeedTimes.CoolingPause = ival; break;
+                case AOUDataTypes.CommandType.toolHeatingFeedPause: globFeedTimes.HeatingPause = ival; break;
+
+                case AOUDataTypes.CommandType.tempColdTankFeedSet: globFeedTimes.CoolingActive = ival; break;
+                case AOUDataTypes.CommandType.tempHotTankFeedSet: globFeedTimes.HeatingActive = ival; break;
+
                 case AOUDataTypes.CommandType.TBufferColdUpperLimit: globThresholds.ThresholdColdTankUpperLimit = ival; break;
                 case AOUDataTypes.CommandType.TBufferHotLowerLimit: globThresholds.ThresholdHotTankLowLimit = ival; break;
-                case AOUDataTypes.CommandType.TBufferMidRefThreshold: globThresholds.ThresholdMidBuffTankAlarmLimit = ival; break;
 
-                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: globThresholds.ThresholdColdTankBuffAlarmLimit = ival; break;
                 case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: globThresholds.ThresholdHotBuffTankAlarmLimit = ival; break;
+                case AOUDataTypes.CommandType.TBufferMidRefThreshold: globThresholds.ThresholdMidBuffTankAlarmLimit = ival; break;
+                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: globThresholds.ThresholdColdTankBuffAlarmLimit = ival; break;
 
                 case AOUDataTypes.CommandType.TReturnThresholdCold2Hot: globThresholds.ThresholdCold2Hot = ival; break;
                 case AOUDataTypes.CommandType.TReturnThresholdHot2Cold:; globThresholds.ThresholdHot2Cold = ival;  break;
-
-                case AOUDataTypes.CommandType.tempColdTankFeedSet: globFeedTimes.CoolingActive = ival; break;
-                case AOUDataTypes.CommandType.tempHotTankFeedSet: globFeedTimes.HeatingActive = ival;  break;
-
-                case AOUDataTypes.CommandType.toolCoolingFeedPause: globFeedTimes.CoolingPause = ival;  break;
-                case AOUDataTypes.CommandType.toolHeatingFeedPause: globFeedTimes.HeatingPause = ival;  break;
-            }
+           }
         }
 
         public static void Init()
         {
             aouCommands = new AOUCommands();
+            retReceived = new List<CommandReceived>();
 
             globThresholds = new GlobalThresHolds();
             globDelayTimes = new GlobalDelayTimes();
@@ -317,20 +345,22 @@ namespace DemoPrototype
                 _ThresholdMidTankAlarm = int.MinValue;
             }
 
+            public bool IsAllValuesReceived()
+            {
+                return
+                _thresholdHot2Cold != int.MinValue &&
+                _ThresholdCold2Hot != int.MinValue &&
+                _ThresholdHotTankLowLimit != int.MinValue &&
+                _ThresholdColdTankUpperLimit != int.MinValue &&
+                _ThresholdHotTankAlarm != int.MinValue &&
+                _ThresholdColdTankAlarm != int.MinValue &&
+                _ThresholdMidTankAlarm != int.MinValue;
+            }
+
             public int ThresholdHot2Cold
             {
                 get { return _thresholdHot2Cold; }
                 set { _thresholdHot2Cold = value; }
-            }
-
-            public string ThresholdHot2ColdStr
-            {
-                get {
-                    if (_thresholdHot2Cold == int.MinValue)
-                        return "-";
-                    else
-                        return _thresholdHot2Cold.ToString();
-                }
             }
 
             public int ThresholdCold2Hot
@@ -370,6 +400,28 @@ namespace DemoPrototype
                 set { _ThresholdMidTankAlarm = value; }
             }
 
+            public string ThresholdHot2ColdStr
+            {
+                get
+                {
+                    if (_thresholdHot2Cold == int.MinValue)
+                        return "-";
+                    else
+                        return _thresholdHot2Cold.ToString();
+                }
+            }
+
+            public string ThresholdCold2HotStr
+            {
+                get
+                {
+                    if (_ThresholdCold2Hot == int.MinValue)
+                        return "-";
+                    else
+                        return _ThresholdCold2Hot.ToString();
+                }
+            }
+
         }
 
         public class GlobalDelayTimes
@@ -385,6 +437,15 @@ namespace DemoPrototype
                 _hotCalibrate = int.MinValue;
                 _coldTune = int.MinValue;
                 _coldCalibrate = int.MinValue;
+            }
+
+            public bool IsAllValuesReceived()
+            {
+                return
+                _hotTune != int.MinValue &&
+                _hotCalibrate != int.MinValue &&
+                _coldTune != int.MinValue &&
+                _coldCalibrate != int.MinValue;
             }
 
             public string ColdDelayTimeSumStr
@@ -490,6 +551,15 @@ namespace DemoPrototype
                 _heatingPause = int.MinValue;
                 _coolingActive = int.MinValue;
                 _coolingPause = int.MinValue;
+            }
+
+            public bool IsAllValuesReceived()
+            {
+                return
+                _heatingActive != int.MinValue &&
+                _heatingPause != int.MinValue &&
+                _coolingActive != int.MinValue &&
+                _coolingPause != int.MinValue;
             }
 
             public int HeatingActive

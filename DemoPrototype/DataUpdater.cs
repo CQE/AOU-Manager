@@ -254,7 +254,6 @@ namespace DemoPrototype
                             break;
                         case AOUDataTypes.CommandType.THotTankAlarmLowThreshold:
                             dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.THotTankAlarmLowThreshold, val);
-                            // ToDo: Globalvars.AddCommandSent(AOUDataTypes.CommandType.THotTankAlarmLowThreshold, val);
                             break;
                         case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold:
                             dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.TColdTankAlarmHighThreshold, val);
@@ -368,49 +367,93 @@ namespace DemoPrototype
             return false;
         }
 
-
         public bool HotTimeChanged(out int time)
         {
             time = 0;
-            if (dataRouter.IsConnected)
-            // ToDo: Check changed in GlobalVars instead
-            {
-                return dataRouter.CmdRetValueChanged(AOUDataTypes.CommandType.heatingTime, out time);
-            }
-            return false;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.heatingTime, out time);
         }
 
         public bool HotDelayChanged(out int time)
         {
             time = 0;
-            // ToDo: Check changed in GlobalVars instead
-            if (dataRouter.IsConnected)
-            {
-                return dataRouter.CmdRetValueChanged(AOUDataTypes.CommandType.hotDelayTime, out time);
-            }
-            return false;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.hotDelayTime, out time);
         }
 
         public bool CoolTimeChanged(out int time)
         {
             time = 0;
-            // ToDo: Check changed in GlobalVars instead
-            if (dataRouter.IsConnected)
-            {
-                return dataRouter.CmdRetValueChanged(AOUDataTypes.CommandType.coolingTime, out time);
-            }
-            return false;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.coolingTime, out time);
         }
 
         public bool CoolDelayChanged(out int time)
         {
             time = 0;
-            // ToDo: Check changed in GlobalVars instead
-            if (dataRouter.IsConnected)
-            {
-                return dataRouter.CmdRetValueChanged(AOUDataTypes.CommandType.coldDelayTime, out time);
-            }
-            return false;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.coldDelayTime, out time);
+        }
+
+        private bool PauseHeatingTimeChanged(out int time)
+        {
+            time = 0;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.toolHeatingFeedPause, out time);
+        }
+
+        private bool PauseCoolingTimeChanged(out int time)
+        {
+            time = 0;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.toolCoolingFeedPause, out time);
+        }
+
+        private bool HotTankTempChanged(out int temp)
+        {
+            temp = 0;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.tempHotTankFeedSet, out temp);
+        }
+
+        private bool ColdTankTempChanged(out int temp)
+        {
+            temp = 0;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.tempColdTankFeedSet, out temp);
+        }
+
+        // Thresholds
+        private bool HLineSet_ThresholdHot2Cold_Dragged(out int temp)
+        {
+            temp = 0;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.TReturnThresholdHot2Cold, out temp);
+        }
+        private bool HLineSet_ThresholdCold2Hot_Dragged(out int temp)
+        {
+            temp = 0;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.TReturnThresholdCold2Hot, out temp);
+        }
+
+        private bool HLineSet_ThresholdMidTank_Dragged(out int temp)
+        {
+            temp = 0;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.TBufferMidRefThreshold, out temp);
+        }
+        private bool HLineSet_ThresholdHotTankAlarm_Dragged(out int temp)
+        {
+            temp = 0;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.TBufferHotLowerLimit, out temp);
+        }
+        private bool HLineSet_ThresholdColdTankAlarm_Dragged(out int temp)
+        {
+            temp = 0;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.TBufferColdUpperLimit, out temp);
+        }
+
+
+        private bool SetHotSafeZoneLine_DragCompleted(out int temp)
+        {
+            temp = 0; // globThresholds.ThresholdHotBuffTankAlarmLimit
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.THotTankAlarmLowThreshold, out temp);
+        }
+
+        private bool SetColdSafeZoneLine_DragCompleted(out int temp)
+        {
+            temp = 0; // globThresholds.ThresholdColdTankBuffAlarmLimit
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.TColdTankAlarmHighThreshold, out temp);
         }
 
         public List<Power> GetNewPowerValues()

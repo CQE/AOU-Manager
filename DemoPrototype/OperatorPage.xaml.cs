@@ -245,13 +245,27 @@ namespace DemoPrototype
             SetHotTankTempText();
             SetColdTankTempText();
 
-            //insert condition here if new times should be read
-            SetHeatingTimeText();
-          /*  SetColdFeedTimeText();
-            SetHotDelayTimeText();
-            SetColdDelayTimeText();
-            */
-
+            int time = 0;
+            if (Data.Updater.HotTimeChanged(out time))
+            {
+                // SetHeatingTimeText();
+                TextBox_NewActiveHeatingTime.Text = time.ToString(); // GlobalVars.globFeedTimes.HeatingActive.ToString();
+            }
+            if (Data.Updater.HotDelayChanged(out time))
+            {
+                // SetHotDelayTimeText();
+                TextBox_NewPauseHeatingTime.Text = time.ToString(); // GlobalVars.globFeedTimes.HeatingPause.ToString();
+            }
+            if (Data.Updater.CoolTimeChanged(out time))
+            {
+                // SetColdFeedTimeText();
+                TextBox_NewActiveCoolingTime.Text = time.ToString(); // GlobalVars.globFeedTimes.CoolingActive.ToString();
+            }
+            if (Data.Updater.CoolDelayChanged(out time))
+            {
+                // SetColdDelayTimeText();
+                TextBox_NewPauseCoolingTime.Text = time.ToString(); // GlobalVars.globFeedTimes.CoolingPause.ToString();
+            }
             if (Data.Updater.ModeChanged(out mode))
             {
                 GlobalAppSettings.ToolTempMode = (int) mode;
@@ -605,6 +619,7 @@ namespace DemoPrototype
             }
         }
 
+        /*
         private void SetHeatingTimeText()
         {
             if (Data.Updater.LastPowerIndex >= 0)
@@ -656,7 +671,7 @@ namespace DemoPrototype
                 TextBox_NewPauseCoolingTime.Text = "-";
             }
         }
-
+        */
 
 
 

@@ -28,27 +28,10 @@ namespace DemoPrototype
 
         private string notInitializedStr = "AOU Router not initialized";
 
-        // Is this needed when saved in logs. Save <cmd> sent in list. Remove when <ret>. 
-        public struct CommandSent
-        {
-            public string parameter;
-            public string value;
-
-            public CommandSent(string param, string val)
-            {
-                parameter = param;
-                value = val;
-            }
-        }
-
-        public List<CommandSent> CommandSentLst;
-
-
         public AOURouter()
         {
             logMessages = new List<AOULogMessage>();
             powerValues = new List<Power>();
-            CommandSentLst = new List<CommandSent>();
 
             runMode = RunType.None;
         }
@@ -156,7 +139,6 @@ namespace DemoPrototype
         private void SendTagCommandToPlc(string subTag, string value = "")
         {
             SendToPlc(String.Format("<cmd><{0}>{1}</{0}></cmd>", subTag, value));
-            CommandSentLst.Add(new CommandSent(subTag, value));
         }
 
         public void SendCommandToPlc(AOUDataTypes.CommandType cmd, int value) 
@@ -408,24 +390,5 @@ namespace DemoPrototype
             return false;
         }
 
-
-        public bool CmdRetValueChanged(AOUDataTypes.CommandType cmd, out int value)
-        {
-            // Todo: Check changed in  GlobalVars instead
-            /*
-            if (IsConnected && aouData.AreNewCommandReturnsAvailable())
-            {
-                return aouData.GetNextCommandReturnIntValue(cmd, out value);
-            }
-            */
-            value = 0;
-            return false;
-            /*
-            tempHotTankFeedSet, tempColdTankFeedSet, coolingTime, heatingTime,
-            toolHeatingFeedPause, toolCoolingFeedPause,  hotDelayTime, coldDelayTime,
-            */
-          // Data.Updater.HotTimeChanged, HotDelayChanged, CoolTimeChanged, CoolDelayChanged
-
-        }
     }
 }

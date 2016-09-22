@@ -259,14 +259,17 @@ namespace DemoPrototype
                 case AOUDataTypes.CommandType.coldDelayTime: globDelayTimes.ColdCalibrate = ival; break;
                 case AOUDataTypes.CommandType.hotDelayTime: globDelayTimes.HotCalibrate = ival; break;
 
-                case AOUDataTypes.CommandType.coolingTime: globDelayTimes.ColdTune = ival; break;
-                case AOUDataTypes.CommandType.heatingTime: globDelayTimes.HotTune = ival; break;
+                //case AOUDataTypes.CommandType.co: globDelayTimes.ColdTune = ival; break;
+                //case AOUDataTypes.CommandType.heatingTime: globDelayTimes.HotTune = ival; break;
 
+                case AOUDataTypes.CommandType.coolingTime:  globFeedTimes.CoolingActive = ival; break; // globDelayTimes.ColdTune = ival; break;
+                case AOUDataTypes.CommandType.heatingTime:  globFeedTimes.HeatingActive = ival; break;//  globDelayTimes.HotTune = ival; break;
+                    
                 case AOUDataTypes.CommandType.toolCoolingFeedPause: globFeedTimes.CoolingPause = ival; break;
                 case AOUDataTypes.CommandType.toolHeatingFeedPause: globFeedTimes.HeatingPause = ival; break;
 
-                case AOUDataTypes.CommandType.tempColdTankFeedSet: globFeedTimes.CoolingActive = ival; break;
-                case AOUDataTypes.CommandType.tempHotTankFeedSet: globFeedTimes.HeatingActive = ival; break;
+                //case AOUDataTypes.CommandType.tempColdTankFeedSet: glob = ival; break;
+                //case AOUDataTypes.CommandType.tempHotTankFeedSet: globFeedTimes.HeatingActive = ival; break;
 
                 case AOUDataTypes.CommandType.TBufferColdUpperLimit: globThresholds.ThresholdColdTankUpperLimit = ival; break;
                 case AOUDataTypes.CommandType.TBufferHotLowerLimit: globThresholds.ThresholdHotTankLowLimit = ival; break;

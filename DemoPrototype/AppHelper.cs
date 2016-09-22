@@ -192,11 +192,25 @@ namespace DemoPrototype
         {
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.heatingTime);
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coolingTime);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.toolHeatingFeedPause);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.toolCoolingFeedPause);
+        }
+
+        public static void AskAOUForThresholds()
+        {
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferColdUpperLimit);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferHotLowerLimit);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferMidRefThreshold);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TReturnThresholdCold2Hot);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TReturnThresholdHot2Cold);
+        }
+
+        public static void AskAOUForDelayTimes()
+        {
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotDelayTime);
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
         }
-
-
+        
         public static async void ShowMessageBox(string text)
         {
             var dialog = new Windows.UI.Popups.MessageDialog(text);

@@ -47,7 +47,10 @@ namespace DemoPrototype
             Data.Updater.Start();
 
             //ask for AOU settings
-            //AppHelper.AskAOUForMouldingTimes(); Not needed anymore when getting all values from beginning
+            AppHelper.AskAOUForMouldingTimes(); //Not true: Not needed anymore when getting all values from beginning
+            //System.Threading.Thread.Sleep(100);
+            AppHelper.AskAOUForDelayTimes();
+            AppHelper.AskAOUForThresholds();
         }
 
         private void Timer_Tick(ThreadPoolTimer timer)

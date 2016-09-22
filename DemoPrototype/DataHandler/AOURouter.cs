@@ -128,7 +128,7 @@ namespace DemoPrototype
             if (IsConnected)
             {
                 logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), "SendToPlc: " + text, 12, 0));
-                return aouData.SendData(text);
+                return aouData.SendData(text+"\n");   //always end data with newline
             }
             else
             {

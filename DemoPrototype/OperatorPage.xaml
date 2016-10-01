@@ -65,14 +65,14 @@
             </StackPanel>
 
             <StackPanel Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
-                    <TextBox Name="TextBox_THotTank" IsReadOnly="True" BorderThickness="0" Background="White" Text="210"/>
-                    <TextBox IsReadOnly="True" Margin="15,0,0,0" Text="220" Name="NewTHotTankTextBox"  GotFocus="NewTHotTankTextBox_GotFocus"/>
+                    <TextBox Name="TextBox_THotTank" IsReadOnly="True" BorderThickness="0" Background="White" />
+                    <TextBox IsReadOnly="True" Margin="15,0,0,0" Text="-" Name="NewTHotTankTextBox"  GotFocus="NewTHotTankTextBox_GotFocus"/>
                 </StackPanel>
         
             <TextBlock Grid.Row="6" VerticalAlignment="Bottom" Text="Cold tank"></TextBlock>
             <StackPanel Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
-                    <TextBox Name="TextBox_TColdTank" IsReadOnly="True" BorderThickness="0" Text="20"></TextBox>
-                    <TextBox Margin="15,0,0,0" IsReadOnly="True" Name="NewTColdTankTextBox" GotFocus="NewTColdTankTextBox_GotFocus"  Text="25"></TextBox>
+                    <TextBox Name="TextBox_TColdTank" IsReadOnly="True" BorderThickness="0"></TextBox>
+                    <TextBox Margin="15,0,0,0" IsReadOnly="True" Name="NewTColdTankTextBox" GotFocus="NewTColdTankTextBox_GotFocus" ></TextBox>
             </StackPanel>
 
             <!--  Cycle Times -->

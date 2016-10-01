@@ -51,6 +51,7 @@ namespace DemoPrototype
             //System.Threading.Thread.Sleep(100);
             AppHelper.AskAOUForDelayTimes();
             AppHelper.AskAOUForThresholds();
+            AppHelper.AskAOUForTankTemps();
         }
 
         private void Timer_Tick(ThreadPoolTimer timer)

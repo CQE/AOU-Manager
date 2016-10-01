@@ -127,43 +127,54 @@ namespace DemoPrototype
                         textbox.Text = ((SetValueDialog)dialog).GetStringValue();
                         int val = ((SetValueDialog)dialog).GetIntValue();
 
-                        /* ToDo: Set when ret
+                        /* ToDo: Set when ret */  //need to test if this is working we can set the variable two times
                         //Handle all feeding times
+                        //remeber to send times i deciseconds i e multiply by 10
                         if (cmd == AOUDataTypes.CommandType.heatingTime)
                         {
                             GlobalVars.globFeedTimes.HeatingActive = val;
+                            val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.toolHeatingFeedPause)
                         {
                             GlobalVars.globFeedTimes.HeatingPause = val;
+                            val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.coolingTime)
                         {
+                           // val = val * 10;
                             GlobalVars.globFeedTimes.CoolingActive = val;
+                            val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.toolCoolingFeedPause)
                         {
+                            //val = val * 10;
                             GlobalVars.globFeedTimes.CoolingPause = val;
+                            val = val * 10;
                         }
 
                         //Need to handle delay time to calculate correct val
                         if (cmd == AOUDataTypes.CommandType.hotDelayTime)
                         {
                             //save new value
-                            if (pg.Name == "OperatorPage")
+                            //val = val * 10;
+                            if (pg.Name == "TunePage")
                                 GlobalVars.globDelayTimes.HotTune = val;
                             else
                                 GlobalVars.globDelayTimes.HotCalibrate = val;
                             val = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
+                            val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.coldDelayTime)
                         {
                             //save new value
-                            if (pg.Name == "OperatorPage")
+                            //val = val * 10;
+                            if (pg.Name == "TunePage")
                                 GlobalVars.globDelayTimes.ColdTune = val;
                             else
                                 GlobalVars.globDelayTimes.ColdCalibrate = val;
                             val = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
+                            val = val * 10;
                         }
                         //need to handle thresholds too
                         if (cmd == AOUDataTypes.CommandType.TReturnThresholdHot2Cold)
@@ -172,7 +183,13 @@ namespace DemoPrototype
                             GlobalVars.globThresholds.ThresholdHot2Cold = val;
                             //and now what? MW
                         }
-                        */
+                        if (cmd == AOUDataTypes.CommandType.TReturnThresholdCold2Hot)
+                        {
+                            //save new value
+                            GlobalVars.globThresholds.ThresholdCold2Hot = val;
+                            //and now what? MW
+                        }
+                        //*/
                         Data.Updater.SetCommandValue(cmd, val);
                     }
                     if (nextControl != null)
@@ -210,7 +227,13 @@ namespace DemoPrototype
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotDelayTime);
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
         }
-        
+
+        public static void AskAOUForTankTemps()
+        {
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempHotTankFeedSet);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet);
+        }
+
         public static async void ShowMessageBox(string text)
         {
             var dialog = new Windows.UI.Popups.MessageDialog(text);

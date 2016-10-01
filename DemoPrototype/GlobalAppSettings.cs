@@ -221,6 +221,7 @@ namespace DemoPrototype
         public static GlobalThresHolds globThresholds;
         public static GlobalDelayTimes globDelayTimes;
         public static GlobalFeedTimes globFeedTimes;
+        public static GlobalTankSetTemps globTankSetTemps;
         public static GlobalValveChartValues globValveChartValues;
 
         public static AOUCommands aouCommands;
@@ -254,22 +255,24 @@ namespace DemoPrototype
             int ival = int.Parse(value);
             // Add ret cmd and ival to list of changed values. Perhaps cmd sent too
             retReceived.Add(new CommandReceived(cmd, ival));
+            //special handling of times    
             switch (cmd)
             {
-                case AOUDataTypes.CommandType.coldDelayTime: globDelayTimes.ColdCalibrate = ival; break;
-                case AOUDataTypes.CommandType.hotDelayTime: globDelayTimes.HotCalibrate = ival; break;
+                //for delay times, we cannot divide delay into calibrate and tune when returned TODO how hanlde?
+                //case AOUDataTypes.CommandType.coldDelayTime: globDelayTimes.ColdCalibrate = ival; break;
+                //case AOUDataTypes.CommandType.hotDelayTime: globDelayTimes.HotCalibrate = ival; break;
 
-                //case AOUDataTypes.CommandType.co: globDelayTimes.ColdTune = ival; break;
+               // case AOUDataTypes.CommandType.co: globDelayTimes.ColdTune = ival; break;
                 //case AOUDataTypes.CommandType.heatingTime: globDelayTimes.HotTune = ival; break;
 
-                case AOUDataTypes.CommandType.coolingTime:  globFeedTimes.CoolingActive = ival; break; // globDelayTimes.ColdTune = ival; break;
-                case AOUDataTypes.CommandType.heatingTime:  globFeedTimes.HeatingActive = ival; break;//  globDelayTimes.HotTune = ival; break;
+                case AOUDataTypes.CommandType.coolingTime:  globFeedTimes.CoolingActive = ival/10; break; // globDelayTimes.ColdTune = ival; break;
+                case AOUDataTypes.CommandType.heatingTime:  globFeedTimes.HeatingActive = ival/10; break;//  globDelayTimes.HotTune = ival; break;
                     
-                case AOUDataTypes.CommandType.toolCoolingFeedPause: globFeedTimes.CoolingPause = ival; break;
-                case AOUDataTypes.CommandType.toolHeatingFeedPause: globFeedTimes.HeatingPause = ival; break;
+                case AOUDataTypes.CommandType.toolCoolingFeedPause: globFeedTimes.CoolingPause = ival/10; break;
+                case AOUDataTypes.CommandType.toolHeatingFeedPause: globFeedTimes.HeatingPause = ival/10; break;
 
-                //case AOUDataTypes.CommandType.tempColdTankFeedSet: glob = ival; break;
-                //case AOUDataTypes.CommandType.tempHotTankFeedSet: globFeedTimes.HeatingActive = ival; break;
+                case AOUDataTypes.CommandType.tempColdTankFeedSet: globTankSetTemps.ColdTankSetTemp = ival; break;
+                case AOUDataTypes.CommandType.tempHotTankFeedSet: globTankSetTemps.HotTankSetTemp = ival; break;
 
                 case AOUDataTypes.CommandType.TBufferColdUpperLimit: globThresholds.ThresholdColdTankUpperLimit = ival; break;
                 case AOUDataTypes.CommandType.TBufferHotLowerLimit: globThresholds.ThresholdHotTankLowLimit = ival; break;
@@ -279,7 +282,7 @@ namespace DemoPrototype
                 case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: globThresholds.ThresholdColdTankBuffAlarmLimit = ival; break;
 
                 case AOUDataTypes.CommandType.TReturnThresholdCold2Hot: globThresholds.ThresholdCold2Hot = ival; break;
-                case AOUDataTypes.CommandType.TReturnThresholdHot2Cold:; globThresholds.ThresholdHot2Cold = ival;  break;
+                case AOUDataTypes.CommandType.TReturnThresholdHot2Cold: globThresholds.ThresholdHot2Cold = ival;  break;
            }
         }
 
@@ -291,8 +294,9 @@ namespace DemoPrototype
             globThresholds = new GlobalThresHolds();
             globDelayTimes = new GlobalDelayTimes();
             globFeedTimes = new GlobalFeedTimes();
-
+            globTankSetTemps = new GlobalTankSetTemps(); 
             globValveChartValues = new GlobalValveChartValues();
+
             globValveChartValues.HotValveLow = 20; // ToDo: Trim
             globValveChartValues.HotValveHi = 24;
 
@@ -427,6 +431,30 @@ namespace DemoPrototype
 
         }
 
+
+        public class GlobalTankSetTemps
+        {
+            private int _hotTankSetTemp;
+            private int _coldTankSetTemp;
+
+            public GlobalTankSetTemps()
+            {
+                _hotTankSetTemp = int.MinValue;
+                _coldTankSetTemp = int.MinValue;
+            }
+            public int HotTankSetTemp
+            {
+                get { return _hotTankSetTemp; }
+                set { _hotTankSetTemp = value; }
+            }
+            public int ColdTankSetTemp
+            {
+                get { return _coldTankSetTemp; }
+                set { _coldTankSetTemp = value; }
+            }
+
+        }
+
         public class GlobalDelayTimes
         {
             private int _hotTune;
@@ -436,10 +464,11 @@ namespace DemoPrototype
 
             public GlobalDelayTimes()
             {
-                _hotTune = int.MinValue;
-                _hotCalibrate = int.MinValue;
-                _coldTune = int.MinValue;
-                _coldCalibrate = int.MinValue;
+                //these are only local so we can initialise to 0 we will never receive these from AOU. Maybe save locally and read from file later TODO
+                _hotTune = 0;// int.MinValue;
+                _hotCalibrate = 0;// int.MinValue;
+                _coldTune = 0;// int.MinValue;
+                _coldCalibrate = 0;// int.MinValue;
             }
 
             public bool IsAllValuesReceived()
@@ -593,7 +622,7 @@ namespace DemoPrototype
                     if (_heatingActive == int.MinValue)
                         return "-";
                     else
-                        return _heatingActive.ToString();
+                        return (_heatingActive/10).ToString(); //converts deciseconds to seconds
                 }
             }
             public string HeatingPauseStr

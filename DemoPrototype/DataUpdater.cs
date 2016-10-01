@@ -201,7 +201,7 @@ namespace DemoPrototype
         {
             if (dataRouter.IsConnected)
             {
-                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.hotDelayTime, time); // ToDo: Right way
+                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.hotDelayTime, time*10); // ToDo: Right way
             }
         }
 
@@ -209,7 +209,7 @@ namespace DemoPrototype
         {
             if (dataRouter.IsConnected)
             {
-                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.coldDelayTime, time); // ToDo: Right way
+                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.coldDelayTime, time*10); // ToDo: Right way
             }
         }
 

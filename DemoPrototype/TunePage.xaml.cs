@@ -297,12 +297,12 @@ namespace DemoPrototype
 
         private void ColdFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
-
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "Cold return delay time", AOUDataTypes.CommandType.coldDelayTime, 0, 30, this);
         }
 
         private void HotFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
-
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "Hot return delay time", AOUDataTypes.CommandType.hotDelayTime, 0, 30, this);
         }
     }
 }

@@ -10,6 +10,16 @@ namespace DemoPrototype
 {
     public static class GlobalAppSettings
     {
+
+       
+       static public bool HasAskedAOU
+            {
+                get { return true; }
+                set {  }
+            }
+           
+
+
         static public bool IsCelsius
         {
             get
@@ -223,6 +233,7 @@ namespace DemoPrototype
         public static GlobalFeedTimes globFeedTimes;
         public static GlobalTankSetTemps globTankSetTemps;
         public static GlobalValveChartValues globValveChartValues;
+        public static GlobalInitBools globInitBools;
 
         public static AOUCommands aouCommands;
         // Todo: List sent cmd to change value or list new values received from <ret> or both
@@ -296,6 +307,7 @@ namespace DemoPrototype
             globFeedTimes = new GlobalFeedTimes();
             globTankSetTemps = new GlobalTankSetTemps(); 
             globValveChartValues = new GlobalValveChartValues();
+            globInitBools = new GlobalInitBools();
 
             globValveChartValues.HotValveLow = 20; // ToDo: Trim
             globValveChartValues.HotValveHi = 24;
@@ -329,6 +341,21 @@ namespace DemoPrototype
         public static void Load()
         {
             //  To do in future, Maybe for uniqe parameters
+        }
+
+        public class GlobalInitBools
+        {
+            private bool _hasAskedAOU;
+            public GlobalInitBools()
+            {
+                _hasAskedAOU = false;
+            }
+            public bool HasAskedAOU
+            {
+                get { return _hasAskedAOU; }
+                set { _hasAskedAOU = value; }
+            }
+
         }
 
         public class GlobalThresHolds
@@ -717,6 +744,10 @@ namespace DemoPrototype
             }
 
         }
+
+
+
+        
 
         public class GlobalTestSettings
         {

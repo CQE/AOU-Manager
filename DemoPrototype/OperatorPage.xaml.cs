@@ -250,29 +250,39 @@ namespace DemoPrototype
             SetColdTankTempText();
 
             int time = 0;
+            int temp = 0;
+            if (Data.Updater.HotTankSetTempChanged(out temp))
+            {
+                NewTHotTankTextBox.Text= temp.ToString();
+            }
+            if (Data.Updater.ColdTankSetTempChanged(out temp))
+            {
+                NewTColdTankTextBox.Text = temp.ToString();
+            }
+
             if (Data.Updater.HotTimeChanged(out time))
             {
                 // SetHeatingTimeText();
                 //need to display time in seconds, we get deciseconds
-                time = time / 10;
+              //  time = time / 10;
                 TextBox_NewActiveHeatingTime.Text = time.ToString(); // GlobalVars.globFeedTimes.HeatingActive.ToString();
             }
             if (Data.Updater.HotDelayChanged(out time))
             {
                 // SetHotDelayTimeText();
-                time = time / 10;
+               // time = time / 10;
                 TextBox_NewPauseHeatingTime.Text = time.ToString(); // GlobalVars.globFeedTimes.HeatingPause.ToString();
             }
             if (Data.Updater.CoolTimeChanged(out time))
             {
                 // SetColdFeedTimeText();
-                time = time / 10;
+               // time = time / 10;
                 TextBox_NewActiveCoolingTime.Text = time.ToString(); // GlobalVars.globFeedTimes.CoolingActive.ToString();
             }
             if (Data.Updater.CoolDelayChanged(out time))
             {
                 // SetColdDelayTimeText();
-                time = time / 10;
+              //  time = time / 10;
                 TextBox_NewPauseCoolingTime.Text = time.ToString(); // GlobalVars.globFeedTimes.CoolingPause.ToString();
             }
             if (Data.Updater.ModeChanged(out mode))
@@ -285,6 +295,7 @@ namespace DemoPrototype
             {
                 UpdateFromUIButtons(buttons);
             }
+
          }
 
         /****************************************************************************

@@ -84,8 +84,8 @@ namespace DemoPrototype
                 */
                 case AOUDataTypes.CommandType.coldDelayTime: return GetRandomInt(6, 10);
                 case AOUDataTypes.CommandType.hotDelayTime: return GetRandomInt(5, 8);
-                case AOUDataTypes.CommandType.coolingTime: return GetRandomInt(0, 5);
-                case AOUDataTypes.CommandType.heatingTime: return GetRandomInt(0, 4);
+                case AOUDataTypes.CommandType.coolingTime: return GetRandomInt(1, 5);
+                case AOUDataTypes.CommandType.heatingTime: return GetRandomInt(1, 4);
 
                 /*
                 globFeedTimes.HeatingActive = 0;// 20;
@@ -93,10 +93,10 @@ namespace DemoPrototype
                 globFeedTimes.CoolingActive = 0; //21;
                 globFeedTimes.CoolingPause = 0;// 23;
                 */
-                case AOUDataTypes.CommandType.toolCoolingFeedPause: return GetRandomInt(0, 4);
-                case AOUDataTypes.CommandType.toolHeatingFeedPause: return GetRandomInt(0, 4);
-                case AOUDataTypes.CommandType.tempColdTankFeedSet: return GetRandomInt(0, 4);
-                case AOUDataTypes.CommandType.tempHotTankFeedSet: return GetRandomInt(0, 4);
+                case AOUDataTypes.CommandType.toolCoolingFeedPause: return GetRandomInt(1, 20);
+                case AOUDataTypes.CommandType.toolHeatingFeedPause: return GetRandomInt(1, 20);
+                case AOUDataTypes.CommandType.tempColdTankFeedSet: return GetRandomInt(20, 40);
+                case AOUDataTypes.CommandType.tempHotTankFeedSet: return GetRandomInt(100, 204);
 
                 // globThresholds.ThresholdHotBuffTankAlarmLimit = 110;
                 // globThresholds.ThresholdMidBuffTankAlarmLimit = 100;
@@ -111,8 +111,8 @@ namespace DemoPrototype
                 // globThresholds.ThresholdColdTankUpperLimit = 80;
                 case AOUDataTypes.CommandType.TReturnThresholdHot2Cold: return GetRandomInt(80, 100);
                 case AOUDataTypes.CommandType.TReturnThresholdCold2Hot: return GetRandomInt(100, 120);
-                case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: return GetRandomInt(1, 8);
-                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: return GetRandomInt(1, 8);
+                case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: return GetRandomInt(50, 80);
+                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: return GetRandomInt(80, 100);
                 default: return 0;
 
             }

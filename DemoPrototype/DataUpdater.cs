@@ -373,6 +373,19 @@ namespace DemoPrototype
             return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.heatingTime, out time);
         }
 
+        
+        public bool HotTankSetTempChanged(out int temp)
+        {
+            temp = 0;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.tempHotTankFeedSet, out temp);
+        }
+
+        public bool ColdTankSetTempChanged(out int time)
+        {
+            time = 0;
+            return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.tempColdTankFeedSet, out time);
+        }
+
         public bool HotDelayChanged(out int time)
         {
             time = 0;

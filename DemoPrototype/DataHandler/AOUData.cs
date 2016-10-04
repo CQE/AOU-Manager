@@ -443,7 +443,8 @@ namespace DemoPrototype
                 {
                     string tag = "";
                     string content = "";
-                    if (AOUInputParser.GetTagAndContent(tagContent.Substring(tagContent.IndexOf("</Time>") + 7), out tag, out content))
+                    int tagEndPos = 0;
+                    if (AOUInputParser.GetTagAndContent(tagContent.Substring(tagContent.IndexOf("</Time>") + 7), out tag, out content, out tagEndPos))
                     {
                         CommandReturns.Add(new CommandReturn(time_ms, tag, content)); 
                     }

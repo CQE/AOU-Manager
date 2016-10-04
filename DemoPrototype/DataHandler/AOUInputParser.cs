@@ -46,11 +46,12 @@ namespace DemoPrototype
 
         #endregion
 
-
+        
         public static bool ValidPowerTag(string tag)
         {
             return (tag == tagState || tag == tagLog);
         }
+        
 
         #region Common
         public static string GetNextTag(string text, out long time_ms, out string tagContent, out List<string> logs, out int numHandled)
@@ -105,8 +106,18 @@ namespace DemoPrototype
 
                 if (!eot && textLine.Length > 0)
                 {
-                    if (GetTagAndContent(textLine, out tag, out tagContent))
+                    int tagEndPos;
+                    if (GetTagAndContent(textLine, out tag, out tagContent, out tagEndPos))
                     {
+                        int tagStart = textLine.IndexOf(tag);
+                        if (tagStart > 1)
+                        {
+                            logs.Add(textLine); // Text before tag
+                        }
+                        else if (tagEndPos < textLine.Length)
+                        {
+                            // Todo: text after tag pair
+                        }
                         break; // Found tag and it´s content
                     }
                     else
@@ -128,10 +139,11 @@ namespace DemoPrototype
             return tag;
         }
 
-        public static bool GetTagAndContent(string text, out string tag, out string content)
+        public static bool GetTagAndContent(string text, out string tag, out string content, out int tagEndPos)
         {
             tag = "";
             content = text;
+            tagEndPos = 0;
 
             Regex rTag = new Regex("<[a-zA-Z]+>");
             Match m = rTag.Match(text, 0);
@@ -139,7 +151,6 @@ namespace DemoPrototype
             if (m.Success)
             {
                 tag = m.Groups[0].Value.Substring(1, m.Groups[0].Value.Length - 2);
-                int tagEndPos = 0;
                 FindTagAndExtractText(tag, text, out content, out tagEndPos);
                 return true;
             }

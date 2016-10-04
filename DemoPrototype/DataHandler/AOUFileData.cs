@@ -84,7 +84,7 @@ namespace DemoPrototype
                     text = textData;
                     textData = "";
                 }
-                if (AOUInputParser.ParseLongTime(text, out time))
+                if (AOUTagParser.ParseLongTime(text, out time))
                 {
                     if (firstTimeStamp < 0)
                     {
@@ -94,7 +94,7 @@ namespace DemoPrototype
                     if (loop > 0)
                     {
                         long newTimeStamp = time + loop * lastTimeStamp + 10;
-                        string newTime = AOUInputParser.CreateTimeXmlString((uint)newTimeStamp);
+                        string newTime = AOUXMLCreator.CreateTimeXmlString((uint)newTimeStamp);
                         text = text.Replace("<Time>" + time + "</Time>", newTime);
                     }
 

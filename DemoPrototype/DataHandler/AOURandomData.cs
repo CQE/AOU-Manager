@@ -81,7 +81,8 @@ namespace DemoPrototype
                     {
                         if (AOUInputParser.FindTagAndExtractText("cmd", txt, out content, out pos))
                         {
-                            if (AOUInputParser.GetTagAndContent(content, out tag, out value))
+                            int tagEndPos;
+                            if (AOUInputParser.GetTagAndContent(content, out tag, out value, out tagEndPos))
                             {
                                 if (value.Length == 0)
                                     value = "0"; // ToDo: current value when ask for value

@@ -28,6 +28,8 @@ namespace DemoPrototype
 
         private const int timer_tick_period = 667;
 
+        private Boolean weHaveAskedForSettings = false;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -46,12 +48,6 @@ namespace DemoPrototype
             Data.Init();
             Data.Updater.Start();
 
-            //ask for AOU settings
-            AppHelper.AskAOUForMouldingTimes(); //Not true: Not needed anymore when getting all values from beginning
-            //System.Threading.Thread.Sleep(100);
-            AppHelper.AskAOUForDelayTimes();
-            AppHelper.AskAOUForThresholds();
-            AppHelper.AskAOUForTankTemps();
         }
 
         private void Timer_Tick(ThreadPoolTimer timer)
@@ -64,6 +60,17 @@ namespace DemoPrototype
                 long diff = DateTime.Now.Ticks - ticks1;
                 if (diff > 0)
                     GlobalVars.globTestSettings.DataTimeSpanTicks = diff;
+            }
+
+            if (GlobalAppSettings.valueFeedHaveStarted == true && weHaveAskedForSettings != true)
+            {
+                weHaveAskedForSettings = true;
+                //ask for AOU settings
+                AppHelper.AskAOUForMouldingTimes(); //Not true: Not needed anymore when getting all values from beginning
+                                                    //System.Threading.Thread.Sleep(100);
+                AppHelper.AskAOUForDelayTimes();
+                AppHelper.AskAOUForThresholds();
+                AppHelper.AskAOUForTankTemps();
             }
         }
 

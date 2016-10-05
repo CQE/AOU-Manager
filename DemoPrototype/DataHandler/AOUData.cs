@@ -413,18 +413,18 @@ namespace DemoPrototype
             newLogMessages = new List<AOULogMessage>();
 
             string textDataStream = GetTextData();
-            int prevTextLength = textDataStream.Length;
 
-            while (prevTextLength > 0)
+            string nextLines = "-"; // Can not be empty for next statement;
+            while (textDataStream.Length > 0)
             {
                 Power tempPower = new Power(0);
                 bool IsTempData = false;
 
-                int count = 0;
                 string tagContent;
                 List<string> loglines;
 
-                string nextTag = AOUInputParser.GetNextTag(textDataStream, out time_ms, out tagContent, out loglines, out count);
+                string nextTag = AOUInputParser2.GetNextTag(textDataStream, out time_ms, out tagContent, out loglines, out nextLines);
+                textDataStream = nextLines;
 
                 // Save last AOU time
                 lastDataRealTime = DateTime.Now;
@@ -439,19 +439,19 @@ namespace DemoPrototype
                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), log, 8, 0));
                 }
 
-                if (nextTag == AOUInputParser.tagRetValue)
+                if (nextTag == AOUInputParser2.tagRetValue)
                 {
                     string tag = "";
                     string content = "";
                     int tagEndPos = 0;
-                    if (AOUInputParser.GetTagAndContent(tagContent.Substring(tagContent.IndexOf("</Time>") + 7), out tag, out content, out tagEndPos))
+                    if (AOUTagParser.GetTagAndContent(tagContent.Substring(tagContent.IndexOf("</Time>") + 7), out tag, out content, out tagEndPos))
                     {
                         CommandReturns.Add(new CommandReturn(time_ms, tag, content)); 
                     }
                 }
-                else if (nextTag == AOUInputParser.tagState)
+                else if (nextTag == AOUInputParser2.tagState)
                 {
-                    AOUInputParser.ParseState(tagContent, out stateData);
+                    AOUInputParser2.ParseState(tagContent, out stateData);
 
                     if (!AOUDataTypes.IsUInt16NaN(stateData.Power))
                     {
@@ -583,10 +583,10 @@ namespace DemoPrototype
                     /* Old tag. Handle ? */
                     newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "seq:" + tagContent, 0, 0));
                 }
-                else if (nextTag == AOUInputParser.tagLog)
+                else if (nextTag == AOUInputParser2.tagLog)
                 {
                     string logMsg = ""; int pid = 0; int prio = 0;
-                    if (AOUInputParser.ParseLog(tagContent, out logMsg, out prio, out pid))
+                    if (AOUInputParser2.ParseLog(tagContent, out logMsg, out prio, out pid))
                     {
                         newLogMessages.Add(new AOULogMessage(time_ms, logMsg, prio, pid));
                     }
@@ -598,21 +598,36 @@ namespace DemoPrototype
                 }
 
 
-                if (AOUInputParser.ValidPowerTag(nextTag))
+                if (nextTag == AOUInputParser2.tagState)
                 {
                     if (IsTempData)
                     {
                         newPowerValues.Add(tempPower);
                     }
-                 }
-                if (count == 0) // No more valid tags. Wait for more data
-                {
-                    break;
                 }
-                else
+                /*
+                else if (nextTag == AOUInputParser2.tagLog)
                 {
-                    textDataStream = textDataStream.Substring(count); // Delete handled tag
+                    string logMsg = ""; int pid = 0; int prio = 0;
+                    if (AOUInputParser2.ParseLog(tagContent, out logMsg, out prio, out pid))
+                    {
+                        newLogMessages.Add(new AOULogMessage(time_ms, logMsg, prio, pid));
+                    }
                 }
+                else if (nextTag == AOUInputParser2.tagState)
+                {
+                    if (IsTempData)
+                    {
+                        newPowerValues.Add(tempPower);
+                    }
+                }
+                else if (nextTag.Length > 0)
+                {
+                    // Unknow tag. Add log message
+                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "Unknown tag:" + nextTag + " = " + tagContent, 0, 0));
+                }
+                */
+
             }
             UpdateDataRunning = false;
         }

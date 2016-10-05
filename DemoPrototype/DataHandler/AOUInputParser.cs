@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 namespace DemoPrototype
 {
 
-    public class AOUInputParser
+    public class AOUInputParser0
     {
         #region Tag Constants
         public const string tagSubTagTime = "Time"; //
@@ -145,7 +145,7 @@ namespace DemoPrototype
             content = text;
             tagEndPos = 0;
 
-            Regex rTag = new Regex("<[a-zA-Z]+>");
+            Regex rTag = new Regex("<[a-zA-Z0-9]+>");
             Match m = rTag.Match(text, 0);
 
             if (m.Success)

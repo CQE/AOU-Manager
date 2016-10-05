@@ -239,8 +239,19 @@ namespace DemoPrototype
             }
         }
 
+        private void SendIsOk()
+        {
+            long tick = DateTime.Now.Ticks; // For timeout?
+            while (dataWriteObject != null)
+            {
+                // loop
+            }
+        }
+
         private async void Send()
         {
+            var t = Task.Run(() => SendIsOk());
+            t.Wait();
             try
             {
                 if (Connected)

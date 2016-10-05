@@ -193,7 +193,8 @@ namespace DemoPrototype
         {
             if (dataRouter.IsConnected)
             {
-                dataRouter.AskCommandValueFromPlc(cmd); 
+                dataRouter.AskCommandValueFromPlc(cmd);
+                // await Task.Delay(TimeSpan.FromMilliseconds(300)); // Test that not worked
             }
         }
 

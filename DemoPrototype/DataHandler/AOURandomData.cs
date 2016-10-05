@@ -48,7 +48,7 @@ namespace DemoPrototype
         {
             TimeSpan timeFromStart = new TimeSpan(DateTime.Now.Ticks - startTime.Ticks);
             uint time = (uint)timeFromStart.TotalMilliseconds;
-            AOUInputParser.CreateLogXmlString(time, "SendData:" + data);
+            AOUXMLCreator.CreateLogXmlString(time, "SendData:" + data);
             commandsToReplyList.Add(data);
             return true;
         }
@@ -79,13 +79,15 @@ namespace DemoPrototype
                     int pos = 0;
                     foreach (var txt in commandsToReplyList)
                     {
-                        if (AOUInputParser.FindTagAndExtractText("cmd", txt, out content, out pos))
+                        if (AOUTagParser.FindTagAndExtractText("cmd", txt, out content, out pos))
                         {
                             int tagEndPos;
-                            if (AOUInputParser.GetTagAndContent(content, out tag, out value, out tagEndPos))
+                            if (AOUTagParser.GetTagAndContent(content, out tag, out value, out tagEndPos))
                             {
                                 if (value.Length == 0)
-                                    value = "0"; // ToDo: current value when ask for value
+                                {
+                                    value = ValueGenerator.GetRandomCommandValue(tag).ToString();
+                                }
                                 text += CreateCmdRetXMLString(time, tag, value);
                             }
 
@@ -202,7 +204,7 @@ namespace DemoPrototype
             string logstr = "";
             if (ValueGenerator.GetRandomOk(8)) // Not every time
             {
-                logstr = AOUInputParser.CreateLogXmlString(time / 100, ValueGenerator.GetRandomString(6)) + "\r\n";
+                logstr = AOUXMLCreator.CreateLogXmlString(time / 100, ValueGenerator.GetRandomString(6)) + "\r\n";
             }
             return logstr;
         }
@@ -212,26 +214,26 @@ namespace DemoPrototype
             string logstr = "";
             if (ValueGenerator.GetRandomOk(8)) // Not every time
             {
-                logstr = AOUInputParser.CreatePowXmlString(time / 100, ValueGenerator.RandomFromUIntArray(new uint[] { 0, 100 })) + "\r\n";
+                logstr = AOUXMLCreator.CreatePowXmlString(time / 100, ValueGenerator.RandomFromUIntArray(new uint[] { 0, 100 })) + "\r\n";
             }
             return logstr;
         }
 
         public static string CreateNextValvesXMLString(uint time, uint hotValve, uint coldValve, uint retValve)
         {
-            string str = AOUInputParser.CreateValvesXmlString(time / 100, hotValve, coldValve, retValve) + "\r\n";
+            string str = AOUXMLCreator.CreateValvesXmlString(time / 100, hotValve, coldValve, retValve) + "\r\n";
             return str;
         }
 
         public static string CreateModeXMLString(uint time, int mode)
         {
-            string str = AOUInputParser.CreateModeXmlString(time / 100, mode) + "\r\n";
+            string str = AOUXMLCreator.CreateModeXmlString(time / 100, mode) + "\r\n";
             return str;
         }
 
         public static string CreateCmdRetXMLString(uint time, string retCmd, string value)
         {
-            string str = AOUInputParser.CreateCmdRetXmlString(time / 100, retCmd, value) + "\r\n";
+            string str = AOUXMLCreator.CreateCmdRetXmlString(time / 100, retCmd, value) + "\r\n";
             return str;
         }
 
@@ -247,19 +249,19 @@ namespace DemoPrototype
 
         public string CreateUIButtonsXMLString(uint time, byte mask, byte mode)
         {
-            string str = AOUInputParser.CreateUIXmlString(time / 100, CreateHexString(mask, mode)) + "\r\n";
+            string str = AOUXMLCreator.CreateUIXmlString(time / 100, CreateHexString(mask, mode)) + "\r\n";
             return str;
         }
 
         public string CreateIMMModeXMLString(uint time, byte mask, byte mode)
         {
-            string str = AOUInputParser.CreateIMMXmlString(time / 100, CreateHexString(mask, mode)) + "\r\n";
+            string str = AOUXMLCreator.CreateIMMXmlString(time / 100, CreateHexString(mask, mode)) + "\r\n";
             return str;
         }
 
         public static string CreateNextSeqXMLString(uint time, uint seq)
         {
-            string str = AOUInputParser.CreateSeqXmlString(time / 100, seq) + "\r\n";
+            string str = AOUXMLCreator.CreateSeqXmlString(time / 100, seq) + "\r\n";
             return str;
         }
 
@@ -267,7 +269,7 @@ namespace DemoPrototype
         {
             AOUStateData data = ValueGenerator.GetRandomStateData(time, createRetFor);
 
-            string xml = AOUInputParser.CreateWholeTempStateXmlString(data) + "\r\n";
+            string xml = AOUXMLCreator.CreateWholeTempStateXmlString(data) + "\r\n";
             return xml;
         }
     }

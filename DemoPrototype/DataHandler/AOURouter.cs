@@ -26,6 +26,8 @@ namespace DemoPrototype
 
         private int defaultTimeBetween = 1000;
 
+        private bool valuesHaveStarted = false;
+
         private string notInitializedStr = "AOU Router not initialized";
 
         public AOURouter()
@@ -42,6 +44,10 @@ namespace DemoPrototype
             aouData = null;
         }
 
+        public bool ValuesHaveStarted {
+            get { return valuesHaveStarted; }
+            private set { valuesHaveStarted = value; }
+        }
 
         public void Initialize(RunType runType, Object settings, int timeBetween)
         {
@@ -183,6 +189,11 @@ namespace DemoPrototype
                     {
                         powerValues.RemoveAt(0); // Delete first Power values
                     }
+                }
+                if (valuesHaveStarted == false)
+                {
+                    valuesHaveStarted = true; // Yes, we have started
+                    GlobalAppSettings.valueFeedHaveStarted = true;
                 }
             }
 

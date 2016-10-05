@@ -26,9 +26,12 @@ namespace DemoPrototype
         long currentTimeStamp = -1;
         uint loop = 0;
 
+        private List<string> commandsToReplyList;
+
         public AOUFileData(AOUSettings.FileSetting fileSetting, AOUSettings.DebugMode mode = AOUSettings.DebugMode.noDebug) : base(mode)
         {
             setting = fileSetting;
+            commandsToReplyList = new List<string>();
         }
 
         public override void Connect()
@@ -55,6 +58,7 @@ namespace DemoPrototype
         {
             long time;
 
+ 
             if (textData.Length == 0)
             {
                 if (!fileLoaded)
@@ -104,12 +108,43 @@ namespace DemoPrototype
                     lastTimeStamp = currentTimeStamp;
                 }
 
+                // If reply cmd
+                if (commandsToReplyList.Count > 0)
+                {
+                    string tag = "";
+                    string content = "";
+                    string value = "";
+                    int cmdPos = 0;
+                    foreach (var txt in commandsToReplyList)
+                    {
+                        if (AOUTagParser.FindTagAndExtractText("cmd", txt, out content, out cmdPos))
+                        {
+                            int tagEndPos;
+                            if (AOUTagParser.GetTagAndContent(content, out tag, out value, out tagEndPos))
+                            {
+                                if (value.Length == 0)
+                                {
+                                    value = ValueGenerator.GetStaticCommandValue(tag).ToString();
+                                }
+
+                                text += AOURandomData.CreateCmdRetXMLString((uint)time, tag, value);
+                            }
+
+                        }
+                    }
+                    commandsToReplyList.Clear(); // Remove all when handled
+                }
+
                 return text;
             }
        }
 
         public override bool SendData(string data)
         {
+            TimeSpan timeFromStart = new TimeSpan(DateTime.Now.Ticks - startTime.Ticks);
+            uint time = (uint)timeFromStart.TotalMilliseconds;
+            AOUXMLCreator.CreateLogXmlString(time, "SendData:" + data);
+            commandsToReplyList.Add(data);
             return true;
         }
     }

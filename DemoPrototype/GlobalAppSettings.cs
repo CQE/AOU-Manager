@@ -10,6 +10,8 @@ namespace DemoPrototype
 {
     public static class GlobalAppSettings
     {
+        public static bool valueFeedHaveStarted = false;
+ 
         static public bool IsCelsius
         {
             get

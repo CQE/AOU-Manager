@@ -72,7 +72,44 @@ namespace DemoPrototype
 
 
 
+        static public int GetRandomCommandValue(string cmd)
+        {
+            return GetRandomCommandValue(GlobalVars.aouCommands.Command(cmd));
+        }
+
         static public int GetRandomCommandValue(AOUDataTypes.CommandType cmd)
+        {
+            switch (cmd)
+            {
+                case AOUDataTypes.CommandType.coldDelayTime: return GetRandomInt(6, 10);
+                case AOUDataTypes.CommandType.hotDelayTime: return GetRandomInt(5, 8);
+                case AOUDataTypes.CommandType.coolingTime: return GetRandomInt(0, 5);
+                case AOUDataTypes.CommandType.heatingTime: return GetRandomInt(0, 4);
+
+                case AOUDataTypes.CommandType.toolCoolingFeedPause: return GetRandomInt(0, 4);
+                case AOUDataTypes.CommandType.toolHeatingFeedPause: return GetRandomInt(0, 4);
+                case AOUDataTypes.CommandType.tempColdTankFeedSet: return GetRandomInt(0, 4);
+                case AOUDataTypes.CommandType.tempHotTankFeedSet: return GetRandomInt(0, 4);
+
+                case AOUDataTypes.CommandType.TBufferColdUpperLimit: return GetRandomInt(100, 120);
+                case AOUDataTypes.CommandType.TBufferHotLowerLimit: return GetRandomInt(80, 105);
+                case AOUDataTypes.CommandType.TBufferMidRefThreshold: return GetRandomInt(70, 90);
+
+                case AOUDataTypes.CommandType.TReturnThresholdHot2Cold: return GetRandomInt(80, 100);
+                case AOUDataTypes.CommandType.TReturnThresholdCold2Hot: return GetRandomInt(100, 120);
+                case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: return GetRandomInt(1, 8);
+                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: return GetRandomInt(1, 8);
+                default: return 0;
+
+            }
+        }
+
+        static public int GetStaticCommandValue(string cmd)
+        {
+            return GetStaticCommandValue(GlobalVars.aouCommands.Command(cmd));
+        }
+
+        static public int GetStaticCommandValue(AOUDataTypes.CommandType cmd)
         {
             switch (cmd)
             {
@@ -82,10 +119,10 @@ namespace DemoPrototype
                 globDelayTimes.HotTune = 3;
                 globDelayTimes.ColdTune = 2;
                 */
-                case AOUDataTypes.CommandType.coldDelayTime: return GetRandomInt(6, 10);
-                case AOUDataTypes.CommandType.hotDelayTime: return GetRandomInt(5, 8);
-                case AOUDataTypes.CommandType.coolingTime: return GetRandomInt(1, 5);
-                case AOUDataTypes.CommandType.heatingTime: return GetRandomInt(1, 4);
+                case AOUDataTypes.CommandType.coldDelayTime: return 8;
+                case AOUDataTypes.CommandType.hotDelayTime: return 7;
+                case AOUDataTypes.CommandType.coolingTime: return 3;
+                case AOUDataTypes.CommandType.heatingTime: return 2;
 
                 /*
                 globFeedTimes.HeatingActive = 0;// 20;
@@ -93,26 +130,26 @@ namespace DemoPrototype
                 globFeedTimes.CoolingActive = 0; //21;
                 globFeedTimes.CoolingPause = 0;// 23;
                 */
-                case AOUDataTypes.CommandType.toolCoolingFeedPause: return GetRandomInt(1, 20);
-                case AOUDataTypes.CommandType.toolHeatingFeedPause: return GetRandomInt(1, 20);
-                case AOUDataTypes.CommandType.tempColdTankFeedSet: return GetRandomInt(20, 40);
-                case AOUDataTypes.CommandType.tempHotTankFeedSet: return GetRandomInt(100, 204);
+                case AOUDataTypes.CommandType.toolCoolingFeedPause: return 20;
+                case AOUDataTypes.CommandType.toolHeatingFeedPause: return 22;
+                case AOUDataTypes.CommandType.tempColdTankFeedSet: return 21;
+                case AOUDataTypes.CommandType.tempHotTankFeedSet: return 23;
 
                 // globThresholds.ThresholdHotBuffTankAlarmLimit = 110;
                 // globThresholds.ThresholdMidBuffTankAlarmLimit = 100;
                 // globThresholds.ThresholdColdTankBuffAlarmLimit = 90;
-                case AOUDataTypes.CommandType.TBufferColdUpperLimit: return GetRandomInt(100, 120);
-                case AOUDataTypes.CommandType.TBufferHotLowerLimit: return GetRandomInt(80, 105);
-                case AOUDataTypes.CommandType.TBufferMidRefThreshold: return GetRandomInt(70, 90);
+                case AOUDataTypes.CommandType.TBufferColdUpperLimit: return 110;
+                case AOUDataTypes.CommandType.TBufferHotLowerLimit: return 100;
+                case AOUDataTypes.CommandType.TBufferMidRefThreshold: return 90;
 
                 // globThresholds.ThresholdHot2Cold = 100;
                 // globThresholds.ThresholdCold2Hot = 110;
                 // globThresholds.ThresholdHotTankLowLimit = 120;
                 // globThresholds.ThresholdColdTankUpperLimit = 80;
-                case AOUDataTypes.CommandType.TReturnThresholdHot2Cold: return GetRandomInt(80, 100);
-                case AOUDataTypes.CommandType.TReturnThresholdCold2Hot: return GetRandomInt(100, 120);
-                case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: return GetRandomInt(50, 80);
-                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: return GetRandomInt(80, 100);
+                case AOUDataTypes.CommandType.TReturnThresholdHot2Cold: return 100;
+                case AOUDataTypes.CommandType.TReturnThresholdCold2Hot: return 110;
+                case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: return 120;
+                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: return 80;
                 default: return 0;
 
             }

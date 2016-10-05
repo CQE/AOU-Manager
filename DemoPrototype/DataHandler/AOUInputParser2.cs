@@ -46,86 +46,38 @@ namespace DemoPrototype
 
         #endregion
 
-        
-         public static string GetNextTag(string text, out long time_ms, out string tagContent, out List<string> logs, out int numHandled)
+
+        public static string GetNextTag(string text, out long time_ms, out string tagContent, out List<string> logs, out string nextLines)
         {
             // Initiate out parameters
             time_ms = 0;
             tagContent = "";
-            logs = new List<string>();
-            numHandled = 0;
+            logs = new List<string>(); // Init log list log tags and unknown lines
 
-            int lastTextPos = 0;
-            string tag = "";
-            int tlen = text.Length;
-            string textLine = AOUTagParser.FindNextTextLine();
-            do
+            string tag = ""; // init return value
+            nextLines = "";
+            string firstLineInText = AOUTagParser.FindNextTextLine(text, out nextLines);
+
+            tag = "";
+            int tagEndPos;
+
+            if (AOUTagParser.GetTagAndContent(firstLineInText, out tag, out tagContent, out tagEndPos))
             {
-                tag = "";
-                textLine = "";
-                if (text.IndexOf("\r\n") > 0)
+                int tagStart = firstLineInText.IndexOf(tag);
+                if (tagStart > 1)
                 {
-                    int endPos = text.IndexOf("\r\n", lastTextPos + 1);
-                    if (endPos >= 0)
-                    {
-                        textLine = text.Substring(lastTextPos, endPos - lastTextPos).Trim();
-                        lastTextPos = endPos + 1;
-                    }
-                    else
-                    {
-                        lastTextPos = lastTextPos + 2;
-                    }
+                    logs.Add("Before:"+firstLineInText); // log Text before tag
                 }
-                /* If only LF*/
-                else if (text.IndexOf("\n") > 0)
+                else if (tagEndPos < firstLineInText.Length)
                 {
-                    if ((lastTextPos + 1) < tlen)
-                    {
-                        int endPos = text.IndexOf("\n", lastTextPos + 1);
-                        if (endPos >= 0)
-                        {
-                            textLine = text.Substring(lastTextPos, endPos - lastTextPos).Trim();
-                            lastTextPos = endPos + 1;
-                        }
-                        else
-                        {
-                            lastTextPos = lastTextPos + 1;
-                        }
-                    }
-                    else
-                    {
-                        int err = lastTextPos;
-                    }
+                    logs.Add("After:" + firstLineInText.Substring(tagEndPos)); // text after tag pair
                 }
-
-                if (textLine.Length > 0)
-                {
-                    int tagEndPos;
-                    if (AOUTagParser.GetTagAndContent(textLine, out tag, out tagContent, out tagEndPos))
-                    {
-                        int tagStart = textLine.IndexOf(tag);
-                        if (tagStart > 1)
-                        {
-                            logs.Add(textLine); // Text before tag
-                        }
-                        else if (tagEndPos < textLine.Length)
-                        {
-                            textLine = textLine.Substring(tagEndPos); // text after tag pair. Handle it next time.
-                        }
-                        break; // Found tag and it´s content and all other things
-                    }
-                    else
-                    {
-                        logs.Add(textLine); // No tag. Add to logs
-                        textLine = String.Empty; // The log have the string. Done 
-                    }
-                }
-                else
-                {
-                    // Empty line. Ignore
-                }
-            } while (textLine.Length > 0);
-            numHandled = lastTextPos;
+            }
+            else
+            {
+                logs.Add(firstLineInText); // No tag. Add to logs
+                firstLineInText = String.Empty; // The log have the text. Done 
+            }
 
             return tag;
         }

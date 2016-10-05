@@ -11,114 +11,55 @@ namespace DemoPrototype
 
     public class AOUTagParser
     {
-        public static string FindNextTextLine()
+        // returns the first line in input. out: the rest of text
+        public static string FindNextTextLine(string input, out string nextLines)
         {
-            return "";
-        }
+            string firstTextLine = string.Empty;
+            string workingString = input;
+            string[] lineOfEndChars = new string[] { "\r\n", "\n" }; // Important! right order
 
-        public static string GetNextTag(string text, out long time_ms, out string tagContent, out List<string> logs, out int numHandled)
-        {
-            logs = new List<string>();
-            tagContent = "";
-            numHandled = 0;
-
-            int lastTextPos = 0;
-            bool eot = false;
-            string tag = "";
-            int tlen = text.Length;
-            string textLine = "";
-            do
+            nextLines = string.Empty;
+            foreach (var eol in lineOfEndChars)
             {
-                tag = "";
-                textLine = "";
-                if (text.IndexOf("\r\n") > 0)
+                int eolLineIndex = input.IndexOf(eol);
+                if (eolLineIndex > 0)
                 {
-                    int endPos = text.IndexOf("\r\n", lastTextPos + 1);
-                    if (endPos >= 0)
-                    {
-                        textLine = text.Substring(lastTextPos, endPos - lastTextPos).Trim();
-                        lastTextPos = endPos + 1;
-                    }
-                    else
-                    {
-                        lastTextPos = lastTextPos + 2;
-                    }
+                    firstTextLine = input.Substring(0, eolLineIndex).Trim();
+                    nextLines = input.Substring(input.IndexOf(eol) + eol.Length);
+                    break;
                 }
-                /* If only LF*/
-                else if (text.IndexOf("\n") > 0)
-                {
-                    if ((lastTextPos + 1) < tlen)
-                    {
-                        int endPos = text.IndexOf("\n", lastTextPos + 1);
-                        if (endPos >= 0)
-                        {
-                            textLine = text.Substring(lastTextPos, endPos - lastTextPos).Trim();
-                            lastTextPos = endPos + 1;
-                        }
-                        else
-                        {
-                            lastTextPos = lastTextPos + 1;
-                        }
-                    }
-                    else
-                    {
-                        int err = lastTextPos;
-                    }
-                }
-
-                if (!eot && textLine.Length > 0)
-                {
-                    int tagEndPos;
-                    if (GetTagAndContent(textLine, out tag, out tagContent, out tagEndPos))
-                    {
-                        int tagStart = textLine.IndexOf(tag);
-                        if (tagStart > 1)
-                        {
-                            logs.Add(textLine); // Text before tag
-                        }
-                        else if (tagEndPos < textLine.Length)
-                        {
-                            // Todo: text after tag pair
-                        }
-                        break; // Found tag and it´s content
-                    }
-                    else
-                    {
-                        logs.Add(textLine);
-                        textLine = "";
-                    }
-                }
-            } while (tag == "" && textLine.Length > 0);
-            numHandled = lastTextPos;
-
-            long time = 0;
-            if (ParseLong(AOUInputParser.tagSubTagTime, textLine, out time))
-            {
-               // tagContent = tagContent.Substring(tagContent.IndexOf("</Time>") + 7); // Handled
             }
-            time_ms = time * 100; // Transform deciseconds to milliseconds
 
-            return tag;
+            if (firstTextLine == string.Empty)
+            {
+                return input; // If no eol return all
+            }
+            else
+            {
+                return firstTextLine; // next line found
+            }
         }
 
+ 
+        // Find tag and it's content. tagEndPos is the position after the end tag
         public static bool GetTagAndContent(string text, out string tag, out string content, out int tagEndPos)
         {
             tag = "";
             content = text;
             tagEndPos = 0;
 
-            Regex rTag = new Regex("<[a-zA-Z]+>");
+            Regex rTag = new Regex("<[a-zA-Z0-9]+>");
             Match m = rTag.Match(text, 0);
 
             if (m.Success)
             {
                 tag = m.Groups[0].Value.Substring(1, m.Groups[0].Value.Length - 2);
                 FindTagAndExtractText(tag, text, out content, out tagEndPos);
-                return true;
             }
-            return false;
+            return m.Success;
         }
 
+        // Try to find specific tag
         public static bool FindTag(string tag, string textLine)
         {
             string startTag = "<" + tag + ">";
@@ -129,6 +70,7 @@ namespace DemoPrototype
             return (pos1 != -1 && pos2 != -1);
         }
 
+        // Try to find specific tag and extract the text between the tag pair. 
         public static bool FindTagAndExtractText(string tag, string textLine, out string tagText, out int endPos)
         {
             string startTag = "<" + tag + ">";
@@ -152,6 +94,9 @@ namespace DemoPrototype
 
         }
 
+        /*
+         * Parse different types of content in tags
+         */
         public static bool ParseString(string tagText, string textline, out string text)
         {
             int endpos = 0;
@@ -176,7 +121,7 @@ namespace DemoPrototype
             if (Parsedouble(tag, textline, out dbl))
             {
                 value = (Int16)Math.Round(dbl);
-                if (tag == AOUInputParser.tagTempSubTagReturnForecasted)
+                if (tag == AOUInputParser2.tagTempSubTagReturnForecasted)
                 {
                     string s = textline;
                 }
@@ -235,7 +180,7 @@ namespace DemoPrototype
         public static bool ParseWordTime_sek_x_10(string textline, out UInt16 time_hours, out UInt16 time_sek_x_10)
         {
             long time_s_x_10 = 0;
-            if (ParseLong(AOUInputParser.tagSubTagTime, textline, out time_s_x_10))
+            if (ParseLong(AOUInputParser2.tagSubTagTime, textline, out time_s_x_10))
             {
                 AOUDataTypes.Time_ms_to_AOUModelTimeSecX10(time_s_x_10 * 100, out time_hours, out time_sek_x_10);
                 return true;
@@ -250,7 +195,7 @@ namespace DemoPrototype
 
         public static bool ParseLongTime(string textline, out long time_ms) // Not to be misunderstood
         {
-            return ParseLong(AOUInputParser.tagSubTagTime, textline, out time_ms);
+            return ParseLong(AOUInputParser2.tagSubTagTime, textline, out time_ms);
         }
 
     }

@@ -231,7 +231,7 @@ namespace DemoPrototype
                 {
                     chartModel.SetValues(powers);
                     HideProgress();
-                    if (GlobalAppSettings.valueFeedHaveStarted && (hasAskedAOU=false))
+                    if (GlobalAppSettings.valueFeedHaveStarted && (hasAskedAOU==false))
                     {
                         AppHelper.AskAOUForMouldingTimes(); 
                         AppHelper.AskAOUForDelayTimes();

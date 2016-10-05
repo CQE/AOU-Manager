@@ -259,7 +259,7 @@ namespace DemoPrototype
         {
             int ival = int.Parse(value);
             // Add ret cmd and ival to list of changed values. Perhaps cmd sent too
-            retReceived.Add(new CommandReceived(cmd, ival));
+           // retReceived.Add(new CommandReceived(cmd, ival)); MOVED to after switch /MW
             //special handling of times    
             switch (cmd)
             {
@@ -270,11 +270,11 @@ namespace DemoPrototype
                // case AOUDataTypes.CommandType.co: globDelayTimes.ColdTune = ival; break;
                 //case AOUDataTypes.CommandType.heatingTime: globDelayTimes.HotTune = ival; break;
 
-                case AOUDataTypes.CommandType.coolingTime:  globFeedTimes.CoolingActive = ival/10; break; // globDelayTimes.ColdTune = ival; break;
-                case AOUDataTypes.CommandType.heatingTime:  globFeedTimes.HeatingActive = ival/10; break;//  globDelayTimes.HotTune = ival; break;
+                case AOUDataTypes.CommandType.coolingTime:  globFeedTimes.CoolingActive = ival/10; ival = ival / 10; break; // globDelayTimes.ColdTune = ival; break;
+                case AOUDataTypes.CommandType.heatingTime:  globFeedTimes.HeatingActive = ival / 10; ival = ival / 10;  break;//  globDelayTimes.HotTune = ival; break;
                     
-                case AOUDataTypes.CommandType.toolCoolingFeedPause: globFeedTimes.CoolingPause = ival/10; break;
-                case AOUDataTypes.CommandType.toolHeatingFeedPause: globFeedTimes.HeatingPause = ival/10; break;
+                case AOUDataTypes.CommandType.toolCoolingFeedPause: globFeedTimes.CoolingPause = ival/10; ival = ival / 10; break;
+                case AOUDataTypes.CommandType.toolHeatingFeedPause: globFeedTimes.HeatingPause = ival/10; ival = ival / 10; break;
 
                 case AOUDataTypes.CommandType.tempColdTankFeedSet: globTankSetTemps.ColdTankSetTemp = ival; break;
                 case AOUDataTypes.CommandType.tempHotTankFeedSet: globTankSetTemps.HotTankSetTemp = ival; break;
@@ -289,6 +289,7 @@ namespace DemoPrototype
                 case AOUDataTypes.CommandType.TReturnThresholdCold2Hot: globThresholds.ThresholdCold2Hot = ival; break;
                 case AOUDataTypes.CommandType.TReturnThresholdHot2Cold: globThresholds.ThresholdHot2Cold = ival;  break;
            }
+            retReceived.Add(new CommandReceived(cmd, ival));
         }
 
         public static void Init()

@@ -11,13 +11,7 @@ namespace DemoPrototype
     public static class GlobalAppSettings
     {
 
-       
-       static public bool HasAskedAOU
-            {
-                get { return true; }
-                set {  }
-            }
-           
+        public static bool valueFeedHaveStarted = false;
 
 
         static public bool IsCelsius

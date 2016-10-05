@@ -31,9 +31,10 @@ namespace DemoPrototype
         private int prevRunModeSelected = -1; // First time or
 
         private LineChartViewModel chartModel;
+        private bool hasAskedAOU = false;
 
-       // private Brush OrgTuneChartBrush;
-       // private SolidColorBrush FreezeBrush;
+        // private Brush OrgTuneChartBrush;
+        // private SolidColorBrush FreezeBrush;
 
         DispatcherTimer dTimer;
 
@@ -49,6 +50,7 @@ namespace DemoPrototype
             // Init xaml
             this.InitializeComponent();
 
+            
             ShowProgress();
 
             this.Name = "OperatorPage";
@@ -229,6 +231,14 @@ namespace DemoPrototype
                 {
                     chartModel.SetValues(powers);
                     HideProgress();
+                    if (GlobalAppSettings.valueFeedHaveStarted && (hasAskedAOU=false))
+                    {
+                        AppHelper.AskAOUForMouldingTimes(); 
+                        AppHelper.AskAOUForDelayTimes();
+                        AppHelper.AskAOUForThresholds();
+                        AppHelper.AskAOUForTankTemps();
+                        hasAskedAOU = true;
+                    }
                 }
 
             }

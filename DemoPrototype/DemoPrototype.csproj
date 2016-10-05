@@ -124,6 +124,7 @@
     <Compile Include="DataHandler\AOUFileData.cs" />
     <Compile Include="DataHandler\AOUHelper.cs" />
     <Compile Include="DataHandler\AOUInputParser.cs" />
+    <Compile Include="DataHandler\AOUInputParser2.cs" />
     <Compile Include="DataHandler\AOULogFile.cs" />
     <Compile Include="DataHandler\AOULogMessage.cs" />
     <Compile Include="DataHandler\AOUModels.cs" />
@@ -132,8 +133,10 @@
     <Compile Include="DataHandler\AOURouter.cs" />
     <Compile Include="DataHandler\AOUSerialData.cs" />
     <Compile Include="DataHandler\AOUSettings.cs" />
+    <Compile Include="DataHandler\AOUTagParser.cs" />
     <Compile Include="DataHandler\AOUTypes.cs" />
     <Compile Include="DataHandler\AOUValuesFile.cs" />
+    <Compile Include="DataHandler\AOUXMLCreator.cs" />
     <Compile Include="DataHandler\Power.cs" />
     <Compile Include="DataHandler\TextFile.cs" />
     <Compile Include="DataHandler\ValueGenerator.cs" />

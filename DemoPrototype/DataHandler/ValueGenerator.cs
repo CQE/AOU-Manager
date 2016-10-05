@@ -88,8 +88,8 @@ namespace DemoPrototype
 
                 case AOUDataTypes.CommandType.toolCoolingFeedPause: return GetRandomInt(0, 4);
                 case AOUDataTypes.CommandType.toolHeatingFeedPause: return GetRandomInt(0, 4);
-                case AOUDataTypes.CommandType.tempColdTankFeedSet: return GetRandomInt(0, 4);
-                case AOUDataTypes.CommandType.tempHotTankFeedSet: return GetRandomInt(0, 4);
+                case AOUDataTypes.CommandType.tempColdTankFeedSet: return GetRandomInt(20, 40);
+                case AOUDataTypes.CommandType.tempHotTankFeedSet: return GetRandomInt(100, 240);
 
                 case AOUDataTypes.CommandType.TBufferColdUpperLimit: return GetRandomInt(100, 120);
                 case AOUDataTypes.CommandType.TBufferHotLowerLimit: return GetRandomInt(80, 105);
@@ -97,8 +97,8 @@ namespace DemoPrototype
 
                 case AOUDataTypes.CommandType.TReturnThresholdHot2Cold: return GetRandomInt(80, 100);
                 case AOUDataTypes.CommandType.TReturnThresholdCold2Hot: return GetRandomInt(100, 120);
-                case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: return GetRandomInt(1, 8);
-                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: return GetRandomInt(1, 8);
+                case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: return GetRandomInt(30, 60);
+                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: return GetRandomInt(40, 80);
                 default: return 0;
 
             }

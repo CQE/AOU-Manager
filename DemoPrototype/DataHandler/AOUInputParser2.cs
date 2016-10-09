@@ -52,34 +52,36 @@ namespace DemoPrototype
             // Initiate out parameters
             time_ms = 0;
             tagContent = "";
-            logs = new List<string>(); // Init log list log tags and unknown lines
+            logs = new List<string>(); // Init log list for log tags and unknown lines
 
             string tag = ""; // init return value
-            nextLines = "";
+
+            // Get next whole line in input text
             string firstLineInText = AOUTagParser.FindNextTextLine(text, out nextLines);
 
-            tag = "";
-            int tagEndPos;
+            int tagEndPos; // For next string index after tag pair
 
+            AOUTagParser.ParseLongTime(firstLineInText, out time_ms); // Parse time and convert to ms
+
+            // Get next tag
             if (AOUTagParser.GetTagAndContent(firstLineInText, out tag, out tagContent, out tagEndPos))
             {
-                int tagStart = firstLineInText.IndexOf(tag);
+                int tagStart = firstLineInText.IndexOf(tag); // Get start position for next tag. Normally index 1
                 if (tagStart > 1)
                 {
-                    logs.Add("Before:"+firstLineInText); // log Text before tag
+                    logs.Add("Before:"+firstLineInText); // log unknown text before tag
                 }
                 else if (tagEndPos < firstLineInText.Length)
                 {
-                    logs.Add("After:" + firstLineInText.Substring(tagEndPos)); // text after tag pair
+                    logs.Add("After:" + firstLineInText.Substring(tagEndPos)); // log unknown text after tag pair
                 }
             }
             else
             {
                 logs.Add(firstLineInText); // No tag. Add to logs
-                firstLineInText = String.Empty; // The log have the text. Done 
             }
 
-            return tag;
+            return tag; // Return next tag found
         }
 
         public static bool ParseState(string tagText, out AOUStateData stateData)
@@ -203,7 +205,7 @@ namespace DemoPrototype
             logMsg = "-";
             prio = 1;
             pid = 0;
-            // textLine = "<log><Time>94962045</Time><Msg>Setup AOU version 1.1 ready (Plastics Unbound Ltd, Cyprus)</Msg></log>";
+            // Example: "<log><Time>94962045</Time><Msg>Setup AOU version 1.1 ready (Plastics Unbound Ltd, Cyprus)</Msg></log>";
             return AOUTagParser.ParseString(tagLogSubTagMsg, tagText, out logMsg);
         }
 

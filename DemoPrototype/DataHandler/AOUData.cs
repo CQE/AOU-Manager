@@ -605,28 +605,6 @@ namespace DemoPrototype
                         newPowerValues.Add(tempPower);
                     }
                 }
-                /*
-                else if (nextTag == AOUInputParser2.tagLog)
-                {
-                    string logMsg = ""; int pid = 0; int prio = 0;
-                    if (AOUInputParser2.ParseLog(tagContent, out logMsg, out prio, out pid))
-                    {
-                        newLogMessages.Add(new AOULogMessage(time_ms, logMsg, prio, pid));
-                    }
-                }
-                else if (nextTag == AOUInputParser2.tagState)
-                {
-                    if (IsTempData)
-                    {
-                        newPowerValues.Add(tempPower);
-                    }
-                }
-                else if (nextTag.Length > 0)
-                {
-                    // Unknow tag. Add log message
-                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "Unknown tag:" + nextTag + " = " + tagContent, 0, 0));
-                }
-                */
 
             }
             UpdateDataRunning = false;

@@ -29,14 +29,6 @@ namespace DemoPrototype
             get; set;
         }
 
-        public AOULogMessage(long logTime, string logMsg)
-        {
-            time = AOUHelper.msToTimeSpanStr(logTime);
-            message = logMsg;
-            prio = 0;
-            pid = 0;
-        }
-
         public AOULogMessage(long logTime, string logMsg, int logPrio, int logProcessId)
         {
             time = AOUHelper.msToTimeSpanStr(logTime);
@@ -45,10 +37,22 @@ namespace DemoPrototype
             pid = logProcessId;
         }
 
+        public AOULogMessage(long logTime, string logMsg, int logPrio) : this(logTime, logMsg, logPrio, 0)
+        {
+        }
+
+        public AOULogMessage(long logTime, string logMsg) : this(logTime, logMsg, 0, 0)
+        {
+        }
+
+        public string ToString(char sep)
+        {
+            return String.Format("{0}{4} {1}{4} {2}{4} {3}", time, message, prio, pid, sep);
+        }
+
         public override string ToString()
         {
-            // return String.Format("{0}, {1}, {2}, {3}", time, message, prio, pid);
-            return String.Format("{0}; {1}; {2}; {3}", time, message, prio, pid);   //new separator needed message can include ","
+            return ToString(';');
         }
     }
 }

@@ -16,17 +16,17 @@ namespace DemoPrototype
         {
             string firstTextLine = string.Empty;
             string workingString = input;
-            string[] lineOfEndChars = new string[] { "\r\n", "\n" }; // Important! right order
+            string[] lineOfEndChars = new string[] { "\r\n", "\n" }; // New line sequences. Important! right order
 
             nextLines = string.Empty;
             foreach (var eol in lineOfEndChars)
             {
                 int eolLineIndex = input.IndexOf(eol);
-                if (eolLineIndex > 0)
+                if (eolLineIndex > 0) // index for end of line char
                 {
-                    firstTextLine = input.Substring(0, eolLineIndex).Trim();
-                    nextLines = input.Substring(input.IndexOf(eol) + eol.Length);
-                    break;
+                    firstTextLine = input.Substring(0, eolLineIndex).Trim(); // First whole text line
+                    nextLines = input.Substring(input.IndexOf(eol) + eol.Length); // Rest of text
+                    break; // Finished
                 }
             }
 
@@ -48,7 +48,7 @@ namespace DemoPrototype
             content = text;
             tagEndPos = 0;
 
-            Regex rTag = new Regex("<[a-zA-Z0-9]+>");
+            Regex rTag = new Regex("<[a-zA-Z0-9]+>"); // Match tag with any letter or number and at least one character
             Match m = rTag.Match(text, 0);
 
             if (m.Success)

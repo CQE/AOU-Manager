@@ -233,10 +233,10 @@ namespace DemoPrototype
                     HideProgress();
                     if (GlobalAppSettings.valueFeedHaveStarted && (hasAskedAOU==false))
                     {
-                        AppHelper.AskAOUForMouldingTimes(); 
-                        AppHelper.AskAOUForDelayTimes();
-                        AppHelper.AskAOUForThresholds();
-                        AppHelper.AskAOUForTankTemps();
+                        //AppHelper.AskAOUForMouldingTimes(); 
+                        //AppHelper.AskAOUForDelayTimes();
+                        //AppHelper.AskAOUForThresholds();
+                        //AppHelper.AskAOUForTankTemps();
                         hasAskedAOU = true;
                     }
                 }

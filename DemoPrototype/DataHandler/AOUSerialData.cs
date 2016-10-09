@@ -250,6 +250,7 @@ namespace DemoPrototype
 
         private async void Send()
         {
+            // Check that previous Send is finished
             var t = Task.Run(() => SendIsOk());
             t.Wait();
             try

@@ -134,12 +134,13 @@ namespace DemoPrototype
             if (IsConnected)
             {
                 logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), "SendToPlc: " + text, 12, 0));
-                return aouData.SendData(text+"\n");   //always end data with newline
+                if (aouData.SendData(text+"\n"))   //always end data with newline
+                {
+                    Task.Delay(10); // Test: Insert delay
+                    return false;
+                }
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         private void SendTagCommandToPlc(string subTag, string value = "")

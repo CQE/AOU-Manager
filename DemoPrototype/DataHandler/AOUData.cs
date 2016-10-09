@@ -108,6 +108,7 @@ namespace DemoPrototype
         {
             newLogMessages.Clear();
             newPowerValues.Clear();
+            CommandReturns.Clear();
 
             startTime = DateTime.Now;
             lastDataRealTime = startTime;

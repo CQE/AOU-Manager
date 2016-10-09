@@ -339,5 +339,14 @@ namespace DemoPrototype
             keyboardDlg();
         }
 
+        private void AskForSetHotTankTemp_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForTankTemps();
+        }
+
+        private void AskForSetColdTankTemp_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

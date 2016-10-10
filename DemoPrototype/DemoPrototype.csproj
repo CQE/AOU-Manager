@@ -124,7 +124,6 @@
     <Compile Include="DataHandler\AOUData.cs" />
     <Compile Include="DataHandler\AOUFileData.cs" />
     <Compile Include="DataHandler\AOUHelper.cs" />
-    <Compile Include="DataHandler\AOUInputParser.cs" />
     <Compile Include="DataHandler\AOUInputParser2.cs" />
     <Compile Include="DataHandler\AOULogFile.cs" />
     <Compile Include="DataHandler\AOULogMessage.cs" />

@@ -13,14 +13,14 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"></RowDefinition>
                 <RowDefinition Height ="40"></RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
                 <RowDefinition Height ="40"></RowDefinition>
-                <RowDefinition Height ="40"></RowDefinition>
-                <RowDefinition Height ="40" ></RowDefinition>
-                <RowDefinition Height ="40"></RowDefinition>
-                <RowDefinition Height ="50"></RowDefinition>
+                <RowDefinition Height ="35"></RowDefinition>
+                <RowDefinition Height ="35" ></RowDefinition>
                 <RowDefinition Height ="35"></RowDefinition>
                 <RowDefinition Height ="40"></RowDefinition>
+                <RowDefinition Height ="40"></RowDefinition>
+                <RowDefinition Height ="55"></RowDefinition>
                 <RowDefinition Height ="40"></RowDefinition>
                 <RowDefinition Height ="40"></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -31,66 +31,81 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
+               
             </Grid.ColumnDefinitions>
 
             <ProgressRing x:Name="mainGridProgresRing"/>
 
-            <!--  Operation -->
-            <TextBlock  Grid.Row="0" Text="Operation" FontWeight="Bold" VerticalAlignment="Bottom"></TextBlock>
-            <TextBlock Text="Running mode" Grid.Row="1" HorizontalAlignment="Left"></TextBlock>
-            <ComboBox x:Name ="RunningModeCombo" Grid.Row="1" Grid.Column="1" SelectionChanged="NewModeSelected"/>
-            
-            <TextBlock Text="Tool tempering" Grid.Row="2" HorizontalAlignment="Left"></TextBlock>
-            <TextBlock Grid.Row="2" Grid.Column="1" Name="TextBlock_ToolTempering" Text="Not Yet Working" Foreground="Olive"></TextBlock>
-            <Button Grid.Row="1"  Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Name="Button_Freeze_Run" Content="Freeze" Click="Button_Freeze_Run_Click"></Button>
+            <!--  Operation  --> 
+            <Border  Margin="5,5,10,5" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Margin="5,5,0,5" Grid.Row="0" Text="Operation" FontWeight="SemiBold" VerticalAlignment="Bottom"></TextBlock>
+                    <RelativePanel>
+                        <TextBlock Name="RMode" Margin="5,5,0,5"  Text="Running mode"  RelativePanel.AlignTopWithPanel="True"></TextBlock>
+                        <TextBlock Name="TTEmp"  Margin="5,15,0,15"  RelativePanel.Below="RMode" Text="Tool tempering" ></TextBlock>
+                        <ComboBox Margin="5,0,60,15" x:Name ="RunningModeCombo"  RelativePanel.AlignRightWithPanel="True" SelectionChanged="NewModeSelected"/>
+                        <TextBlock Margin="5,0,60,15" RelativePanel.Below="RunningModeCombo" RelativePanel.AlignRightWithPanel="True" Name="TextBlock_ToolTempering" Text="Not Yet Working" Foreground="Olive"></TextBlock>
+                    </RelativePanel>
+                </StackPanel>
+            </Border>
+
+
+
+            <Button Visibility="Collapsed" Grid.Row="1"  Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Name="Button_Freeze_Run" Content="Freeze" Click="Button_Freeze_Run_Click"></Button>
 
             <!--  Moulding Parameters -->
-            <TextBlock Grid.Row="3"  FontWeight="Bold" Text="Moulding parameters" VerticalAlignment="Bottom"></TextBlock>
-            <StackPanel Orientation="Horizontal" Grid.Row="4" >
-                    <TextBlock VerticalAlignment="Bottom" Text="Tank temperature"></TextBlock>
-                    <TextBlock VerticalAlignment="Bottom" Name="TextCorF"></TextBlock>
-             </StackPanel>
-                <StackPanel Grid.Row="4"  VerticalAlignment="Bottom" Grid.Column="1" Orientation="Horizontal">
+            <Border  Margin="5,5,10,5" Grid.Row="3" Grid.RowSpan="7" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Moulding parameters"></TextBlock>
+                    <StackPanel Margin="5,10,0,0" Orientation="Horizontal" Grid.Row="4" >
+                        <TextBlock VerticalAlignment="Bottom" Text="Tank temperature"></TextBlock>
+                        <TextBlock VerticalAlignment="Bottom" Name="TextCorF"></TextBlock>
+                    </StackPanel>
+                    <TextBlock Margin="5,20,0,0" Text="Hot tank"></TextBlock>
+                    <TextBlock Margin="5,15,0,0" VerticalAlignment="Bottom" Text="Cold tank"></TextBlock>
+                    <TextBlock Margin="5,25,0,0" VerticalAlignment="Bottom" Text="Cycle times (s/cycle)"></TextBlock>
+                    <TextBlock Margin="5,20,0,0"  VerticalAlignment="Bottom" Text="Heating"></TextBlock>
+                    <TextBlock Margin="5,15,0,0" VerticalAlignment="Bottom" Text="Cooling"></TextBlock>
+                </StackPanel>
+            </Border>
+
+                <StackPanel Grid.Row="4"  VerticalAlignment="Top" Grid.Column="1" Orientation="Horizontal">
                     <TextBlock Margin="5,0,0,0"  Text="T"></TextBlock>
                     <TextBlock Margin="1,7,0,0" FontSize="11" Text="Actual "></TextBlock>
                     <TextBlock Margin="31,0,0,0" Text="T"></TextBlock>
                     <TextBlock Margin="1,7,0,0" FontSize="11" Text="Set"></TextBlock>
             </StackPanel>
         
-            <StackPanel Grid.Row="5" Orientation="Horizontal" VerticalAlignment="Bottom">
-                <TextBlock Text="Hot tank"></TextBlock>
-            </StackPanel>
 
-            <StackPanel Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
+            <StackPanel Grid.Row="5" Grid.Column="1" VerticalAlignment="Top" Margin="0,0,0,0" Orientation="Horizontal">
                     <TextBox Name="TextBox_THotTank" IsReadOnly="True" BorderThickness="0" Background="White" />
                     <TextBox IsReadOnly="True" Margin="15,0,0,0" Text="-" Name="NewTHotTankTextBox"  GotFocus="NewTHotTankTextBox_GotFocus"/>
-                </StackPanel>
+            </StackPanel>
         
-            <TextBlock Grid.Row="6" VerticalAlignment="Bottom" Text="Cold tank"></TextBlock>
+           
             <StackPanel Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
                     <TextBox Name="TextBox_TColdTank" IsReadOnly="True" BorderThickness="0"></TextBox>
                     <TextBox Margin="15,0,0,0" IsReadOnly="True" Name="NewTColdTankTextBox" GotFocus="NewTColdTankTextBox_GotFocus" ></TextBox>
             </StackPanel>
 
             <!--  Cycle Times -->
-            <TextBlock Grid.Row="7" VerticalAlignment="Bottom" Text="Cycle times (s/cycle)"></TextBlock>
+          
                      
             <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
                     <TextBlock Margin="1,0,0,0"  Text="Active"></TextBlock>
                     <TextBlock Margin="35,0,0,0" Text="Pause"></TextBlock>
             </StackPanel>
         
-            <TextBlock Grid.Row="8"  VerticalAlignment="Bottom" Text="Heating"></TextBlock>
-            <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+          
+            <StackPanel Margin="0,0,0,0" Grid.Row="8" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
                     <TextBox Name="TextBox_NewActiveHeatingTime" GotFocus="NewActiveHeatingTimeTextBox_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Text="10"></TextBox>
                     <TextBox Name="TextBox_NewPauseHeatingTime" GotFocus="NewPauseHeatingTimeTextBox_GotFocus" IsReadOnly="True" Margin="15,0,0,0" Text="10"></TextBox>
             </StackPanel>
        
-            <TextBlock Grid.Row="9" VerticalAlignment="Bottom" Text="Cooling"></TextBlock>
-            <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+           
+            <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                     <TextBox Name="TextBox_NewActiveCoolingTime" GotFocus="NewActiveCoolingTimeTextBox_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Text="10"></TextBox>
                     <TextBox Name="TextBox_NewPauseCoolingTime" GotFocus="NewPauseCoolingTimeTextBox_GotFocus"  IsReadOnly="True" Margin="15,0,0,0" Text="10"></TextBox>
             </StackPanel>
@@ -144,7 +159,7 @@
      -->      </chart:SfChart>
             </Border>
             <!-- Make a textbox overlay the grid above-->
-            <TextBox Name="PhaseDiffResult" Grid.Row="2" Background="Yellow" BorderThickness="0" Grid.Column="2" HorizontalAlignment="Center"  VerticalAlignment="Center" Text="Diff = 5"></TextBox>
+            <TextBox Visibility="Collapsed" Name="PhaseDiffResult" Grid.Row="2" Background="Yellow" BorderThickness="0" Grid.Column="2" HorizontalAlignment="Center"  VerticalAlignment="Center" Text="Diff = 5"></TextBox>
 
             <!-- parameter monitoring chart -->
             <Border Margin="5,5,0,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" Grid.Row="10" Grid.RowSpan="5" Grid.Column="0" Grid.ColumnSpan="4">
@@ -224,7 +239,7 @@
             </StackPanel> -->
 
             <!-- state chart -->
-            <Border  BorderBrush="LightGray" BorderThickness="2" CornerRadius="5"  Grid.Row="0" Grid.RowSpan="10" Grid.Column="2" Grid.ColumnSpan="2">
+            <Border  Margin="5,5,0,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5"  Grid.Row="0" Grid.RowSpan="10" Grid.Column="2" Grid.ColumnSpan="2">
                 <StackPanel Margin="5,5,5,5" Orientation="Vertical">
                     <TextBlock Margin="5,5,5,5" FontWeight="SemiBold" Text="AOU / IMM Interaction"></TextBlock>
                    
@@ -244,10 +259,7 @@
 
                         </StackPanel> -->
                     <chart:SfChart  
-                        Grid.Row="0"
-            Grid.RowSpan="8"
-            Grid.Column="2"    
-            Grid.ColumnSpan="2"
+                        
             Margin="20,0,20,0">
   <!--              <chart:SfChart.Behaviors>
                     <chart:ChartTrackBallBehavior></chart:ChartTrackBallBehavior>
@@ -265,7 +277,7 @@
                 
             <chart:StepLineSeries XBindingPath="ElapsedTime" YBindingPath="State" ItemsSource="{Binding power}"></chart:StepLineSeries>
         </chart:SfChart>
-                                   </StackPanel>
+            </StackPanel>
             </Border>
 
   

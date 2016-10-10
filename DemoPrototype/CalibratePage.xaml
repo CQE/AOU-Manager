@@ -23,8 +23,8 @@
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -32,15 +32,25 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
+        <!-- First border row 0-4, all cols -->
+        <Border  Margin="5,5,10,5" Grid.Row="0" Grid.RowSpan="5" Grid.Column="0" Grid.ColumnSpan="7" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="5,0,0,0" Text="Feed and Return delay timings (s)" FontWeight="SemiBold"></TextBlock>
+            </StackPanel>
+        </Border>
+
+
+
+
         <chart:SfChart  
-            Header="Feed and Return delay timings (s)"
             Grid.Row="1"
             Grid.RowSpan="4"
-            Grid.ColumnSpan="1"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
             IsDoubleTapEnabled="True"
             DoubleTapped="FreezeCalibrateGraphs"
             Name="MyDelayChart"
-            Margin="20,10,0,0">
+            Margin="10,0,0,30">
             <chart:SfChart.PrimaryAxis>
                 <chart:TimeSpanAxis Name="CalibrateDelayXAxis"></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>
@@ -66,30 +76,30 @@
             <chart:LineSeries Name="Series_Delay_TColdTank" LegendIcon="Circle" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:LineSeries>
         </chart:SfChart>
         <!-- Use overlay textbox for showing diff result -->
-        <TextBox Grid.Column="0" Grid.Row="3" Name="CalibratePhaseDiffResult" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="2.31 s"></TextBox>
+        <TextBox Grid.Column="1" Grid.Row="3" Name="CalibratePhaseDiffResult" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="2.31 s"></TextBox>
 
         
-        <StackPanel Margin="10,0,0,0" Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+        <StackPanel Margin="10,0,0,0" Orientation="Horizontal" Grid.Column="0" Grid.Row="2">
             <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Hot step" Click="DoHotStep" Name="HotStepButton"></Button>
             <TextBox  Margin="10,0,0,0" VerticalAlignment="Bottom" Text="10" Name="CalibrateHotStepValue"></TextBox>
             <TextBlock VerticalAlignment="Bottom"  Text=" (s)"></TextBlock>
         </StackPanel>
 
-        <StackPanel  Margin="10,0,0,0" Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
+        <StackPanel  Margin="10,0,0,0" Orientation="Horizontal" Grid.Column="0" Grid.Row="3">
             <Button Grid.Row="2" Grid.Column="1"  VerticalAlignment="Bottom" Width="100" Content="Cold step" Click="DoColdStep" Name="ColdStepButton"></Button>
             <TextBox  Margin="10,0,0,0" VerticalAlignment="Bottom" Text="10" Name="CalibrateColdStepValue"></TextBox>
             <TextBlock VerticalAlignment="Bottom"  Text=" (s)"></TextBlock>
         </StackPanel>
        
-        <StackPanel Margin="10,0,0,0"  Orientation="Horizontal" Grid.Row="3"  Grid.Column="1" >
+        <StackPanel Margin="10,0,0,0"  Orientation="Horizontal" Grid.Row="4"  Grid.Column="0" >
             <TextBlock  VerticalAlignment="Center" Text="Cycle"></TextBlock>
             <ToggleSwitch  Margin="5,0,0,0"  Toggled="DoCycle" VerticalAlignment="Center" IsOn="False" ></ToggleSwitch>
         </StackPanel>
 
-        <Button Margin="10,0,0,0" Grid.Row="4" Grid.Column="1" Content="Freeze" Name="Button_Freeze_Run" Click="Button_Freeze_Run_Click"></Button>
+        <Button Margin="10,0,10,0" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Content="Freeze" Name="Button_Freeze_Run" Click="Button_Freeze_Run_Click"></Button>
 
-        <TextBlock VerticalAlignment="Top" Grid.Column="3" Grid.ColumnSpan="2"> Tempering delay time Feed-to-Return </TextBlock>
-        <StackPanel Grid.Column="3" Orientation="Horizontal" Grid.ColumnSpan="3" VerticalAlignment="Bottom">
+        <TextBlock VerticalAlignment="Top" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2"> Tempering delay time Feed-to-Return </TextBlock>
+        <StackPanel Grid.Column="4" Orientation="Horizontal"  Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom">
             <TextBlock  VerticalAlignment="Bottom"  Text="Calibrate"></TextBlock>
             <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
             <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="Tune"></TextBlock>
@@ -97,8 +107,8 @@
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,0" Text="Total"></TextBlock>
         </StackPanel>
         
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="Hot pump" VerticalAlignment="Bottom" HorizontalAlignment="Center"> </TextBlock>
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">
+        <TextBlock Grid.Row="2" Grid.Column="3" Text="Hot pump" VerticalAlignment="Bottom" HorizontalAlignment="Center"> </TextBlock>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2">
             <TextBox   Name="HotFeedToReturnDelayTime" GotFocus="HotFeedToReturnDelayTime_GotFocus"  TextChanged="HotFeedToReturnDelayTime_TextChanged" VerticalAlignment="Bottom"  Text="88"></TextBox>
             <TextBlock VerticalAlignment="Bottom"  TextAlignment="Center" Width="30" Margin="5,0,0,5" Text="+"></TextBlock>
             <TextBlock Name="TextBlock_HotTune" VerticalAlignment="Bottom" Margin="5,0,0,5" Text="22"></TextBlock>
@@ -108,8 +118,8 @@
         </StackPanel>
         
 
-        <TextBlock Grid.Row="2" Grid.Column="2" Text="Cold pump" VerticalAlignment="Bottom" HorizontalAlignment="Center"></TextBlock>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2">
+        <TextBlock Grid.Row="3" Grid.Column="3" Text="Cold pump" VerticalAlignment="Bottom" HorizontalAlignment="Center"></TextBlock>
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2">
             <TextBox   Name="ColdFeedToReturnDelayTime" GotFocus="ColdFeedToReturnDelayTime_GotFocus" TextChanged="ColdFeedToReturnDelayTime_TextChanged" VerticalAlignment="Bottom"  Text="1110"></TextBox>
             <TextBlock VerticalAlignment="Bottom"  TextAlignment="Center" Width="30" Margin="5,0,0,5" Text="+"></TextBlock>
             <TextBlock  Name="TextBlock_ColdTune" VerticalAlignment="Bottom" Margin="5,0,0,5" Text="220"></TextBlock>
@@ -117,11 +127,20 @@
             <TextBlock Name="TextBlock_SumColdDelayTime" VerticalAlignment="Bottom"  Margin="5,0,0,5" Text="210"></TextBlock>
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="(s)"></TextBlock>
         </StackPanel>
+        
+        <!-- Lower border-->
+        <Border  Margin="5,5,10,5" Grid.Row="5" Grid.RowSpan="5" Grid.Column="0" Grid.ColumnSpan="7" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="5,0,0,0" Text="Balancing" FontWeight="SemiBold"></TextBlock>
+            </StackPanel>
+        </Border>
 
-<!--Energy balance chart-->
+
+
+        <!--Energy balance chart-->
         <chart:SfChart  
             Header="Hot and Cold tanks Energy balance (°C)"
-            Grid.Row="6"
+            Grid.Row="5"
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
             Margin="20,10,0,0">
@@ -151,13 +170,13 @@
         </chart:SfChart>
         <!-- Use overlay textbox for showing diff result         <TextBox Grid.Column="0" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="42"></TextBox>
         -->
-        <TextBlock Margin="15,0,0,0"  Grid.Row="9" VerticalAlignment="Center" Text="Hot to cold Return valve switching threshold:"></TextBlock>
-        <StackPanel Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="9">
+        <TextBlock Margin="15,0,0,0"  Grid.Row="8" Grid.ColumnSpan="2" VerticalAlignment="Center" Text="Hot to cold Return valve switching threshold:"></TextBlock>
+        <StackPanel Grid.Column="1" Margin="-60,0,0,0" HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="8">
             <TextBox Name="TextBox_HotToColdThreshold" GotFocus="TextBox_HotToColdThreshold_GotFocus" Height="30"></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
-        <TextBlock Margin="15,0,0,0"  Grid.Row="10" VerticalAlignment="Center" Text="Cold to Hot Return valve switching threshold:"></TextBlock>
-        <StackPanel Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal"  Grid.Row="10">
+        <TextBlock Margin="15,0,0,10"  Grid.Row="9" Grid.ColumnSpan="2" VerticalAlignment="Center" Text="Cold to Hot Return valve switching threshold:"></TextBlock>
+        <StackPanel Grid.Column="1" Margin="-60,0,0,10" HorizontalAlignment="Center" Orientation="Horizontal"  Grid.Row="9">
             <TextBox Name="TextBox_ColdToHotThreshold" GotFocus="TextBox_ColdToHotThreshold_GotFocus"  Height="30"></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
@@ -165,7 +184,7 @@
         <!-- Volume balance chart-->
         <chart:SfChart  
             Header="Buffer tank Volume balance (°C)"
-            Grid.Row="6"
+            Grid.Row="5"
              Grid.Column="2"
             Grid.RowSpan="3"
             Grid.ColumnSpan="4"
@@ -196,14 +215,14 @@
             <chart:FastLineSeries Name="Series_VB_TColdBuffer" LegendIcon="Circle" Label="TColdBuf" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"></chart:FastLineSeries>
  -->   </chart:SfChart>
       
-        <TextBlock Margin="30,0,0,0" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="9" VerticalAlignment="Center" Text="Buffertank mid threshold value:"></TextBlock>
-        <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="9">
+        <TextBlock Margin="30,0,0,0" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="8" VerticalAlignment="Center" Text="Buffertank mid threshold value:"></TextBlock>
+        <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="8">
             <TextBox Name="BufMidThresholdValue" GotFocus="BufMidThresholdValue_GotFocus" Height="30" ></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>
 
         <!-- Use overlay textbox for showing diff result -->
-        <TextBox Grid.Column="3" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="{x:Bind BufMidThresholdValue.Text}"></TextBox>
+        <TextBox Visibility="Collapsed" Grid.Column="3" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="{x:Bind BufMidThresholdValue.Text}"></TextBox>
 
     </Grid>
 </Page>

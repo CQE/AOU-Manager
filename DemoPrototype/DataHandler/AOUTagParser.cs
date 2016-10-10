@@ -15,24 +15,24 @@ namespace DemoPrototype
         public static string FindNextTextLine(string input, out string nextLines)
         {
             string firstTextLine = string.Empty;
-            string workingString = input;
-            string[] lineOfEndChars = new string[] { "\r\n", "\n" }; // New line sequences. Important! right order
-
             nextLines = string.Empty;
-            foreach (var eol in lineOfEndChars)
+
+            // var tst = Encoding.ASCII.GetBytes(input);
+
+            int lfIndex = input.IndexOf((char)10);
+            if (lfIndex > 0) // index for end of line char
             {
-                int eolLineIndex = input.IndexOf(eol);
-                if (eolLineIndex > 0) // index for end of line char
+                // firstTextLine = input.Substring(0, lfIndex).TrimEnd(new char[13]); // Get first whole text line. delete return char if in the end
+                firstTextLine = input.Substring(0, lfIndex).Trim(); // Get first whole text line. delete return char if in the end
+                if (input.Length > (lfIndex + 1))
                 {
-                    firstTextLine = input.Substring(0, eolLineIndex).Trim(); // First whole text line
-                    nextLines = input.Substring(input.IndexOf(eol) + eol.Length); // Rest of text
-                    break; // Finished
+                    nextLines = input.Substring(lfIndex + 1); // Get rest of the text
                 }
             }
 
             if (firstTextLine == string.Empty)
             {
-                return input; // If no eol return all
+                return input.Trim(); ; // If no lf return all
             }
             else
             {
@@ -195,7 +195,14 @@ namespace DemoPrototype
 
         public static bool ParseLongTime(string textline, out long time_ms) // Not to be misunderstood
         {
-            return ParseLong(AOUInputParser2.tagSubTagTime, textline, out time_ms);
+            long time_ds = 0;
+            time_ms = 0;
+            if (ParseLong(AOUInputParser2.tagSubTagTime, textline, out time_ds))
+            {
+                time_ms = time_ds * 100;
+                return true;
+            }
+            return false;
         }
 
     }

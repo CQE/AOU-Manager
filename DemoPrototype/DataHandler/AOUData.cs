@@ -581,8 +581,8 @@ namespace DemoPrototype
                 }
                 else if (nextTag == "seq")
                 {
-                    /* Old tag. Handle ? */
-                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "seq:" + tagContent, 0, 0));
+                    /* Just log message for "seq" tag */
+                    newLogMessages.Add(new AOULogMessage(time_ms, "seq:" + tagContent, 3));
                 }
                 else if (nextTag == AOUInputParser2.tagLog)
                 {
@@ -594,8 +594,9 @@ namespace DemoPrototype
                 }
                 else if (nextTag.Length > 0)
                 {
+                    time_ms = time_ms == 0 ? GetAOUTime_ms() : time_ms;
                     // Unknow tag. Add log message
-                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "Unknown tag:" + nextTag + " = " + tagContent, 0, 0));
+                    newLogMessages.Add(new AOULogMessage(time_ms, "Unknown tag:" + nextTag + " = " + tagContent, 1));
                 }
 
 

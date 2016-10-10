@@ -203,7 +203,7 @@ namespace DemoPrototype
         public static bool ParseLog(string tagText, out string logMsg, out int prio, out int pid)
         {
             logMsg = "-";
-            prio = 1;
+            prio = 2;
             pid = 0;
             // Example: "<log><Time>94962045</Time><Msg>Setup AOU version 1.1 ready (Plastics Unbound Ltd, Cyprus)</Msg></log>";
             return AOUTagParser.ParseString(tagLogSubTagMsg, tagText, out logMsg);

@@ -14,6 +14,11 @@ namespace DemoPrototype
             get; set;
         }
 
+        public long time_ms
+        {
+            get; set;
+        }
+
         public string message
         {
             get; set;
@@ -29,19 +34,20 @@ namespace DemoPrototype
             get; set;
         }
 
-        public AOULogMessage(long logTime, string logMsg, int logPrio, int logProcessId)
+        public AOULogMessage(long logTime_ms, string logMsg, int logPrio, int logProcessId)
         {
-            time = AOUHelper.msToTimeSpanStr(logTime);
+            time_ms = logTime_ms;
+            time = AOUHelper.msToTimeSpanStr(logTime_ms);
             message = logMsg;
             prio = logPrio;
             pid = logProcessId;
         }
 
-        public AOULogMessage(long logTime, string logMsg, int logPrio) : this(logTime, logMsg, logPrio, 0)
+        public AOULogMessage(long logTime_ms, string logMsg, int logPrio) : this(logTime_ms, logMsg, logPrio, 0)
         {
         }
 
-        public AOULogMessage(long logTime, string logMsg) : this(logTime, logMsg, 0, 0)
+        public AOULogMessage(long logTime_ms, string logMsg) : this(logTime_ms, logMsg, 0, 0)
         {
         }
 

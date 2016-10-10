@@ -36,9 +36,10 @@ namespace DemoPrototype
                 TimeSpan ts = TimeSpan.FromMilliseconds(time_ms * 1.0);
                 if (ts.Days > 0) timestr += ts.Days + ".";
                 timestr += ts.Hours.ToString("00") + ":" + ts.Minutes.ToString("00") + ":" + ts.Seconds.ToString("00");
-                if (ts.Milliseconds > 0)
+                int ds = (int)Math.Round(ts.Milliseconds / 100.0); // deci sek > 0 ?
+                if (ds > 0)
                 {
-                    timestr += "." + ts.Milliseconds / 100;
+                    timestr += "." + ds; 
                 }
             }
             catch (Exception e)

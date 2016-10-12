@@ -97,8 +97,8 @@ namespace DemoPrototype
 
                 case AOUDataTypes.CommandType.TReturnThresholdHot2Cold: return GetRandomInt(80, 100);
                 case AOUDataTypes.CommandType.TReturnThresholdCold2Hot: return GetRandomInt(100, 120);
-                case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: return GetRandomInt(30, 60);
-                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: return GetRandomInt(40, 80);
+                case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: return GetRandomInt(80, 200);
+                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: return GetRandomInt(20, 60);
                 default: return 0;
 
             }
@@ -138,8 +138,8 @@ namespace DemoPrototype
                 // globThresholds.ThresholdHotBuffTankAlarmLimit = 110;
                 // globThresholds.ThresholdMidBuffTankAlarmLimit = 100;
                 // globThresholds.ThresholdColdTankBuffAlarmLimit = 90;
-                case AOUDataTypes.CommandType.TBufferColdUpperLimit: return 110;
-                case AOUDataTypes.CommandType.TBufferHotLowerLimit: return 100;
+                case AOUDataTypes.CommandType.TBufferColdUpperLimit: return 40;
+                case AOUDataTypes.CommandType.TBufferHotLowerLimit: return 120;
                 case AOUDataTypes.CommandType.TBufferMidRefThreshold: return 90;
 
                 // globThresholds.ThresholdHot2Cold = 100;

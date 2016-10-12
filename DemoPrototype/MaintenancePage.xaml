@@ -323,7 +323,7 @@
             <!-- sfgrid:SfDataGrid x:Name="LogGrid" Height="500" ColumnSizer="Star" AllowSorting="True" AllowFiltering="True" ItemsSource="{Binding logMessages}"/ -->
 
     
-                <Button x:Name="exportButton"  Margin="0,10,0,0" Content="Export to file" Click="exportButton_Click"></Button>
+                <Button x:Name="exportButton"  Margin="0,10,0,0" Content="Export to excel file" Click="exportButton_Click"></Button>
      
             </StackPanel>
         </Border>

@@ -34,13 +34,18 @@
                        FontWeight="Bold"
                        Margin="150,5,0,0"
                        ></TextBlock>
-            <TextBlock Name="InfoTextBlock"
+            <TextBlock Visibility="Collapsed"
+                       Name="InfoTextBlock"
                        RelativePanel.RightOf="BackButton"
                        FontSize="11"
                        FontWeight="Bold"
                        Margin="10,25,0,0"
                        ></TextBlock>
-
+            <Image     RelativePanel.RightOf="BackButton"
+                       Height="48"
+                       Width="48"
+                       Source="Assets/Plastics_Unbound_logo_black.jpg"
+                       ></Image>
         </RelativePanel>
         <SplitView Name="MySplitView" 
                    Grid.Row="1"
@@ -52,18 +57,10 @@
                     <ListBoxItem Name="OperatorListBox">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="36" Text="&#xEC58;"></TextBlock>
-                            <TextBlock FontSize="24" Margin="10,0,0,0">Moulding</TextBlock>
+                            <TextBlock FontSize="24" Margin="10,0,0,0">Mould</TextBlock>
                         </StackPanel>
                     </ListBoxItem>
-                   
-                    
-                    <ListBoxItem Name="CalibrateListBoxItem">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="36" Text="&#xEB50;"></TextBlock>
-                            <TextBlock FontSize="24" Margin="10,0,0,0">Calibrate</TextBlock>
-                        </StackPanel>
-                    </ListBoxItem>
-
+                                  
                     <ListBoxItem Name="TuneListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="36" Text="&#xE189;"></TextBlock>
@@ -71,12 +68,21 @@
                         </StackPanel>
                     </ListBoxItem>
 
+                    <ListBoxItem Name="CalibrateListBoxItem">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="36" Text="&#xEB50;"></TextBlock>
+                            <TextBlock FontSize="24" Margin="10,0,0,0">Calibrate</TextBlock>
+                        </StackPanel>
+                    </ListBoxItem>
+
+
                     <ListBoxItem Name="SettingsListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="36" Text="&#xE713;"></TextBlock>
                             <TextBlock FontSize="24" Margin="10,0,0,0">Settings</TextBlock>
                         </StackPanel>
                     </ListBoxItem>
+                    
                     <ListBoxItem Name="MaintenanceListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="36" Text="&#xEA99;"></TextBlock>

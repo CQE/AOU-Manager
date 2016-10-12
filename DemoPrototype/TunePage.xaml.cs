@@ -115,7 +115,7 @@ namespace DemoPrototype
            
             //Energy Balance Chart
             SfChart myEnergyChart = new SfChart();
-            myEnergyChart.Header = "Buffer Tank Energy Balance";
+            myEnergyChart.Header = "Energy (Hot and Cold tanks) (°C)";
             
             //Adding horizontal and vertical axis to the chart
             TimeSpanAxis energyChartCategoryAxis = new TimeSpanAxis();
@@ -166,7 +166,7 @@ namespace DemoPrototype
 
             //Volume Balande Chart
             SfChart myVolumeChart = new SfChart();
-            myVolumeChart.Header = "Buffer tank volume balance";
+            myVolumeChart.Header = "Volume (Buffer tank) (°C)";
 
             TimeSpanAxis volumeChartCategorAxis = new TimeSpanAxis();
             myVolumeChart.PrimaryAxis = volumeChartCategorAxis;
@@ -315,6 +315,16 @@ namespace DemoPrototype
         private void HotFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
             AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "Hot return delay time", AOUDataTypes.CommandType.hotDelayTime, 0, 30, this);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TuneFreezeButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

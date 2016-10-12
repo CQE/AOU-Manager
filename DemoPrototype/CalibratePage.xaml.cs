@@ -391,7 +391,8 @@ namespace DemoPrototype
             string title = "Buffer tank Cold temperature Upper limit";
             string message = "You are about to set value to ";
             AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TBufferColdUpperLimit, TBufColdHLine, this);
-        }
+            int val = AppHelper.SafeConvertToInt(TBufColdHLine.Y1);
+            TBufColdHLine.Y1 =val;        }
 
 
         public void Reset_ThresholdHotTankAlarm() //not a good name MW

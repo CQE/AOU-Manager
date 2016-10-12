@@ -45,7 +45,7 @@ namespace DemoPrototype
             MyFrame.Navigate(typeof(OperatorPage));
 
             // MyFrame.Navigate(typeof(SettingsPage));
-            TitleTextBlock.Text = "Run Injection moulding";
+            TitleTextBlock.Text = "Run moulding";
  
             //create these only once
             webView = new WebView();
@@ -61,6 +61,28 @@ namespace DemoPrototype
             
             // Set High prio for menu buttons
             Dispatcher.CurrentPriority = CoreDispatcherPriority.High;
+
+            //start maximised
+            //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
+            //applicationView.ExitFullScreenMode();
+            //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
+
+           /* if (applicationView.IsFullScreenMode)
+            {
+                applicationView.ExitFullScreenMode();
+                ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+                // The SizeChanged event will be raised when the exit from full-screen mode is complete.
+            }
+            else
+            {
+                if (applicationView.TryEnterFullScreenMode())
+                {
+                    ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
+                    // The SizeChanged event will be raised when the entry to full-screen mode is complete.
+                }
+            }
+            */
+
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -82,7 +104,7 @@ namespace DemoPrototype
             {
                 InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(OperatorPage));
-                TitleTextBlock.Text = "Run Injection moulding";
+                TitleTextBlock.Text = "Run moulding";
                 BackButton.Visibility = Visibility.Collapsed;
             }
 
@@ -97,14 +119,14 @@ namespace DemoPrototype
             {
                 InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(CalibratePage));
-                TitleTextBlock.Text = "Calibrate system";
+                TitleTextBlock.Text = "Calibrate moulding";
                 BackButton.Visibility = Visibility.Visible;
             }
             else if (TuneListBoxItem.IsSelected)
             {
                 InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(TunePage));
-                TitleTextBlock.Text = "Tune system";
+                TitleTextBlock.Text = "Tune moulding";
                 BackButton.Visibility = Visibility.Visible;
             }
 
@@ -126,7 +148,8 @@ namespace DemoPrototype
                 //we show version number after the title until a better place is decided
 
                 string version = GetAppVersion();
-                string AboutHeader = "About AOU " + version;
+                //string AboutHeader = "About AOU " + version;
+                string AboutHeader = "About system";
                 TitleTextBlock.Text = AboutHeader;
                 BackButton.Visibility = Visibility.Collapsed;
                 DisplayHtml("About");

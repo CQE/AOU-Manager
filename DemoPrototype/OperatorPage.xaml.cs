@@ -154,7 +154,7 @@ namespace DemoPrototype
             SetHotSafeZoneLine.Y1 = GlobalVars.globThresholds.ThresholdHotTankLowLimit;
             HotSafeZone.Start = GlobalVars.globThresholds.ThresholdHotTankLowLimit;
             SetColdSafeZoneLine.Y1 = GlobalVars.globThresholds.ThresholdColdTankUpperLimit;
-            ColdSafeZone.Start = GlobalVars.globThresholds.ThresholdColdTankUpperLimit;
+            ColdSafeZone.Start = GlobalVars.globThresholds.ThresholdColdTankUpperLimit - ColdSafeZone.Width;  //nytt önskemål OF
 
             // Set initial values for temperature unit. App settings
             if (GlobalAppSettings.IsCelsius)
@@ -326,7 +326,7 @@ namespace DemoPrototype
         public void Reset_ColdTankAlarmHighThreshold()
         {
             SetColdSafeZoneLine.Y1 = GlobalVars.globThresholds.ThresholdColdTankUpperLimit;
-            ColdSafeZone.Start = GlobalVars.globThresholds.ThresholdColdTankUpperLimit;
+            ColdSafeZone.Start = GlobalVars.globThresholds.ThresholdColdTankUpperLimit - ColdSafeZone.Width;
         }
 
         public void Reset_ThresholdHot2Cold()
@@ -552,7 +552,7 @@ namespace DemoPrototype
             //what is the new position of the line?
             double newY = AppHelper.SafeConvertToDouble(SetColdSafeZoneLine.Y1); //(double)SetHotSafeZoneLine.Y1;
             //make chart strip line follow the line when dragged
-            ColdSafeZone.Start = newY;
+            ColdSafeZone.Start = newY - ColdSafeZone.Width;  //nytt förslag OF
         }
 
         private void SetColdSafeZoneLine_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)

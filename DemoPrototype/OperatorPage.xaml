@@ -7,22 +7,22 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:chart="using:Syncfusion.UI.Xaml.Charts"
     mc:Ignorable="d">
-    <ScrollViewer>
+    <ScrollViewer VerticalScrollBarVisibility="Hidden">  
          <Grid  Name="mainGrid" >
  
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"></RowDefinition>
-                <RowDefinition Height ="40"></RowDefinition>
-                <RowDefinition Height="40"></RowDefinition>
-                <RowDefinition Height ="40"></RowDefinition>
+                <RowDefinition Height="38"></RowDefinition>
+                <RowDefinition Height ="38"></RowDefinition>
+                <RowDefinition Height="38"></RowDefinition>
+                <RowDefinition Height ="38"></RowDefinition>
                 <RowDefinition Height ="35"></RowDefinition>
                 <RowDefinition Height ="35" ></RowDefinition>
                 <RowDefinition Height ="35"></RowDefinition>
-                <RowDefinition Height ="40"></RowDefinition>
-                <RowDefinition Height ="40"></RowDefinition>
-                <RowDefinition Height ="55"></RowDefinition>
-                <RowDefinition Height ="40"></RowDefinition>
-                <RowDefinition Height ="40"></RowDefinition>
+                <RowDefinition Height ="38"></RowDefinition>
+                <RowDefinition Height ="38"></RowDefinition>
+                <RowDefinition Height ="50"></RowDefinition>
+                <RowDefinition Height ="38"></RowDefinition>
+                <RowDefinition Height ="38"></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -44,9 +44,9 @@
                     <TextBlock Margin="5,5,0,5" Grid.Row="0" Text="Operation" FontWeight="SemiBold" VerticalAlignment="Bottom"></TextBlock>
                     <RelativePanel>
                         <TextBlock Name="RMode" Margin="5,5,0,5"  Text="Running mode"  RelativePanel.AlignTopWithPanel="True"></TextBlock>
-                        <TextBlock Name="TTEmp"  Margin="5,15,0,15"  RelativePanel.Below="RMode" Text="Tool tempering" ></TextBlock>
+                        <TextBlock Name="TTEmp"  Margin="5,15,0,18"  RelativePanel.Below="RMode" Text="Tool tempering" ></TextBlock>
                         <ComboBox Margin="5,0,60,15" x:Name ="RunningModeCombo"  RelativePanel.AlignRightWithPanel="True" SelectionChanged="NewModeSelected"/>
-                        <TextBlock Margin="5,0,60,15" RelativePanel.Below="RunningModeCombo" RelativePanel.AlignRightWithPanel="True" Name="TextBlock_ToolTempering" Text="Not Yet Working" Foreground="Olive"></TextBlock>
+                        <TextBlock Margin="5,0,60,18" RelativePanel.Below="RunningModeCombo" RelativePanel.AlignRightWithPanel="True" Name="TextBlock_ToolTempering" Text="Not Yet Working" Foreground="Olive"></TextBlock>
                     </RelativePanel>
                 </StackPanel>
             </Border>
@@ -65,9 +65,9 @@
                     </StackPanel>
                     <TextBlock Margin="5,20,0,0" Text="Hot tank"></TextBlock>
                     <TextBlock Margin="5,15,0,0" VerticalAlignment="Bottom" Text="Cold tank"></TextBlock>
-                    <TextBlock Margin="5,25,0,0" VerticalAlignment="Bottom" Text="Cycle times (s/cycle)"></TextBlock>
+                    <TextBlock Margin="5,25,0,0" VerticalAlignment="Bottom" Text="Mould times (s/cycle)"></TextBlock>
                     <TextBlock Margin="5,20,0,0"  VerticalAlignment="Bottom" Text="Heating"></TextBlock>
-                    <TextBlock Margin="5,15,0,0" VerticalAlignment="Bottom" Text="Cooling"></TextBlock>
+                    <TextBlock Margin="5,15,0,1" VerticalAlignment="Bottom" Text="Cooling"></TextBlock>
                 </StackPanel>
             </Border>
 
@@ -87,7 +87,7 @@
            
             <StackPanel Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
                     <TextBox Name="TextBox_TColdTank" IsReadOnly="True" BorderThickness="0"></TextBox>
-                    <TextBox Margin="15,0,0,0" IsReadOnly="True" Name="NewTColdTankTextBox" GotFocus="NewTColdTankTextBox_GotFocus" ></TextBox>
+                    <TextBox Margin="15,0,0,3" IsReadOnly="True" Name="NewTColdTankTextBox" GotFocus="NewTColdTankTextBox_GotFocus" ></TextBox>
             </StackPanel>
 
             <!--  Cycle Times -->
@@ -106,8 +106,8 @@
        
            
             <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBox Name="TextBox_NewActiveCoolingTime" GotFocus="NewActiveCoolingTimeTextBox_GotFocus" IsReadOnly="True" VerticalAlignment="Bottom" Text="10"></TextBox>
-                    <TextBox Name="TextBox_NewPauseCoolingTime" GotFocus="NewPauseCoolingTimeTextBox_GotFocus"  IsReadOnly="True" Margin="15,0,0,0" Text="10"></TextBox>
+                <TextBox Name="TextBox_NewActiveCoolingTime" GotFocus="NewActiveCoolingTimeTextBox_GotFocus" IsReadOnly="True" Margin="0,0,0,5" Text="10"></TextBox>
+                    <TextBox Name="TextBox_NewPauseCoolingTime" GotFocus="NewPauseCoolingTimeTextBox_GotFocus"  IsReadOnly="True" Margin="15,0,0,5" Text="10"></TextBox>
             </StackPanel>
 
           <!--  <TextBlock Grid.Row="10" VerticalAlignment="Bottom" Text="Monitoring" FontWeight="Bold"></TextBlock>
@@ -162,7 +162,7 @@
             <TextBox Visibility="Collapsed" Name="PhaseDiffResult" Grid.Row="2" Background="Yellow" BorderThickness="0" Grid.Column="2" HorizontalAlignment="Center"  VerticalAlignment="Center" Text="Diff = 5"></TextBox>
 
             <!-- parameter monitoring chart -->
-            <Border Margin="5,5,0,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" Grid.Row="10" Grid.RowSpan="5" Grid.Column="0" Grid.ColumnSpan="4">
+            <Border Margin="5,5,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" Grid.Row="10" Grid.RowSpan="5" Grid.Column="0" Grid.ColumnSpan="4">
                 <StackPanel Margin="5,5,5,5" Orientation="Vertical">
                     <TextBlock Margin="5,0,0,0" Text="Monitoring" FontWeight="SemiBold"></TextBlock>
                         <chart:SfChart  
@@ -181,8 +181,8 @@
                 <chart:SfChart.SecondaryAxis>
                     <chart:NumericalAxis  StartRangeFromZero="False" Interval="20"  EnableAutoIntervalOnZooming="False">
                     <chart:NumericalAxis.StripLines>
-                        <chart:ChartStripLine Name="HotSafeZone" Start="200" Width="25"  Background="PaleGreen"></chart:ChartStripLine>
-                        <chart:ChartStripLine Name="ColdSafeZone"  Start="20" Width="25"  Background="PaleGoldenrod"></chart:ChartStripLine>
+                        <chart:ChartStripLine Name="HotSafeZone" Start="180" Width="25"  Background="PaleGreen"></chart:ChartStripLine>
+                        <chart:ChartStripLine Name="ColdSafeZone"   Start="30" Width="25"  Background="PaleGoldenrod"></chart:ChartStripLine>
                     </chart:NumericalAxis.StripLines>
                 </chart:NumericalAxis>
             </chart:SfChart.SecondaryAxis>
@@ -220,12 +220,12 @@
             </StackPanel>
             </Border>
             <!-- overlaying Button for Export -->
-            <Button Name="ButtonExportParameterChart" Content="Export" Grid.Row="15" Grid.Column="2" Margin="30,0,0,25" Click="ButtonExportParameterChart_Click" VerticalAlignment="Bottom" HorizontalAlignment="Left"></Button>
+            <Button Visibility="Collapsed" Name="ButtonExportParameterChart" Content="Export" Grid.Row="16" Grid.Column="2" Margin="30,0,0,25" Click="ButtonExportParameterChart_Click" VerticalAlignment="Bottom" HorizontalAlignment="Left"></Button>
             
         <!-- overlay own text as labels for chart 
             <StackPanel Orientation="Vertical" Grid.Row="11" Grid.RowSpan="6">
                 <TextBlock Margin="2,30,0,0" FontSize="8" Text="Unknown"></TextBlock>
-                <TextBlock Margin="2,10,0,0" Text="OpenEnd" FontSize="8"></TextBlock>
+                <TextBlock Margin="2,10,0,0" Text="OpenEnd" FontSizefull="8"></TextBlock>
                 <TextBlock Margin="2,10,0,0" Text="EjectEnd" FontSize="8"></TextBlock>
                 <TextBlock Margin="2,10,0,0" Text="EjectBegin" FontSize="8"></TextBlock>
                 <TextBlock Margin="2,10,0,0" Text="OpenBegin" FontSize="8"></TextBlock>
@@ -239,25 +239,25 @@
             </StackPanel> -->
 
             <!-- state chart -->
-            <Border  Margin="5,5,0,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5"  Grid.Row="0" Grid.RowSpan="10" Grid.Column="2" Grid.ColumnSpan="2">
+            <Border  Margin="5,5,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5"  Grid.Row="0" Grid.RowSpan="10" Grid.Column="2" Grid.ColumnSpan="2">
                 <StackPanel Margin="5,5,5,5" Orientation="Vertical">
                     <TextBlock Margin="5,5,5,5" FontWeight="SemiBold" Text="AOU / IMM Interaction"></TextBlock>
                    
                 </StackPanel>
             </Border>
 
-                <StackPanel Margin="40,0,0,20" Grid.Row="2" Grid.RowSpan="8" Grid.Column="2" VerticalAlignment="Stretch" Orientation="Vertical">
+                <StackPanel Margin="40,30,0,30" Grid.Row="1" Grid.RowSpan="9" Grid.Column="2" VerticalAlignment="Stretch" Orientation="Vertical">
                             <TextBlock Margin="2,0,0,0" FontSize="10" Text="Unknown"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="OpenEnd" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="EjectEnd" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="EjectBegin" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="OpenBegin" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,9,0,0" Text="OpenEnd" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,9,0,0" Text="EjectEnd" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,9,0,0" Text="EjectBegin" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,9,0,0" Text="OpenBegin" FontSize="10"></TextBlock>
                             <TextBlock Margin="2,10,0,0" Text="CoolingEnd" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="InjectionEnd" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,9,0,0" Text="InjectionEnd" FontSize="10"></TextBlock>
                             <TextBlock Margin="2,10,0,0" Text="InjectionBegin" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="ColdAtMEntry" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,9,0,0" Text="ColdAtMEntry" FontSize="10"></TextBlock>
                             <TextBlock Margin="2,10,0,0" Text="HotAtMEntry" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="Initial" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,9,0,0" Text="Initial" FontSize="10"></TextBlock>
                             <TextBlock Margin="2,10,0,0" Text="Idle" FontSize="10"></TextBlock>
 
                         </StackPanel> 

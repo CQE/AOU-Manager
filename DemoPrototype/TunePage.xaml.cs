@@ -61,7 +61,7 @@ namespace DemoPrototype
 
             //Tune delay chart
             SfChart myTuneChart = new SfChart();
-            myTuneChart.Header = "Feed and Return delay timings";
+            //myTuneChart.Header = "Feed and Return delay timings";
             
             //Adding horizontal and vertical axis to the chart
             TimeSpanAxis tuneChartCategoryAxis = new TimeSpanAxis();
@@ -100,12 +100,17 @@ namespace DemoPrototype
             ChartLegend myDelayLegend = new ChartLegend();
             myTuneChart.Legend = myDelayLegend;
 
+            //margin
+            myTuneChart.Margin = new Thickness(10,10,10,10);
+
             //add chart to grid
             this.TuneGrid.Children.Add(myTuneChart);
-            Grid.SetRow(myTuneChart, 2);
+            Grid.SetRow(myTuneChart, 0);
             Grid.SetRowSpan(myTuneChart, 2);
             Grid.SetColumn(myTuneChart, 0);
             Grid.SetColumnSpan(myTuneChart, 2);
+            //Grid.SetMarginProperty(myTuneChart,"10,10,10,10");
+            
            
            
             //Energy Balance Chart
@@ -146,12 +151,16 @@ namespace DemoPrototype
             //add legends
             ChartLegend myEBLegend = new ChartLegend();
             myEnergyChart.Legend = myEBLegend;
-            
+
+            //margin
+            myEnergyChart.Margin = new Thickness(10, 10, 10, 10);
+
+
             //add chart to grid
             this.TuneGrid.Children.Add(myEnergyChart);
-            Grid.SetRow(myEnergyChart, 0);
+            Grid.SetRow(myEnergyChart, 2);
             Grid.SetRowSpan(myEnergyChart, 2);
-            Grid.SetColumn(myEnergyChart, 2);
+            Grid.SetColumn(myEnergyChart, 0);
             Grid.SetColumnSpan(myEnergyChart, 2);
 
 
@@ -191,6 +200,9 @@ namespace DemoPrototype
             //add legends
             ChartLegend myVBLegend = new ChartLegend();
             myVolumeChart.Legend = myVBLegend;
+
+            //margin
+            myVolumeChart.Margin = new Thickness(10, 10, 10, 10);
 
 
             this.TuneGrid.Children.Add(myVolumeChart);

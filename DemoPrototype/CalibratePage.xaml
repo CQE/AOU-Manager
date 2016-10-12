@@ -50,7 +50,7 @@
             IsDoubleTapEnabled="True"
             DoubleTapped="FreezeCalibrateGraphs"
             Name="MyDelayChart"
-            Margin="10,0,0,30">
+            Margin="10,10,0,17">
             <chart:SfChart.PrimaryAxis>
                 <chart:TimeSpanAxis Name="CalibrateDelayXAxis"></chart:TimeSpanAxis>
             </chart:SfChart.PrimaryAxis>

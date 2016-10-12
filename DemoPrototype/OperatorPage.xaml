@@ -29,10 +29,10 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="6*"></ColumnDefinition>
                
             </Grid.ColumnDefinitions>
 
@@ -243,24 +243,29 @@
                 <StackPanel Margin="5,5,5,5" Orientation="Vertical">
                     <TextBlock Margin="5,5,5,5" FontWeight="SemiBold" Text="AOU / IMM Interaction"></TextBlock>
                    
-                    <!--    <StackPanel Orientation="Vertical">
-                            <TextBlock Margin="2,30,0,0" FontSize="8" Text="Unknown"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="OpenEnd" FontSize="8"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="EjectEnd" FontSize="8"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="EjectBegin" FontSize="8"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="OpenBegin" FontSize="8"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="CoolingEnd" FontSize="8"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="InjectionEnd" FontSize="8"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="InjectionBegin" FontSize="8"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="ColdAtMEntry" FontSize="8"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="HotAtMEntry" FontSize="8"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="Initial" FontSize="8"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="Idle" FontSize="8"></TextBlock>
+                </StackPanel>
+            </Border>
 
-                        </StackPanel> -->
-                    <chart:SfChart  
-                        
-            Margin="20,0,20,0">
+                <StackPanel Margin="40,0,0,20" Grid.Row="2" Grid.RowSpan="8" Grid.Column="2" VerticalAlignment="Stretch" Orientation="Vertical">
+                            <TextBlock Margin="2,0,0,0" FontSize="10" Text="Unknown"></TextBlock>
+                            <TextBlock Margin="2,10,0,0" Text="OpenEnd" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,10,0,0" Text="EjectEnd" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,10,0,0" Text="EjectBegin" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,10,0,0" Text="OpenBegin" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,10,0,0" Text="CoolingEnd" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,10,0,0" Text="InjectionEnd" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,10,0,0" Text="InjectionBegin" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,10,0,0" Text="ColdAtMEntry" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,10,0,0" Text="HotAtMEntry" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,10,0,0" Text="Initial" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,10,0,0" Text="Idle" FontSize="10"></TextBlock>
+
+                        </StackPanel> 
+
+
+
+            <chart:SfChart  
+            Grid.Row="2" Grid.RowSpan="8" Grid.Column="3" Grid.ColumnSpan="1" Margin="0,0,20,10">
   <!--              <chart:SfChart.Behaviors>
                     <chart:ChartTrackBallBehavior></chart:ChartTrackBallBehavior>
                 </chart:SfChart.Behaviors>
@@ -277,8 +282,7 @@
                 
             <chart:StepLineSeries XBindingPath="ElapsedTime" YBindingPath="State" ItemsSource="{Binding power}"></chart:StepLineSeries>
         </chart:SfChart>
-            </StackPanel>
-            </Border>
+            
 
   
 

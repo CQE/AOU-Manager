@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Margin="10,29,10,-9" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -28,61 +28,66 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Border Margin="5,20,0,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="0">
-            <StackPanel Margin="2,5,0,0" Grid.Row="1"  Orientation ="Horizontal">
-                <TextBlock Width="200" VerticalAlignment="Center" Text="Temperature unit to use" ></TextBlock>
-                <RadioButton x:Name="TempUnitCelsius"  Content="Celsius"   Margin="6,0,0,0" Checked="TempUnitCelsius_Checked"/>
-                <RadioButton x:Name="TempUnitFahrenheit" Content="Fahrenheit"  Margin="10,0,0,0"  Checked="TempUnitFahrenheit_Checked"/>
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="0">
+            <StackPanel Margin="5,0,0,0" Grid.Row="1"  Orientation ="Vertical">
+                <TextBlock Margin="5,0,0,0" FontWeight="SemiBold" Text="Temperature unit to use" ></TextBlock>
+                <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
+                    <RadioButton x:Name="TempUnitCelsius"  Content="Celsius"   Margin="6,0,0,0" Checked="TempUnitCelsius_Checked"/>
+                    <RadioButton x:Name="TempUnitFahrenheit" Content="Fahrenheit"  Margin="10,0,0,0"  Checked="TempUnitFahrenheit_Checked"/>
+                </StackPanel>
             </StackPanel>
         </Border>
 
-        <Border Margin="5,20,0,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="2" Grid.ColumnSpan="1">
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="2" Grid.ColumnSpan="1">
             <StackPanel Orientation="Vertical">
+                <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Log events to remote system"></TextBlock>
                 <StackPanel Margin="2,5,0,0" Grid.Row="2" Orientation="Horizontal">
-                    <TextBlock Width="200" VerticalAlignment="Center" Text="Log events to remote system"></TextBlock>
                     <ToggleSwitch  Margin="5,0,0,0"  IsOn="False"></ToggleSwitch>
                     <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" Text="Remote logger:"></TextBlock>
-                    <TextBox Margin="5,0,0,0" Text="IP name or number"></TextBox>
+                    <TextBox Margin="5,0,0,0" Text="IP name or number" Height="32"></TextBox>
                 </StackPanel>
 
                 <StackPanel Margin="2,5,0,0" Grid.Row="3" Orientation="Horizontal" Tapped="adminPassword_Tapped">
-                    <TextBlock Width="200" VerticalAlignment="Center" Text="Change Password Admin"></TextBlock>
-                    <PasswordBox x:Name="adminPassword" Margin="5,0,0,0" Width="100" Height="32" VerticalAlignment="Top" GotFocus="PasswordBox_GotFocus" />
+                    <TextBlock Margin="5,0,0,0"  Width="180" Text="Change Password Admin"></TextBlock>
+                    <PasswordBox x:Name="adminPassword" Margin="10,0,0,0" Width="100" Height="32" VerticalAlignment="Top" GotFocus="PasswordBox_GotFocus" />
                 </StackPanel>
 
                 <StackPanel Margin="2,5,0,0" Grid.Row="4" Orientation="Horizontal">
-                    <TextBlock Width="200" VerticalAlignment="Center" Text="Change Password User"></TextBlock>
-                    <PasswordBox x:Name="userPassword" Margin="5,0,0,0" Width="100"  ></PasswordBox>
+                    <TextBlock Margin="5,0,0,0" Width="180" Text="Change Password User"></TextBlock>
+                    <PasswordBox x:Name="userPassword" Margin="10,0,0,0" Width="100"  ></PasswordBox>
                 </StackPanel>
             </StackPanel>
         </Border>
 
-        <Border Margin="5,20,0,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="6" Grid.ColumnSpan="2">
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="6" Grid.ColumnSpan="1">
             <StackPanel Orientation="Vertical">
-                <TextBlock  Margin="10,5,0,5" FontSize="12" Text="Change Data Source"></TextBlock>
+                <TextBlock  Margin="5,5,0,5" FontWeight="SemiBold" Text="Change Data Source"></TextBlock>
                 <StackPanel Margin="5,20,0,0" Grid.Row="5" Orientation="Horizontal">
                     <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Text="Select AOU Data Source"/>
-                    <ComboBox x:Name="AOUDataSourceTypesCombo" Margin="2,0,0,0" SelectionChanged="AOUDataSourceTypeChanged"/>
-                    <Button x:Name="StartStopButton" Content="Start"  Margin="5,0,0,0" Click="StartStopButton_Click"/>
-                    <TextBlock x:Name="Param1Text" Margin="20,0,0,0" VerticalAlignment="Center" Text="Param1"/>
-                    <ComboBox x:Name="Param1Combo" Margin="2,0,0,0"/>
-                    <TextBlock x:Name="Param2Text" Margin="20,0,0,0" VerticalAlignment="Center" Text="Param2"/>
-                    <ComboBox x:Name="Param2Combo" Margin="2,0,0,0"></ComboBox>
-                    <TextBlock x:Name="Param3Text" Margin="25,0,0,0" VerticalAlignment="Center" Text="Param3"/>
-                    <TextBox x:Name="FileName" Margin="5,0,0,0" Width="200"></TextBox>
+                    <ComboBox x:Name="AOUDataSourceTypesCombo" Margin="10,0,0,0" SelectionChanged="AOUDataSourceTypeChanged"/>
+                    <Button x:Name="StartStopButton" Content="Start"  Margin="10,0,0,0" Click="StartStopButton_Click"/>
+                    
+                </StackPanel>
+                <StackPanel Margin="5,20,0,0" Grid.Row="5" Orientation="Horizontal">
+                    <TextBlock x:Name="Param1Text" Margin="5,0,0,0" VerticalAlignment="Center" Text="Param1"/>
+                    <ComboBox x:Name="Param1Combo" Margin="10,0,0,0"/>
+                    <TextBlock x:Name="Param2Text" Margin="10,0,0,0" VerticalAlignment="Center" Text="Param2"/>
+                    <ComboBox x:Name="Param2Combo" Margin="10,0,0,0"></ComboBox>
+                    <TextBlock x:Name="Param3Text" Margin="10,0,0,0" VerticalAlignment="Center" Text="Param3"/>
+                    <TextBox x:Name="FileName" Margin="10,0,0,0" Width="150"></TextBox>
                     <Button x:Name="pickButton" Content="Pick" Margin="10,0,5,0" Click="pickButton_Click"/>
                 </StackPanel>
                 <StackPanel Margin="5,5,0,0" Grid.Row="6" Orientation="Horizontal">
-                    <TextBlock x:Name="SourceStatus" Margin="5,2,0,2" VerticalAlignment="Center" Text=""/>
+                    <TextBlock x:Name="SourceStatus" Margin="5,10,0,5" VerticalAlignment="Center" Text=""/>
                 </StackPanel>
             </StackPanel>
         </Border>
 
-        <Border Margin="5,20,0,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="7">
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="7">
             <StackPanel Orientation="Vertical">
-                <TextBlock Margin="15,5,0,5"  Text="Caption here explaining area content"  FontSize="12"></TextBlock>
-                <StackPanel Margin="10,0,5,5" Orientation="Horizontal" >
-                    <Button Name="AskForSetHotTankTemp" Margin="5,5,5,5"   Content="AskForSetTankTemp" Click="AskForSetHotTankTemp_Click"></Button>
+                <TextBlock Margin="5,5,0,5"  Text="Only used for testing communication"  FontWeight="SemiBold"></TextBlock>
+                <StackPanel Margin="5,0,5,5" Orientation="Horizontal" >
+                    <Button Name="AskForSetHotTankTemp" Margin="0,5,5,5"   Content="AskForSetTankTemp" Click="AskForSetHotTankTemp_Click"></Button>
                     <Button Name="AskForSetColdTankTemp"  Margin="5,5,5,5" Content="AskForMouldingTimes" Click="AskForSetColdTankTemp_Click"></Button>
                     <Button Name="AskForDelayTimes"  Margin="5,5,5,5" Content="AskForDelayTimes" Click="AskForSetColdTankTemp_Click"></Button>
                     <Button Name="Ask"  HorizontalAlignment="Right" Margin="5,5,5,5" Content="AskForThresholds" Click="AskForSetColdTankTemp_Click"></Button>

@@ -176,6 +176,21 @@ namespace DemoPrototype
             }
         }
 
+        public static bool ParseUInt(string tagText, string textline, out uint value)
+        {
+            int endpos = 0;
+            if (FindTagAndExtractText(tagText, textline, out tagText, out endpos) &&
+                uint.TryParse(tagText, out value))
+            {
+                return true;
+            }
+            else
+            {
+                value = 0;
+                return false;
+            }
+        }
+
 
         public static bool ParseWordTime_sek_x_10(string textline, out UInt16 time_hours, out UInt16 time_sek_x_10)
         {

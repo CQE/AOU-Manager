@@ -255,6 +255,28 @@ namespace DemoPrototype
             return false;
         }
 
+        public static void SetStaticValues()
+        {
+            globFeedTimes.CoolingActive = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.coolingTime);
+            globFeedTimes.HeatingActive = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.heatingTime);
+
+            globFeedTimes.CoolingPause = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.toolCoolingFeedPause);
+            globFeedTimes.HeatingPause = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.toolHeatingFeedPause);
+
+            globTankSetTemps.ColdTankSetTemp = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet);
+            globTankSetTemps.HotTankSetTemp = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.tempHotTankFeedSet);
+
+            globThresholds.ThresholdCold2Hot = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TReturnThresholdCold2Hot); 
+            globThresholds.ThresholdHot2Cold = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TReturnThresholdHot2Cold);
+
+            globThresholds.ThresholdColdTankUpperLimit = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TBufferColdUpperLimit);
+            globThresholds.ThresholdMidBuffTankAlarmLimit = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TBufferMidRefThreshold);
+            globThresholds.ThresholdHotTankLowLimit = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TBufferHotLowerLimit);
+
+            globThresholds.ThresholdColdTankBuffAlarmLimit = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TColdTankAlarmHighThreshold); 
+            globThresholds.ThresholdHotBuffTankAlarmLimit = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.THotTankAlarmLowThreshold); 
+        }
+
         public static void SetCommandValue(AOUDataTypes.CommandType cmd, string value)
         {
             int ival = int.Parse(value);

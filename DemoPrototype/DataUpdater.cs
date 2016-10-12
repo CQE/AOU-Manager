@@ -76,6 +76,7 @@ namespace DemoPrototype
 
             if (dataRunType == AOURouter.RunType.File)
             {
+                GlobalVars.SetStaticValues(); // Set static values only when file;
                 AOUSettings.FileSetting fileSetting;
                 fileSetting.FilePath = GlobalAppSettings.FileSettingsPath;
                 dataRouter.Initialize(AOURouter.RunType.File, fileSetting, 1000);
@@ -159,6 +160,11 @@ namespace DemoPrototype
         public void CreateLogMessage(string source, string text)
         {
             dataRouter.CreateLogMessage(source + " - " + text, 9);
+        }
+
+        public void CreateLogMessage(string text)
+        {
+            dataRouter.CreateLogMessage(text, 9);
         }
 
         /************************************************

@@ -19,6 +19,8 @@ namespace DemoPrototype
 
         public bool NewTextLoaded { get; private set; }
 
+        public bool FileIsOpened { get; private set; }
+
         public void AddLog(string logText)
         {
             // Just for having a breakpoint here at the moment
@@ -51,7 +53,18 @@ namespace DemoPrototype
             */
             dataFolder = KnownFolders.PicturesLibrary;
             StrData = "";
+            FileIsOpened = false;
             NewTextLoaded = false;
+        }
+
+        public void FileIsReady()
+        {
+            long tick = DateTime.Now.Ticks; // For timeout?
+            while (FileIsOpened == false)
+            {
+                // loop
+            }
+            long tickdiff = DateTime.Now.Ticks - tick;
         }
 
         private async void SaveToFileAsync(StorageFile f, string content)
@@ -126,6 +139,7 @@ namespace DemoPrototype
         /***********************/
         public async void OpenFileIfExistAndGetText(string fileName)
         {
+            FileIsOpened = false;
             try
             {
                 if (fileName[0] == '\\') fileName = fileName.Substring(1);
@@ -136,8 +150,9 @@ namespace DemoPrototype
             }
             catch (Exception ex)
             {
-                AddLog("OpenFileIfExistAndGetText Error: " + ex.Message);
+                AppHelper.ShowMessageBox("OpenFileIfExistAndGetText "+ fileName + " Error: " + ex.Message);
             }
+            FileIsOpened = true;
         }
 
         public void SaveToFile(string subPath, string fileName, string textContent)

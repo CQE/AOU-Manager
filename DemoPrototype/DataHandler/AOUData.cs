@@ -565,6 +565,22 @@ namespace DemoPrototype
 
             string textDataStream = GetTextData();
 
+            if (HaveLogs())
+            {
+                string dataLogText = GetDataLogText();
+                string[] logList = dataLogText.Split('\n');
+                {
+                    foreach (string logLine in logList)
+                    {
+                        string text = logLine.Trim();
+                        if (text.Length > 0)
+                        {
+                            newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), text));
+                        }
+                    }
+                }
+            }
+
             string nextLines = "-"; // Can not be empty for next statement;
             while (textDataStream.Length > 0)
             {
@@ -577,7 +593,6 @@ namespace DemoPrototype
                 // Save last AOU time for adding log messages without time
                 lastDataRealTime = DateTime.Now;
 
-
                 if (loglines.Count > 0 )
                 {
                     // Add text lines without tags as log messages
@@ -586,10 +601,9 @@ namespace DemoPrototype
                         newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), log, 8, 0));
                     }
                 }
-                // if (time_ms == 0 && nextTag == "" && )             {                }
                 else if (time_ms > lastDataTime_ms)
                 {
-                    // newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), nextTag +" diff ms: " + (time_ms - lastDataTime_ms).ToString())); // For testing time between
+                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), nextTag +" diff ms: " + (time_ms - lastDataTime_ms).ToString())); // For testing time between
                     lastDataTime_ms = time_ms;
                 }
                 else if (lastDataTime_ms > time_ms)

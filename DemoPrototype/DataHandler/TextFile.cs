@@ -17,8 +17,6 @@ namespace DemoPrototype
 
         private string StrData = "";
 
-        public bool NewTextLoaded { get; private set; }
-
         public void AddLog(string logText)
         {
             // Just for having a breakpoint here at the moment
@@ -40,7 +38,6 @@ namespace DemoPrototype
         {
             string text = logStr;
             logStr = "";
-
             return text;
         }
 
@@ -51,7 +48,6 @@ namespace DemoPrototype
             */
             dataFolder = KnownFolders.PicturesLibrary;
             StrData = "";
-            NewTextLoaded = false;
         }
 
         private async void SaveToFileAsync(StorageFile f, string content)
@@ -131,12 +127,11 @@ namespace DemoPrototype
                 if (fileName[0] == '\\') fileName = fileName.Substring(1);
                 StorageFile f = await dataFolder.GetFileAsync(fileName);
                 StrData = await FileIO.ReadTextAsync(f);
-                NewTextLoaded = true;
                 AddLog("Filedata loaded from " + fileName + ", " + StrData.Length + " lines");
             }
             catch (Exception ex)
             {
-                AddLog("OpenFileIfExistAndGetText Error: " + ex.Message);
+                AppHelper.ShowMessageBox("OpenFileIfExistAndGetText "+ fileName + " Error: " + ex.Message);
             }
         }
 

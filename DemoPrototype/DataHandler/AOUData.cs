@@ -100,7 +100,7 @@ namespace DemoPrototype
 
             startTime = DateTime.Now;
             lastDataRealTime = startTime;
-            lastDataTime_ms = 0;
+            lastDataTime_ms = -1;
         }
 
         /* Virtual functions to be overrided by child classes */
@@ -112,7 +112,7 @@ namespace DemoPrototype
 
             startTime = DateTime.Now;
             lastDataRealTime = startTime;
-            lastDataTime_ms = 0;
+            lastDataTime_ms = -1;
 
             currentSeqState = AOUDataTypes.StateType.NOTHING;
 
@@ -392,6 +392,158 @@ namespace DemoPrototype
             }
         }
 
+        protected bool GetStateData(string tagContent, long time_ms, out Power power)
+        {
+            AOUStateData stateData;
+            AOUInputParser2.ParseState(tagContent, out stateData);
+
+            power = new Power();
+
+            if (!AOUDataTypes.IsUInt16NaN(stateData.Power))
+            {
+                currentPower = stateData.Power;
+            }
+
+            if (!AOUDataTypes.IsUInt16NaN(stateData.seqState))
+            {   /*
+                        12 - "Unknown", 11 - "WOpenEnd", 10 - "WEjectEnd", 9 - "WEjectBegin", 8 - "WOpenBegin", 7 - "WCoolingEnd"
+                        6 - "WInjectionEnd",  5 - "WInjectionBegin", 4 - "WColdAtMEntry", 3 - "WHotAtMEntry", 2 - "Idle", 1 - "Initial"
+                        NOTHING = 0, SQ_INITIAL, IDLE, SQ_WAIT_HOT_AT_MOULD_ENTRY, SQ_WAIT_COLD_AT_MOULD_ENTRY,
+                        SQ_WAIT_FOR_INJECTION_BEGIN, SQ_WAIT_FOR_INJECTION_END, SQ_WAIT_FOR_COOLING_END,
+                        SQ_WAIT_FOR_OPEN_BEGIN, SQ_WAIT_FOR_EJECT_BEGIN, SQ_WAIT_FOR_EJECT_END, SQ_WAIT_FOR_OPEN_END  */
+                currentSeqState = (AOUDataTypes.StateType)stateData.seqState;
+            }
+
+            if (!AOUDataTypes.IsUInt16NaN(stateData.Valves))
+            {
+                // -- VALVES -- <Valves>MMSS</Valves> MASK (e.g. “3F”), STATE Bits: 0/Hot valve, 1/Cold valve, 2/Return valve, 4/Coolant valve
+                byte mask = HighByte(stateData.Valves);
+                byte state = LowByte(stateData.Valves);
+
+                if (IsStateSet(mask, VALVE_HOT)) currentHotValve = GetValveState(state, VALVE_HOT);
+                if (IsStateSet(mask, VALVE_COLD)) currentColdValve = GetValveState(state, VALVE_COLD);
+                if (IsStateSet(mask, VALVE_RET)) currentReturnValve = GetValveState(state, VALVE_RET);
+                if (IsStateSet(mask, VALVE_COOL)) currentCoolantValve = GetValveState(state, VALVE_COOL);
+            }
+
+            if (stateData.RetForTemp < 1000 && stateData.RetForTemp > -100)
+            {
+                lastTReturnForecasted = GetValidDoubleValue(stateData.RetForTemp);
+                newLastTReturnForecasted = true;
+            }
+
+            if (!AOUDataTypes.IsUInt16NaN(stateData.IMM))
+            {
+                // TODO when IMM data
+                // <IMM>MMSS</IMM>, 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
+                // IMM_OutIMMError: 0x01; IMM_OutIMMBlockInject: 0x02; IMM_OutIMMBlockOpen: 0x04; IMM_InIMMStop: 0x08;
+                // IMM_InCycleAuto: 0x10; IMM_InIMMInjecting: 0x20; IMM_InIMMEjecting: 0x40; IMM_InIMMToolClosed: 0x80;
+                byte mask = HighByte(stateData.IMM);
+                byte state = LowByte(stateData.IMM);
+                switch (mask)
+                {
+                    case 0x01: currentIMMState = AOUDataTypes.IMMSettings.OutIMMError; break;
+                    case 0x02: currentIMMState = AOUDataTypes.IMMSettings.OutIMMBlockInject; break;
+                    case 0x04: currentIMMState = AOUDataTypes.IMMSettings.OutIMMBlockOpen; break;
+                    case 0x08: currentIMMState = AOUDataTypes.IMMSettings.InIMMStop; break;
+                    case 0x10: currentIMMState = AOUDataTypes.IMMSettings.InCycleAuto; break;
+                    case 0x20: currentIMMState = AOUDataTypes.IMMSettings.InIMMInjecting; break;
+                    case 0x40: currentIMMState = AOUDataTypes.IMMSettings.InIMMEjecting; break;
+                    case 0x80: currentIMMState = AOUDataTypes.IMMSettings.InIMMToolClosed; break;
+                    default: currentIMMState = AOUDataTypes.IMMSettings.Nothing; break;
+                }
+                isIMMChanged = true;
+            }
+
+
+            if (!AOUDataTypes.IsUInt16NaN(stateData.UIButtons))
+            {
+                // UI>MMSS</UI> (hex) MM=8bit mask, SS=8bits. 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
+                byte mask = HighByte(stateData.UIButtons);
+                byte state = LowByte(stateData.UIButtons);
+
+                if (IsStateSet(mask, BUTTON_ONOFF)) currentUIButtons.OnOffButton = GetButtonState(state, BUTTON_ONOFF);
+                if (IsStateSet(mask, BUTTON_EMERGENCYOFF)) currentUIButtons.ButtonEmergencyOff = GetButtonState(state, BUTTON_EMERGENCYOFF);
+                if (IsStateSet(mask, BUTTON_MANUALOPHEAT)) currentUIButtons.ButtonForcedHeating = GetButtonState(state, BUTTON_MANUALOPHEAT);
+                if (IsStateSet(mask, BUTTON_MANUALOPCOOL)) currentUIButtons.ButtonForcedCooling = GetButtonState(state, BUTTON_MANUALOPCOOL);
+                if (IsStateSet(mask, BUTTON_CYCLE)) currentUIButtons.ButtonForcedCycling = GetButtonState(state, BUTTON_CYCLE);
+                if (IsStateSet(mask, BUTTON_RUN)) currentUIButtons.ButtonRunWithIMM = GetButtonState(state, BUTTON_RUN);
+                isUIButtonsChanged = true;
+            }
+
+            if (!AOUDataTypes.IsUInt16NaN(stateData.Energy))
+            {
+                // <Energy>MMSS</Energy>, 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
+                currentEnergy = stateData.Energy;
+            }
+
+            if (stateData.Mode < Int16.MaxValue)
+            {
+                // <Mode>1</Mode> (int); 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”). Which???
+                // #define HT_STATE_INVALID: -999; #define HT_STATE_COLD: -1; #define HT_STATE_UNKNOWN: 0; #define HT_STATE_HOT 1
+                Int16 mode = stateData.Mode;
+                currentMode = (AOUDataTypes.HT_StateType)mode;
+                isModesChanged = true;
+            }
+
+            if (stateData.hotTankTemp < 1000) // Only temperature data. ToDo better test
+            {
+                // power.ElapsedTime = AOUDataTypes.AOUModelTimeSecX10_to_TimeMs(stateData.time_hours, stateData.time_sek_x_10_of_hour);
+                power.ElapsedTime = time_ms; // Use same time for all data
+
+                power.THotTank = GetValidDoubleValue(stateData.hotTankTemp);
+                power.TColdTank = GetValidDoubleValue(stateData.coldTankTemp);
+                power.TReturnValve = GetValidDoubleValue(stateData.retTemp);
+
+                // if (newLastTReturnForecasted)
+                {
+                    power.TReturnForecasted = lastTReturnForecasted;
+                    newLastTReturnForecasted = false;
+                }
+
+                power.TReturnActual = GetValidDoubleValue(stateData.retTemp);
+
+                power.TBufferCold = GetValidDoubleValue(stateData.bufColdTemp);
+                power.TBufferMid = GetValidDoubleValue(stateData.bufMidTemp);
+                power.TBufferHot = GetValidDoubleValue(stateData.bufHotTemp);
+
+                power.State = currentSeqState;
+
+                power.ValveFeedCold = currentColdValve;
+                power.ValveReturn = currentReturnValve;
+                power.ValveCoolant = currentCoolantValve;
+
+                power.THeaterOilOut = GetValidDoubleValue(stateData.heaterTemp);
+
+                power.PowerHeating = currentPower;
+
+                power.THeatExchangerCoolantOut = GetValidDoubleValue(stateData.coolerTemp);
+
+                return true; // Only add new power if temperature data
+            }
+            return false;
+        }
+
+        protected string GetSeqString(string tagContent)
+        {
+            // <seq><Time>81</Time><State>SQ_INITIAL</State><Cycle>-1</Cycle><Descr>...</Descr><Leave>IMM</Leave></seq>
+            string state;
+            string cycle;
+            string descr;
+            string leave;
+            AOUTagParser.ParseString("State", tagContent, out state);
+            AOUTagParser.ParseString("Cycle", tagContent, out cycle);
+            AOUTagParser.ParseString("Descr", tagContent, out descr);
+            AOUTagParser.ParseString("Leave", tagContent, out leave);
+            //string retStr = "seq:" + tagContent;
+            string retStr = state + " cycle:" + cycle + " leave " + leave;
+            if (descr != "...")
+            {
+                retStr += ", " + descr;
+            }
+            return retStr;
+        }
+
         // Main converting loop. XML Text to Power and Log message lists
         protected void GetTextDataList()
         {
@@ -408,181 +560,80 @@ namespace DemoPrototype
                 return;
             }
 
-            AOUStateData stateData;
-
             newPowerValues = new List<Power>();
             newLogMessages = new List<AOULogMessage>();
 
             string textDataStream = GetTextData();
 
+            if (HaveLogs())
+            {
+                string dataLogText = GetDataLogText();
+                string[] logList = dataLogText.Split('\n');
+                {
+                    foreach (string logLine in logList)
+                    {
+                        string text = logLine.Trim();
+                        if (text.Length > 0)
+                        {
+                            newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), text));
+                        }
+                    }
+                }
+            }
+
             string nextLines = "-"; // Can not be empty for next statement;
             while (textDataStream.Length > 0)
             {
-                Power tempPower = new Power(0);
-                bool IsTempData = false;
-
-                string tagContent;
                 List<string> loglines;
 
+                string tagContent;
                 string nextTag = AOUInputParser2.GetNextTag(textDataStream, out time_ms, out tagContent, out loglines, out nextLines);
                 textDataStream = nextLines;
 
-                // Save last AOU time
+                // Save last AOU time for adding log messages without time
                 lastDataRealTime = DateTime.Now;
-                if (time_ms > lastDataTime_ms)
+
+                if (loglines.Count > 0 )
                 {
+                    // Add text lines without tags as log messages
+                    foreach (string log in loglines)
+                    {
+                        newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), log, 8, 0));
+                    }
+                }
+                else if (time_ms > lastDataTime_ms)
+                {
+                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), nextTag +" diff ms: " + (time_ms - lastDataTime_ms).ToString())); // For testing time between
                     lastDataTime_ms = time_ms;
                 }
-
-                // Add text lines without tags as log message
-                foreach (string log in loglines)
+                else if (lastDataTime_ms > time_ms)
                 {
-                   newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), log, 8, 0));
+                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "New time " + time_ms + " is less then last time " + lastDataTime_ms));
                 }
 
                 if (nextTag == AOUInputParser2.tagRetValue)
                 {
-                    string tag = "";
-                    string content = "";
+                    string parameterTag = "";
+                    string parameterText = tagContent.Substring(tagContent.IndexOf("</Time>") + 7); // Parameter tag pair is after time tag pair
                     int tagEndPos = 0;
-                    if (AOUTagParser.GetTagAndContent(tagContent.Substring(tagContent.IndexOf("</Time>") + 7), out tag, out content, out tagEndPos))
+                    if (AOUTagParser.GetTagAndContent(parameterText, out parameterTag, out tagContent, out tagEndPos))
                     {
-                        CommandReturns.Add(new CommandReturn(time_ms, tag, content)); 
+                        CommandReturns.Add(new CommandReturn(time_ms, parameterTag, tagContent)); 
                     }
                 }
                 else if (nextTag == AOUInputParser2.tagState)
                 {
-                    AOUInputParser2.ParseState(tagContent, out stateData);
-
-                    if (!AOUDataTypes.IsUInt16NaN(stateData.Power))
+                    Power power;
+                    // When power data have temperature data add to power list else save other data as current values
+                    if (GetStateData(tagContent, time_ms, out power))
                     {
-                        currentPower = stateData.Power;
+                        newPowerValues.Add(power);
                     }
-
-                    if (!AOUDataTypes.IsUInt16NaN(stateData.seqState))
-                    {   /*
-                        12 - "Unknown", 11 - "WOpenEnd", 10 - "WEjectEnd", 9 - "WEjectBegin", 8 - "WOpenBegin", 7 - "WCoolingEnd"
-                        6 - "WInjectionEnd",  5 - "WInjectionBegin", 4 - "WColdAtMEntry", 3 - "WHotAtMEntry", 2 - "Idle", 1 - "Initial"
-                        NOTHING = 0, SQ_INITIAL, IDLE, SQ_WAIT_HOT_AT_MOULD_ENTRY, SQ_WAIT_COLD_AT_MOULD_ENTRY,
-                        SQ_WAIT_FOR_INJECTION_BEGIN, SQ_WAIT_FOR_INJECTION_END, SQ_WAIT_FOR_COOLING_END,
-                        SQ_WAIT_FOR_OPEN_BEGIN, SQ_WAIT_FOR_EJECT_BEGIN, SQ_WAIT_FOR_EJECT_END, SQ_WAIT_FOR_OPEN_END  */
-                        currentSeqState = (AOUDataTypes.StateType)stateData.seqState;
-                    }
-
-                    if (!AOUDataTypes.IsUInt16NaN(stateData.Valves))
-                    {
-                        // -- VALVES -- <Valves>MMSS</Valves> MASK (e.g. “3F”), STATE Bits: 0/Hot valve, 1/Cold valve, 2/Return valve, 4/Coolant valve
-                        byte mask = HighByte(stateData.Valves);
-                        byte state = LowByte(stateData.Valves);
-
-                        if (IsStateSet(mask, VALVE_HOT)) currentHotValve = GetValveState(state, VALVE_HOT);
-                        if (IsStateSet(mask, VALVE_COLD)) currentColdValve = GetValveState(state, VALVE_COLD);
-                        if (IsStateSet(mask, VALVE_RET)) currentReturnValve = GetValveState(state, VALVE_RET);
-                        if (IsStateSet(mask, VALVE_COOL)) currentCoolantValve = GetValveState(state, VALVE_COOL);
-                    }
-
-                    if (stateData.RetForTemp < 1000 && stateData.RetForTemp > -100) 
-                    {
-                        lastTReturnForecasted = GetValidDoubleValue(stateData.RetForTemp);
-                        newLastTReturnForecasted = true;
-                    }
-
-                    if (stateData.hotTankTemp < 1000) // Only temperature data. ToDo better test
-                    {
-                        tempPower.ElapsedTime = AOUDataTypes.AOUModelTimeSecX10_to_TimeMs(stateData.time_hours, stateData.time_sek_x_10_of_hour);
-
-                        tempPower.THotTank = GetValidDoubleValue(stateData.hotTankTemp);
-                        tempPower.TColdTank = GetValidDoubleValue(stateData.coldTankTemp);
-                        tempPower.TReturnValve = GetValidDoubleValue(stateData.retTemp);
-
-                       // if (newLastTReturnForecasted)
-                        {
-                            tempPower.TReturnForecasted = lastTReturnForecasted;
-                            newLastTReturnForecasted = false; 
-                        }
-
-                        tempPower.TReturnActual = GetValidDoubleValue(stateData.retTemp);
- 
-                        tempPower.TBufferCold = GetValidDoubleValue(stateData.bufColdTemp);
-                        tempPower.TBufferMid = GetValidDoubleValue(stateData.bufMidTemp);
-                        tempPower.TBufferHot = GetValidDoubleValue(stateData.bufHotTemp);
-
-                        tempPower.State = currentSeqState;
-
-                        tempPower.ValveFeedCold = currentColdValve;
-                        tempPower.ValveFeedHot = currentHotValve;
-                        tempPower.ValveReturn = currentReturnValve;
-                        tempPower.ValveCoolant = currentCoolantValve;
-
-                        tempPower.THeaterOilOut = GetValidDoubleValue(stateData.heaterTemp);
-
-                        tempPower.PowerHeating = currentPower;
-
-                        tempPower.THeatExchangerCoolantOut = GetValidDoubleValue(stateData.coolerTemp);
-
-                        IsTempData = true; // Only add new power if temperature data
-                    }
-
-
-                    if (!AOUDataTypes.IsUInt16NaN(stateData.IMM))
-                    {
-                        // TODO when IMM data
-                        // <IMM>MMSS</IMM>, 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
-                        // IMM_OutIMMError: 0x01; IMM_OutIMMBlockInject: 0x02; IMM_OutIMMBlockOpen: 0x04; IMM_InIMMStop: 0x08;
-                        // IMM_InCycleAuto: 0x10; IMM_InIMMInjecting: 0x20; IMM_InIMMEjecting: 0x40; IMM_InIMMToolClosed: 0x80;
-                        byte mask = HighByte(stateData.IMM);
-                        byte state = LowByte(stateData.IMM);
-                        switch (mask)
-                        {
-                            case 0x01: currentIMMState = AOUDataTypes.IMMSettings.OutIMMError; break;
-                            case 0x02: currentIMMState = AOUDataTypes.IMMSettings.OutIMMBlockInject; break;
-                            case 0x04: currentIMMState = AOUDataTypes.IMMSettings.OutIMMBlockOpen; break;
-                            case 0x08: currentIMMState = AOUDataTypes.IMMSettings.InIMMStop; break;
-                            case 0x10: currentIMMState = AOUDataTypes.IMMSettings.InCycleAuto; break;
-                            case 0x20: currentIMMState = AOUDataTypes.IMMSettings.InIMMInjecting; break;
-                            case 0x40: currentIMMState = AOUDataTypes.IMMSettings.InIMMEjecting; break;
-                            case 0x80: currentIMMState = AOUDataTypes.IMMSettings.InIMMToolClosed; break;
-                            default: currentIMMState = AOUDataTypes.IMMSettings.Nothing; break;
-                        }
-                        isIMMChanged = true;
-                    }
-
-
-                    if (!AOUDataTypes.IsUInt16NaN(stateData.UIButtons))
-                    {
-                        // UI>MMSS</UI> (hex) MM=8bit mask, SS=8bits. 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
-                        byte mask = HighByte(stateData.UIButtons);
-                        byte state = LowByte(stateData.UIButtons);
-
-                        if (IsStateSet(mask, BUTTON_ONOFF)) currentUIButtons.OnOffButton = GetButtonState(state, BUTTON_ONOFF);
-                        if (IsStateSet(mask, BUTTON_EMERGENCYOFF)) currentUIButtons.ButtonEmergencyOff = GetButtonState(state, BUTTON_EMERGENCYOFF);
-                        if (IsStateSet(mask, BUTTON_MANUALOPHEAT)) currentUIButtons.ButtonForcedHeating = GetButtonState(state, BUTTON_MANUALOPHEAT);
-                        if (IsStateSet(mask, BUTTON_MANUALOPCOOL)) currentUIButtons.ButtonForcedCooling = GetButtonState(state, BUTTON_MANUALOPCOOL);
-                        if (IsStateSet(mask, BUTTON_CYCLE)) currentUIButtons.ButtonForcedCycling = GetButtonState(state, BUTTON_CYCLE);
-                        if (IsStateSet(mask, BUTTON_RUN)) currentUIButtons.ButtonRunWithIMM = GetButtonState(state, BUTTON_RUN);
-                        isUIButtonsChanged = true;
-                    }
-
-                    if (!AOUDataTypes.IsUInt16NaN(stateData.Energy))
-                    {
-                        // <Energy>MMSS</Energy>, 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
-                        currentEnergy = stateData.Energy;
-                    }
-
-                    if (stateData.Mode < Int16.MaxValue)
-                    {
-                        // <Mode>1</Mode> (int); 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”). Which???
-                        // #define HT_STATE_INVALID: -999; #define HT_STATE_COLD: -1; #define HT_STATE_UNKNOWN: 0; #define HT_STATE_HOT 1
-                        Int16 mode = stateData.Mode;
-                        currentMode = (AOUDataTypes.HT_StateType)mode;
-                        isModesChanged = true;
-                    }
-
                 }
                 else if (nextTag == "seq")
                 {
                     /* Just log message for "seq" tag */
-                    newLogMessages.Add(new AOULogMessage(time_ms, "seq:" + tagContent, 3));
+                    newLogMessages.Add(new AOULogMessage(time_ms, GetSeqString(tagContent), 3));
                 }
                 else if (nextTag == AOUInputParser2.tagLog)
                 {
@@ -597,15 +648,6 @@ namespace DemoPrototype
                     time_ms = time_ms == 0 ? GetAOUTime_ms() : time_ms;
                     // Unknow tag. Add log message
                     newLogMessages.Add(new AOULogMessage(time_ms, "Unknown tag:" + nextTag + " = " + tagContent, 1));
-                }
-
-
-                if (nextTag == AOUInputParser2.tagState)
-                {
-                    if (IsTempData)
-                    {
-                        newPowerValues.Add(tempPower);
-                    }
                 }
 
             }

@@ -56,6 +56,7 @@ namespace DemoPrototype
 
             defaultTimeBetween = timeBetween;
 
+            // If log to file uncomment line below
             aouLogFile = new AOULogFile(DateTime.Now);
 
             if (runType == RunType.Random)
@@ -128,24 +129,32 @@ namespace DemoPrototype
                 return "";
         }
 
-        // Send data
-        private bool SendToPlc(string text)
-        {
-            if (IsConnected)
-            {
-                logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), "SendToPlc: " + text, 12, 0));
-                if (aouData.SendData(text+"\n"))   //always end data with newline
-                {
-                    Task.Delay(10); // Test: Insert delay
-                    return false;
-                }
-            }
-            return false;
-        }
-
+        // Send cmd data
         private void SendTagCommandToPlc(string subTag, string value = "")
         {
-            SendToPlc(String.Format("<cmd><{0}>{1}</{0}></cmd>", subTag, value));
+            string text = String.Format("<cmd><{0}>{1}</{0}></cmd>", subTag, value);
+            string message;
+            if (value == "")
+            {
+                message = "Request parameter "+subTag+" value";
+            }
+            else
+            {
+                message = "Set parameter " + subTag + " to " + value;
+            }
+
+            if (IsConnected)
+            {
+                logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), message, 12, 0));
+                if (aouData.SendData(text + "\n"))   //always end data with newline
+                {
+                    Task.Delay(10); // Test: Insert delay
+                }
+            }
+            else
+            {
+                logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), "Not connected: " + message, 12, 0));
+            }
         }
 
         public void SendCommandToPlc(AOUDataTypes.CommandType cmd, int value) 
@@ -173,7 +182,7 @@ namespace DemoPrototype
                     AOUData.CommandReturn ret = aouData.GetNextCommandReturn();
                     AOUDataTypes.CommandType cmd = GlobalVars.aouCommands.Command(ret.parameter);
 
-                    logMessages.Add(new AOULogMessage(ret.time_ms, "RetFromPlc: " + ret.parameter + "=" + ret.value, 13, 0));
+                    logMessages.Add(new AOULogMessage(ret.time_ms, "Plc return " + ret.parameter + "=" + ret.value, 13, 0));
                     GlobalVars.SetCommandValue(cmd,ret.value);
                     // ToDo: (Check if Waiting and) notice page that new value have received
                 }
@@ -360,7 +369,10 @@ namespace DemoPrototype
         // Save to files in Image folder
         private void AddLogToFile(AOULogMessage[] logs)
         {
-            aouLogFile.AddLogMessages(logs);
+            if (aouLogFile != null)
+            {
+                aouLogFile.AddLogMessages(logs);
+            }
         }
 
         /**********************************************/

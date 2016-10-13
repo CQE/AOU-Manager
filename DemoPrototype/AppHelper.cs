@@ -236,10 +236,17 @@ namespace DemoPrototype
 
         public static async void ShowMessageBox(string text)
         {
-            var dialog = new Windows.UI.Popups.MessageDialog(text);
-            dialog.Commands.Add(new Windows.UI.Popups.UICommand("Ok") { Id = 0 });
-            dialog.DefaultCommandIndex = 0;
-            await dialog.ShowAsync();
+            try
+            {
+                var dialog = new Windows.UI.Popups.MessageDialog(text);
+                dialog.Commands.Add(new Windows.UI.Popups.UICommand("Ok") { Id = 0 });
+                dialog.DefaultCommandIndex = 0;
+                await dialog.ShowAsync();
+            }
+            catch (Exception ex)
+            {
+                Data.Updater.CreateLogMessage(text);
+            }
         }
 
         /*

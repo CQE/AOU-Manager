@@ -286,13 +286,14 @@ namespace DemoPrototype
                     }
                     else
                     {
+                        AppHelper.ShowMessageBox("Pick File: Must be in Pictures folder");
                         string errpath = file.Path;
                     }
                 }
             }
             catch (Exception e)
             {
-                Data.Updater.CreateLogMessage("Pick File", e.Message);
+                AppHelper.ShowMessageBox("Pick File: " + e.Message);
             }
 
     }

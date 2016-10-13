@@ -603,7 +603,7 @@ namespace DemoPrototype
                 }
                 else if (time_ms > lastDataTime_ms)
                 {
-                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), nextTag +" diff ms: " + (time_ms - lastDataTime_ms).ToString())); // For testing time between
+                    //newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), nextTag +" diff ms: " + (time_ms - lastDataTime_ms).ToString())); // For testing time between
                     lastDataTime_ms = time_ms;
                 }
                 else if (lastDataTime_ms > time_ms)

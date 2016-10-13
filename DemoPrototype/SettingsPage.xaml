@@ -47,23 +47,30 @@
                     <TextBox Margin="5,0,0,0" Text="IP name or number" Height="32"></TextBox>
                 </StackPanel>
 
+                
+            </StackPanel>
+        </Border>
+        
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="3" Grid.ColumnSpan="1">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Change Password"></TextBlock>
                 <StackPanel Margin="2,5,0,0" Grid.Row="3" Orientation="Horizontal" Tapped="adminPassword_Tapped">
-                    <TextBlock Margin="5,0,0,0"  Width="180" Text="Change Password Admin"></TextBlock>
-                    <PasswordBox x:Name="adminPassword" Margin="10,0,0,0" Width="100" Height="32" VerticalAlignment="Top" GotFocus="PasswordBox_GotFocus" />
+                    <TextBlock Margin="5,5,0,0"  Width="180" Text="Password Admin"></TextBlock>
+                    <PasswordBox x:Name="adminPassword" Margin="10,0,0,3" Width="150" Height="32" VerticalAlignment="Top" GotFocus="PasswordBox_GotFocus" />
                 </StackPanel>
 
                 <StackPanel Margin="2,5,0,0" Grid.Row="4" Orientation="Horizontal">
-                    <TextBlock Margin="5,0,0,0" Width="180" Text="Change Password User"></TextBlock>
-                    <PasswordBox x:Name="userPassword" Margin="10,0,0,0" Width="100"  ></PasswordBox>
+                    <TextBlock Margin="5,5,0,0" Width="180" Text="Password User"></TextBlock>
+                    <PasswordBox x:Name="userPassword" Margin="10,0,0,3" Width="150"  ></PasswordBox>
                 </StackPanel>
             </StackPanel>
         </Border>
 
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="6" Grid.ColumnSpan="1">
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="7" Grid.ColumnSpan="1">
             <StackPanel Orientation="Vertical">
                 <TextBlock  Margin="5,5,0,5" FontWeight="SemiBold" Text="Change Data Source"></TextBlock>
                 <StackPanel Margin="5,20,0,0" Grid.Row="5" Orientation="Horizontal">
-                    <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Text="Select AOU Data Source"/>
+                    <TextBlock Margin="5,0,0,0" Width="180" VerticalAlignment="Center" Text="Select AOU Data Source"/>
                     <ComboBox x:Name="AOUDataSourceTypesCombo" Margin="10,0,0,0" SelectionChanged="AOUDataSourceTypeChanged"/>
                     <Button x:Name="StartStopButton" Content="Start"  Margin="10,0,0,0" Click="StartStopButton_Click"/>
                     
@@ -83,7 +90,7 @@
             </StackPanel>
         </Border>
 
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="7">
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="8">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="5,5,0,5"  Text="Only used for testing communication"  FontWeight="SemiBold"></TextBlock>
                 <StackPanel Margin="5,0,5,5" Orientation="Horizontal" >

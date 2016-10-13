@@ -332,12 +332,12 @@ namespace DemoPrototype
 
         private void adminPassword_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            keyboardDlg();
+          //  keyboardDlg(); Not woking MW
         }
 
         private void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            keyboardDlg();
+          //  keyboardDlg(); Not working MW
         }
 
         private void AskForSetHotTankTemp_Click(object sender, RoutedEventArgs e)

@@ -324,7 +324,22 @@ namespace DemoPrototype
 
         private void TuneFreezeButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (dTimer.IsEnabled && doStepTimer == 0)
+            {
+                dTimer.Stop();
+                TuneFreezeButton.Content = "Run";
+            }
+            else
+            {
+                //make axis auto again
+                //todo: make work for all graphs
+                //this.myTuneChart.tuneChartCategoryAxis.Minimum = null;
+                //tuneChartCategoryAxis.Maximum = null;
+                //tuneChartCategoryAxis.Interval = null;
+                //and start the plotting
+                dTimer.Start();
+                TuneFreezeButton.Content = "Freeze";
+            }
         }
     }
 }

@@ -13,6 +13,7 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -30,11 +31,23 @@
         </Border>
 
 
-        <Border  Margin="5,5,10,5" Grid.Row="2" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
+        <Border  Margin="5,5,10,5" Grid.Row="2" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="5,0,0,0" Text="Balancing" FontWeight="SemiBold"></TextBlock>
+                
             </StackPanel>
         </Border>
+        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2" >
+            <TextBlock Margin="50,5,5,0" VerticalAlignment="Center" Text="Shift Return valve Switch time"></TextBlock>
+            <TextBox Margin="5,0,5,5" Height="35" Text="0,0"></TextBox>
+            <TextBlock Margin="5,5,5,0" VerticalAlignment="Center" Text="(s)"></TextBlock>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" >
+            <TextBlock Margin="50,5,5,0" VerticalAlignment="Center" Text="Change Return valve Switching period"></TextBlock>
+            <TextBox Margin="5,0,5,5" Height="35" Text="0,0"></TextBox>
+            <TextBlock Margin="5,5,5,0" VerticalAlignment="Center" Text="(s)"></TextBlock>
+        </StackPanel>
 
         <!--  Delay times -->
         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2">

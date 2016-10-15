@@ -23,9 +23,9 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="674"></ColumnDefinition>
-            <ColumnDefinition Width="Auto" MinWidth="240"></ColumnDefinition>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto" ></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+          
         </Grid.ColumnDefinitions>
 
         <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="0">
@@ -38,7 +38,7 @@
             </StackPanel>
         </Border>
 
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="2" Grid.ColumnSpan="1">
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="1" Grid.ColumnSpan="1">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Log events to remote system"></TextBlock>
                 <StackPanel Margin="2,5,0,0" Grid.Row="2" Orientation="Horizontal">
@@ -51,7 +51,7 @@
             </StackPanel>
         </Border>
         
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="3" Grid.ColumnSpan="1">
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="2" Grid.ColumnSpan="1">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Change Password"></TextBlock>
                 <StackPanel Margin="2,5,0,0" Grid.Row="3" Orientation="Horizontal" Tapped="adminPassword_Tapped">
@@ -66,7 +66,7 @@
             </StackPanel>
         </Border>
 
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="7" Grid.ColumnSpan="1">
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="3" Grid.ColumnSpan="1">
             <StackPanel Orientation="Vertical">
                 <TextBlock  Margin="5,5,0,5" FontWeight="SemiBold" Text="Change Data Source"></TextBlock>
                 <StackPanel Margin="5,20,0,0" Grid.Row="5" Orientation="Horizontal">
@@ -90,7 +90,7 @@
             </StackPanel>
         </Border>
 
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="8">
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="5">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="5,5,0,5"  Text="Only used for testing communication"  FontWeight="SemiBold"></TextBlock>
                 <StackPanel Margin="5,0,5,5" Orientation="Horizontal" >
@@ -101,5 +101,62 @@
                 </StackPanel>
             </StackPanel>
         </Border>
+
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Grid.ColumnSpan="2">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="5,5,0,5"  Text="Heat transfer fluid used"  FontWeight="SemiBold"></TextBlock>
+                <RelativePanel>
+                    <TextBlock Margin="5,5,0,0" Width="120" Name="Brand" Text="Brand"></TextBlock>
+                    <TextBox Margin="15,0,10,0" Name="InputBrand" Text="Texatherm 32" RelativePanel.RightOf="Brand" Width="150"></TextBox>
+                    <TextBlock Margin="5,18,0,0" Width="120" Name="Type" Text="Type" RelativePanel.Below="Brand"></TextBlock>
+                    <TextBox Margin="15,5,10,0" Name="InputType" Text="Mineral Oil" RelativePanel.RightOf="Type"  RelativePanel.Below="InputBrand" Width="150"></TextBox>
+                    <TextBlock Margin="5,18,0,0" Width="120" Name="Flash" Text="Flash point" RelativePanel.Below="Type"></TextBlock>
+                    <TextBox Margin="15,5,10,0" Name="FlashBox" Text="220" RelativePanel.RightOf="Flash"  RelativePanel.Below="InputType" Width="50"></TextBox>
+                    <TextBlock Margin="5,18,0,0"  Name="FlashEnd" Text="°C (exterior stains smoke)" RelativePanel.Below="Type"  RelativePanel.RightOf="FlashBox"></TextBlock>
+                    <TextBlock Margin="5,18,0,0" Width="120" Name="Boiling" Text="Boiling point" RelativePanel.Below="Flash"></TextBlock>
+                    <TextBox Margin="15,5,10,0" Name="BoilingBox" Text="316" RelativePanel.RightOf="Boiling"  RelativePanel.Below="FlashBox" Background="Yellow" Width="50"></TextBox>
+                    <TextBlock Margin="5,18,0,0"  Name="Danger" Text="°C (danger)" RelativePanel.Below="Flash"  RelativePanel.RightOf="BoilingBox"></TextBlock>
+                    <TextBlock Margin="5,18,0,0" Width="120" Name="Ignition" Text="Auto ignition" RelativePanel.Below="Boiling"></TextBlock>
+                    <TextBox Margin="15,5,10,0" Name="IgnitionBox" Text="320" RelativePanel.RightOf="Ignition"  RelativePanel.Below="BoilingBox" Background="Red" Width="50"></TextBox>
+                    <TextBlock Margin="5,18,0,0"  Name="Fire" Text="°C (fire)" RelativePanel.Below="Boiling"  RelativePanel.RightOf="IgnitionBox"></TextBlock>
+                    <TextBlock Margin="5,25,0,0" Width="120" Name="Save" Text="Save as" RelativePanel.Below="Ignition"></TextBlock>
+                    <TextBox Margin="15,20,10,0" Name="SaveBox"  RelativePanel.RightOf="Save" RelativePanel.Below="Fire" Width="150"></TextBox>
+                    <Button Content="Pick" Margin="5,20,0,0" RelativePanel.Below="Ignition" RelativePanel.RightOf="SaveBox"></Button>
+                    <TextBlock Margin="5,15,0,0" Width="120" Name="Recall" Text="Recall from" RelativePanel.Below="Save"></TextBlock>
+                    <TextBox Margin="15,10,10,0" Name="RecallBox"  RelativePanel.RightOf="Brand" RelativePanel.Below="Save" Width="150"></TextBox>
+                    <Button Content="Pick" Margin="5,10,0,10" RelativePanel.Below="Save" RelativePanel.RightOf="RecallBox"></Button>
+                </RelativePanel>
+            </StackPanel>
+        </Border>
+
+        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="4" Grid.RowSpan="5" Grid.Column="1" Grid.ColumnSpan="1">
+            <StackPanel Margin="5,5,10,5" Orientation="Vertical">
+                <TextBlock  Margin="5,5,5,0" Text="Manage System parameters"  FontWeight="SemiBold"></TextBlock>
+                <StackPanel Margin="5,5,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" Orientation="Vertical">
+                    <TextBlock Margin="5,5,0,0"  Text="Save parameters to file"  FontWeight="SemiBold"></TextBlock>
+                    <TextBlock Margin="5,0,0,0"  Text="Description of the System parameters set to save" ></TextBlock>
+                    <TextBox Margin="5,5,30,0" Width="300"></TextBox>
+                    <TextBlock Margin="5,0,0,0"  Text="Save as:" ></TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Margin="35,0,5,5" Width="300"></TextBox>
+                        <Button Margin="0,0,5,0" Content="Save"></Button>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Margin="5,5,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" Orientation="Vertical">
+                    <TextBlock Margin="5,5,0,0"  Text="Recall parameters to file"  FontWeight="SemiBold"></TextBlock>
+                    <TextBlock Margin="5,0,0,5"  Text="Recall from:" ></TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Margin="30,0,5,5" Width="300"></TextBox>
+                        <Button Margin="0,0,5,0" Content="Recall"></Button>
+                    </StackPanel>
+                    <TextBlock Margin="5,5,0,0"  Text="Description when saved:" ></TextBlock>
+                    <TextBlock Margin="35,5,0,0"  Text="Kalle Anka" ></TextBlock>
+                    <TextBlock Margin="5,5,0,0"  Text="Date and time when saved:" ></TextBlock>
+                    <TextBlock Margin="35,5,0,0"  Text="4711" ></TextBlock>
+
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
     </Grid>
 </Page>

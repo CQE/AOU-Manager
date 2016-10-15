@@ -107,7 +107,7 @@ namespace DemoPrototype
 
             hotTankTemp.Text = GetStringValue(Data.Updater.LastPower.THotTank);
             coldTankTemp.Text = GetStringValue(Data.Updater.LastPower.TColdTank);
-            returnValveTemp.Text = GetStringValue(Data.Updater.LastPower.TReturnValve);
+            //returnValveTemp.Text = GetStringValue(Data.Updater.LastPower.TReturnValve);
 
             oilHotSideTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferHot);
             oilMiddleTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferMid);

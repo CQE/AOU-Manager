@@ -156,9 +156,9 @@
                         <Button Margin="0,0,5,0" Content="Recall"></Button>
                     </StackPanel>
                     <TextBlock Margin="5,5,0,0"  Text="Description when saved:" ></TextBlock>
-                    <TextBlock Margin="35,5,0,0"  Text="Kalle Anka" ></TextBlock>
+                    <TextBlock Margin="35,5,0,0"  Text="-" ></TextBlock>
                     <TextBlock Margin="5,5,0,0"  Text="Date and time when saved:" ></TextBlock>
-                    <TextBlock Margin="35,5,0,0"  Text="4711" ></TextBlock>
+                    <TextBlock Margin="35,5,0,0"  Text="2016-10-16 08:14" ></TextBlock>
 
                 </StackPanel>
             </StackPanel>

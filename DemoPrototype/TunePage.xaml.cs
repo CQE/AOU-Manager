@@ -79,21 +79,38 @@ namespace DemoPrototype
             Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.Brown);
             myTuneChart.Series.Add(Series_Delay_TRetActual);
 
-            SplineSeries Series_Delay_THotTank = new SplineSeries();
-            Series_Delay_THotTank.ItemsSource = chartModel.power;
-            Series_Delay_THotTank.Label = "THotTank";
-            Series_Delay_THotTank.XBindingPath = "ElapsedTime";
-            Series_Delay_THotTank.YBindingPath = "THotTank";
-            Series_Delay_THotTank.Interior = new SolidColorBrush(Colors.Red);
-            myTuneChart.Series.Add(Series_Delay_THotTank);
-            
-            SplineSeries Series_Delay_TColdTank = new SplineSeries();
-            Series_Delay_TColdTank.ItemsSource = chartModel.power;
-            Series_Delay_TColdTank.Label = "TColdTank";
-            Series_Delay_TColdTank.XBindingPath = "ElapsedTime";
-            Series_Delay_TColdTank.YBindingPath = "TColdTank";
-            Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
-            myTuneChart.Series.Add(Series_Delay_TColdTank);
+            //SplineSeries Series_Delay_THotTank = new SplineSeries();
+            //Series_Delay_THotTank.ItemsSource = chartModel.power;
+            //Series_Delay_THotTank.Label = "THotTank";
+            //Series_Delay_THotTank.XBindingPath = "ElapsedTime";
+            //Series_Delay_THotTank.YBindingPath = "THotTank";
+            //Series_Delay_THotTank.Interior = new SolidColorBrush(Colors.Red);
+            //myTuneChart.Series.Add(Series_Delay_THotTank);
+
+            StepLineSeries Series_Delay_FeedHotValve = new StepLineSeries();
+            Series_Delay_FeedHotValve.ItemsSource = chartModel.power;
+            Series_Delay_FeedHotValve.Label = "FeedHotValve";
+            Series_Delay_FeedHotValve.XBindingPath = "ElapsedTime";
+            Series_Delay_FeedHotValve.YBindingPath = "ValveFeedHot";
+            Series_Delay_FeedHotValve.Interior = new SolidColorBrush(Colors.Orange);
+            myTuneChart.Series.Add(Series_Delay_FeedHotValve);
+
+            StepLineSeries Series_Delay_FeedColdValve = new StepLineSeries();
+            Series_Delay_FeedColdValve.ItemsSource = chartModel.power;
+            Series_Delay_FeedColdValve.Label = "FeedColdValve";
+            Series_Delay_FeedColdValve.XBindingPath = "ElapsedTime";
+            Series_Delay_FeedColdValve.YBindingPath = "ValveFeedCold";
+            Series_Delay_FeedColdValve.Interior = new SolidColorBrush(Colors.LightBlue);
+            myTuneChart.Series.Add(Series_Delay_FeedColdValve);
+
+
+            //SplineSeries Series_Delay_TColdTank = new SplineSeries();
+            //Series_Delay_TColdTank.ItemsSource = chartModel.power;
+            //Series_Delay_TColdTank.Label = "TColdTank";
+            //Series_Delay_TColdTank.XBindingPath = "ElapsedTime";
+            //Series_Delay_TColdTank.YBindingPath = "TColdTank";
+            //Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            //myTuneChart.Series.Add(Series_Delay_TColdTank);
 
 
             //add legends
@@ -132,21 +149,23 @@ namespace DemoPrototype
             Series_EB_TRetActual.YBindingPath = "TReturnActual";
             myEnergyChart.Series.Add(Series_EB_TRetActual);
 
-            SplineSeries Series_EB_THotTank = new SplineSeries();
-            Series_EB_THotTank.ItemsSource = chartModel.power;
-            Series_EB_THotTank.Label = "THotTank";
-            Series_EB_THotTank.XBindingPath = "ElapsedTime";
-            Series_EB_THotTank.YBindingPath = "THotTank";
-            Series_EB_THotTank.Interior = new SolidColorBrush(Colors.Red);
-            myEnergyChart.Series.Add(Series_EB_THotTank);
 
-            SplineSeries Series_EB_TColdTank = new SplineSeries();
-            Series_EB_TColdTank.ItemsSource = chartModel.power;
-            Series_EB_TColdTank.Label = "TColdTank";
-            Series_EB_TColdTank.XBindingPath = "ElapsedTime";
-            Series_EB_TColdTank.YBindingPath = "TColdTank";
-            Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
-            myEnergyChart.Series.Add(Series_EB_TColdTank);
+
+            //SplineSeries Series_EB_THotTank = new SplineSeries();
+            //Series_EB_THotTank.ItemsSource = chartModel.power;
+            //Series_EB_THotTank.Label = "THotTank";
+            //Series_EB_THotTank.XBindingPath = "ElapsedTime";
+            //Series_EB_THotTank.YBindingPath = "THotTank";
+            //Series_EB_THotTank.Interior = new SolidColorBrush(Colors.Red);
+            //myEnergyChart.Series.Add(Series_EB_THotTank);
+
+            //SplineSeries Series_EB_TColdTank = new SplineSeries();
+            //Series_EB_TColdTank.ItemsSource = chartModel.power;
+            //Series_EB_TColdTank.Label = "TColdTank";
+            //Series_EB_TColdTank.XBindingPath = "ElapsedTime";
+            //Series_EB_TColdTank.YBindingPath = "TColdTank";
+            //Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            //myEnergyChart.Series.Add(Series_EB_TColdTank);
             
             //add legends
             ChartLegend myEBLegend = new ChartLegend();

@@ -113,21 +113,21 @@ namespace DemoPrototype
                 InfoTextBlock.Text = "";
                 MyFrame.Navigate(typeof(SettingsPage));
                 TitleTextBlock.Text = "System settings";
-                BackButton.Visibility = Visibility.Visible;
+                //BackButton.Visibility = Visibility.Visible;
             }
             else if (CalibrateListBoxItem.IsSelected)
             {
                 InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(CalibratePage));
                 TitleTextBlock.Text = "Calibrate moulding";
-                BackButton.Visibility = Visibility.Visible;
+                //BackButton.Visibility = Visibility.Visible;
             }
             else if (TuneListBoxItem.IsSelected)
             {
                 InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(TunePage));
                 TitleTextBlock.Text = "Tune moulding";
-                BackButton.Visibility = Visibility.Visible;
+                //BackButton.Visibility = Visibility.Visible;
             }
 
             else if (MaintenanceListBoxItem.IsSelected)
@@ -135,7 +135,7 @@ namespace DemoPrototype
                 InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(MaintenancePage));
                 TitleTextBlock.Text = "System maintenance";
-                BackButton.Visibility = Visibility.Visible;
+                //BackButton.Visibility = Visibility.Visible;
             }
             else if (HelpListBoxItem.IsSelected)
             {

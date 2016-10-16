@@ -264,6 +264,11 @@ namespace DemoPrototype
             if (Data.Updater.HotTankSetTempChanged(out temp))
             {
                 NewTHotTankTextBox.Text= temp.ToString();
+                //caution?
+                if (temp>200)
+                { TextBox_THotTankCaution.Text = "Smoking stains"; }
+                else
+                { TextBox_THotTankCaution.Text = "Below coolant"; }
             }
             if (Data.Updater.ColdTankSetTempChanged(out temp))
             {

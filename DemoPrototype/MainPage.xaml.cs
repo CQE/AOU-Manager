@@ -57,7 +57,7 @@ namespace DemoPrototype
             var applicationView = ApplicationView.GetForCurrentView();
             string version = GetAppVersion();
 
-            applicationView.Title = "AOU version " + version;
+            applicationView.Title = "Mould Tempering Manager version " + version;
             
             // Set High prio for menu buttons
             Dispatcher.CurrentPriority = CoreDispatcherPriority.High;

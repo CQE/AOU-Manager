@@ -22,12 +22,12 @@
                     FontSize="36"
                     Content="&#xE700;"
                     Click="HamburgerButton_Click"></Button>
-            <Button Name="BackButton"
+              <Button Visibility="Collapsed" Name="BackButton"
                     RelativePanel.RightOf="HamburgerButton"
                     FontFamily="Segoe MDL2 Assets"
                     FontSize="36"
                     Content="&#xE0C4;"
-                    Click="BackButton_Click"></Button>
+                    Click="BackButton_Click"></Button> 
             <TextBlock Name="TitleTextBlock"
                        RelativePanel.RightOf="BackButton"
                        FontSize="28"
@@ -41,11 +41,13 @@
                        FontWeight="Bold"
                        Margin="10,25,0,0"
                        ></TextBlock>
-            <Image     RelativePanel.RightOf="BackButton"
+            <Image     Margin="5,0,0,0"
+                       RelativePanel.RightOf="BackButton"
                        Height="48"
                        Width="48"
-                       Source="Assets/Plastics_Unbound_logo_black.jpg"
+                       Source="Assets/Plastics_Unbound_logo_blue.png"
                        ></Image>
+           
         </RelativePanel>
         <SplitView Name="MySplitView" 
                    Grid.Row="1"

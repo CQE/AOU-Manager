@@ -39,7 +39,7 @@
             <ProgressRing x:Name="mainGridProgresRing"/>
 
             <!--  Operation  --> 
-            <Border  Margin="5,5,10,5" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
+            <Border  Margin="5,5,5,5" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Margin="5,5,0,5" Grid.Row="0" Text="Operation" FontWeight="SemiBold" VerticalAlignment="Bottom"></TextBlock>
                     <RelativePanel>
@@ -56,7 +56,7 @@
             <Button Visibility="Collapsed" Grid.Row="1"  Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Name="Button_Freeze_Run" Content="Freeze" Click="Button_Freeze_Run_Click"></Button>
 
             <!--  Moulding Parameters -->
-            <Border  Margin="5,5,10,5" Grid.Row="3" Grid.RowSpan="7" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
+            <Border  Margin="5,5,5,5" Grid.Row="3" Grid.RowSpan="7" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Moulding parameters"></TextBlock>
                     <StackPanel Margin="5,10,0,0" Orientation="Horizontal" Grid.Row="4" >
@@ -75,19 +75,22 @@
                     <TextBlock Margin="5,0,0,0"  Text="T"></TextBlock>
                     <TextBlock Margin="1,7,0,0" FontSize="11" Text="Actual "></TextBlock>
                     <TextBlock Margin="31,0,0,0" Text="T"></TextBlock>
-                    <TextBlock Margin="1,7,0,0" FontSize="11" Text="Set"></TextBlock>
+                    <TextBlock Margin="1,7,0,0" Width="75" FontSize="11" Text="Set"></TextBlock>
+                    <TextBlock Margin="0,0,0,0" Text="Caution" ></TextBlock>
             </StackPanel>
         
 
             <StackPanel Grid.Row="5" Grid.Column="1" VerticalAlignment="Top" Margin="0,0,0,0" Orientation="Horizontal">
                     <TextBox Name="TextBox_THotTank" IsReadOnly="True" BorderThickness="0" Background="White" />
                     <TextBox IsReadOnly="True" Margin="15,0,0,0" Text="-" Name="NewTHotTankTextBox"  GotFocus="NewTHotTankTextBox_GotFocus"/>
+                <TextBox Name="TextBox_THotTankCaution" Text="-" Margin="5,0,0,0" IsReadOnly="True" BorderThickness="0" Background="White" />
             </StackPanel>
         
            
             <StackPanel Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
                     <TextBox Name="TextBox_TColdTank" IsReadOnly="True" BorderThickness="0"></TextBox>
                     <TextBox Margin="15,0,0,3" IsReadOnly="True" Name="NewTColdTankTextBox" GotFocus="NewTColdTankTextBox_GotFocus" ></TextBox>
+                <TextBox Name="TextBox_TColdTankCaution" Text="-" Margin="5,0,0,0" IsReadOnly="True" BorderThickness="0" Background="White" />
             </StackPanel>
 
             <!--  Cycle Times -->
@@ -166,36 +169,36 @@
                 <StackPanel Margin="5,5,5,5" Orientation="Vertical">
                     <TextBlock Margin="5,0,0,0" Text="Monitoring" FontWeight="SemiBold"></TextBlock>
                         <chart:SfChart  
-                       Name="ChartParameters"    
-                        Margin="0,10,0,0"
-                        Grid.Row="11"
-            Grid.RowSpan="5"
-            Grid.Column="0"
-            Grid.ColumnSpan="4">
-            <chart:SfChart.PrimaryAxis>
-                <chart:TimeSpanAxis ></chart:TimeSpanAxis>
-            </chart:SfChart.PrimaryAxis>
-               <chart:SfChart.Behaviors>
-                    <chart:ChartTrackBallBehavior LabelDisplayMode="NearestPoint" ></chart:ChartTrackBallBehavior>
-                </chart:SfChart.Behaviors>
-                <chart:SfChart.SecondaryAxis>
-                    <chart:NumericalAxis  StartRangeFromZero="False" Interval="20"  EnableAutoIntervalOnZooming="False">
-                    <chart:NumericalAxis.StripLines>
-                        <chart:ChartStripLine Name="HotSafeZone" Start="180" Width="25"  Background="PaleGreen"></chart:ChartStripLine>
-                        <chart:ChartStripLine Name="ColdSafeZone"   Start="30" Width="25"  Background="PaleGoldenrod"></chart:ChartStripLine>
-                    </chart:NumericalAxis.StripLines>
-                </chart:NumericalAxis>
-            </chart:SfChart.SecondaryAxis>
-                <chart:SfChart.Annotations>
-                    <chart:HorizontalLineAnnotation Name="SetHotSafeZoneLine" ShowToolTip="True" DragCompleted="SetHotSafeZoneLine_DragCompleted" 
-                                                    DragDelta="SetHotSafeZoneLine_DragDelta" CanDrag="True" CoordinateUnit="Axis"  Stroke="DarkGreen" StrokeThickness="2">
+                            Name="ChartParameters"    
+                            Margin="0,10,0,0"
+                            Grid.Row="11"
+                            Grid.RowSpan="5"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="4">
+                     <chart:SfChart.PrimaryAxis>
+                        <chart:TimeSpanAxis ></chart:TimeSpanAxis>
+                    </chart:SfChart.PrimaryAxis>
+                       <chart:SfChart.Behaviors>
+                            <chart:ChartTrackBallBehavior LabelDisplayMode="NearestPoint" ></chart:ChartTrackBallBehavior>
+                        </chart:SfChart.Behaviors>
+                        <chart:SfChart.SecondaryAxis>
+                            <chart:NumericalAxis  StartRangeFromZero="False" Interval="20"  EnableAutoIntervalOnZooming="False">
+                            <chart:NumericalAxis.StripLines>
+                                <chart:ChartStripLine Name="HotSafeZone" Start="180" Width="25"  Background="PaleGreen"></chart:ChartStripLine>
+                                <chart:ChartStripLine Name="ColdSafeZone"   Start="30" Width="25"  Background="PaleGoldenrod"></chart:ChartStripLine>
+                            </chart:NumericalAxis.StripLines>
+                        </chart:NumericalAxis>
+                    </chart:SfChart.SecondaryAxis>
+                        <chart:SfChart.Annotations>
+                            <chart:HorizontalLineAnnotation Name="SetHotSafeZoneLine" ShowToolTip="True" DragCompleted="SetHotSafeZoneLine_DragCompleted" 
+                                                            DragDelta="SetHotSafeZoneLine_DragDelta" CanDrag="True" CoordinateUnit="Axis"  Stroke="DarkGreen" StrokeThickness="2">
                         
-                    </chart:HorizontalLineAnnotation>
-                    <chart:HorizontalLineAnnotation Name="SetColdSafeZoneLine" ShowToolTip="True" CanDrag="True" Stroke="OrangeRed" CoordinateUnit="Axis"  StrokeThickness="2" 
-                                                    DragDelta="SetColdSafeZoneLine_DragDelta" DragCompleted="SetColdSafeZoneLine_DragCompleted">
+                            </chart:HorizontalLineAnnotation>
+                            <chart:HorizontalLineAnnotation Name="SetColdSafeZoneLine" ShowToolTip="True" CanDrag="True" Stroke="OrangeRed" CoordinateUnit="Axis"  StrokeThickness="2" 
+                                                            DragDelta="SetColdSafeZoneLine_DragDelta" DragCompleted="SetColdSafeZoneLine_DragCompleted">
                         
-                    </chart:HorizontalLineAnnotation>
-                </chart:SfChart.Annotations>    
+                            </chart:HorizontalLineAnnotation>
+                        </chart:SfChart.Annotations>    
                 
             <chart:SfChart.Legend>
                     <chart:ChartLegend  DockPosition="Floating" LegendPosition="Outside" CheckBoxVisibility="Visible"/>
@@ -203,8 +206,8 @@
                           
                 <chart:SplineSeries Name="Series_THotTank" LegendIcon="Diamond" Label="THotTank"  XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"/>
                 <chart:SplineSeries Name="Series_TColdTank" LegendIcon="Diamond" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank"  ItemsSource="{Binding power}"/>
-           <!--     <chart:SplineSeries   Name="Series_TRetActual" LegendIcon="Diamond" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"/>
-                <chart:FastLineBitmapSeries Name="Series_THotBuffer" LegendIcon="Diamond" Label="THotBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"/>
+                <chart:SplineSeries   Name="Series_TRetActual" LegendIcon="Diamond" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"/>
+                        <!--     <chart:FastLineBitmapSeries Name="Series_THotBuffer" LegendIcon="Diamond" Label="THotBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferHot" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries Name="Series_TMidBuffer" LegendIcon="Diamond" Label="TMidBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferMid" ItemsSource="{Binding power}"/>
                 <chart:FastLineBitmapSeries Name="Series_TColdBuffer" LegendIcon="Diamond" Label="TColdBuffer" XBindingPath="ElapsedTime" YBindingPath="TBufferCold" ItemsSource="{Binding power}"/>
               <chart:StepLineSeries Name="Series_ValveFeedHot" LegendIcon="Circle" Label="ValveFeedHot"  XBindingPath="ElapsedTime" YBindingPath="ValveFeedHot" ItemsSource="{Binding power}"/>
@@ -245,20 +248,21 @@
                    
                 </StackPanel>
             </Border>
-
+            <!--  12 - "Unknown", 11 - "WOpenEnd", 10 - "WEjectEnd", 9 - "WEjectBegin", 8 - "WOpenBegin", 7 - "WCoolingEnd"
+                        6 - "WInjectionEnd",  5 - "WInjectionBegin", 4 - "WColdAtMEntry", 3 - "WHotAtMEntry", 2 - "Idle", 1 - "Initial"   -->
                 <StackPanel Margin="40,30,0,30" Grid.Row="1" Grid.RowSpan="9" Grid.Column="2" VerticalAlignment="Stretch" Orientation="Vertical">
                             <TextBlock Margin="2,0,0,0" FontSize="10" Text="Unknown"></TextBlock>
-                            <TextBlock Margin="2,9,0,0" Text="OpenEnd" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,9,0,0" Text="EjectEnd" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,9,0,0" Text="EjectBegin" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,9,0,0" Text="OpenBegin" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="CoolingEnd" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,9,0,0" Text="InjectionEnd" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="InjectionBegin" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,9,0,0" Text="ColdAtMEntry" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="HotAtMEntry" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,9,0,0" Text="Initial" FontSize="10"></TextBlock>
-                            <TextBlock Margin="2,10,0,0" Text="Idle" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,8,0,0" Text="OpenEnd" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,8,0,0" Text="EjectEnd" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,8,0,0" Text="EjectBegin" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,8,0,0" Text="OpenBegin" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,8,0,0" Text="CoolingEnd" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,8,0,0" Text="InjectionEnd" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,8,0,0" Text="InjectionBegin" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,8,0,0" Text="ColdAtMEntry" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,8,0,0" Text="HotAtMEntry" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,8,0,0" Text="Initial" FontSize="10"></TextBlock>
+                            <TextBlock Margin="2,8,0,0" Text="Idle" FontSize="10"></TextBlock>
 
                         </StackPanel> 
 
@@ -274,7 +278,7 @@
             </chart:SfChart.PrimaryAxis>
             <chart:SfChart.SecondaryAxis>
                
-                <chart:NumericalAxis Interval="1" Minimum="0" Maximum="12" LabelsPosition="Inside">
+                <chart:NumericalAxis Interval="1" Minimum="0" Maximum="12" LabelsPosition="Inside" FontSize="0.01">
                     
                 </chart:NumericalAxis>
                 

@@ -349,5 +349,12 @@ namespace DemoPrototype
         {
 
         }
+
+        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            GlobalVars.globRemoteSettings.On = true;
+            GlobalVars.globRemoteSettings.password = adminPassword.Password;
+            GlobalVars.globRemoteSettings.URI = remoteUri.Text;
+        }
     }
 }

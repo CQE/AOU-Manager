@@ -27,8 +27,7 @@ namespace DemoPrototype
 
         private int lastPowerIndex = -1;
         private Power lastPower = new Power(0);
-
-        private AOULogFile logFile = null;
+        private AOURemoteData remoteServer;
 
         public int TimeBetween
         {
@@ -70,10 +69,7 @@ namespace DemoPrototype
             powerCount = defaultPowerCount;
 
             AOURouter.RunType dataRunType = GlobalAppSettings.DataRunType;
-
-            // OBS!!!! only for debug logging
-            logFile = new AOULogFile(DateTime.Now, "DemoPrototype");
-
+ 
             if (dataRunType == AOURouter.RunType.File)
             {
                 GlobalVars.SetStaticValues(); // Set static values only when file;
@@ -89,11 +85,15 @@ namespace DemoPrototype
             {
                 dataRouter.Initialize(AOURouter.RunType.Serial, GlobalAppSettings.SerialSettings, 1000);
             }
-        }
 
-        public void AddDebugLogLine(string className, string methodName, string text)
-        {
-            logFile.AddLog(0, className + " - " + methodName + " - " + text);
+            if (GlobalVars.globRemoteSettings.On == true && GlobalVars.globRemoteSettings.URI.Length > 0)
+            {
+                AOUSettings.RemoteSetting settings = new AOUSettings.RemoteSetting();
+
+                remoteServer = new AOURemoteData(settings, AOUSettings.DebugMode.noDebug);
+            }
+
+
         }
 
         public string GetRunningModeStatus()

@@ -59,12 +59,15 @@ namespace DemoPrototype
             long ticks1 = DateTime.Now.Ticks;
 
             Data.Updater.Update();
+            
+            /* Old test
             if (GlobalVars.globTestSettings.TimeLoggingEnabled)
             {
                 long diff = DateTime.Now.Ticks - ticks1;
                 if (diff > 0)
                     GlobalVars.globTestSettings.DataTimeSpanTicks = diff;
             }
+            */
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)

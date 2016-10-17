@@ -510,6 +510,7 @@ namespace DemoPrototype
                 power.State = currentSeqState;
 
                 power.ValveFeedCold = currentColdValve;
+                power.ValveFeedHot = currentHotValve;
                 power.ValveReturn = currentReturnValve;
                 power.ValveCoolant = currentCoolantValve;
 

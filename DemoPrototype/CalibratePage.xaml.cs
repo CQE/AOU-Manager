@@ -96,7 +96,7 @@ namespace DemoPrototype
        //     Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
             //Series_VB_TColdBuffer.Interior = new SolidColorBrush(Colors.LightBlue);
             //Series_VB_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
-       //     Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
+            Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.Purple);
             //Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
             //Series_Delay_TRetForecasted.Interior = new SolidColorBrush(Colors.Purple);
             //Series_EB_ValveReturn.Interior = new SolidColorBrush(Colors.LightGreen);

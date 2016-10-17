@@ -264,11 +264,10 @@ namespace DemoPrototype
             if (Data.Updater.HotTankSetTempChanged(out temp))
             {
                 NewTHotTankTextBox.Text= temp.ToString();
-                //caution?
-                if (temp>200)
-                { TextBox_THotTankCaution.Text = "Smoking stains"; }
-                else
-                { TextBox_THotTankCaution.Text = "Below coolant"; }
+                
+
+                //else
+                //{ TextBox_THotTankCaution.Text = "Below coolant"; }
             }
             if (Data.Updater.ColdTankSetTempChanged(out temp))
             {
@@ -611,6 +610,22 @@ namespace DemoPrototype
             if (Data.Updater.LastPowerIndex >= 0)
             {
                 TextBox_THotTank.Text = ((int)Math.Round(Data.Updater.LastPower.THotTank)).ToString();
+                //caution: 
+                int temp = (int)Math.Round(Data.Updater.LastPower.THotTank);
+                if (temp < 220)
+                { TextBox_THotTankCaution.Text = "-"; }
+                if (temp > 219 && temp < 316)
+                { TextBox_THotTankCaution.Text = "Smoking stains"; }
+                if (temp > 315 && temp < 320)
+                {
+                    TextBox_THotTankCaution.Text = "Danger";
+                    TextBox_THotTankCaution.Background = new SolidColorBrush(Colors.OrangeRed);
+                }
+                if (temp > 319)
+                {
+                    TextBox_THotTankCaution.Text = "Fire";
+                    TextBox_THotTankCaution.Background = new SolidColorBrush(Colors.Red);
+                }
             }
             else
             {

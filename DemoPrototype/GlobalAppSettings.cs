@@ -326,7 +326,7 @@ namespace DemoPrototype
             globValveChartValues = new GlobalValveChartValues();
             globInitBools = new GlobalInitBools();
 
-            globValveChartValues.HotValveLow = 20; // ToDo: Trim
+            globValveChartValues.HotValveLow = 18; // ToDo: Trim
             globValveChartValues.HotValveHi = 24;
 
             globValveChartValues.ColdValveLow = 26;
@@ -336,7 +336,7 @@ namespace DemoPrototype
             globValveChartValues.ReturnValveHi = 38;
 
             globValveChartValues.CoolantValveLow = 40;
-            globValveChartValues.CoolantValveHi = 44;
+            globValveChartValues.CoolantValveHi = 46;
 
 
             globTestSettings = new GlobalTestSettings();

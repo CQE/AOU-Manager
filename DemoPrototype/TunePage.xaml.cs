@@ -69,6 +69,7 @@ namespace DemoPrototype
             myTuneChart.PrimaryAxis = tuneChartCategoryAxis;
             NumericalAxis tuneChartNumericalAxis = new NumericalAxis();
             myTuneChart.SecondaryAxis = tuneChartNumericalAxis;
+           // myTuneChart.SecondaryAxis.VisibleRange.mi
             
             //add series to chart
             SplineSeries Series_Delay_TRetActual = new SplineSeries();
@@ -76,7 +77,7 @@ namespace DemoPrototype
             Series_Delay_TRetActual.Label = "TRetActual";
             Series_Delay_TRetActual.XBindingPath = "ElapsedTime";
             Series_Delay_TRetActual.YBindingPath = "TReturnActual";
-            Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.Brown);
+            Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.Purple);
             myTuneChart.Series.Add(Series_Delay_TRetActual);
 
             //SplineSeries Series_Delay_THotTank = new SplineSeries();
@@ -147,6 +148,7 @@ namespace DemoPrototype
             Series_EB_TRetActual.Label = "TRetActual";
             Series_EB_TRetActual.XBindingPath = "ElapsedTime";
             Series_EB_TRetActual.YBindingPath = "TReturnActual";
+            Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.Purple);
             myEnergyChart.Series.Add(Series_EB_TRetActual);
 
 

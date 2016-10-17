@@ -86,10 +86,10 @@
             <TextBlock VerticalAlignment="Bottom"  Text=" (s)"></TextBlock>
         </StackPanel>
 
-        <StackPanel  Margin="30,0,0,0" Orientation="Horizontal" Grid.Column="0" Grid.Row="3">
-            <Button Grid.Row="2" Grid.Column="1"  VerticalAlignment="Bottom" Width="100" Content="Cold step" Click="DoColdStep" Name="ColdStepButton"></Button>
-            <TextBox  Margin="10,0,0,0" VerticalAlignment="Bottom" Text="10" Name="CalibrateColdStepValue"></TextBox>
-            <TextBlock VerticalAlignment="Bottom"  Text=" (s)"></TextBlock>
+        <StackPanel  Margin="30,0,0,30" Orientation="Horizontal" Grid.Column="0" Grid.Row="3">
+            <Button Grid.Row="2" Grid.Column="1"   Width="100" Content="Cold step" Click="DoColdStep" Name="ColdStepButton"></Button>
+            <TextBox  Margin="10,0,0,0" VerticalAlignment="Center" Text="10" Name="CalibrateColdStepValue"></TextBox>
+            <TextBlock VerticalAlignment="Center"  Text=" (s)"></TextBlock>
         </StackPanel>
        
         <StackPanel Margin="30,0,0,0"  Orientation="Horizontal" Grid.Row="4"  Grid.Column="0" >
@@ -99,7 +99,7 @@
 
         <Button Margin="10,0,10,0" Grid.Row="4" Grid.Column="0" Width="80" HorizontalAlignment="Right" Content="Freeze" Name="Button_Freeze_Run" Click="Button_Freeze_Run_Click"></Button>
 
-        <TextBlock Margin="30,15,0,0"  Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2"> Tempering delay time Feed-to-Return </TextBlock>
+        <TextBlock Margin="30,15,0,0"  Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2"> Trip time Feed-to-Return (s) </TextBlock>
         <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Top" Grid.Row="2" Grid.ColumnSpan="3">
             <TextBlock  VerticalAlignment="Bottom"  Text="Calibrate"></TextBlock>
             <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
@@ -108,22 +108,22 @@
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,0" Text="Total"></TextBlock>
         </StackPanel>
 
-        <TextBlock Margin="30,0,0,0" Grid.Row="2" Grid.Column="3" Text="Hot pump" VerticalAlignment="Bottom" HorizontalAlignment="Left"> </TextBlock>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2">
-            <TextBox   Name="HotFeedToReturnDelayTime" GotFocus="HotFeedToReturnDelayTime_GotFocus"  TextChanged="HotFeedToReturnDelayTime_TextChanged" VerticalAlignment="Bottom"  Text="88"></TextBox>
-            <TextBlock VerticalAlignment="Bottom"  TextAlignment="Center" Width="30" Margin="5,0,0,5" Text="+"></TextBlock>
-            <TextBlock Name="TextBlock_HotTune" VerticalAlignment="Bottom" Margin="5,0,0,5" Text="22"></TextBlock>
+        <TextBlock Margin="30,0,0,5" Grid.Row="2" Grid.Column="3" Text="Hot pump" VerticalAlignment="Bottom" HorizontalAlignment="Left"> </TextBlock>
+        <StackPanel Margin="0,0,0,5" Orientation="Horizontal" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2">
+            <TextBox   Name="HotFeedToReturnDelayTime"  GotFocus="HotFeedToReturnDelayTime_GotFocus"  TextChanged="HotFeedToReturnDelayTime_TextChanged" VerticalAlignment="Bottom"  Text="88"></TextBox>
+            <TextBlock VerticalAlignment="Bottom"  TextAlignment="Center" Width="30" Margin="0,0,0,5" Text="+"></TextBlock>
+            <TextBlock Name="TextBlock_HotTune" VerticalAlignment="Bottom" Margin="0,0,0,5"  Width= "30" Text="22"></TextBlock>
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="="></TextBlock>
             <TextBlock  Name="TextBlock_SumHotDelayTime" VerticalAlignment="Bottom"  Margin="5,0,0,5" Text="110"></TextBlock>
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="(s)"></TextBlock>
         </StackPanel>
         
 
-        <TextBlock Margin="30,0,0,0" Grid.Row="3" Grid.Column="3" Text="Cold pump" VerticalAlignment="Bottom" HorizontalAlignment="Left"></TextBlock>
-        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2">
+        <TextBlock Margin="30,8,0,0" Grid.Row="3" Grid.Column="3" Text="Cold pump" VerticalAlignment="Top" HorizontalAlignment="Left"></TextBlock>
+        <StackPanel Orientation="Horizontal" Grid.Row="3" VerticalAlignment="Top" Grid.Column="4" Grid.ColumnSpan="2">
             <TextBox   Name="ColdFeedToReturnDelayTime" GotFocus="ColdFeedToReturnDelayTime_GotFocus" TextChanged="ColdFeedToReturnDelayTime_TextChanged" VerticalAlignment="Bottom"  Text="1110"></TextBox>
-            <TextBlock VerticalAlignment="Bottom"  TextAlignment="Center" Width="30" Margin="5,0,0,5" Text="+"></TextBlock>
-            <TextBlock  Name="TextBlock_ColdTune" VerticalAlignment="Bottom" Margin="5,0,0,5" Text="220"></TextBlock>
+            <TextBlock VerticalAlignment="Bottom"  TextAlignment="Center" Width="30" Margin="0,0,0,5" Text="+"></TextBlock>
+            <TextBlock  Name="TextBlock_ColdTune" VerticalAlignment="Bottom" Margin="0,0,0,5" Width= "30" Text="220"></TextBlock>
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="="></TextBlock>
             <TextBlock Name="TextBlock_SumColdDelayTime" VerticalAlignment="Bottom"  Margin="5,0,0,5" Text="210"></TextBlock>
             <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,5" Text="(s)"></TextBlock>
@@ -166,8 +166,8 @@
             <chart:SplineSeries Name="Series_EB_THotTank" LegendIcon="Circle" Label="THotTank"  XBindingPath="ElapsedTime" YBindingPath="THotTank" ItemsSource="{Binding power}"></chart:SplineSeries>
    <!--         <chart:FastLineSeries Name="Series_EB_TRetActual" LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:FastLineSeries>
             <chart:SplineSeries Name="Series_EB_TColdTank" LegendIcon="Circle" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:SplineSeries>
-          <chart:StepLineSeries Name="Series_EB_ValveReturn" LegendIcon="Circle"  Label="ValveReturn" XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"></chart:StepLineSeries>
--->
+-->          <chart:StepLineSeries Name="Series_EB_ValveReturn" LegendIcon="Circle"  Label="ValveReturn" XBindingPath="ElapsedTime" YBindingPath="ValveReturn" ItemsSource="{Binding power}"></chart:StepLineSeries>
+
         </chart:SfChart>
         <!-- Use overlay textbox for showing diff result         <TextBox Grid.Column="0" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="42"></TextBox>
         -->

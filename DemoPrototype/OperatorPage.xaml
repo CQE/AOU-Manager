@@ -36,7 +36,7 @@
                
             </Grid.ColumnDefinitions>
 
-            <ProgressRing x:Name="mainGridProgresRing"/>
+            <ProgressRing  x:Name="mainGridProgresRing"/>
 
             <!--  Operation  --> 
             <Border  Margin="5,5,5,5" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">

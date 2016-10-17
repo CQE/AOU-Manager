@@ -145,7 +145,7 @@
                     <TextBlock Margin="5,0,0,0"  Text="Save as:" ></TextBlock>
                     <StackPanel Orientation="Horizontal">
                         <TextBox Margin="35,0,5,5" Width="300"></TextBox>
-                        <Button Margin="0,0,5,0" Content="Save"></Button>
+                        <Button Margin="0,0,5,2" Content="Save"></Button>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="5,5,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" Orientation="Vertical">
@@ -153,10 +153,10 @@
                     <TextBlock Margin="5,0,0,5"  Text="Recall from:" ></TextBlock>
                     <StackPanel Orientation="Horizontal">
                         <TextBox Margin="30,0,5,5" Width="300"></TextBox>
-                        <Button Margin="0,0,5,0" Content="Recall"></Button>
+                        <Button Margin="0,0,5,5" Content="Recall"></Button>
                     </StackPanel>
                     <TextBlock Margin="5,5,0,0"  Text="Description when saved:" ></TextBlock>
-                    <TextBlock Margin="35,5,0,0"  Text="-" ></TextBlock>
+                    <TextBlock Margin="35,5,0,0"  Text="Manufacturer datasheet" ></TextBlock>
                     <TextBlock Margin="5,5,0,0"  Text="Date and time when saved:" ></TextBlock>
                     <TextBlock Margin="35,5,0,0"  Text="2016-10-16 08:14" ></TextBlock>
 

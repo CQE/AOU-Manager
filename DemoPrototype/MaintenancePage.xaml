@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- first column -->
-        <StackPanel Margin="5,5,0,0" Orientation="Vertical" Width="250" HorizontalAlignment="Left">
+        <StackPanel Margin="5,0,0,0" Orientation="Vertical" Width="250" HorizontalAlignment="Left">
             <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
                 <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
                     <TextBlock FontWeight="SemiBold" Text="Force valves"></TextBlock>
@@ -93,7 +93,7 @@
 
         <!-- Column 2-->
         
-        <StackPanel Grid.Column="1" Orientation="Vertical" Margin='5,5,0,0'>
+        <StackPanel Grid.Column="1" Orientation="Vertical" Margin='5,0,0,0'>
 
             <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
                 <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
@@ -182,7 +182,7 @@
 
         <!-- Column three -->
 
-        <StackPanel  Orientation="Vertical" Grid.Column="2" Width="250" Margin="5,5,0,0">
+        <StackPanel  Orientation="Vertical" Grid.Column="2" Width="250" Margin="5,0,0,0">
             
 
             <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
@@ -274,7 +274,7 @@
         <Border Margin="5,5,20,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Column="3">
             <StackPanel Margin="10,0,5,5" Grid.Row="1"  Orientation ="Vertical">
                 <TextBlock FontWeight="SemiBold" Margin="0,5,0,10" Text="System events Log list"></TextBlock>
-                <sfgrid:SfDataGrid x:Name="LogGrid"  Height='600' HeaderRowHeight="30" RowHeight="25" 
+                <sfgrid:SfDataGrid x:Name="LogGrid"  Height='600' HeaderRowHeight="30"  
                                AutoGenerateColumns="False" ItemsSource="{Binding logMessages}">
                     <sfgrid:SfDataGrid.HeaderStyle >
                         <Style  TargetType="sfgrid:GridHeaderCellControl">

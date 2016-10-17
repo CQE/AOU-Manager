@@ -105,13 +105,22 @@ namespace DemoPrototype
             myTuneChart.Series.Add(Series_Delay_FeedColdValve);
 
 
-            //SplineSeries Series_Delay_TColdTank = new SplineSeries();
-            //Series_Delay_TColdTank.ItemsSource = chartModel.power;
-            //Series_Delay_TColdTank.Label = "TColdTank";
-            //Series_Delay_TColdTank.XBindingPath = "ElapsedTime";
-            //Series_Delay_TColdTank.YBindingPath = "TColdTank";
-            //Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
-            //myTuneChart.Series.Add(Series_Delay_TColdTank);
+            SplineSeries Series_Delay_TColdTank = new SplineSeries();
+            Series_Delay_TColdTank.ItemsSource = chartModel.power;
+            Series_Delay_TColdTank.Label = "TColdTank";
+            Series_Delay_TColdTank.XBindingPath = "ElapsedTime";
+            Series_Delay_TColdTank.YBindingPath = "TColdTank";
+            Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            myTuneChart.Series.Add(Series_Delay_TColdTank);
+
+            SplineSeries Series_Delay_ValveReturn = new SplineSeries();
+            Series_Delay_ValveReturn.ItemsSource = chartModel.power;
+            Series_Delay_ValveReturn.Label = "ValveReturn";
+            Series_Delay_ValveReturn.XBindingPath = "ElapsedTime";
+            Series_Delay_ValveReturn.YBindingPath = "ValveReturn";
+            Series_Delay_ValveReturn.Interior = new SolidColorBrush(Colors.YellowGreen);
+            myTuneChart.Series.Add(Series_Delay_ValveReturn);
+
 
 
             //add legends
@@ -151,6 +160,13 @@ namespace DemoPrototype
             Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.Purple);
             myEnergyChart.Series.Add(Series_EB_TRetActual);
 
+            SplineSeries Series_EB_ValveReturn = new SplineSeries();
+            Series_EB_ValveReturn.ItemsSource = chartModel.power;
+            Series_EB_ValveReturn.Label = "ValveReturn";
+            Series_EB_ValveReturn.XBindingPath = "ElapsedTime";
+            Series_EB_ValveReturn.YBindingPath = "ValveReturn";
+            Series_EB_ValveReturn.Interior = new SolidColorBrush(Colors.YellowGreen);
+            myEnergyChart.Series.Add(Series_EB_ValveReturn);
 
 
             //SplineSeries Series_EB_THotTank = new SplineSeries();
@@ -168,7 +184,7 @@ namespace DemoPrototype
             //Series_EB_TColdTank.YBindingPath = "TColdTank";
             //Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
             //myEnergyChart.Series.Add(Series_EB_TColdTank);
-            
+
             //add legends
             ChartLegend myEBLegend = new ChartLegend();
             myEnergyChart.Legend = myEBLegend;
@@ -217,6 +233,15 @@ namespace DemoPrototype
             Series_VB_TMidBuffer.XBindingPath = "ElapsedTime";
             Series_VB_TMidBuffer.YBindingPath = "TBufferMid";
             myVolumeChart.Series.Add(Series_VB_TMidBuffer);
+
+            SplineSeries Series_VB_ValveReturn = new SplineSeries();
+            Series_VB_ValveReturn.ItemsSource = chartModel.power;
+            Series_VB_ValveReturn.Label = "ValveReturn";
+            Series_VB_ValveReturn.XBindingPath = "ElapsedTime";
+            Series_VB_ValveReturn.YBindingPath = "ValveReturn";
+            Series_VB_ValveReturn.Interior = new SolidColorBrush(Colors.YellowGreen);
+            myVolumeChart.Series.Add(Series_VB_ValveReturn);
+
 
             //add legends
             ChartLegend myVBLegend = new ChartLegend();

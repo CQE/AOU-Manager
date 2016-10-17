@@ -17,10 +17,10 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <!--  Two borders -->
@@ -54,10 +54,10 @@
             <TextBlock Margin="50,50,0,0" > Trip time Feed-to-Return (s)</TextBlock>
         </StackPanel>
 
-        <TextBlock Margin="0,50,0,0" Grid.Row="0" Grid.Column="3"> Calibrate + Tune = Total</TextBlock>
+        <TextBlock Margin="0,80,0,0" Grid.Row="0" Grid.Column="3"> Calibrate + Tune = Total</TextBlock>
 
-        <TextBlock VerticalAlignment="Center"  Margin="50,15,0,0" Grid.Row="0" Grid.Column="2" Text="Hot pump"></TextBlock>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="0,15,30,0" Grid.Row="0" Grid.Column="3">
+        <TextBlock VerticalAlignment="Center"  Margin="50,75,0,0" Grid.Row="0" Grid.Column="2" Text="Hot pump"></TextBlock>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="0,70,30,0" Grid.Row="0" Grid.Column="3">
             <TextBlock  Name="TextBlock_HotCalibrate" VerticalAlignment="Bottom" Margin="0,0,0,0" Width="30" Text="88"></TextBlock>
             <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
             <TextBox Name="HotFeedToReturnDelayCalTime" GotFocus="HotFeedToReturnDelayCalTime_GotFocus" TextChanged="HotFeedToReturnDelayCalTime_TextChanged" IsReadOnly="True" VerticalAlignment="Bottom" Margin="10,0,0,0" Text="22"></TextBox>
@@ -67,8 +67,8 @@
         </StackPanel>
 
         <TextBox Visibility="Collapsed" Name="TextBox_FocusControl"></TextBox>
-        <TextBlock  Margin="50,30,0,30" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="2" Text="Cold pump"></TextBlock>
-        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,0,30,30" Grid.Row="0" Grid.Column="3">
+        <TextBlock  Margin="50,30,0,0" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="2" Text="Cold pump"></TextBlock>
+        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,0,30,0" Grid.Row="0" Grid.Column="3">
             <TextBlock Name="TextBlock_ColdCalibrate" VerticalAlignment="Bottom" Width="30" HorizontalAlignment="Left" Margin="0,0,0,0" Text="110"></TextBlock>
             <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
             <TextBox Name="ColdFeedToReturnDelayCalTime"  GotFocus="ColdFeedToReturnDelayCalTime_GotFocus" TextChanged="ColdFeedToReturnDelayCalTime_TextChanged" IsReadOnly="True" Margin="10,0,0,0" VerticalAlignment="Bottom" Text="33"></TextBox>

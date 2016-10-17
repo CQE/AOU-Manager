@@ -228,12 +228,14 @@ namespace DemoPrototype
         public static GlobalTankSetTemps globTankSetTemps;
         public static GlobalValveChartValues globValveChartValues;
         public static GlobalInitBools globInitBools;
+        public static GlobalRemoteSettings globRemoteSettings;
+        public static GlobalLogSettings globLogSettings; 
 
         public static AOUCommands aouCommands;
         // Todo: List sent cmd to change value or list new values received from <ret> or both
         public static List<CommandReceived> retReceived;
 
-        public static GlobalTestSettings globTestSettings; // Only for testing performance
+
 
         // Important to call this in MainPage constructor. Program crasch If not 
 
@@ -339,7 +341,33 @@ namespace DemoPrototype
             globValveChartValues.CoolantValveHi = 46;
 
 
+            /*
+              * Init Log and test settings.
+              * Possible to change settings depending of being in debug or release mode
+
+ #if DEBUG
+             globLogSettings.LogLevel = 1;
+ #else
+             globLogSettings.LogLevel = 0;
+ #endif
+              */
+
+            globLogSettings = new GlobalLogSettings();
+            globLogSettings.LogLevel = 0;
+            globLogSettings.LogToFile = true;
+            globLogSettings.LogToWeb = false;
+
+
+            /* Old test
+            globTestSettings.ChartParameterMonitoringEnabled = true;
+            globTestSettings.EnergyBalanceChartEnabled = true;
+            globTestSettings.MyTuneChartEnabled = true;
+            globTestSettings.StateChartEnabled = true;
+            globTestSettings.VolumeBalanceChartEnabled = true;
+            globTestSettings.TimeLoggingEnabled = true;
+            globTestSettings.DataTimeSpanTicks = 0;
             globTestSettings = new GlobalTestSettings();
+
             globTestSettings.ChartParameterMonitoringEnabled = true;
             globTestSettings.EnergyBalanceChartEnabled = true;
             globTestSettings.MyTuneChartEnabled = true;
@@ -348,6 +376,11 @@ namespace DemoPrototype
             globTestSettings.TimeLoggingEnabled = true;
 
             globTestSettings.DataTimeSpanTicks = 0;
+            */
+
+            globRemoteSettings = new GlobalRemoteSettings();
+
+
         }
 
         public static void Save()
@@ -764,10 +797,60 @@ namespace DemoPrototype
 
 
 
-        
 
-        public class GlobalTestSettings
+
+        public class GlobalRemoteSettings
         {
+            private bool _on;
+            private string _uri;
+            private string _password;
+
+            public string URI
+            {
+                get { return _uri; }
+                set { _uri = value; }
+            }
+
+            public string password
+            {
+                get { return _password; }
+                set { _password = value; }
+            }
+
+            public bool On
+            {
+                get { return _on; }
+                set { _on = value; }
+            }
+
+
+        }
+
+        public class GlobalLogSettings
+        {
+            private bool _LogToFile;
+            private bool _LogToWeb;
+            private int _LogLevel;
+
+            public bool LogToFile
+            {
+                get { return _LogToFile; }
+                set { _LogToFile = value; }
+            }
+
+            public bool LogToWeb
+            {
+                get { return _LogToWeb; }
+                set { _LogToWeb = value; }
+            }
+
+            public int LogLevel
+            {
+                get { return _LogLevel; }
+                set { _LogLevel = value; }
+            }
+
+            /* Old test
             private bool _ChartParameterMonitoringEnabled;
             private bool _MyTuneChartEnabled;
             private bool _StateChartEnabled;
@@ -818,7 +901,7 @@ namespace DemoPrototype
                 get { return _dataTimeSpanTicks; }
                 set { _dataTimeSpanTicks = value; }
             }
-
+            */
         }
     }
 

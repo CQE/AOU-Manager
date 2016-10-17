@@ -46,9 +46,9 @@
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Log events to remote system"></TextBlock>
                 <StackPanel Margin="2,5,0,0" Grid.Row="2" Orientation="Horizontal">
-                    <ToggleSwitch  Margin="5,0,0,0"  IsOn="False"></ToggleSwitch>
+                    <ToggleSwitch  Margin="5,0,0,0"  IsOn="False" Toggled="ToggleSwitch_Toggled"></ToggleSwitch>
                     <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" Text="Remote logger:"></TextBlock>
-                    <TextBox Margin="5,0,0,0" Text="IP name or number" Height="32"></TextBox>
+                    <TextBox x:Name="remoteUri" Margin="5,0,0,0" Text="IP name or number" Height="32"></TextBox>
                 </StackPanel>
 
                 

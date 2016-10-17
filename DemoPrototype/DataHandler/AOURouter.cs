@@ -36,6 +36,12 @@ namespace DemoPrototype
             powerValues = new List<Power>();
 
             runMode = RunType.None;
+
+            if (GlobalVars.globLogSettings.LogToFile)
+            {
+                // Log to file in C:\Users\<user>\Pictures\AOU-Logs\
+                aouLogFile = new AOULogFile(DateTime.Now);
+            }
         }
 
         ~AOURouter()
@@ -56,8 +62,11 @@ namespace DemoPrototype
 
             defaultTimeBetween = timeBetween;
 
-            // If log to file uncomment line below
-            aouLogFile = new AOULogFile(DateTime.Now);
+            if (GlobalVars.globLogSettings.LogToFile)
+            {
+                // Log to file in C:\Users\<user>\Pictures\AOU-Logs\
+                aouLogFile = new AOULogFile(DateTime.Now);
+            }
 
             if (runType == RunType.Random)
             {

@@ -82,22 +82,22 @@ namespace DemoPrototype
             TextBox_ColdToHotThreshold.Text = GlobalVars.globThresholds.ThresholdCold2Hot.ToString();
 
             //set tooltip contents
-            //TBufHotHLine.ToolTipContent = "Lower limit THotBuffer";
-            //TBufMidHLine.ToolTipContent = "Threshold TMidBuffer";
-            //TBufColdHLine.ToolTipContent = "Upper limit TColdBuffer";
+            TBufHotHLine.ToolTipContent = "Lower limit THotBuffer";
+            TBufMidHLine.ToolTipContent = "Threshold TMidBuffer";
+            TBufColdHLine.ToolTipContent = "Upper limit TColdBuffer";
             HotToColdLineAnnotation.ToolTipContent = "Threshold TRetActual hot" + " ↘ " + "cold";
             ColdToHotLineAnnotation.ToolTipContent = "Threshold TRetActual cold" + " ↗ " + "hot";
 
             //Set lineSeries colors
             Series_Delay_THotTank.Interior = new SolidColorBrush(Colors.Red);
-          //  Series_EB_THotTank.Interior = new SolidColorBrush(Colors.Red);
+           // Series_EB_THotTank.Interior = new SolidColorBrush(Colors.Red);
             Series_VB_THotBuffer.Interior = new SolidColorBrush(Colors.OrangeRed);
             Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
-           //Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+           Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
             Series_VB_TColdBuffer.Interior = new SolidColorBrush(Colors.LightBlue);
             Series_VB_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
             Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.Purple);
-            //Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
+            Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.Purple);
             //Series_Delay_TRetForecasted.Interior = new SolidColorBrush(Colors.Purple);
            Series_EB_ValveReturn.Interior = new SolidColorBrush(Colors.LightGreen);
         }

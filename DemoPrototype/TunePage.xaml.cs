@@ -113,7 +113,7 @@ namespace DemoPrototype
             Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
             myTuneChart.Series.Add(Series_Delay_TColdTank);
 
-            SplineSeries Series_Delay_ValveReturn = new SplineSeries();
+            StepLineSeries Series_Delay_ValveReturn = new StepLineSeries();
             Series_Delay_ValveReturn.ItemsSource = chartModel.power;
             Series_Delay_ValveReturn.Label = "ValveReturn";
             Series_Delay_ValveReturn.XBindingPath = "ElapsedTime";
@@ -160,7 +160,7 @@ namespace DemoPrototype
             Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.Purple);
             myEnergyChart.Series.Add(Series_EB_TRetActual);
 
-            SplineSeries Series_EB_ValveReturn = new SplineSeries();
+            StepLineSeries Series_EB_ValveReturn = new StepLineSeries();
             Series_EB_ValveReturn.ItemsSource = chartModel.power;
             Series_EB_ValveReturn.Label = "ValveReturn";
             Series_EB_ValveReturn.XBindingPath = "ElapsedTime";
@@ -213,7 +213,7 @@ namespace DemoPrototype
 
             SplineSeries Series_VB_THotBuffer = new SplineSeries();
             Series_VB_THotBuffer.ItemsSource = chartModel.power;
-            Series_VB_THotBuffer.Label = "TBufHot";
+            Series_VB_THotBuffer.Label = "TBuHot";
             Series_VB_THotBuffer.XBindingPath = "ElapsedTime";
             Series_VB_THotBuffer.YBindingPath = "TBufferHot";
             Series_VB_THotBuffer.Interior = new SolidColorBrush(Colors.Red);
@@ -221,7 +221,7 @@ namespace DemoPrototype
 
             SplineSeries Series_VB_TColdBuffer = new SplineSeries();
             Series_VB_TColdBuffer.ItemsSource = chartModel.power;
-            Series_VB_TColdBuffer.Label = "TBufCold";
+            Series_VB_TColdBuffer.Label = "TBuCold";
             Series_VB_TColdBuffer.XBindingPath = "ElapsedTime";
             Series_VB_TColdBuffer.YBindingPath = "TBufferCold";
             Series_VB_TColdBuffer.Interior = new SolidColorBrush(Colors.Blue);
@@ -229,12 +229,12 @@ namespace DemoPrototype
 
             SplineSeries Series_VB_TMidBuffer = new SplineSeries();
             Series_VB_TMidBuffer.ItemsSource = chartModel.power;
-            Series_VB_TMidBuffer.Label = "TBufMid";
+            Series_VB_TMidBuffer.Label = "TBuMid";
             Series_VB_TMidBuffer.XBindingPath = "ElapsedTime";
             Series_VB_TMidBuffer.YBindingPath = "TBufferMid";
             myVolumeChart.Series.Add(Series_VB_TMidBuffer);
 
-            SplineSeries Series_VB_ValveReturn = new SplineSeries();
+            StepLineSeries Series_VB_ValveReturn = new StepLineSeries();
             Series_VB_ValveReturn.ItemsSource = chartModel.power;
             Series_VB_ValveReturn.Label = "ValveReturn";
             Series_VB_ValveReturn.XBindingPath = "ElapsedTime";

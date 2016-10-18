@@ -133,13 +133,13 @@ namespace DemoPrototype
             //Series_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
             //Series_VB_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
 
-            //Series_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
-            Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
+            Series_TRetActual.Interior = new SolidColorBrush(Colors.Purple);
+            //Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
             //Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.RosyBrown);
             //Series_TRetForecasted.Interior = new SolidColorBrush(Colors.Purple);
             //Series_Delay_TRetForecasted.Interior = new SolidColorBrush(Colors.Purple);
 
-            //Series_ValveReturn.Interior = new SolidColorBrush(Colors.LightGreen);
+            Series_ValveReturn.Interior = new SolidColorBrush(Colors.LightGreen);
             //Series_EB_ValveReturn.Interior = new SolidColorBrush(Colors.LightGreen);
 
             //Series_ValveFeedHot.Interior = new SolidColorBrush(Colors.Red);
@@ -190,8 +190,8 @@ namespace DemoPrototype
             Series_ValveCoolant.ItemsSource = null;
             Series_ValveFeedCold.ItemsSource = null;
             Series_ValveFeedHot.ItemsSource = null;
-            Series_ValveReturn.ItemsSource = null;
-          */  Series_Delay_TRetActual.ItemsSource = null;
+          */  Series_ValveReturn.ItemsSource = null;
+            Series_Delay_TRetActual.ItemsSource = null;
             
         }
 

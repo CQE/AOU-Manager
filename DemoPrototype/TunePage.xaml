@@ -5,82 +5,93 @@
     xmlns:local="using:DemoPrototype"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Margin="0,-7,0,7">
 
     <Grid Name="TuneGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="4*"></RowDefinition>
+            <RowDefinition Height="4*"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <!--  Two borders -->
-        <Border  Margin="5,5,10,5" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
+        <Border  Margin="5,5,10,5" Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="8" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
             <StackPanel Orientation="Vertical">
-                <TextBlock Margin="5,0,0,0" Text="Delay timings (Feed and Return valves)" FontWeight="SemiBold"></TextBlock>
+                <TextBlock Margin="5,0,0,0" Text="Delay timings (Feed and Return valves)" FontWeight="SemiBold"/>
             </StackPanel>
         </Border>
 
 
-        <Border  Margin="5,5,10,5" Grid.Row="2" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
+        <Border  Margin="5,5,10,5" Grid.Row="6" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="8" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="5,0,0,0" Text="Balancing" FontWeight="SemiBold"></TextBlock>
                 
             </StackPanel>
         </Border>
-        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2" >
+        <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.ColumnSpan="2" >
             <TextBlock Margin="50,5,5,0" VerticalAlignment="Center" Text="Shift Return valve Switch time"></TextBlock>
             <TextBox Margin="5,0,5,5" Height="35" Text="0,0"></TextBox>
             <TextBlock Margin="5,5,5,0" VerticalAlignment="Center" Text="(s)"></TextBlock>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" >
+        <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="4" >
             <TextBlock Margin="50,5,5,0" VerticalAlignment="Center" Text="Change Return valve Switching period"></TextBlock>
             <TextBox Margin="5,0,5,5" Height="35" Text="0,0"></TextBox>
             <TextBlock Margin="5,5,5,0" VerticalAlignment="Center" Text="(s)"></TextBlock>
         </StackPanel>
 
         <!--  Delay times -->
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2">
-            <TextBlock Margin="50,50,0,0" >
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+            <TextBlock Margin="50,8,0,0"  VerticalAlignment="Top">
                 <Run Text="Trip time Feed-to-Return (s)"/>
             </TextBlock>
         </StackPanel>
 
-        <TextBlock Margin="100,50,0,0" Grid.Row="0" Grid.Column="3"> Calibrate + Tune = Total</TextBlock>
+        <TextBlock Margin="0,8,0,0" Grid.Row="1" Grid.Column="3"  HorizontalAlignment="Right"> Calibrate </TextBlock>
+        <TextBlock Margin="20,8,0,0" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="3" Text="+"></TextBlock>
+        <TextBlock Margin="0,8,0,0" Grid.Row="1" Grid.Column="4"   HorizontalAlignment="Right" Text="Tune"></TextBlock>
+        <TextBlock Margin="0,8,0,0" Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center" Text="="></TextBlock>
+        <TextBlock Margin="0,8,0,0" Grid.Row="1" Grid.Column="6"  Text="Total"></TextBlock>
 
-        <TextBlock VerticalAlignment="Center"  Margin="50,75,0,0" Grid.Row="0" Grid.Column="2" Text="Hot pump"></TextBlock>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="100,70,30,0" Grid.Row="0" Grid.Column="3">
-            <TextBlock  Name="TextBlock_HotCalibrate" VerticalAlignment="Bottom" Margin="0,0,0,0" Width="30" Text="88"></TextBlock>
-            <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
-            <TextBox Name="HotFeedToReturnDelayCalTime" GotFocus="HotFeedToReturnDelayCalTime_GotFocus" TextChanged="HotFeedToReturnDelayCalTime_TextChanged" IsReadOnly="True" VerticalAlignment="Bottom" Margin="10,0,0,0" Text="22"></TextBox>
-            <TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,0" Text="="></TextBlock>
-            <TextBlock Name="TextBlock_SumHotDelayTime" VerticalAlignment="Bottom" Margin="5,0,0,0" Text="111"></TextBlock>
-            <TextBlock Margin="8,0,0,0" VerticalAlignment="Bottom" Text="(s)"></TextBlock>
-        </StackPanel>
+        <TextBlock  Margin="50,0,0,0" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Text="Hot pump"></TextBlock>
+        <TextBlock Margin="0,8,0,0" Name="TextBlock_HotCalibrate" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Text="88"></TextBlock>
+        <TextBlock  VerticalAlignment="Center" Grid.Row="2" Grid.Column="4" Margin="20,0,0,0" Text="+"></TextBlock>
+        <TextBox Name="HotFeedToReturnDelayCalTime" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="44,0,0,0" HorizontalAlignment="Left" Width="30" GotFocus="HotFeedToReturnDelayCalTime_GotFocus" TextChanged="HotFeedToReturnDelayCalTime_TextChanged" IsReadOnly="True"  Text="22"></TextBox>
+        <TextBlock  VerticalAlignment="Center" Margin="0,0,0,0"  Grid.Row="2" Grid.Column="5"  HorizontalAlignment="Center" Text="="></TextBlock>
+        <TextBlock Name="TextBlock_SumHotDelayTime" VerticalAlignment="Center" Grid.Row="2" Grid.Column="6" Margin="5,0,0,0" Text="111"></TextBlock>
+        <TextBlock Grid.Row="2"  Grid.Column="6" Margin="8,0,0,0"  HorizontalAlignment="Right" VerticalAlignment="Center" Text="(s)"></TextBlock>
+        
 
         <TextBox Visibility="Collapsed" Name="TextBox_FocusControl"></TextBox>
-        <TextBlock  Margin="50,30,0,0" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="2" Text="Cold pump"></TextBlock>
-        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="100,0,30,0" Grid.Row="0" Grid.Column="3">
-            <TextBlock Name="TextBlock_ColdCalibrate" VerticalAlignment="Bottom" Width="30" HorizontalAlignment="Left" Margin="0,0,0,0" Text="110"></TextBlock>
-            <TextBlock  VerticalAlignment="Bottom" Margin="5,0,0,0" Text="+"></TextBlock>
-            <TextBox Name="ColdFeedToReturnDelayCalTime"  GotFocus="ColdFeedToReturnDelayCalTime_GotFocus" TextChanged="ColdFeedToReturnDelayCalTime_TextChanged" IsReadOnly="True" Margin="10,0,0,0" VerticalAlignment="Bottom" Text="33"></TextBox>
-            <TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,0" Text="="></TextBlock>
-            <TextBlock  Name="TextBlock_SumColdDelayTime" Margin="5,0,0,0" VerticalAlignment="Bottom" Text="122"></TextBlock>
-            <TextBlock Margin="8,0,0,0" VerticalAlignment="Bottom" Text="(s)"></TextBlock>
-        </StackPanel>
+
+        <TextBlock  Margin="50,0,0,0"  Grid.Row="3" VerticalAlignment="Center" Grid.Column="2" Text="Cold pump"></TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="3" Name="TextBlock_ColdCalibrate" VerticalAlignment="Center"  HorizontalAlignment="Right" Margin="0,0,0,0" Text="110"></TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="4" VerticalAlignment="Center" Margin="20,0,0,0" Text="+"></TextBlock>
+        <TextBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Width="30" Margin="44,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="ColdFeedToReturnDelayCalTime"  GotFocus="ColdFeedToReturnDelayCalTime_GotFocus" TextChanged="ColdFeedToReturnDelayCalTime_TextChanged" IsReadOnly="True"  Text="33"></TextBox>
+        <TextBlock  Grid.Row="3" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" Text="="></TextBlock>
+        <TextBlock  Grid.Row="3" Grid.Column="6" Name="TextBlock_SumColdDelayTime" Margin="5,0,0,0" VerticalAlignment="Center" Text="122"></TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="6" Margin="8,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="(s)"></TextBlock>
+   
 
         <!-- Freeze button -->
-        <Button Name="TuneFreezeButton" Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" Margin="50,0,0,40" Click="TuneFreezeButton_Click"  Width="80" Content="Freeze"></Button>
+        <Button Name="TuneFreezeButton" Grid.Row="4" Grid.Column="2" VerticalAlignment="Bottom" Margin="50,0,0,0" Click="TuneFreezeButton_Click"  Width="80" Content="Freeze"></Button>
         
     </Grid>
 </Page>

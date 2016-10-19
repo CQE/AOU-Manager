@@ -105,13 +105,13 @@ namespace DemoPrototype
             myTuneChart.Series.Add(Series_Delay_FeedColdValve);
 
 
-            SplineSeries Series_Delay_TColdTank = new SplineSeries();
-            Series_Delay_TColdTank.ItemsSource = chartModel.power;
-            Series_Delay_TColdTank.Label = "TColdTank";
-            Series_Delay_TColdTank.XBindingPath = "ElapsedTime";
-            Series_Delay_TColdTank.YBindingPath = "TColdTank";
-            Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
-            myTuneChart.Series.Add(Series_Delay_TColdTank);
+            //SplineSeries Series_Delay_TColdTank = new SplineSeries();
+            //Series_Delay_TColdTank.ItemsSource = chartModel.power;
+            //Series_Delay_TColdTank.Label = "TColdTank";
+            //Series_Delay_TColdTank.XBindingPath = "ElapsedTime";
+            //Series_Delay_TColdTank.YBindingPath = "TColdTank";
+            //Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
+            //myTuneChart.Series.Add(Series_Delay_TColdTank);
 
             StepLineSeries Series_Delay_ValveReturn = new StepLineSeries();
             Series_Delay_ValveReturn.ItemsSource = chartModel.power;
@@ -133,7 +133,7 @@ namespace DemoPrototype
             //add chart to grid
             this.TuneGrid.Children.Add(myTuneChart);
             Grid.SetRow(myTuneChart, 0);
-            Grid.SetRowSpan(myTuneChart, 2);
+            Grid.SetRowSpan(myTuneChart, 6);
             Grid.SetColumn(myTuneChart, 0);
             Grid.SetColumnSpan(myTuneChart, 2);
             //Grid.SetMarginProperty(myTuneChart,"10,10,10,10");
@@ -195,7 +195,7 @@ namespace DemoPrototype
 
             //add chart to grid
             this.TuneGrid.Children.Add(myEnergyChart);
-            Grid.SetRow(myEnergyChart, 2);
+            Grid.SetRow(myEnergyChart, 6);
             Grid.SetRowSpan(myEnergyChart, 2);
             Grid.SetColumn(myEnergyChart, 0);
             Grid.SetColumnSpan(myEnergyChart, 2);
@@ -252,10 +252,10 @@ namespace DemoPrototype
 
 
             this.TuneGrid.Children.Add(myVolumeChart);
-            Grid.SetRow(myVolumeChart,2);
+            Grid.SetRow(myVolumeChart,6);
             Grid.SetRowSpan(myVolumeChart,2);
             Grid.SetColumn(myVolumeChart,2);
-            Grid.SetColumnSpan(myVolumeChart, 2);
+            Grid.SetColumnSpan(myVolumeChart, 6);
             
 
             //set and calculate delay time values

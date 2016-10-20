@@ -64,30 +64,30 @@
             </TextBlock>
         </StackPanel>
 
-        <TextBlock Margin="0,8,0,0" Grid.Row="1" Grid.Column="3"  HorizontalAlignment="Right"> Calibrate </TextBlock>
-        <TextBlock Margin="20,8,0,0" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="3" Text="+"></TextBlock>
+        <TextBlock Margin="20,8,0,0" Grid.Row="1" Grid.Column="3"  HorizontalAlignment="Left"> Calibrate </TextBlock>
+        <TextBlock Margin="10,8,0,0" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="3" Text="+"></TextBlock>
         <TextBlock Margin="0,8,0,0" Grid.Row="1" Grid.Column="4"   HorizontalAlignment="Right" Text="Tune"></TextBlock>
-        <TextBlock Margin="0,8,0,0" Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center" Text="="></TextBlock>
+        <TextBlock Margin="2,8,0,0" Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center" Text="="></TextBlock>
         <TextBlock Margin="0,8,0,0" Grid.Row="1" Grid.Column="6"  Text="Total"></TextBlock>
 
         <TextBlock  Margin="50,0,0,0" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Text="Hot pump"></TextBlock>
-        <TextBlock Margin="0,8,0,0" Name="TextBlock_HotCalibrate" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Text="88"></TextBlock>
-        <TextBlock  VerticalAlignment="Center" Grid.Row="2" Grid.Column="4" Margin="20,0,0,0" Text="+"></TextBlock>
+        <TextBlock Margin="20,0,0,0" Name="TextBlock_HotCalibrate" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left" Text="88"></TextBlock>
+        <TextBlock  VerticalAlignment="Center" Grid.Row="2" Grid.Column="4" Margin="10,0,0,0" Text="+"></TextBlock>
         <TextBox Name="HotFeedToReturnDelayCalTime" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="44,0,0,0" HorizontalAlignment="Left" Width="30" GotFocus="HotFeedToReturnDelayCalTime_GotFocus" TextChanged="HotFeedToReturnDelayCalTime_TextChanged" IsReadOnly="True"  Text="22"></TextBox>
-        <TextBlock  VerticalAlignment="Center" Margin="0,0,0,0"  Grid.Row="2" Grid.Column="5"  HorizontalAlignment="Center" Text="="></TextBlock>
+        <TextBlock  VerticalAlignment="Center" Margin="2,0,0,0"  Grid.Row="2" Grid.Column="5"  HorizontalAlignment="Center" Text="="></TextBlock>
         <TextBlock Name="TextBlock_SumHotDelayTime" VerticalAlignment="Center" Grid.Row="2" Grid.Column="6" Margin="5,0,0,0" Text="111"></TextBlock>
-        <TextBlock Grid.Row="2"  Grid.Column="6" Margin="8,0,0,0"  HorizontalAlignment="Right" VerticalAlignment="Center" Text="(s)"></TextBlock>
+       
         
 
         <TextBox Visibility="Collapsed" Name="TextBox_FocusControl"></TextBox>
 
         <TextBlock  Margin="50,0,0,0"  Grid.Row="3" VerticalAlignment="Center" Grid.Column="2" Text="Cold pump"></TextBlock>
-        <TextBlock Grid.Row="3" Grid.Column="3" Name="TextBlock_ColdCalibrate" VerticalAlignment="Center"  HorizontalAlignment="Right" Margin="0,0,0,0" Text="110"></TextBlock>
-        <TextBlock Grid.Row="3" Grid.Column="4" VerticalAlignment="Center" Margin="20,0,0,0" Text="+"></TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="3" Name="TextBlock_ColdCalibrate" VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="20,0,0,0" Text="110"></TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="4" VerticalAlignment="Center" Margin="10,0,0,0" Text="+"></TextBlock>
         <TextBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Width="30" Margin="44,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="ColdFeedToReturnDelayCalTime"  GotFocus="ColdFeedToReturnDelayCalTime_GotFocus" TextChanged="ColdFeedToReturnDelayCalTime_TextChanged" IsReadOnly="True"  Text="33"></TextBox>
-        <TextBlock  Grid.Row="3" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" Text="="></TextBlock>
+        <TextBlock  Grid.Row="3" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0" Text="="></TextBlock>
         <TextBlock  Grid.Row="3" Grid.Column="6" Name="TextBlock_SumColdDelayTime" Margin="5,0,0,0" VerticalAlignment="Center" Text="122"></TextBlock>
-        <TextBlock Grid.Row="3" Grid.Column="6" Margin="8,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="(s)"></TextBlock>
+     
    
 
         <!-- Freeze button -->

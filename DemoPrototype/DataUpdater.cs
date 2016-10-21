@@ -20,7 +20,7 @@ namespace DemoPrototype
         private bool isRecalculated = false;
 
         private const int defaultTimeBetween = 1000;
-        private const int defaultPowerCount = 30;
+        private const int defaultPowerCount = 60;
 
         private int timeBetween = defaultTimeBetween;
         private int powerCount = defaultPowerCount;

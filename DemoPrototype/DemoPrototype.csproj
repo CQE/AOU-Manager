@@ -177,6 +177,7 @@
   <ItemGroup>
     <Content Include="Assets\About.html" />
     <Content Include="Assets\angus_icon.jpg" />
+    <Content Include="Assets\arrows.png" />
     <Content Include="Assets\calf.png" />
     <Content Include="Assets\Financial.png" />
     <Content Include="Assets\Food.png" />

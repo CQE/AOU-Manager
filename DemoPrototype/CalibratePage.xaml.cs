@@ -71,10 +71,10 @@ namespace DemoPrototype
 
 
             //set threshold levels (should have better names)
-            //TBufHotHLine.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
-            //TBufMidHLine.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
+            TBufHotHLine.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
+            TBufMidHLine.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
             BufMidThresholdValue.Text = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit.ToString();
-            ///TBufColdHLine.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
+            TBufColdHLine.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
 
             HotToColdLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdHot2Cold;
             TextBox_HotToColdThreshold.Text = GlobalVars.globThresholds.ThresholdHot2Cold.ToString();

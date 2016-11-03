@@ -90,6 +90,8 @@ namespace DemoPrototype
             #define CMD_COOLINGTIME 18
             #define CMD_TOOLHEATINGFEEDPAUSE 19
             #define CMD_TOOLCOOLINGFEEDPAUSE 20
+            #define CMD_OFFSETHOTFEED2RETVALVETIME 21  // Adjust Energy balance
+            #define CMD_OFFSETRETVALVEHOTPERIOD    22  // Adjust Volume balance
         */
         public enum CommandType
         {

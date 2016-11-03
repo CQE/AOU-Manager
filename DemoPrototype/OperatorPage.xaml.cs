@@ -115,9 +115,9 @@ namespace DemoPrototype
             HLineSet_ThresholdCold2Hot.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
             HLineSet_ThresholdHot2Cold.Y1 = GlobalVars.globThresholds.ThresholdHot2Cold;
 
-            HLineSet_ThresholdHotTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
-            HLineSet_ThresholdMidTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
-            HLineSet_ThresholdColdTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
+            HLineSet_ThresholdHotTankAlarm.Y1 = 10;// GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
+            HLineSet_ThresholdMidTankAlarm.Y1 = 20;// GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
+            HLineSet_ThresholdColdTankAlarm.Y1 = 30;// GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
 
             //Set lineSeries colors
             Series_THotTank.Interior = new SolidColorBrush(Colors.Red);
@@ -148,7 +148,7 @@ namespace DemoPrototype
 
             //Series_PowerHeating.Interior = new SolidColorBrush(Colors.LightGray);
             //Series_THeaterOilOut.Interior = new SolidColorBrush(Colors.LightYellow);
-         
+
 
             //should rename these too MW
             SetHotSafeZoneLine.Y1 = GlobalVars.globThresholds.ThresholdHotTankLowLimit;
@@ -368,7 +368,8 @@ namespace DemoPrototype
                 {
                     string modeTitle = RunningModeCombo.Items[RunningModeCombo.SelectedIndex].ToString();
                     string message = "You are about to change running mode";
-                    Data.Updater.VerifySendToAOUDlg(modeTitle, message, AOUDataTypes.CommandType.RunningMode, this, RunningModeCombo.SelectedIndex);
+                    // Data.Updater.VerifySendToAOUDlg(modeTitle, message, AOUDataTypes.CommandType.RunningMode, this, RunningModeCombo.SelectedIndex);
+                    Data.Updater.VerifySendToAOUDlg(modeTitle, message, AOUDataTypes.CommandType.runModeAOU, this, RunningModeCombo.SelectedIndex);
                 }
                 else
                 {

@@ -231,7 +231,7 @@ namespace DemoPrototype
         public static void AskAOUForTankTemps()
         {
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempHotTankFeedSet);
-           // Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet); //must change this to one commant at time
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet); //must change this to one commant at time
         }
 
         public static async void ShowMessageBox(string text)

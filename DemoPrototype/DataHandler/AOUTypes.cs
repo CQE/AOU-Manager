@@ -46,6 +46,8 @@ namespace DemoPrototype
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.coolingTime, "coolingTime"));
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.toolHeatingFeedPause, "toolHeatingFeedPause"));
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.toolCoolingFeedPause, "toolCoolingFeedPause"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, "offsetHotFeed2RetValveTime"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.offsetRetValveHotPeriod, "offsetRetValveHotPeriod"));
         }
 
         public string StringValue(AOUDataTypes.CommandType cmd)
@@ -103,9 +105,9 @@ namespace DemoPrototype
             TBufferHotLowerLimit, TBufferMidRefThreshold, TBufferColdUpperLimit,
             tempHotTankFeedSet, tempColdTankFeedSet,
             heatingTime, coolingTime,
-            toolHeatingFeedPause, toolCoolingFeedPause,  
-
-        }
+            toolHeatingFeedPause, toolCoolingFeedPause,
+            offsetHotFeed2RetValveTime, offsetRetValveHotPeriod
+                    }
 //----------------------------------------------------------------------------------------------------------------------------
         public enum HT_StateType {
             HT_STATE_NOT_SET = -99, HT_STATE_INVALID = -999, HT_STATE_COLD = -1, HT_STATE_UNKNOWN = 0,  HT_STATE_HOT = 1

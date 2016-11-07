@@ -347,7 +347,7 @@ namespace DemoPrototype
 
         private void AskForSetColdTankTemp_Click(object sender, RoutedEventArgs e)
         {
-
+            AppHelper.AskAOUForOffsetHotFeed2RetValveTime();
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)

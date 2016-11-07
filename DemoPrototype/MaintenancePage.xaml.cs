@@ -38,11 +38,11 @@ namespace DemoPrototype
             // Connect Operetor page data context to LogMessageViewModel logMsgModel
             LogGrid.DataContext = logMsgModel;
 
-
-
             UpdateLogMessages(true);
 
             InitDispatcherTimer();
+          //  AppHelper.AskAOUForTankTemps();
+
         }
 
         private void MaintenancePage_Unloaded(object sender, RoutedEventArgs e)

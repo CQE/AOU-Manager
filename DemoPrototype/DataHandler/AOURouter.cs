@@ -157,7 +157,7 @@ namespace DemoPrototype
                 logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), message, 12, 0));
                 if (aouData.SendData(text + "\n"))   //always end data with newline
                 {
-                    Task.Delay(10); // Test: Insert delay
+                    Task.Delay(50); // Test: Insert delay
                 }
             }
             else
@@ -169,11 +169,13 @@ namespace DemoPrototype
         public void SendCommandToPlc(AOUDataTypes.CommandType cmd, int value) 
         {
             SendTagCommandToPlc(GlobalVars.aouCommands.StringValue(cmd), value.ToString());
+            Task.Delay(50);
         }
 
         public void AskCommandValueFromPlc(AOUDataTypes.CommandType cmd)
         {
             SendTagCommandToPlc(GlobalVars.aouCommands.StringValue(cmd));
+            Task.Delay(50);
         }
 
         // Update data. Get new Power values and Log messages
@@ -190,8 +192,7 @@ namespace DemoPrototype
                 {
                     AOUData.CommandReturn ret = aouData.GetNextCommandReturn();
                     AOUDataTypes.CommandType cmd = GlobalVars.aouCommands.Command(ret.parameter);
-
-                    logMessages.Add(new AOULogMessage(ret.time_ms, "Plc return " + ret.parameter + "=" + ret.value, 13, 0));
+                    logMessages.Add(new AOULogMessage(ret.time_ms, "Plc return " + ret.parameter + "=" + ret.value, 13, 0));  //kraschade vid count=18
                     GlobalVars.SetCommandValue(cmd,ret.value);
                     // ToDo: (Check if Waiting and) notice page that new value have received
                 }

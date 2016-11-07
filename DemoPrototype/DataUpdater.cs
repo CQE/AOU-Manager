@@ -200,6 +200,7 @@ namespace DemoPrototype
             if (dataRouter.IsConnected)
             {
                 dataRouter.AskCommandValueFromPlc(cmd); 
+
             }
         }
 
@@ -207,7 +208,11 @@ namespace DemoPrototype
         {
             if (dataRouter.IsConnected)
             {
-                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.hotDelayTime, time*10); // ToDo: Right way
+                //set delay time 
+                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.hotDelayTime, time); // ToDo: Right way
+                //set running mode
+                Data.Updater.SetCommandValue(AOUDataTypes.CommandType.RunningMode, (int)AOUDataTypes.AOURunningMode.Heating);
+                //SetRunningMode((AOUDataTypes.AOURunningMode)1);
             }
         }
 
@@ -215,7 +220,7 @@ namespace DemoPrototype
         {
             if (dataRouter.IsConnected)
             {
-                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.coldDelayTime, time*10); // ToDo: Right way
+                dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.coldDelayTime, time); // ToDo: Right way
             }
         }
 

@@ -225,13 +225,18 @@ namespace DemoPrototype
         public static void AskAOUForDelayTimes()
         {
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotDelayTime);
-            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
+          //  Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
+        }
+
+        public static void AskAOUForOffsetHotFeed2RetValveTime()
+        {
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetHotFeed2RetValveTime);
         }
 
         public static void AskAOUForTankTemps()
         {
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempHotTankFeedSet);
-            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet); //must change this to one commant at time
+          //  Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet); //must change this to one commant at time
         }
 
         public static async void ShowMessageBox(string text)

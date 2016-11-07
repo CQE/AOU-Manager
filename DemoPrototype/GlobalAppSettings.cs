@@ -281,7 +281,19 @@ namespace DemoPrototype
 
         public static void SetCommandValue(AOUDataTypes.CommandType cmd, string value)
         {
-            int ival = int.Parse(value);
+            int ival;
+            if (int.TryParse(value, out ival))
+            {
+                //success
+            }
+            else
+            {
+                //check if "0x000"-format
+                //strip 0x
+                string hexString = value.Substring(2); //  "0004";
+                ival = int.Parse(hexString, System.Globalization.NumberStyles.HexNumber);
+            } 
+            //int ival = int.TryParse(value);
             // Add ret cmd and ival to list of changed values. Perhaps cmd sent too
            // retReceived.Add(new CommandReceived(cmd, ival)); MOVED to after switch /MW
             //special handling of times    

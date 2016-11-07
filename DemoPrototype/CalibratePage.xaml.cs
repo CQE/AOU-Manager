@@ -191,14 +191,14 @@ namespace DemoPrototype
         private void DoHotStep(object sender, RoutedEventArgs e)
         {
             int hotStepLength = AppHelper.ConvertToValidInteger(CalibrateHotStepValue.Text, 2, 25);
-            //TODO must check if in state IDLE. If not, display error message and return
-            /*
+            //must check if in state IDLE. If not, display error message and return
+        
             if (GlobalAppSettings.RunningMode != (int)AOUDataTypes.AOURunningMode.Idle)
             {
                 AppHelper.ShowMessageBox("AOU must be in mode IDLE for this command");
                 return;
             }
-            */
+          
             if (hotStepLength == -1)
             {
                 AppHelper.ShowMessageBox("No valid time value");

@@ -105,7 +105,6 @@
         <Button Visibility="Collapsed" Margin="10,20,10,0" Grid.Row="4" Grid.Column="0" Width="80" HorizontalAlignment="Right" Content="Freeze" Name="Button_Freeze_Run" Click="Button_Freeze_Run_Click"></Button>
 
         <TextBlock Margin="30,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2"> Trip time Feed-to-Return (s)</TextBlock>
-
         <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Right"   Text="Calibrate"></TextBlock>
         <TextBlock Margin="30,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="6"  HorizontalAlignment="Left" Text="+"></TextBlock>
         <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="6" HorizontalAlignment="Right"   Text="Tune"></TextBlock>
@@ -125,13 +124,35 @@
 
 
         <TextBlock Margin="30,0,0,20" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" Text="Cold pump"  HorizontalAlignment="Left"></TextBlock>
-
         <TextBox Grid.Row="2" Grid.Column="5" Margin="0,0,0,20" Width="30" HorizontalAlignment="Right" Name="ColdFeedToReturnDelayTime" GotFocus="ColdFeedToReturnDelayTime_GotFocus" TextChanged="ColdFeedToReturnDelayTime_TextChanged" VerticalAlignment="Center"  Text="111"></TextBox>
         <TextBlock Grid.Row="2" Grid.Column="6" VerticalAlignment="Center"  HorizontalAlignment="Left" Width="30" Margin="30,0,0,20" Text="+"></TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="6" Name="TextBlock_ColdTune" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,0,20" Width= "30" Text="220"></TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="7" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,20" Text="="></TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="7" HorizontalAlignment="Left" Name="TextBlock_SumColdDelayTime" VerticalAlignment="Center"  Margin="55,0,0,20" Text="210"></TextBlock>
-     
+
+        <TextBlock Margin="30,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2"> Trip time Feed-to-Mould (s)</TextBlock>
+        <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="5" HorizontalAlignment="Right"   Text="Calibrate"></TextBlock>
+        <TextBlock Margin="30,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="6"  HorizontalAlignment="Left" Text="+"></TextBlock>
+        <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="6" HorizontalAlignment="Right"   Text="Tune"></TextBlock>
+        <TextBlock Margin="20,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="7" HorizontalAlignment="Left"   Text="="></TextBlock>
+        <TextBlock Margin="55,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="7" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="Total"></TextBlock>
+
+        <TextBlock Margin="30,0,0,0" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Text="Computed" VerticalAlignment="Top" HorizontalAlignment="Left"></TextBlock>
+        <TextBlock Margin="0,0,0,0" Grid.Row="4" Grid.Column="5" Width="30" HorizontalAlignment="Right" Name="F2MCalComputed" VerticalAlignment="Top"  Text="88"></TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="6" VerticalAlignment="Top"  HorizontalAlignment="Left" Width="30" Margin="30,0,0,0" Text="+"></TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="6" Name="F2MTuneComputed" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,0,0"  Width= "30" Text="22"></TextBlock>
+        <TextBlock  Grid.Row="4" Grid.Column="7" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,0,0,0" Text="="></TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="7" Name="F2MTotalComputed" VerticalAlignment="Top"  HorizontalAlignment="Left" Margin="55,0,0,0" Text="110"></TextBlock>
+
+        <TextBlock Margin="30,0,0,0" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Text="Used" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBlock>
+        <TextBox Margin="0,0,0,0" Grid.Row="4" Grid.Column="5" Width="30" HorizontalAlignment="Right" Name="ColdF2MDelay"   GotFocus="ColdF2MDelay_GotFocus" TextChanged="ColdF2MDelay_TextChanged"  VerticalAlignment="Center"  Text="88"></TextBox>
+        <TextBlock Grid.Row="4" Grid.Column="6" VerticalAlignment="Center"  HorizontalAlignment="Left" Width="30" Margin="30,0,0,0" Text="+"></TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="6" Name="ColdF2MTuneUsed" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,0,0"  Width= "30" Text="22"></TextBlock>
+        <TextBlock  Grid.Row="4" Grid.Column="7" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0" Text="="></TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="7" Name="ColdF2MTotalUsed" VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="55,0,0,0" Text="110"></TextBlock>
+
+
+
 
 
         <!-- Lower border-->

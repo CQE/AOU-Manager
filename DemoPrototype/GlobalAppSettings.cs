@@ -572,6 +572,15 @@ namespace DemoPrototype
             private int _hotCalibrate;
             private int _coldTune;
             private int _coldCalibrate;
+            private int _F2MCalibrate;
+            private int _F2MTune;
+            private int _F2MCalibrateUsed;
+            private int _F2MTuneUsed;
+            private int _EACalibrate;
+            private int _EATune;
+            private int _VACalibrate;
+            private int _VATune;
+
 
             public GlobalDelayTimes()
             {
@@ -580,11 +589,19 @@ namespace DemoPrototype
                 _hotCalibrate = 0;// int.MinValue;
                 _coldTune = 0;// int.MinValue;
                 _coldCalibrate = 0;// int.MinValue;
+                _F2MTune = 0;
+                _F2MCalibrate = 0;
+                _F2MTuneUsed = 0;
+                _F2MCalibrateUsed = 0;
+                _EATune = 0;
+                _EACalibrate = 0;
+                _VATune = 0;
+                _VACalibrate = 0;
             }
 
             public bool IsAllValuesReceived()
             {
-                return
+                return  //TODO not ready MW
                 _hotTune != int.MinValue &&
                 _hotCalibrate != int.MinValue &&
                 _coldTune != int.MinValue &&
@@ -613,6 +630,17 @@ namespace DemoPrototype
                 }
             }
 
+            public string F2MTimeSumStr
+            {
+                get
+                {
+                    if (_F2MTune == int.MinValue && _F2MCalibrate == int.MinValue)
+                        return "-";
+                    else
+                        return (_F2MCalibrate + _F2MTune).ToString();
+                }
+            }
+
             public int HotTune
             {
                 get { return _hotTune;}
@@ -632,6 +660,46 @@ namespace DemoPrototype
             {
                 get { return _coldCalibrate; }
                 set { _coldCalibrate = value; }
+            }
+            public int F2MTune
+            {
+                get { return _F2MTune; }
+                set { _F2MTune = value; }
+            }
+            public int F2MCalibrate
+            {
+                get { return _F2MCalibrate; }
+                set { _F2MCalibrate = value; }
+            }
+            public int F2MTuneUsed
+            {
+                get { return _F2MTuneUsed; }
+                set { _F2MTuneUsed = value; }
+            }
+            public int F2MCalibrateUsed
+            {
+                get { return _F2MCalibrateUsed; }
+                set { _F2MCalibrateUsed = value; }
+            }
+            public int EATune
+            {
+                get { return _EATune; }
+                set { _EATune = value; }
+            }
+            public int EACalibrate
+            {
+                get { return _EACalibrate; }
+                set { _EACalibrate = value; }
+            }
+            public int VATune
+            {
+                get { return _VATune; }
+                set { _VATune = value; }
+            }
+            public int VACalibrate
+            {
+                get { return _VACalibrate; }
+                set { _VACalibrate = value; }
             }
 
             public string HotTuneStr

@@ -133,9 +133,9 @@ namespace DemoPrototype
             //add chart to grid
             this.TuneGrid.Children.Add(myTuneChart);
             Grid.SetRow(myTuneChart, 0);
-            Grid.SetRowSpan(myTuneChart, 6);
+            Grid.SetRowSpan(myTuneChart, 8);
             Grid.SetColumn(myTuneChart, 0);
-            Grid.SetColumnSpan(myTuneChart, 2);
+            Grid.SetColumnSpan(myTuneChart, 6);
             //Grid.SetMarginProperty(myTuneChart,"10,10,10,10");
             
            
@@ -195,10 +195,10 @@ namespace DemoPrototype
 
             //add chart to grid
             this.TuneGrid.Children.Add(myEnergyChart);
-            Grid.SetRow(myEnergyChart, 6);
+            Grid.SetRow(myEnergyChart, 8);
             Grid.SetRowSpan(myEnergyChart, 2);
             Grid.SetColumn(myEnergyChart, 0);
-            Grid.SetColumnSpan(myEnergyChart, 2);
+            Grid.SetColumnSpan(myEnergyChart, 6);
 
 
             //Volume Balande Chart
@@ -252,9 +252,9 @@ namespace DemoPrototype
 
 
             this.TuneGrid.Children.Add(myVolumeChart);
-            Grid.SetRow(myVolumeChart,6);
+            Grid.SetRow(myVolumeChart,8);
             Grid.SetRowSpan(myVolumeChart,2);
-            Grid.SetColumn(myVolumeChart,2);
+            Grid.SetColumn(myVolumeChart,6);
             Grid.SetColumnSpan(myVolumeChart, 6);
             
 
@@ -267,6 +267,24 @@ namespace DemoPrototype
             ColdFeedToReturnDelayCalTime.Text = GlobalVars.globDelayTimes.ColdTune.ToString();
             sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
             TextBlock_SumColdDelayTime.Text = sum.ToString();
+            F2MCalText.Text = GlobalVars.globDelayTimes.F2MCalibrate.ToString();
+            F2MTuneText.Text = GlobalVars.globDelayTimes.F2MTune.ToString();
+            sum = GlobalVars.globDelayTimes.F2MCalibrate + GlobalVars.globDelayTimes.F2MTune;
+            F2MTotalText.Text = sum.ToString();
+            F2MCalUsedText.Text = GlobalVars.globDelayTimes.F2MCalibrateUsed.ToString();
+            F2MTuneUsedText.Text = GlobalVars.globDelayTimes.F2MTuneUsed.ToString();
+            sum = GlobalVars.globDelayTimes.F2MCalibrateUsed + GlobalVars.globDelayTimes.F2MTuneUsed;
+            F2MTotalUsedText.Text = sum.ToString();
+            //energy Active
+            EACalText.Text = GlobalVars.globDelayTimes.EACalibrate.ToString();
+            EATuneText.Text = GlobalVars.globDelayTimes.EATune.ToString();
+            sum = GlobalVars.globDelayTimes.EACalibrate + GlobalVars.globDelayTimes.EATune;
+            EATotalText.Text = sum.ToString();
+            //Volume Active
+            VACalText.Text = GlobalVars.globDelayTimes.VACalibrate.ToString();
+            VATuneText.Text = GlobalVars.globDelayTimes.VATune.ToString();
+            sum = GlobalVars.globDelayTimes.VACalibrate + GlobalVars.globDelayTimes.VATune;
+            VATotalText.Text = sum.ToString();
 
 
             InitDispatcherTimer();
@@ -360,7 +378,7 @@ namespace DemoPrototype
 
         private void HotFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "Hot return delay time", AOUDataTypes.CommandType.hotDelayTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "What shal we write here??", AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, 0, 30, this);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -386,6 +404,41 @@ namespace DemoPrototype
                 dTimer.Start();
                 TuneFreezeButton.Content = "Freeze";
             }
+        }
+
+        private void F2MTuneUsedText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "F2M Tune Used what shall we write here", AOUDataTypes.CommandType.hotFeed2MouldDelayTime, 0, 30, this);
+        }
+
+        private void F2MTuneUsedText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //calculate and show new sum
+            int sum = GlobalVars.globDelayTimes.F2MTuneUsed + GlobalVars.globDelayTimes.F2MCalibrateUsed;
+            F2MTotalUsedText.Text = sum.ToString();
+
+        }
+
+        private void EATuneText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "EATune:What shal we write here??", AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, 0, 30, this);
+        }
+
+        private void EATuneText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int sum = GlobalVars.globDelayTimes.EATune + GlobalVars.globDelayTimes.EACalibrate;
+            EATotalText.Text = sum.ToString();
+        }
+
+        private void VATuneText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "VATune:What shal we write here??", AOUDataTypes.CommandType.offsetRetValveHotPeriod, 0, 30, this);
+        }
+
+        private void VATuneText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int sum = GlobalVars.globDelayTimes.VATune + GlobalVars.globDelayTimes.VACalibrate;
+            VATotalText.Text = sum.ToString();
         }
     }
 }

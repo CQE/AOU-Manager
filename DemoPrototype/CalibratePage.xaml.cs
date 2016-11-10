@@ -69,6 +69,16 @@ namespace DemoPrototype
             sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
             TextBlock_SumColdDelayTime.Text = sum.ToString();
 
+            F2MCalComputed.Text = GlobalVars.globDelayTimes.F2MCalibrate.ToString();
+            F2MTuneComputed.Text = GlobalVars.globDelayTimes.F2MTune.ToString();
+            sum = GlobalVars.globDelayTimes.F2MCalibrate + GlobalVars.globDelayTimes.F2MTune;
+            F2MTotalComputed.Text = sum.ToString();
+
+            ColdF2MDelay.Text = GlobalVars.globDelayTimes.F2MCalibrateUsed.ToString();
+            ColdF2MTuneUsed.Text = GlobalVars.globDelayTimes.F2MTuneUsed.ToString();
+            sum = GlobalVars.globDelayTimes.F2MCalibrateUsed + GlobalVars.globDelayTimes.F2MTuneUsed;
+            ColdF2MTotalUsed.Text = sum.ToString();
+            
 
             //set threshold levels (should have better names)
             TBufHotHLine.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
@@ -81,6 +91,9 @@ namespace DemoPrototype
             ColdToHotLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
             TextBox_ColdToHotThreshold.Text = GlobalVars.globThresholds.ThresholdCold2Hot.ToString();
 
+        
+            
+            
             //set tooltip contents
             TBufHotHLine.ToolTipContent = "Lower limit THotBuffer";
             TBufMidHLine.ToolTipContent = "Threshold TMidBuffer";
@@ -489,6 +502,18 @@ namespace DemoPrototype
                 dTimer.Start();
                 Button_Freeze_Run.Content = "Freeze";
             }
+        }
+
+        private void ColdF2MDelay_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int sum = GlobalVars.globDelayTimes.F2MCalibrateUsed + GlobalVars.globDelayTimes.F2MTuneUsed;
+            ColdF2MTotalUsed.Text = sum.ToString();
+        }
+
+        private void ColdF2MDelay_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //show slider and send command to AOU
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "F2M: write what?", AOUDataTypes.CommandType.coldFeed2MouldDelayTime, 0, 30, this);
         }
     }
 }

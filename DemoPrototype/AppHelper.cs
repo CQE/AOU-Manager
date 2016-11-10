@@ -189,6 +189,34 @@ namespace DemoPrototype
                             GlobalVars.globThresholds.ThresholdCold2Hot = val;
                             //and now what? MW
                         }
+                        //and the four new commands
+                        if (cmd == AOUDataTypes.CommandType.hotFeed2MouldDelayTime)
+                        {
+                            //save new value
+                            GlobalVars.globDelayTimes.F2MTuneUsed = val;
+                            //Calculate new val to send
+                            val = (GlobalVars.globDelayTimes.F2MTuneUsed + GlobalVars.globDelayTimes.F2MCalibrateUsed) * 10;
+                        }
+                        if (cmd == AOUDataTypes.CommandType.coldFeed2MouldDelayTime)
+                        {
+                            //save new value
+                            GlobalVars.globDelayTimes.F2MCalibrateUsed = val;
+                            //and now what? MW
+                            val = (GlobalVars.globDelayTimes.F2MTuneUsed + GlobalVars.globDelayTimes.F2MCalibrateUsed) * 10;
+                        }
+                        if (cmd == AOUDataTypes.CommandType.offsetHotFeed2RetValveTime)
+                        {
+                            //save new value
+                            GlobalVars.globDelayTimes.EATune = val;
+                            //and now what? MW
+                        }
+                        if (cmd == AOUDataTypes.CommandType.offsetRetValveHotPeriod)
+                        {
+                            //save new value
+                            GlobalVars.globDelayTimes.VATune = val;
+                            //and now what? MW
+                        }
+
                         //*/
                         Data.Updater.SetCommandValue(cmd, val);
                     }

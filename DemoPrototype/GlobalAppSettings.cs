@@ -13,6 +13,28 @@ namespace DemoPrototype
 
         public static bool valueFeedHaveStarted = false;
 
+        static public heatTransferFluidsList TransferFluidsList
+        {
+            get
+            {
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("HeatTransferFluidsList"))
+                {
+                    var xml = (string)ApplicationData.Current.LocalSettings.Values["HeatTransferFluidsList"];
+                    var list = new HeatTransferFluidsList(xml);
+                    return list.GetHeatTransferFluidsList();
+                }
+                else
+                {
+                    var list = new HeatTransferFluidsList(); // Use texatherm32.xml as default
+                    return list.GetHeatTransferFluidsList();
+                }
+            }
+            set
+            {
+                var list = new HeatTransferFluidsList(value);
+                ApplicationData.Current.LocalSettings.Values["HeatTransferFluidsList"] = list.GetXMLStringFromFluidList();
+            }
+        }
 
         static public bool IsCelsius
         {

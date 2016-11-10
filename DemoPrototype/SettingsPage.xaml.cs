@@ -23,6 +23,7 @@ namespace DemoPrototype
     public sealed partial class SettingsPage : Page
     {
         DispatcherTimer dTimer;
+        heatTransferFluidsList fluids;
 
         public SettingsPage()
         {
@@ -64,10 +65,26 @@ namespace DemoPrototype
                 EnableChangeDataSource();
             }
 
+            this.fluids = GlobalAppSettings.TransferFluidsList;
+            initFluids();
+
             dTimer = new DispatcherTimer();
             dTimer.Tick += UpdateTick;
             dTimer.Interval = new TimeSpan(0, 0, 0, 1, 0); // milliseconds
             dTimer.Start();
+        }
+
+        private void initFluids()
+        {
+            if (fluids != null && fluids.heatTransferFluid != null)
+            {
+                InputBrand.Text = fluids.heatTransferFluid.brand;
+                InputType.Text = fluids.heatTransferFluid.type;
+                FlashBox.Text = fluids.heatTransferFluid.temperaturesList.flashPoint.ToString();
+                BoilingBox.Text = fluids.heatTransferFluid.temperaturesList.boilingPoint.ToString();
+                IgnitionBox.Text = fluids.heatTransferFluid.temperaturesList.autoIgnition.ToString();
+                SaveFluidFile.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void initSerial()
@@ -264,14 +281,21 @@ namespace DemoPrototype
             }
         }
 
-        private async void PickFile()
+        private async void PickFile(string type)
         {
             try {
                 var picker = new Windows.Storage.Pickers.FileOpenPicker();
                 string picturePath = "";
                 picker.ViewMode = PickerViewMode.List;
                 picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary; // Todo: usb, cloud
-                picker.FileTypeFilter.Add(".txt");
+                if (type == "FileInput")
+                {
+                    picker.FileTypeFilter.Add(".txt");
+                }
+                else
+                {
+                    picker.FileTypeFilter.Add(".xml");
+                }
 
                 StorageFile file = await picker.PickSingleFileAsync();
                 if (file != null)
@@ -281,8 +305,23 @@ namespace DemoPrototype
                     if (file.Path.IndexOf("Pictures") > 0)
                     { 
                         picturePath = file.Path.Substring(file.Path.IndexOf("Pictures") + ("Pictures").Length);
-                        GlobalAppSettings.FileSettingsPath = picturePath;
-                        this.FileName.Text = picturePath;
+                        if (type == "FileInput")
+                        {
+                            GlobalAppSettings.FileSettingsPath = picturePath;
+                            this.FileName.Text = picturePath;
+                        }
+                        else if (type == "SaveHeatFluid")
+                        {
+                            SaveBox.Text = picturePath;
+                        }
+                        else if (type == "RecallHeatFluid")
+                        {
+                            HeatTransferFluidsList list = new HeatTransferFluidsList(picturePath);
+                            GlobalAppSettings.TransferFluidsList = list.GetHeatTransferFluidsList();
+                            fluids = GlobalAppSettings.TransferFluidsList;
+                            initFluids();
+                            RecallBox.Text = picturePath;
+                        }
                     }
                     else
                     {
@@ -296,11 +335,62 @@ namespace DemoPrototype
                 AppHelper.ShowMessageBox("Pick File: " + e.Message);
             }
 
-    }
+        }
 
         private void pickButton_Click(object sender, RoutedEventArgs e)
         {
-            PickFile();
+            PickFile("FileInput");
+        }
+
+        private void PickFluidFileSave_Click(object sender, RoutedEventArgs e)
+        {
+            PickFile("SaveHeatFluid");
+        }
+
+        private void SaveBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (SaveBox.Text.Length == 0 && SaveFluidFile.Visibility == Visibility.Visible)
+            {
+                SaveFluidFile.Visibility = Visibility.Collapsed;
+            }
+            else if (SaveBox.Text.Length > 0 && SaveFluidFile.Visibility == Visibility.Collapsed)
+            {
+                SaveFluidFile.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void SaveFluidFile_Click(object sender, RoutedEventArgs e)
+        {
+            fluids.heatTransferFluid.brand = InputBrand.Text;
+            fluids.heatTransferFluid.type = InputType.Text;
+            fluids.heatTransferFluid.temperaturesList.boilingPoint = ushort.Parse(BoilingBox.Text); // ToDo: Better types and value parsing
+            fluids.heatTransferFluid.temperaturesList.flashPoint = (byte)ushort.Parse(FlashBox.Text);
+            fluids.heatTransferFluid.temperaturesList.autoIgnition = ushort.Parse(IgnitionBox.Text);
+            HeatTransferFluidsList list = new HeatTransferFluidsList(fluids);
+            list.WriteXML(SaveBox.Text);
+            GlobalAppSettings.TransferFluidsList = list.GetHeatTransferFluidsList();
+        }
+
+        private void PickFluidFileRecall_Click(object sender, RoutedEventArgs e)
+        {
+            PickFile("RecallHeatFluid");
+        }
+
+        private void AskForSetHotTankTemp_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForTankTemps();
+        }
+
+        private void AskForSetColdTankTemp_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForOffsetHotFeed2RetValveTime();
+        }
+
+        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            GlobalVars.globRemoteSettings.On = true;
+            GlobalVars.globRemoteSettings.password = adminPassword.Password;
+            GlobalVars.globRemoteSettings.URI = remoteUri.Text;
         }
 
         private async void keyboardDlg()
@@ -323,7 +413,7 @@ namespace DemoPrototype
             dialog.Title = "Enter Admin Password";
             dialog.PrimaryButtonText = "Enter";
             dialog.SecondaryButtonText = "Cancel";
-            
+
             // dialog.MaxWidth = ActualWidth // Required for Mobile!
 
             await dialog.ShowAsync();
@@ -332,29 +422,13 @@ namespace DemoPrototype
 
         private void adminPassword_Tapped(object sender, TappedRoutedEventArgs e)
         {
-          //  keyboardDlg(); Not woking MW
+            //  keyboardDlg(); Not woking MW
         }
 
         private void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
         {
-          //  keyboardDlg(); Not working MW
+            //  keyboardDlg(); Not working MW
         }
 
-        private void AskForSetHotTankTemp_Click(object sender, RoutedEventArgs e)
-        {
-            AppHelper.AskAOUForTankTemps();
-        }
-
-        private void AskForSetColdTankTemp_Click(object sender, RoutedEventArgs e)
-        {
-            AppHelper.AskAOUForOffsetHotFeed2RetValveTime();
-        }
-
-        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
-        {
-            GlobalVars.globRemoteSettings.On = true;
-            GlobalVars.globRemoteSettings.password = adminPassword.Password;
-            GlobalVars.globRemoteSettings.URI = remoteUri.Text;
-        }
     }
 }

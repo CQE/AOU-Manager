@@ -30,23 +30,23 @@ namespace DemoPrototype
 
         public override void Connect()
         {
-            base.Connect();
-            dataFile = new TextFile();
+            fileLoaded = false;
             textData = "";
-            OpenFile(setting.FilePath);
-        }
-
-        public void OpenFile(string filepath)
-        {
-            dataFile.OpenFileIfExistAndGetText(filepath);
-
+            fileData = "";
+            lastTimeStamp = uint.MaxValue;
+            lastTimeInFile = 0;
+            loop = 0;
+            dataFile = new TextFile();
+            dataFile.OpenFileIfExistAndGetText(setting.FilePath);
             // Wait until async open file operation is Ready
             // var t = Task.Run(() => dataFile.FileIsReady()); // Test
-            // Task.Delay(1000); // Test
+            Task.Delay(200); // Test. Not start until whole file is read
+            base.Connect();
         }
 
         public override void Disconnect()
         {
+            dataFile = null;
             base.Disconnect();
             AddDataLogText("File data stopped");
         }
@@ -59,7 +59,7 @@ namespace DemoPrototype
                 if (filelog.Length > 0)
                 {
                     AddDataLogText(filelog);
-                    if (dataFile != null && dataFile.IsDataAvailable())
+                    if (dataFile.IsDataAvailable())
                     {
                         AddDataLogText("File data started: " + setting.FilePath);
                     }
@@ -102,21 +102,24 @@ namespace DemoPrototype
 
         private string HandleNewLoop()
         {
-            if (!fileLoaded)
+            if (dataFile != null)
             {
-                // First time: Load text from file to string fileData and close the file
-                fileLoaded = true;
-                fileData = dataFile.GetTextData();
-                dataFile = null;
-            }
-            else
-            {
-                // Next time: Save lastTimeStamp for filedata time span. update loop counter
-                if (lastTimeInFile == 0)
+                if (!fileLoaded)
                 {
-                    lastTimeInFile = lastTimeStamp;
+                    // First time: Load text from file to string fileData and close the file
+                    fileLoaded = true;
+                    fileData = dataFile.GetTextData();
+                    dataFile = null;
                 }
-                loop++;
+                else
+                {
+                    // Next time: Save lastTimeStamp for filedata time span. update loop counter
+                    if (lastTimeInFile == 0)
+                    {
+                        lastTimeInFile = lastTimeStamp;
+                    }
+                    loop++;
+                }
             }
             // Move fileData to textData to work on
             textData = fileData;

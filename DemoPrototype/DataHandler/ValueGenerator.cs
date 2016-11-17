@@ -132,8 +132,8 @@ namespace DemoPrototype
                 */
                 case AOUDataTypes.CommandType.toolCoolingFeedPause: return 20;
                 case AOUDataTypes.CommandType.toolHeatingFeedPause: return 22;
-                case AOUDataTypes.CommandType.tempColdTankFeedSet: return 21;
-                case AOUDataTypes.CommandType.tempHotTankFeedSet: return 23;
+                case AOUDataTypes.CommandType.tempColdTankFeedSet: return 29;
+                case AOUDataTypes.CommandType.tempHotTankFeedSet: return 188;
 
                 // globThresholds.ThresholdHotBuffTankAlarmLimit = 110;
                 // globThresholds.ThresholdMidBuffTankAlarmLimit = 100;
@@ -146,10 +146,10 @@ namespace DemoPrototype
                 // globThresholds.ThresholdCold2Hot = 110;
                 // globThresholds.ThresholdHotTankLowLimit = 120;
                 // globThresholds.ThresholdColdTankUpperLimit = 80;
-                case AOUDataTypes.CommandType.TReturnThresholdHot2Cold: return 100;
-                case AOUDataTypes.CommandType.TReturnThresholdCold2Hot: return 110;
-                case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: return 120;
-                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: return 80;
+                case AOUDataTypes.CommandType.TReturnThresholdHot2Cold: return 66;
+                case AOUDataTypes.CommandType.TReturnThresholdCold2Hot: return 88;
+                case AOUDataTypes.CommandType.THotTankAlarmLowThreshold: return 111;
+                case AOUDataTypes.CommandType.TColdTankAlarmHighThreshold: return 55;
                 default: return 0;
 
             }

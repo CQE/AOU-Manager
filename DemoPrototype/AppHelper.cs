@@ -233,22 +233,51 @@ namespace DemoPrototype
             }
         }
 
-        public static void AskAOUForMouldingTimes()
+        public static void AskAOUForHeatingTime()
         {
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.heatingTime);
-            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coolingTime);
-            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.toolHeatingFeedPause);
+        }
+        public static void AskAOUForCoolingTime()
+        {
+           Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coolingTime);
+        }
+        public static void AskAOUForHeatingPause()
+        {
+           Data.Updater.AskCommandValue(AOUDataTypes.CommandType.toolHeatingFeedPause);
+        }
+        public static void AskAOUForCoolingPause()
+        {
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.toolCoolingFeedPause);
         }
 
-        public static void AskAOUForThresholds()
+        public static void AskAOUForHot2ColdThreshold()
         {
-            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferColdUpperLimit);
-            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferHotLowerLimit);
-            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferMidRefThreshold);
-            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TReturnThresholdCold2Hot);
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferColdUpperLimit);
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferHotLowerLimit);
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferMidRefThreshold);
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TReturnThresholdCold2Hot);
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TReturnThresholdHot2Cold);
         }
+
+        public static void AskAOUForCold2HotThreshold()
+        {
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferColdUpperLimit);
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferHotLowerLimit);
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferMidRefThreshold);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TReturnThresholdCold2Hot);
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TReturnThresholdHot2Cold);
+        }
+
+
+        public static void AskAOUForMidBufThreshold()
+        {
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferMidRefThreshold);
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TReturnThresholdCold2Hot);
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TReturnThresholdHot2Cold);
+        }
+
+
+
 
         public static void AskAOUForDelayTimes()
         {
@@ -261,10 +290,16 @@ namespace DemoPrototype
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetHotFeed2RetValveTime);
         }
 
-        public static void AskAOUForTankTemps()
+        public static void AskAOUForHotTankTemp()
         {
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempHotTankFeedSet);
-          //  Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet); //must change this to one commant at time
+            //remove this line later
+            //GlobalVars.globTankSetTemps.HotTankSetTemp = 333;
+        }
+
+        public static void AskAOUForColdTankTemp()
+        {
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet); 
         }
 
         public static async void ShowMessageBox(string text)

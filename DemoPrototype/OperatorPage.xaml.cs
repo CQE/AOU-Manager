@@ -86,9 +86,34 @@ namespace DemoPrototype
             //set tool temp mode
             SetToolTemperingText();
 
-            //set tank temperatures
-            NewTHotTankTextBox.Text = GlobalVars.globTankSetTemps.HotTankSetTemp.ToString();
-            NewTColdTankTextBox.Text = GlobalVars.globTankSetTemps.ColdTankSetTemp.ToString();
+            //set tank temperatures, check if received. only ONE each time.
+            if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)
+            {
+                AppHelper.AskAOUForHotTankTemp();
+                if (GlobalVars.globTankSetTemps.ColdTankSetTemp < 0)
+                {
+                    NewTColdTankTextBox.Text = "-";
+                }
+                else
+                {
+                    NewTColdTankTextBox.Text = GlobalVars.globTankSetTemps.ColdTankSetTemp.ToString();
+                }
+            }
+            else
+            {
+                NewTHotTankTextBox.Text = GlobalVars.globTankSetTemps.HotTankSetTemp.ToString();
+                if (GlobalVars.globTankSetTemps.ColdTankSetTemp < 0)
+                {
+                    AppHelper.AskAOUForColdTankTemp();
+                }
+                else
+                {
+                    NewTColdTankTextBox.Text = GlobalVars.globTankSetTemps.ColdTankSetTemp.ToString();
+                }
+            }
+            
+            
+            
 
             //set feed times
             TextBox_NewActiveHeatingTime.Text = GlobalVars.globFeedTimes.HeatingActive.ToString();

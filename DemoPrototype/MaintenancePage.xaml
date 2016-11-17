@@ -105,7 +105,7 @@
                     </StackPanel>
                     <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Width="140" Text="Bearing hot pump"></TextBlock>
-                        <TextBox  IsEnabled="False" Text="120" Width="40"></TextBox>
+                        <TextBox  IsEnabled="False" Text="120" Width="40"/>
                     </StackPanel>
                     
                     <Border Margin="5,10,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >

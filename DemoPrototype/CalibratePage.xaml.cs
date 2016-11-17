@@ -83,17 +83,64 @@ namespace DemoPrototype
             //set threshold levels (should have better names)
             TBufHotHLine.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
             TBufMidHLine.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
-            BufMidThresholdValue.Text = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit.ToString();
-            TBufColdHLine.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
-
-            HotToColdLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdHot2Cold;
-            TextBox_HotToColdThreshold.Text = GlobalVars.globThresholds.ThresholdHot2Cold.ToString();
-            ColdToHotLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
-            TextBox_ColdToHotThreshold.Text = GlobalVars.globThresholds.ThresholdCold2Hot.ToString();
-
-        
             
+
+
+            //we can NOT ask two commands
+            if (GlobalVars.globThresholds.ThresholdHot2Cold<0)
+            {
+                AppHelper.AskAOUForHot2ColdThreshold();
+                TextBox_HotToColdThreshold.Text = "-";
+                if (GlobalVars.globThresholds.ThresholdCold2Hot < 0)
+                {
+                    TextBox_ColdToHotThreshold.Text = "-";
+                }
+                else
+                {
+                    ColdToHotLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
+                    TextBox_ColdToHotThreshold.Text = GlobalVars.globThresholds.ThresholdCold2Hot.ToString();
+                }
+                if (GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit < 0)
+                {
+                    BufMidThresholdValue.Text = "-";
+                }
+                else
+                {
+                    BufMidThresholdValue.Text = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit.ToString();
+                    TBufColdHLine.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
+                }
+            }
+            else
+            {
+                HotToColdLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdHot2Cold;
+                TextBox_HotToColdThreshold.Text = GlobalVars.globThresholds.ThresholdHot2Cold.ToString();
+                if (GlobalVars.globThresholds.ThresholdCold2Hot < 0)
+                {
+                    AppHelper.AskAOUForCold2HotThreshold();
+                    TextBox_ColdToHotThreshold.Text = "-";
+                }
+                else
+                {
+                    ColdToHotLineAnnotation.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
+                    TextBox_ColdToHotThreshold.Text = GlobalVars.globThresholds.ThresholdCold2Hot.ToString();
+                    if (GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit < 0)
+                    {
+                        AppHelper.AskAOUForMidBufThreshold();
+                        BufMidThresholdValue.Text = "-";
+                    }
+                    else
+                    {
+                        BufMidThresholdValue.Text = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit.ToString();
+                        TBufColdHLine.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
+                    }
+                }
+            }
             
+
+
+
+
+
             //set tooltip contents
             TBufHotHLine.ToolTipContent = "Lower limit THotBuffer";
             TBufMidHLine.ToolTipContent = "Threshold TMidBuffer";

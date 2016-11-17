@@ -59,7 +59,7 @@ namespace DemoPrototype
         {
             powerValues.Clear();
             logMessages.Clear();
-
+            GlobalVars.Init(); 
             defaultTimeBetween = timeBetween;
 
             if (GlobalVars.globLogSettings.LogToFile)
@@ -157,7 +157,7 @@ namespace DemoPrototype
                 logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), message, 12, 0));
                 if (aouData.SendData(text + "\n"))   //always end data with newline
                 {
-                    Task.Delay(50); // Test: Insert delay
+                    Task.Delay(1000); // Test: Insert delay
                 }
             }
             else

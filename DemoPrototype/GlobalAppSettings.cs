@@ -281,6 +281,7 @@ namespace DemoPrototype
 
         public static void SetStaticValues()
         {
+            return; //testing purposes
             globFeedTimes.CoolingActive = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.coolingTime);
             globFeedTimes.HeatingActive = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.heatingTime);
 

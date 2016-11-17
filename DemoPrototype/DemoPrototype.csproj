@@ -137,6 +137,7 @@
     <Compile Include="DataHandler\AOUTypes.cs" />
     <Compile Include="DataHandler\AOUValuesFile.cs" />
     <Compile Include="DataHandler\AOUXMLCreator.cs" />
+    <Compile Include="DataHandler\HeatTransferFluidsList.cs" />
     <Compile Include="DataHandler\Power.cs" />
     <Compile Include="DataHandler\TextFile.cs" />
     <Compile Include="DataHandler\ValueGenerator.cs" />
@@ -179,8 +180,6 @@
     <Content Include="Assets\angus_icon.jpg" />
     <Content Include="Assets\arrows.png" />
     <Content Include="Assets\calf.png" />
-    <Content Include="Assets\Financial.png" />
-    <Content Include="Assets\Food.png" />
     <Content Include="Assets\Help.html" />
     <Content Include="Assets\imm-img.png" />
     <Content Include="Assets\NewStoreLogo.scale-100.png" />
@@ -217,6 +216,7 @@
     <Content Include="Assets\Square71x71Logo.scale-150.png" />
     <Content Include="Assets\Square71x71Logo.scale-200.png" />
     <Content Include="Assets\Square71x71Logo.scale-400.png" />
+    <Content Include="Assets\texatherm32.xml" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />

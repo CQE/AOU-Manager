@@ -72,7 +72,8 @@ namespace DemoPrototype
  
             if (dataRunType == AOURouter.RunType.File)
             {
-                GlobalVars.SetStaticValues(); // Set static values only when file;
+                GlobalVars.SetStaticValues(); 
+                // Set static values only when file; NOT when testing MW
                 AOUSettings.FileSetting fileSetting;
                 fileSetting.FilePath = GlobalAppSettings.FileSettingsPath;
                 dataRouter.Initialize(AOURouter.RunType.File, fileSetting, 1000);

@@ -68,6 +68,47 @@ namespace DemoPrototype
             this.fluids = GlobalAppSettings.TransferFluidsList;
             initFluids();
 
+            //check if ask-buttons are needed
+            if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)
+            { AskForSetHotTankTemp.IsEnabled = true; }
+            else
+            { AskForSetHotTankTemp.IsEnabled = false; }
+            if (GlobalVars.globTankSetTemps.ColdTankSetTemp < 0)
+            { AskForSetColdTankTemp.IsEnabled = true; }
+            else
+            { AskForSetColdTankTemp.IsEnabled = false; }
+            if (GlobalVars.globThresholds.ThresholdHot2Cold < 0)
+            { AskForTHot2Cold.IsEnabled = true; }
+            else
+            { AskForTHot2Cold.IsEnabled = false; }
+            if (GlobalVars.globThresholds.ThresholdCold2Hot < 0)
+            { AskForTCold2Hot.IsEnabled = true; }
+            else
+            { AskForTCold2Hot.IsEnabled = false; }
+            if (GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit < 0)
+            { AskForTMidBuf.IsEnabled = true; }
+            else
+            { AskForTMidBuf.IsEnabled = false; }
+            //times
+            if (GlobalVars.globFeedTimes.HeatingActive < 0)
+            { AskForActiveHeating.IsEnabled = true; }
+            else
+            { AskForActiveHeating.IsEnabled = false; }
+            if (GlobalVars.globFeedTimes.HeatingPause < 0)
+            { AskForHeatingPause.IsEnabled = true; }
+            else
+            { AskForHeatingPause.IsEnabled = false; }
+            if (GlobalVars.globFeedTimes.CoolingActive < 0)
+            { AskForActiveCooling.IsEnabled = true; }
+            else
+            { AskForActiveCooling.IsEnabled = false; }
+            if (GlobalVars.globFeedTimes.CoolingPause < 0)
+            { AskForCoolingPause.IsEnabled = true; }
+            else
+            { AskForCoolingPause.IsEnabled = false; }
+
+
+
             dTimer = new DispatcherTimer();
             dTimer.Tick += UpdateTick;
             dTimer.Interval = new TimeSpan(0, 0, 0, 1, 0); // milliseconds
@@ -378,12 +419,15 @@ namespace DemoPrototype
 
         private void AskForSetHotTankTemp_Click(object sender, RoutedEventArgs e)
         {
-            AppHelper.AskAOUForTankTemps();
+            AppHelper.AskAOUForHotTankTemp();
+            AskForSetHotTankTemp.IsEnabled = false;
         }
+
 
         private void AskForSetColdTankTemp_Click(object sender, RoutedEventArgs e)
         {
             AppHelper.AskAOUForOffsetHotFeed2RetValveTime();
+            AskForSetColdTankTemp.IsEnabled = false;
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
@@ -430,5 +474,46 @@ namespace DemoPrototype
             //  keyboardDlg(); Not working MW
         }
 
+        private void AskForTMidBuf_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForMidBufThreshold();
+            AskForTMidBuf.IsEnabled = false;
+        }
+
+        private void AskForTCold2Hot_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForCold2HotThreshold();
+            AskForTCold2Hot.IsEnabled = false;
+        }
+
+        private void AskForTHot2Cold_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForHot2ColdThreshold();
+            AskForTHot2Cold.IsEnabled = false;
+        }
+
+        private void AskForActiveHeating_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForHeatingTime();
+            AskForActiveHeating.IsEnabled = false;
+        }
+
+        private void AskForActiveCooling_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForCoolingTime();
+            AskForActiveCooling.IsEnabled = false;
+        }
+
+        private void AskForHeatingPause_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForHeatingPause();
+            AskForHeatingPause.IsEnabled = false;
+        }
+
+        private void AskForCoolingPause_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForCoolingPause();
+            AskForCoolingPause.IsEnabled = false;
+        }
     }
 }

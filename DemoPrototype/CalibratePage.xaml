@@ -246,7 +246,7 @@
         </chart:SfChart>
 
         <TextBlock Margin="30,0,0,0" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="10" VerticalAlignment="Center" Text="Buffertank mid threshold value:"></TextBlock>
-        <StackPanel Orientation="Horizontal" Grid.Column="5" Grid.Row="10">
+        <StackPanel Orientation="Horizontal" Grid.Column="5" Grid.ColumnSpan="2" Grid.Row="10">
             <TextBox Name="BufMidThresholdValue" GotFocus="BufMidThresholdValue_GotFocus" Height="30" ></TextBox>
             <TextBlock  VerticalAlignment="Center" Text=" °C"></TextBlock>
         </StackPanel>

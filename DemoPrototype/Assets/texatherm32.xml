@@ -1,37 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<heatTransferFluidsList>
+<?xml version="1.0" encoding="utf-16"?>
+<heatTransferFluidsList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <heatTransferFluid id="texatherm32">
-    <!-- Mandatory -->
-    <brand>Texatherm 32</brand>
-    <type>Mineral oil</type>
+    <brand>Texatherm 33</brand>
+    <type>Mineral oil3</type>
     <signed>
       <name>Olof Franksson</name>
       <organisation>Plastics Unbound GmbH</organisation>
       <date>2016-11-06</date>
     </signed>
-    <!-- Optional -->
-    <description></description>
-    <note></note>
-    <!-- Mandatory -->
+    <description />
+    <note />
     <temperaturesList>
-      <!-- Celsius -->
       <units temperature="C" />
-      <flashPoint>220</flashPoint>
+      <flashPoint>222</flashPoint>
       <boilingPoint>316</boilingPoint>
-      <autoIgnition>320</autoIgnition>
+      <autoIgnition>333</autoIgnition>
     </temperaturesList>
-    <!-- Optional -->
     <densitiesList>
-      <!-- kg/L and Celsius-->
       <units specificWeight="kg/L" temperature="C" />
       <density specificWeight="0.86" temperature="15" />
     </densitiesList>
     <viscositiesList>
-      <!-- mm2/s and Celsius-->
       <units kinematic="mm2/s" temperature="C" />
       <viscosity kinematic="32" temperature="40" />
       <viscosity kinematic="5.6" temperature="100" />
     </viscositiesList>
   </heatTransferFluid>
 </heatTransferFluidsList>
-

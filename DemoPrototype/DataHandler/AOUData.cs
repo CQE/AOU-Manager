@@ -426,9 +426,11 @@ namespace DemoPrototype
                 if (IsStateSet(mask, VALVE_COOL)) currentCoolantValve = GetValveState(state, VALVE_COOL);
             }
 
-            if (stateData.RetForTemp < 1000 && stateData.RetForTemp > -100)
+            //if (stateData.RetForTemp < 1000 && stateData.RetForTemp > -100) //no new value if hotvalve and coldvalve is low
+            if (currentHotValve != 18 && currentColdValve != 26 )
             {
-                lastTReturnForecasted = GetValidDoubleValue(stateData.RetForTemp);
+                //lastTReturnForecasted = GetValidDoubleValue(stateData.RetForTemp);
+                lastTReturnForecasted = GetValidDoubleValue(stateData.retTemp);
                 newLastTReturnForecasted = true;
             }
 
@@ -495,10 +497,14 @@ namespace DemoPrototype
                 power.TColdTank = GetValidDoubleValue(stateData.coldTankTemp);
                 power.TReturnValve = GetValidDoubleValue(stateData.retTemp);
 
-                // if (newLastTReturnForecasted)
+                if (newLastTReturnForecasted)
                 {
                     power.TReturnForecasted = lastTReturnForecasted;
                     newLastTReturnForecasted = false;
+                }
+                else
+                {
+                    power.TReturnForecasted = -100; //just temporary
                 }
 
                 power.TReturnActual = GetValidDoubleValue(stateData.retTemp);
@@ -513,6 +519,9 @@ namespace DemoPrototype
                 power.ValveFeedHot = currentHotValve;
                 power.ValveReturn = currentReturnValve;
                 power.ValveCoolant = currentCoolantValve;
+
+                //We use TReturnForecasted for TRetFlowActive
+
 
                 power.THeaterOilOut = GetValidDoubleValue(stateData.heaterTemp);
 
@@ -628,6 +637,16 @@ namespace DemoPrototype
                     // When power data have temperature data add to power list else save other data as current values
                     if (GetStateData(tagContent, time_ms, out power))
                     {
+                        //if none of HotFeedValve and ColdFeelValve is on, replace new TRetCalculated with last
+                        if (power.ValveFeedHot == 18 && power.ValveFeedCold == 26)  //18 and 26 = low, 26 and 32 = high
+                        {
+                            //skip this point
+                            power.TReturnForecasted = lastTReturnForecasted; // double.NaN;
+                        }
+                        else
+                        {
+                            power.TReturnForecasted = power.TReturnActual;
+                        }
                         newPowerValues.Add(power);
                     }
                 }

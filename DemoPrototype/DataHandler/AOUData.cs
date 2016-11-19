@@ -641,12 +641,16 @@ namespace DemoPrototype
                         if (power.ValveFeedHot == 18 && power.ValveFeedCold == 26)  //18 and 26 = low, 26 and 32 = high
                         {
                             //skip this point
-                            power.TReturnForecasted = lastTReturnForecasted; // double.NaN;
+                            power.TReturnForecasted = lastTReturnForecasted -2 ; // double.NaN;
                         }
                         else
                         {
-                            power.TReturnForecasted = power.TReturnActual;
+                            power.TReturnForecasted = power.TReturnActual-2;
                         }
+                        //manipulate THeatExchangerCoolantOut
+                        power.THeatExchangerCoolantOut = power.THotTank - power.TBufferHot;
+                        //manipulate 
+                        power.THeaterOilOut = power.TBufferCold - power.TColdTank;
                         newPowerValues.Add(power);
                     }
                 }

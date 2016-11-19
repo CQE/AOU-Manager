@@ -426,7 +426,7 @@ namespace DemoPrototype
 
         private void AskForSetColdTankTemp_Click(object sender, RoutedEventArgs e)
         {
-            AppHelper.AskAOUForOffsetHotFeed2RetValveTime();
+            AppHelper.AskAOUForColdTankTemp();
             AskForSetColdTankTemp.IsEnabled = false;
         }
 
@@ -514,6 +514,27 @@ namespace DemoPrototype
         {
             AppHelper.AskAOUForCoolingPause();
             AskForCoolingPause.IsEnabled = false;
+        }
+
+        private void AskForOffsetHot_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForOffsetRetValveHotPeriod();
+        }
+
+       
+        private void AskForOffsetRet_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForOffsetHotFeed2RetValveTime();
+        }
+
+        private void AskForF2MHot_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForHotFeed2MouldDelayTime();
+        }
+
+        private void AskForF2MCold_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForColdFeed2MouldDelayTime();
         }
     }
 }

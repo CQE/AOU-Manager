@@ -208,13 +208,13 @@ namespace DemoPrototype
                         {
                             //save new value
                             GlobalVars.globDelayTimes.EATune = val;
-                            //and now what? MW
+                            val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.offsetRetValveHotPeriod)
                         {
                             //save new value
                             GlobalVars.globDelayTimes.VATune = val;
-                            //and now what? MW
+                            val = val * 10;
                         }
 
                         //*/
@@ -289,7 +289,18 @@ namespace DemoPrototype
         {
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetHotFeed2RetValveTime);
         }
-
+        public static void AskAOUForOffsetRetValveHotPeriod()
+        {
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetRetValveHotPeriod);
+        }
+        public static void AskAOUForHotFeed2MouldDelayTime()
+        {
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotFeed2MouldDelayTime);
+        }
+        public static void AskAOUForColdFeed2MouldDelayTime()
+        {
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldFeed2MouldDelayTime);
+        }
         public static void AskAOUForHotTankTemp()
         {
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempHotTankFeedSet);

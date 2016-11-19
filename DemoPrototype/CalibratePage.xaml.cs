@@ -64,15 +64,19 @@ namespace DemoPrototype
             TextBlock_HotTune.Text = GlobalVars.globDelayTimes.HotTune.ToString();
             int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
             TextBlock_SumHotDelayTime.Text = sum.ToString();
+            CalibrateHotStepValue.Text = sum.ToString();
             ColdFeedToReturnDelayTime.Text = GlobalVars.globDelayTimes.ColdCalibrate.ToString();
             TextBlock_ColdTune.Text = GlobalVars.globDelayTimes.ColdTune.ToString();
             sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
             TextBlock_SumColdDelayTime.Text = sum.ToString();
+            CalibrateColdStepValue.Text = sum.ToString();
 
-            F2MCalComputed.Text = GlobalVars.globDelayTimes.F2MCalibrate.ToString();
-            F2MTuneComputed.Text = GlobalVars.globDelayTimes.F2MTune.ToString();
-            sum = GlobalVars.globDelayTimes.F2MCalibrate + GlobalVars.globDelayTimes.F2MTune;
-            F2MTotalComputed.Text = sum.ToString();
+            double calcVal = GlobalVars.globDelayTimes.HotCalibrate * 0.45;// GlobalVars.globMisc.DelayTimeConst;
+            F2MCalComputed.Text = calcVal.ToString();
+            calcVal = GlobalVars.globDelayTimes.HotTune * 0.45;// GlobalVars.globMisc.DelayTimeConst;
+            F2MTuneComputed.Text = calcVal.ToString();
+            calcVal = (GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune) * 0.45;// GlobalVars.globMisc.DelayTimeConst;
+            F2MTotalComputed.Text = calcVal.ToString();
 
             ColdF2MDelay.Text = GlobalVars.globDelayTimes.F2MCalibrateUsed.ToString();
             ColdF2MTuneUsed.Text = GlobalVars.globDelayTimes.F2MTuneUsed.ToString();
@@ -151,11 +155,11 @@ namespace DemoPrototype
             //Set lineSeries colors
             Series_Delay_THotTank.Interior = new SolidColorBrush(Colors.Red);
            // Series_EB_THotTank.Interior = new SolidColorBrush(Colors.Red);
-            Series_VB_THotBuffer.Interior = new SolidColorBrush(Colors.OrangeRed);
+          //  Series_VB_THotBuffer.Interior = new SolidColorBrush(Colors.OrangeRed);
             Series_Delay_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
            //Series_EB_TColdTank.Interior = new SolidColorBrush(Colors.Blue);
-            Series_VB_TColdBuffer.Interior = new SolidColorBrush(Colors.LightBlue);
-            Series_VB_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
+           // Series_VB_TColdBuffer.Interior = new SolidColorBrush(Colors.LightBlue);
+           // Series_VB_TMidBuffer.Interior = new SolidColorBrush(Colors.Khaki);
             Series_Delay_TRetActual.Interior = new SolidColorBrush(Colors.Purple);
             Series_EB_TRetActual.Interior = new SolidColorBrush(Colors.Purple);
             //Series_Delay_TRetForecasted.Interior = new SolidColorBrush(Colors.Purple);
@@ -173,9 +177,9 @@ namespace DemoPrototype
             Series_Delay_TRetActual.ItemsSource = null;
             Series_Delay_TColdTank.ItemsSource = null;
             Series_Delay_THotTank.ItemsSource = null;
-            Series_VB_THotBuffer.ItemsSource = null;
-           Series_VB_TMidBuffer.ItemsSource = null;
-            Series_VB_TColdBuffer.ItemsSource = null;
+         //   Series_VB_THotBuffer.ItemsSource = null;
+         //  Series_VB_TMidBuffer.ItemsSource = null;
+         //   Series_VB_TColdBuffer.ItemsSource = null;
         }
 
         private void MaintenancePage_Loaded(object sender, RoutedEventArgs e)
@@ -293,7 +297,7 @@ namespace DemoPrototype
             {
                 SetAxisRangeForTempStep(coldStepLength);
                 doStepTimer = coldStepLength;
-                Data.Updater.StartColdStep(coldStepLength);
+                Data.Updater.StartColdStep(coldStepLength*10);
                 HotStepButton.IsEnabled = false;
                 ColdStepButton.IsEnabled = false;
                 //done! 
@@ -502,6 +506,13 @@ namespace DemoPrototype
             //do we need to change the sum?
             int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
             TextBlock_SumHotDelayTime.Text = sum.ToString();
+            CalibrateHotStepValue.Text = sum.ToString();
+            //need to update calculated values too
+            double calcVal;
+            calcVal = GlobalVars.globDelayTimes.HotCalibrate * 0.45;// GlobalVars.globMisc.DelayTimeConst;
+            F2MCalComputed.Text = calcVal.ToString();
+            calcVal = (GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune) * 0.45;// GlobalVars.globMisc.DelayTimeConst;
+            F2MTotalComputed.Text = calcVal.ToString();
         }
 
         private void ColdFeedToReturnDelayTime_TextChanged(object sender, TextChangedEventArgs e)
@@ -509,6 +520,7 @@ namespace DemoPrototype
             //do we need to change the sum?
             int sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
             TextBlock_SumColdDelayTime.Text = sum.ToString();
+            CalibrateColdStepValue.Text = sum.ToString();
         }
 
         private void TextBox_HotToColdThreshold_GotFocus(object sender, RoutedEventArgs e)

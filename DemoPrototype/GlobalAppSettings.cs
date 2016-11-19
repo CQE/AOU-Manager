@@ -251,7 +251,9 @@ namespace DemoPrototype
         public static GlobalValveChartValues globValveChartValues;
         public static GlobalInitBools globInitBools;
         public static GlobalRemoteSettings globRemoteSettings;
-        public static GlobalLogSettings globLogSettings; 
+        public static GlobalLogSettings globLogSettings;
+        public static GlobalMisc globMisc;
+
 
         public static AOUCommands aouCommands;
         // Todo: List sent cmd to change value or list new values received from <ret> or both
@@ -326,14 +328,29 @@ namespace DemoPrototype
                 //case AOUDataTypes.CommandType.coldDelayTime: globDelayTimes.ColdCalibrate = ival; break;
                 //case AOUDataTypes.CommandType.hotDelayTime: globDelayTimes.HotCalibrate = ival; break;
 
-               // case AOUDataTypes.CommandType.co: globDelayTimes.ColdTune = ival; break;
+                // case AOUDataTypes.CommandType.co: globDelayTimes.ColdTune = ival; break;
                 //case AOUDataTypes.CommandType.heatingTime: globDelayTimes.HotTune = ival; break;
+
+
+
+                case AOUDataTypes.CommandType.runModeAOU:
+                    {
+                        GlobalAppSettings.RunningMode = ival/4;
+                        //this only works for 0,1,2
+
+                    } break;
 
                 case AOUDataTypes.CommandType.coolingTime:  globFeedTimes.CoolingActive = ival/10; ival = ival / 10; break; // globDelayTimes.ColdTune = ival; break;
                 case AOUDataTypes.CommandType.heatingTime:  globFeedTimes.HeatingActive = ival / 10; ival = ival / 10;  break;//  globDelayTimes.HotTune = ival; break;
                     
                 case AOUDataTypes.CommandType.toolCoolingFeedPause: globFeedTimes.CoolingPause = ival/10; ival = ival / 10; break;
                 case AOUDataTypes.CommandType.toolHeatingFeedPause: globFeedTimes.HeatingPause = ival/10; ival = ival / 10; break;
+
+                //want to see ret
+                case AOUDataTypes.CommandType.offsetHotFeed2RetValveTime: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
+                case AOUDataTypes.CommandType.offsetRetValveHotPeriod: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
+                case AOUDataTypes.CommandType.hotFeed2MouldDelayTime: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
+                case AOUDataTypes.CommandType.coldFeed2MouldDelayTime: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
 
                 case AOUDataTypes.CommandType.tempColdTankFeedSet: globTankSetTemps.ColdTankSetTemp = ival; break;
                 case AOUDataTypes.CommandType.tempHotTankFeedSet: globTankSetTemps.HotTankSetTemp = ival; break;
@@ -898,7 +915,16 @@ namespace DemoPrototype
 
         }
 
+        public class GlobalMisc
+        {
+            private double _delayTimeConst;
 
+            public double DelayTimeConst
+            {
+                get { return _delayTimeConst; }
+                set { _delayTimeConst = value; }
+            }
+        }
 
 
 

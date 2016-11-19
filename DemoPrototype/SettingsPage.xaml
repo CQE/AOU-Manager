@@ -112,7 +112,12 @@
                     <Button Name="AskForHeatingPause" HorizontalAlignment="Right" Margin="5,5,5,5" Content="HeatPause" Click="AskForHeatingPause_Click"></Button>
                     <Button Name="AskForCoolingPause" HorizontalAlignment="Right" Margin="5,5,5,5" Content="CoolPause" Click="AskForCoolingPause_Click"></Button>
                 </StackPanel>
-
+                <StackPanel Margin="5,5,0,5" Orientation="Horizontal" >
+                    <Button Name="AskForOffsetHot"  Margin="0,5,5,5" Content="offsetHot" Click="AskForOffsetHot_Click"></Button>
+                    <Button Name="AskForOffsetRet"  HorizontalAlignment="Right" Margin="5,5,5,5" Content="OffsetRet" Click="AskForOffsetRet_Click"></Button>
+                    <Button Name="AskForF2MHot" HorizontalAlignment="Right" Margin="5,5,5,5" Content="HotF2M" Click="AskForF2MHot_Click"></Button>
+                    <Button Name="AskForF2MCold" HorizontalAlignment="Right" Margin="5,5,5,5" Content="ColdF2M" Click="AskForF2MCold_Click"></Button>
+                </StackPanel>
 
             </StackPanel>
         </Border>

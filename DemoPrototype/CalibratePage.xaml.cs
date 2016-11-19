@@ -329,7 +329,7 @@ namespace DemoPrototype
         {
             double myX1, myX2;
             Point myPoint1, myPoint2;
-            int phaseDiff;
+            double phaseDiff;
             //we take x-value from the line and any y-value should do
             myPoint1.X = AppHelper.SafeConvertToDouble(CalibratePhaseVLine1.X1);
             myPoint1.Y = 0;
@@ -339,16 +339,17 @@ namespace DemoPrototype
             myPoint2.Y = 0;
             myX2 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint2);
             //calculate the difference in seconds
-            phaseDiff = (int)Math.Abs(myX2-myX1)/1000;
+            //phaseDiff = (int)Math.Abs(myX2-myX1)/1000;
+            phaseDiff = Math.Abs(myX2 - myX1) / 1000;
             //write result
-            CalibratePhaseDiffResult.Text = phaseDiff.ToString() + " (s)";
+            CalibratePhaseDiffResult.Text = phaseDiff.ToString("0.00") + " (s)";
         }
 
         private void CalibratePhaseVLine2_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
         {
             double myX1, myX2;
             Point myPoint1, myPoint2;
-            int phaseDiff;
+            double phaseDiff;
             //we take x-value from the line and any y-value should do
             myPoint1.X = AppHelper.SafeConvertToDouble(CalibratePhaseVLine1.X1);
             myPoint1.Y = 0;
@@ -358,9 +359,9 @@ namespace DemoPrototype
             myPoint2.Y = 0;
             myX2 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint2);
             //calculate the difference in seconds
-            phaseDiff = (int)Math.Abs(myX2 - myX1) / 1000;
+            phaseDiff = Math.Abs(myX2 - myX1) / 1000;
             //write result
-            CalibratePhaseDiffResult.Text = phaseDiff.ToString() + " (s)";
+            CalibratePhaseDiffResult.Text = phaseDiff.ToString("0.00") + " (s)";
         }
 
         private void SetAxisRangeForTempStep(int stepLength)

@@ -38,7 +38,7 @@ namespace DemoPrototype
         protected uint currentEnergy = 0;
 
         protected double lastTReturnForecasted = double.NaN;
-        protected bool newLastTReturnForecasted = false;
+        protected bool useLastTReturnForecasted = false;
 
         public AOUDataTypes.UI_Buttons currentUIButtons = new AOUDataTypes.UI_Buttons();
         public AOUDataTypes.HT_StateType currentMode = AOUDataTypes.HT_StateType.HT_STATE_NOT_SET;
@@ -426,12 +426,16 @@ namespace DemoPrototype
                 if (IsStateSet(mask, VALVE_COOL)) currentCoolantValve = GetValveState(state, VALVE_COOL);
             }
 
-            //if (stateData.RetForTemp < 1000 && stateData.RetForTemp > -100) //no new value if hotvalve and coldvalve is low
-            if (currentHotValve != 18 && currentColdValve != 26 )
+            //if (stateData.RetForTemp < 1000 && stateData.RetForTemp > -100) //new value if hotvalve or coldvalve is high
+            if (currentHotValve == 24 || currentColdValve == 32)
             {
                 //lastTReturnForecasted = GetValidDoubleValue(stateData.RetForTemp);
                 lastTReturnForecasted = GetValidDoubleValue(stateData.retTemp);
-                newLastTReturnForecasted = true;
+                useLastTReturnForecasted = false;
+            }
+            else
+            {
+                useLastTReturnForecasted = true;
             }
 
             if (!AOUDataTypes.IsUInt16NaN(stateData.IMM))
@@ -497,14 +501,14 @@ namespace DemoPrototype
                 power.TColdTank = GetValidDoubleValue(stateData.coldTankTemp);
                 power.TReturnValve = GetValidDoubleValue(stateData.retTemp);
 
-                if (newLastTReturnForecasted)
+                if (useLastTReturnForecasted)
                 {
                     power.TReturnForecasted = lastTReturnForecasted;
-                    newLastTReturnForecasted = false;
+                   // useLastTReturnForecasted = false;
                 }
                 else
                 {
-                    power.TReturnForecasted = -100; //just temporary
+                    power.TReturnForecasted = GetValidDoubleValue(stateData.retTemp);
                 }
 
                 power.TReturnActual = GetValidDoubleValue(stateData.retTemp);
@@ -641,11 +645,11 @@ namespace DemoPrototype
                         if (power.ValveFeedHot == 18 && power.ValveFeedCold == 26)  //18 and 26 = low, 26 and 32 = high
                         {
                             //skip this point
-                            power.TReturnForecasted = lastTReturnForecasted -2 ; // double.NaN;
+                            //power.TReturnForecasted = lastTReturnForecasted -2 ; // double.NaN;
                         }
                         else
                         {
-                            power.TReturnForecasted = power.TReturnActual-2;
+                            //power.TReturnForecasted = power.TReturnActual-2;
                         }
                         //manipulate THeatExchangerCoolantOut
                         power.THeatExchangerCoolantOut = power.THotTank - power.TBufferHot;

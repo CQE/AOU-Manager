@@ -16,6 +16,8 @@ namespace DemoPrototype
           "TBufferHotLowerLimit", "TBufferMidRefThreshold", "TBufferColdUpperLimit",
           "tempHotTankFeedSet", "tempColdTankFeedSet",
           "heatingTime",  "coolingTime",  "toolHeatingFeedPause",  "toolCoolingFeedPause",
+            "offsHotFe2RetValveTim",  "offsRetValveHotPer", "hotFe2MoDelayTim",  "coldFe2MoDelayTim",
+
         }; 
         */
         public AOUCommands()
@@ -46,10 +48,10 @@ namespace DemoPrototype
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.coolingTime, "coolingTime"));
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.toolHeatingFeedPause, "toolHeatingFeedPause"));
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.toolCoolingFeedPause, "toolCoolingFeedPause"));
-            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, "offsetHotFeed2RetValveTime"));
-            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.offsetRetValveHotPeriod, "offsetRetValveHotPeriod"));
-            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.hotFeed2MouldDelayTime, "hotFeed2MouldDelayTime"));
-            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.coldFeed2MouldDelayTime, "coldFeed2MouldDelayTime"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, "offsHotFe2RetValveTim"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.offsetRetValveHotPeriod, "offsRetValveHotPer"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.hotFeed2MouldDelayTime, "hotFe2MoDelayTim"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.coldFeed2MouldDelayTime, "coldFe2MoDelayTim"));
 
         }
 

@@ -227,7 +227,8 @@ namespace DemoPrototype
                 {
                     dTimer.Stop();
                     //todo: set back to Idle
-                    Data.Updater.SetCommandValue(AOUDataTypes.CommandType.RunningMode, (int)AOUDataTypes.AOURunningMode.Idle);
+                    //Data.Updater.SetCommandValue(AOUDataTypes.CommandType.RunningMode, (int)AOUDataTypes.AOURunningMode.Idle);
+                    Data.Updater.SetCommandValue(AOUDataTypes.CommandType.runModeAOU,0);
                     HotStepButton.IsEnabled = true;
                     ColdStepButton.IsEnabled = true;
                 }

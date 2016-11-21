@@ -110,7 +110,7 @@
 
         <Button Visibility="Collapsed" Margin="10,20,10,0" Grid.Row="4" Grid.Column="0" Width="80" HorizontalAlignment="Right" Content="Freeze" Name="Button_Freeze_Run" Click="Button_Freeze_Run_Click"></Button>
 
-        <TextBlock Margin="30,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="2"> Trip time Feed-to-Return (s)</TextBlock>
+        <TextBlock Margin="30,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="3"> Trip time Feed-to-Return (s)</TextBlock>
         <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="9" HorizontalAlignment="Right"   Text="Calibrate"></TextBlock>
         <TextBlock Margin="30,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="10"  HorizontalAlignment="Left" Text="+"></TextBlock>
         <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="10" HorizontalAlignment="Right"   Text="Tune"></TextBlock>
@@ -136,7 +136,7 @@
         <TextBlock Grid.Row="2" Grid.Column="11" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,20" Text="="></TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="11" HorizontalAlignment="Left" Name="TextBlock_SumColdDelayTime" VerticalAlignment="Center"  Margin="55,0,0,20" Text="210"></TextBlock>
 
-        <TextBlock Margin="30,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="7" Grid.ColumnSpan="2"> Trip time Feed-to-Mould (s)</TextBlock>
+        <TextBlock Margin="30,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="7" Grid.ColumnSpan="3"> Trip time Feed-to-Mould (s)</TextBlock>
         <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="9" HorizontalAlignment="Right"   Text="Calibrate"></TextBlock>
         <TextBlock Margin="30,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="10"  HorizontalAlignment="Left" Text="+"></TextBlock>
         <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="10" HorizontalAlignment="Right"   Text="Tune"></TextBlock>

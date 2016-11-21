@@ -586,12 +586,12 @@ namespace DemoPrototype
         private void ColdF2MDelay_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "F2M: write what?", AOUDataTypes.CommandType.coldFeed2MouldDelayTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Feed-To-Mould delay time", AOUDataTypes.CommandType.coldFeed2MouldDelayTime, 0, 30, this);
         }
 
         private void EACalText_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "EACal: write what?", AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Offset Return valve Switch time", AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, 0, 30, this);
         }
 
         private void EACalText_TextChanged(object sender, TextChangedEventArgs e)
@@ -602,7 +602,7 @@ namespace DemoPrototype
 
         private void VACalText_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "VACal: write what?", AOUDataTypes.CommandType.offsetRetValveHotPeriod, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Offset Return valve Switching period", AOUDataTypes.CommandType.offsetRetValveHotPeriod, 0, 30, this);
         }
 
         private void VACalText_TextChanged(object sender, TextChangedEventArgs e)

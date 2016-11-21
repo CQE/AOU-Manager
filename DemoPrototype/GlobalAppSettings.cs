@@ -347,10 +347,10 @@ namespace DemoPrototype
                 case AOUDataTypes.CommandType.toolHeatingFeedPause: globFeedTimes.HeatingPause = ival/10; ival = ival / 10; break;
 
                 //want to see ret
-                case AOUDataTypes.CommandType.offsetHotFeed2RetValveTime: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
-                case AOUDataTypes.CommandType.offsetRetValveHotPeriod: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
-                case AOUDataTypes.CommandType.hotFeed2MouldDelayTime: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
-                case AOUDataTypes.CommandType.coldFeed2MouldDelayTime: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
+               // case AOUDataTypes.CommandType.offsetHotFeed2RetValveTime: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
+               // case AOUDataTypes.CommandType.offsetRetValveHotPeriod: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
+               // case AOUDataTypes.CommandType.hotFeed2MouldDelayTime: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
+               // case AOUDataTypes.CommandType.coldFeed2MouldDelayTime: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
 
                 case AOUDataTypes.CommandType.tempColdTankFeedSet: globTankSetTemps.ColdTankSetTemp = ival; break;
                 case AOUDataTypes.CommandType.tempHotTankFeedSet: globTankSetTemps.HotTankSetTemp = ival; break;

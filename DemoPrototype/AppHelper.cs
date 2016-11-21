@@ -193,7 +193,10 @@ namespace DemoPrototype
                         if (cmd == AOUDataTypes.CommandType.hotFeed2MouldDelayTime)
                         {
                             //save new value
-                            GlobalVars.globDelayTimes.F2MTuneUsed = val;
+                            if (pg.Name == "TunePage")
+                                GlobalVars.globDelayTimes.F2MTuneUsed = val;
+                            else
+                                GlobalVars.globDelayTimes.F2MCalibrateUsed= val;
                             //Calculate new val to send
                             val = (GlobalVars.globDelayTimes.F2MTuneUsed + GlobalVars.globDelayTimes.F2MCalibrateUsed) * 10;
                         }
@@ -206,14 +209,22 @@ namespace DemoPrototype
                         }
                         if (cmd == AOUDataTypes.CommandType.offsetHotFeed2RetValveTime)
                         {
+                            if (pg.Name == "TunePage")
+                                GlobalVars.globDelayTimes.EATune = val;
+                            else
+                                GlobalVars.globDelayTimes.EACalibrate = val;
                             //save new value
-                            GlobalVars.globDelayTimes.EATune = val;
+                            //GlobalVars.globDelayTimes.EATune = val;
                             val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.offsetRetValveHotPeriod)
                         {
                             //save new value
-                            GlobalVars.globDelayTimes.VATune = val;
+                            if (pg.Name == "TunePage")
+                                GlobalVars.globDelayTimes.VATune = val;
+                            else
+                                GlobalVars.globDelayTimes.VACalibrate = val;
+                                                      
                             val = val * 10;
                         }
 

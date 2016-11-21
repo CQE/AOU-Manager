@@ -116,10 +116,34 @@ namespace DemoPrototype
             
 
             //set feed times
-            TextBox_NewActiveHeatingTime.Text = GlobalVars.globFeedTimes.HeatingActive.ToString();
-            TextBox_NewActiveCoolingTime.Text = GlobalVars.globFeedTimes.CoolingActive.ToString();
-            TextBox_NewPauseHeatingTime.Text = GlobalVars.globFeedTimes.HeatingPause.ToString();
-            TextBox_NewPauseCoolingTime.Text = GlobalVars.globFeedTimes.CoolingPause.ToString();
+            if (GlobalVars.globFeedTimes.HeatingActive>= 0)
+            {
+                TextBox_NewActiveHeatingTime.Text = GlobalVars.globFeedTimes.HeatingActive.ToString();
+            }
+                else
+                TextBox_NewActiveHeatingTime.Text ="-";
+            if (GlobalVars.globFeedTimes.CoolingActive >= 0)
+            {
+                TextBox_NewActiveCoolingTime.Text = GlobalVars.globFeedTimes.CoolingActive.ToString();
+            }
+            else
+                TextBox_NewActiveCoolingTime.Text = "-";
+            if (GlobalVars.globFeedTimes.HeatingPause >= 0)
+            {
+                TextBox_NewPauseHeatingTime.Text = GlobalVars.globFeedTimes.HeatingPause.ToString();
+            }
+            else
+                TextBox_NewPauseHeatingTime.Text = "-";
+            if (GlobalVars.globFeedTimes.CoolingPause >= 0)
+            {
+                TextBox_NewPauseCoolingTime.Text = GlobalVars.globFeedTimes.CoolingPause.ToString();
+            }
+            else
+                TextBox_NewPauseCoolingTime.Text = "-";
+
+
+           
+           
 
           
             

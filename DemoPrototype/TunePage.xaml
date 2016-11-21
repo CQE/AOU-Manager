@@ -47,7 +47,7 @@
 
 
         <Border  Margin="5,5,10,5" Grid.Row="8" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="12" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
-            <StackPanel Orientation="Vertical" Margin="-174,-173,174,173">
+            <StackPanel Orientation="Vertical">
                 <TextBlock Margin="5,0,0,0" Text="Balancing" FontWeight="SemiBold"></TextBlock>
 
             </StackPanel>

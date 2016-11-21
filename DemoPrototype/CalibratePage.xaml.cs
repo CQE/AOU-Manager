@@ -82,7 +82,19 @@ namespace DemoPrototype
             ColdF2MTuneUsed.Text = GlobalVars.globDelayTimes.F2MTuneUsed.ToString();
             sum = GlobalVars.globDelayTimes.F2MCalibrateUsed + GlobalVars.globDelayTimes.F2MTuneUsed;
             ColdF2MTotalUsed.Text = sum.ToString();
-            
+
+            //EA and VA delay times
+            EACalText.Text = GlobalVars.globDelayTimes.EACalibrate.ToString();
+            EATuneText.Text = GlobalVars.globDelayTimes.EATune.ToString();
+            sum = GlobalVars.globDelayTimes.EACalibrate + GlobalVars.globDelayTimes.EATune;
+            EATotalText.Text = sum.ToString();
+            VACalText.Text = GlobalVars.globDelayTimes.VACalibrate.ToString();
+            VATuneText.Text = GlobalVars.globDelayTimes.VATune.ToString();
+            sum = GlobalVars.globDelayTimes.VACalibrate + GlobalVars.globDelayTimes.VATune;
+            VATotalText.Text = sum.ToString();
+
+
+
 
             //set threshold levels (should have better names)
             TBufHotHLine.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
@@ -575,6 +587,28 @@ namespace DemoPrototype
         {
             //show slider and send command to AOU
             AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "F2M: write what?", AOUDataTypes.CommandType.coldFeed2MouldDelayTime, 0, 30, this);
+        }
+
+        private void EACalText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "EACal: write what?", AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, 0, 30, this);
+        }
+
+        private void EACalText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int sum = GlobalVars.globDelayTimes.EATune + GlobalVars.globDelayTimes.EACalibrate;
+            EATotalText.Text = sum.ToString();
+        }
+
+        private void VACalText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "VACal: write what?", AOUDataTypes.CommandType.offsetRetValveHotPeriod, 0, 30, this);
+        }
+
+        private void VACalText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int sum = GlobalVars.globDelayTimes.VATune + GlobalVars.globDelayTimes.VACalibrate;
+            VATotalText.Text = sum.ToString();
         }
     }
 }

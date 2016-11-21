@@ -424,7 +424,7 @@ namespace DemoPrototype
 
         private void F2MTuneUsedText_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "F2M Tune Used what shall we write here", AOUDataTypes.CommandType.hotFeed2MouldDelayTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "Feed-To-Mould delay time", AOUDataTypes.CommandType.hotFeed2MouldDelayTime, 0, 30, this);
         }
 
         private void F2MTuneUsedText_TextChanged(object sender, TextChangedEventArgs e)
@@ -437,7 +437,7 @@ namespace DemoPrototype
 
         private void EATuneText_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "EATune:What shal we write here??", AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "Offset Return valve Switch time", AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, 0, 30, this);
         }
 
         private void EATuneText_TextChanged(object sender, TextChangedEventArgs e)
@@ -448,7 +448,7 @@ namespace DemoPrototype
 
         private void VATuneText_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "VATune:What shal we write here??", AOUDataTypes.CommandType.offsetRetValveHotPeriod, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_FocusControl, "Offset Return valve Switching period", AOUDataTypes.CommandType.offsetRetValveHotPeriod, 0, 30, this);
         }
 
         private void VATuneText_TextChanged(object sender, TextChangedEventArgs e)

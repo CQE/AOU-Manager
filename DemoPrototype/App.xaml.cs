@@ -114,9 +114,8 @@ namespace DemoPrototype
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
-            timer.Cancel();
-
+            //TODO: Save application state and stop any background activity. This is NOT working, never wakes up again
+          //  timer.Cancel();
             deferral.Complete();
         }
 

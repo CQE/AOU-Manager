@@ -99,7 +99,7 @@
         <TextBlock  Margin="50,0,0,0" Grid.Row="5" Grid.Column="6" VerticalAlignment="Center" Text="Computed"></TextBlock>
         <TextBlock Margin="20,0,0,0" Name="F2MCalText" Grid.Row="5" Grid.Column="7" VerticalAlignment="Center" HorizontalAlignment="Left" Text="88"></TextBlock>
         <TextBlock  VerticalAlignment="Center" Grid.Row="5" Grid.Column="8" Margin="10,0,0,0" Text="+"></TextBlock>
-        <TextBlock Name="F2MTuneText" Grid.Row="5" Grid.Column="8" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="44,0,0,0" HorizontalAlignment="Left" Width="30" GotFocus="HotFeedToReturnDelayCalTime_GotFocus"   Text="22"></TextBlock>
+        <TextBlock Name="F2MTuneText" Grid.Row="5" Grid.Column="8" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="55,0,0,0" HorizontalAlignment="Left" Width="30" GotFocus="HotFeedToReturnDelayCalTime_GotFocus"   Text="22"></TextBlock>
         <TextBlock  VerticalAlignment="Center" Margin="2,0,0,0"  Grid.Row="5" Grid.Column="9"  HorizontalAlignment="Center" Text="="></TextBlock>
         <TextBlock Name="F2MTotalText" VerticalAlignment="Center" Grid.Row="5" Grid.Column="10" Margin="5,0,0,0" Text="111"></TextBlock>
 

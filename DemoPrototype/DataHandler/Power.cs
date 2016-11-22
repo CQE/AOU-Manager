@@ -36,6 +36,10 @@ namespace DemoPrototype
             ValveCoolant = double.NaN;
 
             PowerHeating = double.NaN;
+
+            //calculated values used in graph
+            DeltaHot = double.NaN;
+            DeltaCold = double.NaN;
         }
 
         // Time in ms
@@ -63,6 +67,9 @@ namespace DemoPrototype
         public double ValveCoolant { get; set; } // % ?
 
         public double PowerHeating { get; set; } // 
+
+        public double DeltaHot { get; set; }
+        public double DeltaCold { get; set; }
 
         public override string ToString()
         {

@@ -652,9 +652,9 @@ namespace DemoPrototype
                             //power.TReturnForecasted = power.TReturnActual-2;
                         }
                         //manipulate THeatExchangerCoolantOut
-                        power.THeatExchangerCoolantOut = power.THotTank - power.TBufferHot;
-                        //manipulate 
-                        power.THeaterOilOut = power.TBufferCold - power.TColdTank;
+                        power.DeltaHot = power.THotTank - power.TBufferHot;
+                        //manipulate TODO need to define new entry in power MW
+                        power.DeltaCold = power.TBufferCold - power.TColdTank;
                         newPowerValues.Add(power);
                     }
                 }

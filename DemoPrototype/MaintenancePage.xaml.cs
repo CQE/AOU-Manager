@@ -113,14 +113,14 @@ namespace DemoPrototype
             oilMiddleTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferMid);
             oilColdSideTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferCold);
 
-            oilInletTemp.Text = GetStringValue(double.NaN); ;
+            oilInletTemp.Text = GetStringValue(Data.Updater.LastPower.THeatExchangerCoolantOut); 
             oilOutletTemp.Text = GetStringValue(Data.Updater.LastPower.THeaterOilOut);
 
             oilExchangeInletTemp.Text = GetStringValue(double.NaN);
             oilExchangeOutletTemp.Text = GetStringValue(double.NaN);
 
             coolantWaterExchangeInletTemp.Text = GetStringValue(double.NaN);
-            coolantWaterExchangeOutletTemp.Text = GetStringValue(Data.Updater.LastPower.THeatExchangerCoolantOut);
+            coolantWaterExchangeOutletTemp.Text = GetStringValue(double.NaN);
 
             hotFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedHot, GlobalVars.globValveChartValues.HotValveHi);
             coldFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedCold, GlobalVars.globValveChartValues.ColdValveHi);

@@ -126,22 +126,25 @@
         <TextBlock  Grid.Row="10" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,20,0,0" Text="="></TextBlock>
         <TextBlock  Grid.Row="10" Grid.Column="4" Name="EATotalText" Margin="5,20,0,0" VerticalAlignment="Center" Text="122"></TextBlock>
 
-        <!-- Volume active timing -->
+        <!-- Volume active timing  -->
 
-        <TextBlock Grid.Row="10" Grid.Column="6" Grid.ColumnSpan="2"  Margin="50,0,0,0"  Text="Change Return Valve Switching" VerticalAlignment="Top"></TextBlock>
-        <TextBlock Grid.Row="10" Grid.Column="6" Grid.ColumnSpan="2"  Margin="50,16,0,0"  Text="Period (s)" VerticalAlignment="Top"></TextBlock>
-        <TextBlock Margin="20,0,0,0" Grid.Row="10" Grid.Column="7"  HorizontalAlignment="Left"> Calibrate</TextBlock>
-        <TextBlock Margin="10,0,0,0" Grid.Row="10" Grid.Column="8" Grid.ColumnSpan="3" Text="+"></TextBlock>
-        <TextBlock Margin="0,0,0,0" Grid.Row="10" Grid.Column="8"   HorizontalAlignment="Right" Text="Tune"></TextBlock>
-        <TextBlock Margin="2,0,0,0" Grid.Row="10" Grid.Column="9" HorizontalAlignment="Center" Text="="></TextBlock>
-        <TextBlock Margin="0,0,0,0" Grid.Row="10" Grid.Column="10"  Text="Total"></TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="6" Grid.ColumnSpan="2"  Margin="50,0,0,0"  Text="Change Return Valve Switching Period (s)" VerticalAlignment="Top"></TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="6" Grid.ColumnSpan="2"  Margin="50,16,0,0"  Text="" VerticalAlignment="Top"></TextBlock>
+        <TextBlock Margin="20,0,0,0" Grid.Row="10" Grid.Column="8"  HorizontalAlignment="Left"> Calibrate</TextBlock>
+        <TextBlock Margin="10,0,0,0" Grid.Row="10" Grid.Column="9" Grid.ColumnSpan="3" Text="+"></TextBlock>
+        <TextBlock Margin="0,0,0,0" Grid.Row="10" Grid.Column="9"   HorizontalAlignment="Right" Text="Tune"></TextBlock>
+        <TextBlock Margin="2,0,0,0" Grid.Row="10" Grid.Column="10" HorizontalAlignment="Center" Text="="></TextBlock>
+        <TextBlock Margin="0,0,0,0" Grid.Row="10" Grid.Column="11"  Text="Total"></TextBlock>
 
         <TextBlock  Margin="50,20,0,0"  Grid.Row="10" VerticalAlignment="Center" Grid.Column="6" Text="Volume active timing"></TextBlock>
-        <TextBlock Grid.Row="10" Grid.Column="7" Name="VACalText" VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="20,20,0,0" Text="110"></TextBlock>
-        <TextBlock Grid.Row="10" Grid.Column="8" VerticalAlignment="Center" Margin="10,20,0,0" Text="+"></TextBlock>
-        <TextBox Grid.Row="10" Grid.Column="8" Grid.ColumnSpan="2" Width="30" Margin="44,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="VATuneText"  GotFocus="VATuneText_GotFocus"  TextChanged="VATuneText_TextChanged"  IsReadOnly="True"  Text="33"></TextBox>
-        <TextBlock  Grid.Row="10" Grid.Column="9" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,20,0,0" Text="="></TextBlock>
-        <TextBlock  Grid.Row="10" Grid.Column="10" Name="VATotalText" Margin="5,20,0,0" VerticalAlignment="Center" Text="122"></TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="8" Name="VACalText" VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="20,20,0,0" Text="110"></TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="9" VerticalAlignment="Center" Margin="10,20,0,0" Text="+"></TextBlock>
+        <TextBox Grid.Row="10" Grid.Column="9" Grid.ColumnSpan="2" Width="30" Margin="44,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="VATuneText"  GotFocus="VATuneText_GotFocus"  TextChanged="VATuneText_TextChanged"  IsReadOnly="True"  Text="33"></TextBox>
+        <TextBlock  Grid.Row="10" Grid.Column="10" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,20,0,0" Text="="></TextBlock>
+        <TextBlock  Grid.Row="10" Grid.Column="11" Name="VATotalText" Margin="5,20,0,0" VerticalAlignment="Center" Text="122"></TextBlock>
+
+
+
 
         <!-- Freeze button -->
         <Button Name="TuneFreezeButton" Grid.Row="7" Grid.Column="6" VerticalAlignment="Center" Margin="50,0,0,10" Click="TuneFreezeButton_Click"  Width="80" Content="Freeze"></Button>

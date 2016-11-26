@@ -74,6 +74,30 @@
                     </StackPanel>
                 </StackPanel>
             </Border>
+
+            <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
+                    <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Force cooling cartridge"></TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Width="110"  VerticalAlignment="Center" Text="Disable cooler"></TextBlock>
+                        <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"  IsOn="True" HorizontalAlignment="Right"></ToggleSwitch>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Width="110"  VerticalAlignment="Center" Text="Cooler power"></TextBlock>
+                        <TextBlock  Margin="15,0,0,0" VerticalAlignment="Center" Text="{Binding ElementName=myCoolSlider,Path=Value}"></TextBlock>
+                        <TextBlock   VerticalAlignment="Center" Text=" %"></TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Slider x:Name="myCoolSlider" Width="110" Value="95" Minimum="0" Maximum="100"></Slider>
+                        <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+
+
             <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
                 <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
                     <TextBlock FontWeight="SemiBold" Text="Flow (lpm)"></TextBlock>

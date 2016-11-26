@@ -283,7 +283,7 @@ namespace DemoPrototype
 
         public static void SetStaticValues()
         {
-            return; //testing purposes
+            //return; //testing purposes
             globFeedTimes.CoolingActive = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.coolingTime);
             globFeedTimes.HeatingActive = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.heatingTime);
 
@@ -379,6 +379,8 @@ namespace DemoPrototype
             globTankSetTemps = new GlobalTankSetTemps(); 
             globValveChartValues = new GlobalValveChartValues();
             globInitBools = new GlobalInitBools();
+            //set running mode to idle
+            GlobalAppSettings.RunningMode = 0;
 
             globValveChartValues.HotValveLow = 18; // ToDo: Trim
             globValveChartValues.HotValveHi = 24;
@@ -598,7 +600,8 @@ namespace DemoPrototype
             private int _EATune;
             private int _VACalibrate;
             private int _VATune;
-
+            private int _hotStep;
+            private int _coldStep;
 
             public GlobalDelayTimes()
             {
@@ -615,6 +618,8 @@ namespace DemoPrototype
                 _EACalibrate = 0;
                 _VATune = 0;
                 _VACalibrate = 0;
+                _hotStep = 0;
+                _coldStep = 0;
             }
 
             public bool IsAllValuesReceived()
@@ -720,6 +725,18 @@ namespace DemoPrototype
                 set { _VACalibrate = value; }
             }
 
+            public int HotStep
+            {
+                get { return _hotStep; }
+                set { _hotStep = value; }
+            }
+
+            public int ColdStep
+            {
+                get { return _coldStep; }
+                set { _coldStep = value; }
+            }
+            
             public string HotTuneStr
             {
                 get

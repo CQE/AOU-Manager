@@ -64,12 +64,17 @@ namespace DemoPrototype
             TextBlock_HotTune.Text = GlobalVars.globDelayTimes.HotTune.ToString();
             int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
             TextBlock_SumHotDelayTime.Text = sum.ToString();
-            CalibrateHotStepValue.Text = sum.ToString();
             ColdFeedToReturnDelayTime.Text = GlobalVars.globDelayTimes.ColdCalibrate.ToString();
             TextBlock_ColdTune.Text = GlobalVars.globDelayTimes.ColdTune.ToString();
             sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
             TextBlock_SumColdDelayTime.Text = sum.ToString();
+
+            sum = GlobalVars.globDelayTimes.HotStep;
+            CalibrateHotStepValue.Text = sum.ToString();
+            sum = GlobalVars.globDelayTimes.ColdStep;
             CalibrateColdStepValue.Text = sum.ToString();
+
+
 
             double calcVal = GlobalVars.globDelayTimes.HotCalibrate * 0.45;// GlobalVars.globMisc.DelayTimeConst;
             F2MCalComputed.Text = calcVal.ToString();
@@ -92,6 +97,7 @@ namespace DemoPrototype
             VATuneText.Text = GlobalVars.globDelayTimes.VATune.ToString();
             sum = GlobalVars.globDelayTimes.VACalibrate + GlobalVars.globDelayTimes.VATune;
             VATotalText.Text = sum.ToString();
+
 
 
 
@@ -241,8 +247,9 @@ namespace DemoPrototype
                     //todo: set back to Idle
                     //Data.Updater.SetCommandValue(AOUDataTypes.CommandType.RunningMode, (int)AOUDataTypes.AOURunningMode.Idle);
                     Data.Updater.SetCommandValue(AOUDataTypes.CommandType.runModeAOU,0);
-                    HotStepButton.IsEnabled = true;
-                    ColdStepButton.IsEnabled = true;
+                    //  HotStepButton.IsEnabled = true;
+                    //  ColdStepButton.IsEnabled = true;
+                    HotStepStatus.Text = "";
                 }
             }
         }
@@ -263,11 +270,18 @@ namespace DemoPrototype
             //todo make work
         }
 
-        
-        
+
+
         private void DoHotStep(object sender, RoutedEventArgs e)
         {
-            int hotStepLength = AppHelper.ConvertToValidInteger(CalibrateHotStepValue.Text, 2, 25);
+            //check if already ongoing
+            if (doStepTimer > 0)
+            {
+                AppHelper.ShowMessageBox("Hot/Cold step already running");
+                return;
+            }
+
+            int hotStepLength = GlobalVars.globDelayTimes.HotStep;//AppHelper.ConvertToValidInteger(CalibrateHotStepValue.Text, 2, 25);
             //must check if in state IDLE. If not, display error message and return
         
             if (GlobalAppSettings.RunningMode != (int)AOUDataTypes.AOURunningMode.Idle)
@@ -276,7 +290,7 @@ namespace DemoPrototype
                 return;
             }
           
-            if (hotStepLength == -1)
+            if (hotStepLength < 1)
             {
                 AppHelper.ShowMessageBox("No valid time value");
             }
@@ -286,16 +300,24 @@ namespace DemoPrototype
                 //sent command and value to AOU 
                 //plot Hot Step response for x seconds
                 doStepTimer = hotStepLength;
+                HotStepStatus.Text = "Working...";
                 Data.Updater.StartHotStep(hotStepLength*10); //must convert to deciseconds
-                HotStepButton.IsEnabled = false;
-                ColdStepButton.IsEnabled = false;
+               // HotStepButton.IsEnabled = false;
+                //ColdStepButton.IsEnabled = false;
                 //done! Freeze output in grid 
             }
         }
 
         private void DoColdStep(object sender, RoutedEventArgs e)
         {
-            int coldStepLength = AppHelper.ConvertToValidInteger(CalibrateColdStepValue.Text, 2, 25);
+            if (doStepTimer > 0)
+            {
+                AppHelper.ShowMessageBox("Hot/Cold step already running");
+                return;
+            }
+
+
+            int coldStepLength = GlobalVars.globDelayTimes.ColdStep;// AppHelper.ConvertToValidInteger(CalibrateColdStepValue.Text, 2, 25);
 
             if (GlobalAppSettings.RunningMode != (int)AOUDataTypes.AOURunningMode.Idle)
             {
@@ -310,9 +332,10 @@ namespace DemoPrototype
             {
                 SetAxisRangeForTempStep(coldStepLength);
                 doStepTimer = coldStepLength;
+                HotStepStatus.Text = "Working...";
                 Data.Updater.StartColdStep(coldStepLength*10);
-                HotStepButton.IsEnabled = false;
-                ColdStepButton.IsEnabled = false;
+                //HotStepButton.IsEnabled = false;
+                //ColdStepButton.IsEnabled = false;
                 //done! 
             }
         }
@@ -520,7 +543,7 @@ namespace DemoPrototype
             //do we need to change the sum?
             int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
             TextBlock_SumHotDelayTime.Text = sum.ToString();
-            CalibrateHotStepValue.Text = sum.ToString();
+            //CalibrateHotStepValue.Text = sum.ToString();
             //need to update calculated values too
             double calcVal;
             calcVal = GlobalVars.globDelayTimes.HotCalibrate * 0.45;// GlobalVars.globMisc.DelayTimeConst;
@@ -534,7 +557,7 @@ namespace DemoPrototype
             //do we need to change the sum?
             int sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
             TextBlock_SumColdDelayTime.Text = sum.ToString();
-            CalibrateColdStepValue.Text = sum.ToString();
+            //CalibrateColdStepValue.Text = sum.ToString();
         }
 
         private void TextBox_HotToColdThreshold_GotFocus(object sender, RoutedEventArgs e)
@@ -610,5 +633,17 @@ namespace DemoPrototype
             int sum = GlobalVars.globDelayTimes.VATune + GlobalVars.globDelayTimes.VACalibrate;
             VATotalText.Text = sum.ToString();
         }
+
+        private void CalibrateHotStepValue_GotFocus(object sender, RoutedEventArgs e)
+        {
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Hot Step time ", AOUDataTypes.CommandType.runModeHeating, 0, 30, this, false);
+        }
+
+        private void CalibrateColdStepValue_GotFocus(object sender, RoutedEventArgs e)
+        {
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)Button_Freeze_Run, "Cold Step time ", AOUDataTypes.CommandType.runModeCooling, 0, 30, this, false);
+        }
+
+        
     }
 }

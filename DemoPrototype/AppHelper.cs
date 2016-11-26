@@ -227,9 +227,21 @@ namespace DemoPrototype
                                                       
                             val = val * 10;
                         }
-
+                        //hot step and cold step
+                        if (cmd == AOUDataTypes.CommandType.runModeHeating)
+                        {
+                            //save new value
+                            GlobalVars.globDelayTimes.HotStep = val;
+                        }
+                        if (cmd == AOUDataTypes.CommandType.runModeCooling)
+                        {
+                            //save new value
+                            GlobalVars.globDelayTimes.ColdStep = val;
+                        }
+                        
                         //*/
-                        Data.Updater.SetCommandValue(cmd, val);
+                        if (sendToAOU==true) 
+                            Data.Updater.SetCommandValue(cmd, val);
                     }
                     if (nextControl != null)
                     {

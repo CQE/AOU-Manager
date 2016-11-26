@@ -89,17 +89,16 @@
         <!-- Use overlay textbox for showing diff result -->
         <TextBox Grid.Column="3" Grid.Row="3" Name="CalibratePhaseDiffResult" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="- s"></TextBox>
 
-
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Name="HotStepStatus"  VerticalAlignment="Bottom" Margin="30,0,0,0"></TextBlock>        
         <StackPanel Margin="30,0,0,0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
-            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Content="Hot step" Click="DoHotStep" Name="HotStepButton"></Button>
-            <TextBox  Margin="10,0,0,0" VerticalAlignment="Center" Text="999" IsReadOnly="True" Name="CalibrateHotStepValue"></TextBox>
+            <Button  HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Content="Hot step" Click="DoHotStep"  Name="HotStepButton" ></Button>
+            <TextBox  Margin="10,0,0,0" VerticalAlignment="Center" Text="-" IsReadOnly="True" GotFocus="CalibrateHotStepValue_GotFocus" Name="CalibrateHotStepValue"></TextBox>
             <TextBlock VerticalAlignment="Center"  Text=" (s)"></TextBlock>
         </StackPanel>
 
-        <StackPanel  Margin="30,0,0,0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2
-                     " Grid.Row="3">
+        <StackPanel  Margin="30,0,0,0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2 " Grid.Row="3">
             <Button Grid.Row="2" Grid.Column="1"  VerticalAlignment="Center" Width="100" Content="Cold step" Click="DoColdStep" Name="ColdStepButton"></Button>
-            <TextBox  Margin="10,0,0,0" VerticalAlignment="Center" Text="999" IsReadOnly="True" Name="CalibrateColdStepValue"></TextBox>
+            <TextBox  Margin="10,0,0,0" VerticalAlignment="Center" Text="-" IsReadOnly="True" GotFocus="CalibrateColdStepValue_GotFocus" Name="CalibrateColdStepValue"></TextBox>
             <TextBlock VerticalAlignment="Center"  Text=" (s)"></TextBlock>
         </StackPanel>
 

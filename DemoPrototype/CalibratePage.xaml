@@ -107,7 +107,7 @@
             <ToggleSwitch  Margin="5,0,0,0"  Toggled="DoCycle" VerticalAlignment="Center" IsOn="False" ></ToggleSwitch>
         </StackPanel>
 
-        <Button Visibility="Collapsed" Margin="10,20,10,0" Grid.Row="4" Grid.Column="0" Width="80" HorizontalAlignment="Right" Content="Freeze" Name="Button_Freeze_Run" Click="Button_Freeze_Run_Click"></Button>
+        <Button Visibility="Visible"  Margin="10,20,10,0" Grid.Row="4" Grid.Column="1" Width="100" HorizontalAlignment="Center" Content="Run/Freeze" Name="Button_Freeze_Run" Click="Button_Freeze_Run_Click"></Button>
 
         <TextBlock Margin="30,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="3"> Trip time Feed-to-Return (s)</TextBlock>
         <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="9" HorizontalAlignment="Right"   Text="Calibrate"></TextBlock>

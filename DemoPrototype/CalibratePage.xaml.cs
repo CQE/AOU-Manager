@@ -301,6 +301,7 @@ namespace DemoPrototype
                 //plot Hot Step response for x seconds
                 doStepTimer = hotStepLength;
                 HotStepStatus.Text = "Working...";
+                dTimer.Start();
                 Data.Updater.StartHotStep(hotStepLength*10); //must convert to deciseconds
                // HotStepButton.IsEnabled = false;
                 //ColdStepButton.IsEnabled = false;
@@ -324,7 +325,7 @@ namespace DemoPrototype
                 AppHelper.ShowMessageBox("AOU must be in mode IDLE for this command");
                 return;
             }
-            if (coldStepLength == -1)
+            if (coldStepLength < 1)
             {
                 AppHelper.ShowMessageBox("No valid time value");
             }
@@ -332,6 +333,7 @@ namespace DemoPrototype
             {
                 SetAxisRangeForTempStep(coldStepLength);
                 doStepTimer = coldStepLength;
+                dTimer.Start(); //hope this works even if already running
                 HotStepStatus.Text = "Working...";
                 Data.Updater.StartColdStep(coldStepLength*10);
                 //HotStepButton.IsEnabled = false;
@@ -585,18 +587,21 @@ namespace DemoPrototype
             if (dTimer.IsEnabled && doStepTimer == 0)
             {
                 dTimer.Stop();
-                Button_Freeze_Run.Content = "Run";
+               // Button_Freeze_Run.Content = "Run";
             }
             else
             {
-                //make axis auto again
+                //if in a step, do nothing
+                if (doStepTimer > 0)
+                    return;
+                //else make axis auto again
                 //todo: make work for all graphs
                 CalibrateDelayXAxis.Minimum = null;
                 CalibrateDelayXAxis.Maximum = null;
                 CalibrateDelayXAxis.Interval = null;
                 //and start the plotting
                 dTimer.Start();
-                Button_Freeze_Run.Content = "Freeze";
+                //Button_Freeze_Run.Content = "Freeze";
             }
         }
 

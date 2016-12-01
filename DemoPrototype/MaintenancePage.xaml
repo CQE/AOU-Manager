@@ -285,15 +285,15 @@
                     <TextBlock FontWeight="SemiBold" Text="Safety"></TextBlock>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Width="140" Text="Safety Stop"></TextBlock>
-                        <TextBox IsEnabled="False" Text="35"></TextBox>
+                        <TextBox IsEnabled="False" Text="not ready"></TextBox>
                     </StackPanel>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Width="140" Text="Safety Stop"></TextBlock>
-                        <TextBox IsEnabled="False" Text="35"></TextBox>
+                        <TextBox IsEnabled="False" Text="not ready"></TextBox>
                     </StackPanel>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Width="140" Text="Safety Stop"></TextBlock>
-                        <TextBox IsEnabled="False" Text="35"></TextBox>
+                        <TextBox IsEnabled="False" Text="not ready"></TextBox>
                     </StackPanel>
 
                 </StackPanel>

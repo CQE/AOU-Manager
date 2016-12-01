@@ -162,6 +162,7 @@ namespace DemoPrototype
             {
                Data.Updater.CreateLogMessage("Save Excel To File " + fileName, e.Message);
             }
+            AppHelper.ShowMessageBox("Exporting file " + storageFile.Path + " succeeded"  );
         }
 
         private void exportButton_Click(object sender, RoutedEventArgs e)

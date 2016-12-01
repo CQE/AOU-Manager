@@ -96,7 +96,7 @@ namespace DemoPrototype
             Data.Updater.VerifySendToAOUDlg(title, message + val, cmd, pg, val);
         }
 
-        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, AOUDataTypes.CommandType cmd, int min, int max, Page pg, bool sendToAOU = true)
+        public static async void GetValueToTextBox(TextBox textbox, Control nextControl, string title, AOUDataTypes.CommandType cmd, int min, int max, double stepFrequency, Page pg,  bool sendToAOU = true)
         {
             /* Example to use GetValueToTextBox
             
@@ -115,7 +115,7 @@ namespace DemoPrototype
             try {
                 if (dialog == null) // Prevent more then one dialg
                 { 
-                    dialog = new SetValueDialog(value, min, max);
+                    dialog = new SetValueDialog(value, min, max, stepFrequency);
                     dialog.Title = title;
                     dialog.PrimaryButtonText = "Ok";
                     dialog.SecondaryButtonText = "Cancel";
@@ -125,31 +125,32 @@ namespace DemoPrototype
                     if (((SetValueDialog)dialog).Ok)
                     {
                         textbox.Text = ((SetValueDialog)dialog).GetStringValue();
-                        int val = ((SetValueDialog)dialog).GetIntValue();
+                        //val now a double
+                        double val = ((SetValueDialog)dialog).GetDoubleValue();
 
                         /* ToDo: Set when ret */  //need to test if this is working we can set the variable two times
                         //Handle all feeding times
                         //remeber to send times i deciseconds i e multiply by 10
                         if (cmd == AOUDataTypes.CommandType.heatingTime)
                         {
-                            GlobalVars.globFeedTimes.HeatingActive = val;
+                            GlobalVars.globFeedTimes.HeatingActive = (int)val;
                             val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.toolHeatingFeedPause)
                         {
-                            GlobalVars.globFeedTimes.HeatingPause = val;
+                            GlobalVars.globFeedTimes.HeatingPause = (int)val;
                             val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.coolingTime)
                         {
                            // val = val * 10;
-                            GlobalVars.globFeedTimes.CoolingActive = val;
+                            GlobalVars.globFeedTimes.CoolingActive = (int)val;
                             val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.toolCoolingFeedPause)
                         {
                             //val = val * 10;
-                            GlobalVars.globFeedTimes.CoolingPause = val;
+                            GlobalVars.globFeedTimes.CoolingPause = (int)val;
                             val = val * 10;
                         }
 
@@ -162,7 +163,7 @@ namespace DemoPrototype
                                 GlobalVars.globDelayTimes.HotTune = val;
                             else
                                 GlobalVars.globDelayTimes.HotCalibrate = val;
-                            val = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
+                            val = Math.Max(GlobalVars.globDelayTimes.HotCalibrate,0) + Math.Max(GlobalVars.globDelayTimes.HotTune,0);
                             val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.coldDelayTime)
@@ -173,20 +174,20 @@ namespace DemoPrototype
                                 GlobalVars.globDelayTimes.ColdTune = val;
                             else
                                 GlobalVars.globDelayTimes.ColdCalibrate = val;
-                            val = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
+                            val = Math.Max(GlobalVars.globDelayTimes.ColdCalibrate, 0) + Math.Max(GlobalVars.globDelayTimes.ColdTune, 0);
                             val = val * 10;
                         }
                         //need to handle thresholds too
                         if (cmd == AOUDataTypes.CommandType.TReturnThresholdHot2Cold)
                         {
                             //save new value
-                            GlobalVars.globThresholds.ThresholdHot2Cold = val;
+                            GlobalVars.globThresholds.ThresholdHot2Cold = (int)val;
                             //and now what? MW
                         }
                         if (cmd == AOUDataTypes.CommandType.TReturnThresholdCold2Hot)
                         {
                             //save new value
-                            GlobalVars.globThresholds.ThresholdCold2Hot = val;
+                            GlobalVars.globThresholds.ThresholdCold2Hot = (int)val;
                             //and now what? MW
                         }
                         //and the four new commands
@@ -198,14 +199,18 @@ namespace DemoPrototype
                             else
                                 GlobalVars.globDelayTimes.F2MCalibrateUsed= val;
                             //Calculate new val to send
-                            val = (GlobalVars.globDelayTimes.F2MTuneUsed + GlobalVars.globDelayTimes.F2MCalibrateUsed) * 10;
+                            //val = (GlobalVars.globDelayTimes.F2MTuneUsed + GlobalVars.globDelayTimes.F2MCalibrateUsed) * 10;
+                            val = Math.Max(GlobalVars.globDelayTimes.F2MTuneUsed, 0) + Math.Max(GlobalVars.globDelayTimes.F2MCalibrateUsed, 0);
+                            val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.coldFeed2MouldDelayTime)
                         {
                             //save new value
                             GlobalVars.globDelayTimes.F2MCalibrateUsed = val;
                             //and now what? MW
-                            val = (GlobalVars.globDelayTimes.F2MTuneUsed + GlobalVars.globDelayTimes.F2MCalibrateUsed) * 10;
+                            //val = (GlobalVars.globDelayTimes.F2MTuneUsed + GlobalVars.globDelayTimes.F2MCalibrateUsed) * 10;
+                            val = Math.Max(GlobalVars.globDelayTimes.F2MTuneUsed, 0) + Math.Max(GlobalVars.globDelayTimes.F2MCalibrateUsed, 0);
+                            val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.offsetHotFeed2RetValveTime)
                         {
@@ -215,6 +220,7 @@ namespace DemoPrototype
                                 GlobalVars.globDelayTimes.EACalibrate = val;
                             //save new value
                             //GlobalVars.globDelayTimes.EATune = val;
+                            val = Math.Max(GlobalVars.globDelayTimes.EACalibrate, 0) + Math.Max(GlobalVars.globDelayTimes.EATune, 0);
                             val = val * 10;
                         }
                         if (cmd == AOUDataTypes.CommandType.offsetRetValveHotPeriod)
@@ -224,7 +230,7 @@ namespace DemoPrototype
                                 GlobalVars.globDelayTimes.VATune = val;
                             else
                                 GlobalVars.globDelayTimes.VACalibrate = val;
-                                                      
+                            val = Math.Max(GlobalVars.globDelayTimes.VACalibrate, 0) + Math.Max(GlobalVars.globDelayTimes.VATune, 0);
                             val = val * 10;
                         }
                         //hot step and cold step
@@ -241,7 +247,7 @@ namespace DemoPrototype
                         
                         //*/
                         if (sendToAOU==true) 
-                            Data.Updater.SetCommandValue(cmd, val);
+                            Data.Updater.SetCommandValue(cmd, (int)val);
                     }
                     if (nextControl != null)
                     {

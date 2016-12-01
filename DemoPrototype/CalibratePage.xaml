@@ -76,8 +76,8 @@
             <chart:SfChart.Annotations>
                 <!--   <chart:TextAnnotation X1="50" Y1="150" CoordinateUnit="Pixel" FontSize="16" FontWeight="ExtraLight" Text="Double-click to freeze/run"></chart:TextAnnotation>
           -->
-                <chart:VerticalLineAnnotation  Name="CalibratePhaseVLine1"  StrokeThickness="2" CanDrag="True"  DragCompleted="CalibratePhaseVLine1_DragCompleted"  Width="2" CoordinateUnit="Pixel" X1="50"></chart:VerticalLineAnnotation>
-                <chart:VerticalLineAnnotation Name="CalibratePhaseVLine2" StrokeThickness="2" CanDrag="True"  DragCompleted="CalibratePhaseVLine2_DragCompleted" CoordinateUnit="Pixel" X1="30"></chart:VerticalLineAnnotation>
+                <chart:VerticalLineAnnotation  Name="CalibratePhaseVLine1"  StrokeThickness="2" CanDrag="True"  DragCompleted="CalibratePhaseVLine1_DragCompleted"  DragDelta="CalibratePhaseVLine1_DragDelta"   Width="2" CoordinateUnit="Pixel" X1="50" ></chart:VerticalLineAnnotation>
+                <chart:VerticalLineAnnotation Name="CalibratePhaseVLine2" StrokeThickness="2" CanDrag="True"  DragCompleted="CalibratePhaseVLine2_DragCompleted" DragDelta="CalibratePhaseVLine2_DragDelta" CoordinateUnit="Pixel" X1="30"></chart:VerticalLineAnnotation>
             </chart:SfChart.Annotations>
 
             <chart:SplineSeries Name="Series_Delay_TRetActual" LegendIcon="Circle" Label="TRetActual" XBindingPath="ElapsedTime" YBindingPath="TReturnActual" ItemsSource="{Binding power}"></chart:SplineSeries>
@@ -87,7 +87,7 @@
             <chart:SplineSeries Name="Series_Delay_TColdTank" LegendIcon="Circle" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:SplineSeries>
         </chart:SfChart>
         <!-- Use overlay textbox for showing diff result -->
-        <TextBox Grid.Column="3" Grid.Row="3" Name="CalibratePhaseDiffResult" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="- s"></TextBox>
+        <TextBox Grid.Column="3" Grid.Row="3" Name="CalibratePhaseDiffResult" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="-"></TextBox>
 
         <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Name="HotStepStatus"  VerticalAlignment="Bottom" Margin="30,0,0,0"></TextBlock>        
         <StackPanel Margin="30,0,0,0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
@@ -104,8 +104,9 @@
 
         <StackPanel Margin="30,20,0,0"  Orientation="Horizontal" Grid.Row="4"  Grid.Column="0" >
             <TextBlock  VerticalAlignment="Center" Text="Cycle"></TextBlock>
-            <ToggleSwitch  Margin="5,0,0,0"  Toggled="DoCycle" VerticalAlignment="Center" IsOn="False" ></ToggleSwitch>
+            <ToggleSwitch  Margin="5,0,0,0"  Toggled="DoCycle" IsEnabled="False" VerticalAlignment="Center" IsOn="False" ></ToggleSwitch>
         </StackPanel>
+        <TextBox Name="FocusHere" Visibility="Collapsed"></TextBox>
 
         <Button Visibility="Visible"  Margin="10,20,10,0" Grid.Row="4" Grid.Column="1" Width="100" HorizontalAlignment="Center" Content="Run/Freeze" Name="Button_Freeze_Run" Click="Button_Freeze_Run_Click"></Button>
 

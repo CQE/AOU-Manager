@@ -23,13 +23,19 @@ namespace DemoPrototype
 
         public string GetStringValue()
         {
-            return GetIntValue().ToString();
+            //return GetIntValue().ToString();
+            return GetDoubleValue().ToString();
         }
 
         public int GetIntValue()
         {
             // Todo verify value
             return (int)Math.Round(valueSlider.Value);
+        }
+
+        public double GetDoubleValue()
+        {
+            return valueSlider.Value;
         }
 
         public SetValueDialog(string strValue, bool edit = false)
@@ -45,7 +51,7 @@ namespace DemoPrototype
             Ok = false;
         }
 
-        public SetValueDialog(string strValue, int min, int max)
+        public SetValueDialog(string strValue, int min, int max, double stepFrequency = 1)
         {
             int value = 0;
             int.TryParse(strValue, out value);
@@ -56,6 +62,7 @@ namespace DemoPrototype
             valueSlider.Minimum = min;
             valueSlider.Maximum = max;
             valueSlider.Value = value;
+            valueSlider.StepFrequency = stepFrequency;
             textValue.Text = strValue;
             Ok = false;
         }

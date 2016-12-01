@@ -60,48 +60,36 @@ namespace DemoPrototype
             InitDispatcherTimer();
 
             //set and calculate delay time values
-            HotFeedToReturnDelayTime.Text = GlobalVars.globDelayTimes.HotCalibrate.ToString();
-            TextBlock_HotTune.Text = GlobalVars.globDelayTimes.HotTune.ToString();
-            int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
-            TextBlock_SumHotDelayTime.Text = sum.ToString();
-            ColdFeedToReturnDelayTime.Text = GlobalVars.globDelayTimes.ColdCalibrate.ToString();
-            TextBlock_ColdTune.Text = GlobalVars.globDelayTimes.ColdTune.ToString();
-            sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
-            TextBlock_SumColdDelayTime.Text = sum.ToString();
+            HotFeedToReturnDelayTime.Text = GlobalVars.globDelayTimes.HotCalibrateStr;
+            TextBlock_HotTune.Text = GlobalVars.globDelayTimes.HotTuneStr;
+            TextBlock_SumHotDelayTime.Text = GlobalVars.globDelayTimes.HotDelayTimeSumStr;
 
-            sum = GlobalVars.globDelayTimes.HotStep;
+            ColdFeedToReturnDelayTime.Text = GlobalVars.globDelayTimes.ColdCalibrateStr;
+            TextBlock_ColdTune.Text = GlobalVars.globDelayTimes.ColdTuneStr;
+            TextBlock_SumColdDelayTime.Text = GlobalVars.globDelayTimes.ColdDelayTimeSumStr;     //sum.ToString();
+
+            double sum = GlobalVars.globDelayTimes.HotStep;
             CalibrateHotStepValue.Text = sum.ToString();
             sum = GlobalVars.globDelayTimes.ColdStep;
             CalibrateColdStepValue.Text = sum.ToString();
 
 
+            F2MCalComputed.Text = GlobalVars.globDelayTimes.F2MCalibrateComputedStr;  
+            F2MTuneComputed.Text = GlobalVars.globDelayTimes.F2MTuneComputedStr;
+            F2MTotalComputed.Text = GlobalVars.globDelayTimes.F2MTotalComputedSumStr;  
 
-            double calcVal = GlobalVars.globDelayTimes.HotCalibrate * 0.45;// GlobalVars.globMisc.DelayTimeConst;
-            F2MCalComputed.Text = calcVal.ToString();
-            calcVal = GlobalVars.globDelayTimes.HotTune * 0.45;// GlobalVars.globMisc.DelayTimeConst;
-            F2MTuneComputed.Text = calcVal.ToString();
-            calcVal = (GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune) * 0.45;// GlobalVars.globMisc.DelayTimeConst;
-            F2MTotalComputed.Text = calcVal.ToString();
-
-            ColdF2MDelay.Text = GlobalVars.globDelayTimes.F2MCalibrateUsed.ToString();
-            ColdF2MTuneUsed.Text = GlobalVars.globDelayTimes.F2MTuneUsed.ToString();
-            sum = GlobalVars.globDelayTimes.F2MCalibrateUsed + GlobalVars.globDelayTimes.F2MTuneUsed;
-            ColdF2MTotalUsed.Text = sum.ToString();
+            ColdF2MDelay.Text = GlobalVars.globDelayTimes.F2MCalibrateUsedStr;
+            ColdF2MTuneUsed.Text = GlobalVars.globDelayTimes.F2MTuneUsedStr;
+            ColdF2MTotalUsed.Text = GlobalVars.globDelayTimes.F2MUsedSumStr;
 
             //EA and VA delay times
-            EACalText.Text = GlobalVars.globDelayTimes.EACalibrate.ToString();
-            EATuneText.Text = GlobalVars.globDelayTimes.EATune.ToString();
-            sum = GlobalVars.globDelayTimes.EACalibrate + GlobalVars.globDelayTimes.EATune;
-            EATotalText.Text = sum.ToString();
-            VACalText.Text = GlobalVars.globDelayTimes.VACalibrate.ToString();
-            VATuneText.Text = GlobalVars.globDelayTimes.VATune.ToString();
-            sum = GlobalVars.globDelayTimes.VACalibrate + GlobalVars.globDelayTimes.VATune;
-            VATotalText.Text = sum.ToString();
-
-
-
-
-
+            EACalText.Text = GlobalVars.globDelayTimes.EACalibrateStr;
+            EATuneText.Text = GlobalVars.globDelayTimes.EATuneStr;
+            EATotalText.Text = GlobalVars.globDelayTimes.EASumStr;
+            VACalText.Text = GlobalVars.globDelayTimes.VACalibrateStr;
+            VATuneText.Text = GlobalVars.globDelayTimes.VATuneStr;
+            VATotalText.Text = GlobalVars.globDelayTimes.VASumStr;
+            
             //set threshold levels (should have better names)
             TBufHotHLine.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
             TBufMidHLine.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
@@ -281,7 +269,7 @@ namespace DemoPrototype
                 return;
             }
 
-            int hotStepLength = GlobalVars.globDelayTimes.HotStep;//AppHelper.ConvertToValidInteger(CalibrateHotStepValue.Text, 2, 25);
+            int hotStepLength = (int)GlobalVars.globDelayTimes.HotStep;//AppHelper.ConvertToValidInteger(CalibrateHotStepValue.Text, 2, 25);
             //must check if in state IDLE. If not, display error message and return
         
             if (GlobalAppSettings.RunningMode != (int)AOUDataTypes.AOURunningMode.Idle)
@@ -318,7 +306,7 @@ namespace DemoPrototype
             }
 
 
-            int coldStepLength = GlobalVars.globDelayTimes.ColdStep;// AppHelper.ConvertToValidInteger(CalibrateColdStepValue.Text, 2, 25);
+            int coldStepLength = (int)GlobalVars.globDelayTimes.ColdStep;// AppHelper.ConvertToValidInteger(CalibrateColdStepValue.Text, 2, 25);
 
             if (GlobalAppSettings.RunningMode != (int)AOUDataTypes.AOURunningMode.Idle)
             {
@@ -432,6 +420,8 @@ namespace DemoPrototype
                                                        //use value  x in Textbox and set new length of x-axis in grid
             TimeSpan newMaximum = new TimeSpan(0, 0, 0, stepLength, 0) + TNow;
             CalibrateDelayXAxis.Maximum = newMaximum;
+            //phase diff text no longer valid
+            CalibratePhaseDiffResult.Text = "-";
 
         }
 
@@ -519,13 +509,13 @@ namespace DemoPrototype
         private void HotFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Hot feed-to-return delay time", AOUDataTypes.CommandType.hotDelayTime, 0, 30, this);         
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Hot feed-to-return delay time", AOUDataTypes.CommandType.hotDelayTime, 0, 30, 0.5, this);         
         }
 
         private void ColdFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Cold feed-to-return delay time", AOUDataTypes.CommandType.coldDelayTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Change Cold feed-to-return delay time", AOUDataTypes.CommandType.coldDelayTime, 0, 30, 0.5, this);
         }
 
         public void AsyncResponseDlg(AOUDataTypes.CommandType cmd, bool ok)
@@ -542,43 +532,37 @@ namespace DemoPrototype
 
         private void HotFeedToReturnDelayTime_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //do we need to change the sum?
-            int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
-            TextBlock_SumHotDelayTime.Text = sum.ToString();
-            //CalibrateHotStepValue.Text = sum.ToString();
+            //do we need to change the sum? All times are now double, not int
+
+            TextBlock_SumHotDelayTime.Text = GlobalVars.globDelayTimes.HotDelayTimeSumStr;
             //need to update calculated values too
-            double calcVal;
-            calcVal = GlobalVars.globDelayTimes.HotCalibrate * 0.45;// GlobalVars.globMisc.DelayTimeConst;
-            F2MCalComputed.Text = calcVal.ToString();
-            calcVal = (GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune) * 0.45;// GlobalVars.globMisc.DelayTimeConst;
-            F2MTotalComputed.Text = calcVal.ToString();
+            F2MCalComputed.Text = GlobalVars.globDelayTimes.F2MCalibrateComputedStr;
+            F2MTotalComputed.Text = GlobalVars.globDelayTimes.F2MTotalComputedSumStr;
         }
 
         private void ColdFeedToReturnDelayTime_TextChanged(object sender, TextChangedEventArgs e)
         {
             //do we need to change the sum?
-            int sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
-            TextBlock_SumColdDelayTime.Text = sum.ToString();
-            //CalibrateColdStepValue.Text = sum.ToString();
+            TextBlock_SumColdDelayTime.Text = GlobalVars.globDelayTimes.ColdDelayTimeSumStr;
         }
 
         private void TextBox_HotToColdThreshold_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TRetActual hot" + " ↘ " + "cold", AOUDataTypes.CommandType.TReturnThresholdHot2Cold, 0, 300, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TRetActual hot" + " ↘ " + "cold", AOUDataTypes.CommandType.TReturnThresholdHot2Cold, 0, 300, 1,this);
         }
 
         private void TextBox_ColdToHotThreshold_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TRetActual cold" + " ↗ " + "hot", AOUDataTypes.CommandType.TReturnThresholdCold2Hot, 0, 300, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TRetActual cold" + " ↗ " + "hot", AOUDataTypes.CommandType.TReturnThresholdCold2Hot, 0, 300, 1, this);
             //todo update line
         }
 
         private void BufMidThresholdValue_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TMidBuffer", AOUDataTypes.CommandType.TBufferMidRefThreshold, 0, 300, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Threshold TMidBuffer", AOUDataTypes.CommandType.TBufferMidRefThreshold, 0, 300, 1,this);
             //todo update line
         }
 
@@ -607,48 +591,83 @@ namespace DemoPrototype
 
         private void ColdF2MDelay_TextChanged(object sender, TextChangedEventArgs e)
         {
-            int sum = GlobalVars.globDelayTimes.F2MCalibrateUsed + GlobalVars.globDelayTimes.F2MTuneUsed;
-            ColdF2MTotalUsed.Text = sum.ToString();
+
+            ColdF2MTotalUsed.Text = GlobalVars.globDelayTimes.F2MUsedSumStr;
         }
 
         private void ColdF2MDelay_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Feed-To-Mould delay time", AOUDataTypes.CommandType.coldFeed2MouldDelayTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Feed-To-Mould delay time", AOUDataTypes.CommandType.coldFeed2MouldDelayTime, 0, 30, 0.5,this);
         }
 
         private void EACalText_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Offset Return valve Switch time", AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Offset Return valve Switch time", AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, 0, 30, 0.5,this);
         }
 
         private void EACalText_TextChanged(object sender, TextChangedEventArgs e)
         {
-            int sum = GlobalVars.globDelayTimes.EATune + GlobalVars.globDelayTimes.EACalibrate;
-            EATotalText.Text = sum.ToString();
+            EATotalText.Text = GlobalVars.globDelayTimes.EASumStr;
         }
 
         private void VACalText_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)CalibrateColdStepValue, "Offset Return valve Switching period", AOUDataTypes.CommandType.offsetRetValveHotPeriod, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Offset Return valve Switching period", AOUDataTypes.CommandType.offsetRetValveHotPeriod, 0, 30, 0.5, this);
         }
 
         private void VACalText_TextChanged(object sender, TextChangedEventArgs e)
         {
-            int sum = GlobalVars.globDelayTimes.VATune + GlobalVars.globDelayTimes.VACalibrate;
-            VATotalText.Text = sum.ToString();
+            VATotalText.Text = GlobalVars.globDelayTimes.VASumStr;
         }
 
         private void CalibrateHotStepValue_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, null, "Hot Step time ", AOUDataTypes.CommandType.runModeHeating, 0, 30, this, false);
+            AppHelper.GetValueToTextBox((TextBox)sender, null, "Hot Step time ", AOUDataTypes.CommandType.runModeHeating, 0, 30, 1, this, false);
         }
 
         private void CalibrateColdStepValue_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)Button_Freeze_Run, "Cold Step time ", AOUDataTypes.CommandType.runModeCooling, 0, 30, this, false);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Cold Step time ", AOUDataTypes.CommandType.runModeCooling, 0, 30,1, this, false);
         }
 
-        
+        private void CalibratePhaseVLine1_DragDelta(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragDeltaEventArgs e)
+        {
+            double myX1, myX2;
+            Point myPoint1, myPoint2;
+            double phaseDiff;
+            //we take x-value from the line and any y-value should do
+            myPoint1.X = AppHelper.SafeConvertToDouble(CalibratePhaseVLine1.X1);
+            myPoint1.Y = 0;
+            myX1 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint1);
+            //and the other line
+            myPoint2.X = AppHelper.SafeConvertToDouble(CalibratePhaseVLine2.X1);
+            myPoint2.Y = 0;
+            myX2 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint2);
+            //calculate the difference in seconds
+            //phaseDiff = (int)Math.Abs(myX2-myX1)/1000;
+            phaseDiff = Math.Abs(myX2 - myX1) / 1000;
+            //write result
+            CalibratePhaseDiffResult.Text = phaseDiff.ToString("0.00") + " (s)";
+        }
+
+        private void CalibratePhaseVLine2_DragDelta(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragDeltaEventArgs e)
+        {
+            double myX1, myX2;
+            Point myPoint1, myPoint2;
+            double phaseDiff;
+            //we take x-value from the line and any y-value should do
+            myPoint1.X = AppHelper.SafeConvertToDouble(CalibratePhaseVLine1.X1);
+            myPoint1.Y = 0;
+            myX1 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint1);
+            //and the other line
+            myPoint2.X = AppHelper.SafeConvertToDouble(CalibratePhaseVLine2.X1);
+            myPoint2.Y = 0;
+            myX2 = this.MyDelayChart.PointToValue(MyDelayChart.PrimaryAxis, myPoint2);
+            //calculate the difference in seconds
+            phaseDiff = Math.Abs(myX2 - myX1) / 1000;
+            //write result
+            CalibratePhaseDiffResult.Text = phaseDiff.ToString("0.00") + " (s)";
+        }
     }
 }

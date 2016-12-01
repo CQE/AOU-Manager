@@ -307,6 +307,7 @@ namespace DemoPrototype
         public static void SetCommandValue(AOUDataTypes.CommandType cmd, string value)
         {
             int ival;
+            double dval;
             if (int.TryParse(value, out ival))
             {
                 //success
@@ -325,11 +326,75 @@ namespace DemoPrototype
             switch (cmd)
             {
                 //for delay times, we cannot divide delay into calibrate and tune when returned TODO how hanlde?
-                //case AOUDataTypes.CommandType.coldDelayTime: globDelayTimes.ColdCalibrate = ival; break;
-                //case AOUDataTypes.CommandType.hotDelayTime: globDelayTimes.HotCalibrate = ival; break;
 
-                // case AOUDataTypes.CommandType.co: globDelayTimes.ColdTune = ival; break;
-                //case AOUDataTypes.CommandType.heatingTime: globDelayTimes.HotTune = ival; break;
+                case AOUDataTypes.CommandType.coldDelayTime:
+                    {
+                        //must check if we have values
+                        dval = (double)ival / 10;
+                        ival = ival / 10;
+                        if (globDelayTimes.ColdCalibrate < -1000 && globDelayTimes.ColdTune < -1000)
+                        {
+                            //first time
+                            globDelayTimes.ColdCalibrate = dval;
+                            globDelayTimes.ColdTune = 0;
+                        }
+                        if (globDelayTimes.ColdCalibrate > -1000 && globDelayTimes.ColdTune > -1000)
+                        {
+                            //both have values, just ignore
+                            //should perhaps show message here if sum does not match
+                        }
+                        else
+                        {
+                            if (globDelayTimes.ColdCalibrate > -1000)
+                            {
+                                //set tune
+                                globDelayTimes.ColdTune = dval - globDelayTimes.ColdCalibrate;
+                            }
+                            else
+                            {
+                                //set calibrate
+                                globDelayTimes.ColdCalibrate = dval - globDelayTimes.ColdTune;
+                            }
+
+                        }
+                        break;
+                    }
+
+
+                case AOUDataTypes.CommandType.hotDelayTime:
+                { 
+                    //must check if we have values
+                    dval = (double)ival / 10;
+                    ival = ival / 10;
+                    if (globDelayTimes.HotCalibrate < -1000 && globDelayTimes.HotTune < -1000)
+                    {
+                        //first time
+                        globDelayTimes.HotCalibrate = dval;
+                        globDelayTimes.HotTune = 0;
+                    }
+                    if (globDelayTimes.HotCalibrate > -1000 && globDelayTimes.HotTune > -1000)
+                    {
+                        //both have values, just ignore
+                        //should perhaps show message here if sum does not match
+                    }
+                    else
+                    {
+                        if (globDelayTimes.HotCalibrate > -1000)
+                        {
+                            //set tune
+                            globDelayTimes.HotTune = dval - globDelayTimes.HotCalibrate;
+                        }
+                        else
+                        {
+                            //set calibrate
+                            globDelayTimes.HotCalibrate = dval - globDelayTimes.HotTune;
+                        }
+
+                    }
+                    break;
+                }
+
+               
 
 
 
@@ -346,12 +411,140 @@ namespace DemoPrototype
                 case AOUDataTypes.CommandType.toolCoolingFeedPause: globFeedTimes.CoolingPause = ival/10; ival = ival / 10; break;
                 case AOUDataTypes.CommandType.toolHeatingFeedPause: globFeedTimes.HeatingPause = ival/10; ival = ival / 10; break;
 
-                //want to see ret
-               // case AOUDataTypes.CommandType.offsetHotFeed2RetValveTime: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
-               // case AOUDataTypes.CommandType.offsetRetValveHotPeriod: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
-               // case AOUDataTypes.CommandType.hotFeed2MouldDelayTime: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
-               // case AOUDataTypes.CommandType.coldFeed2MouldDelayTime: globDelayTimes.EACalibrate = ival / 10; ival = ival / 10; break;
+                case AOUDataTypes.CommandType.offsetHotFeed2RetValveTime:
+                    {
+                        //must check if we have values
+                        dval = (double)ival / 10;
+                        ival = ival / 10;
+                        if (globDelayTimes.EACalibrate < -1000 && globDelayTimes.EATune < -1000)
+                        {
+                            //first time
+                            globDelayTimes.EACalibrate = dval;
+                            globDelayTimes.EATune = 0;
+                        }
+                        if (globDelayTimes.EACalibrate > -1000 && globDelayTimes.EATune > -1000)
+                        {
+                            //both have values, just ignore
+                            //should perhaps show message here if sum does not match
+                        }
+                        else
+                        {
+                            if (globDelayTimes.EACalibrate > -1000)
+                            {
+                                //set tune
+                                globDelayTimes.EATune = dval - globDelayTimes.EACalibrate;
+                            }
+                            else
+                            {
+                                //set calibrate
+                                globDelayTimes.EACalibrate = dval - globDelayTimes.EATune;
+                            }
+                     
+                        }
+                        break;
+                    }
 
+
+                case AOUDataTypes.CommandType.offsetRetValveHotPeriod:
+                    {
+                        //must check if we have values
+                        dval = (double)ival / 10;
+                        ival = ival / 10;
+                     
+                        if (globDelayTimes.VACalibrate < -1000 && globDelayTimes.VATune < -1000)
+                        {
+                            //first time
+                            globDelayTimes.VACalibrate = dval;
+                            globDelayTimes.VATune = 0;
+                        }
+                        if (globDelayTimes.VACalibrate > -1000 && globDelayTimes.VATune > -1000)
+                        {
+                            //both have values, just ignore
+                            //should perhaps show message here if sum does not match
+                        }
+                        else
+                        {
+                            if (globDelayTimes.VACalibrate > -1000)
+                            {
+                                //set tune
+                                globDelayTimes.VATune = dval - globDelayTimes.VACalibrate;
+                            }
+                            else
+                            {
+                                //set calibrate
+                                globDelayTimes.VACalibrate = dval - globDelayTimes.VATune;
+                            }
+
+                        }
+                        break;
+                    }
+                    
+               case AOUDataTypes.CommandType.hotFeed2MouldDelayTime: 
+                    {
+                        //must check if we have values
+                        dval = (double)ival / 10;
+                        ival = ival / 10;
+                    
+                        if (globDelayTimes.F2MCalibrateUsed < -1000 && globDelayTimes.F2MTuneUsed < -1000)
+                        {
+                            //first time
+                            globDelayTimes.F2MCalibrateUsed = dval;
+                            globDelayTimes.F2MTuneUsed = 0;
+                        }
+                        if (globDelayTimes.F2MCalibrateUsed > -1000 && globDelayTimes.F2MTuneUsed > -1000)
+                        {
+                            //both have values, just ignore
+                            //should perhaps show message here if sum does not match
+                        }
+                        else
+                        {
+                            if (globDelayTimes.F2MCalibrateUsed > -1000)
+                            {
+                                //set tune
+                                globDelayTimes.F2MTuneUsed = dval - globDelayTimes.F2MCalibrateUsed;
+                            }
+                            else
+                            {
+                                //set calibrate
+                                globDelayTimes.F2MCalibrateUsed = dval - globDelayTimes.F2MTuneUsed;
+                            }
+
+                        }
+                        break;
+                    }
+
+
+                case AOUDataTypes.CommandType.coldFeed2MouldDelayTime:
+                    {
+                        //must check if we have values
+                        ival = ival / 10;
+                        //if (globDelayTimes.F < -1000 && globDelayTimes.F2MTuneUsed < -1000)
+                        //{
+                        //    //first time
+                        //    globDelayTimes.F2MCalibrateUsed = ival;
+                        //    globDelayTimes.F2MTuneUsed = 0;
+                        //}
+                        //if (globDelayTimes.F2MCalibrateUsed > -1000 && globDelayTimes.F2MTuneUsed > -1000)
+                        //{
+                        //    //both have values, just ignore
+                        //    //should perhaps show message here if sum does not match
+                        //}
+                        //else
+                        //{
+                        //    if (globDelayTimes.F2MCalibrateUsed > -1000)
+                        //    {
+                        //        //set tune
+                        //        globDelayTimes.F2MTuneUsed = ival - globDelayTimes.F2MCalibrateUsed;
+                        //    }
+                        //    else
+                        //    {
+                        //        //set calibrate
+                        //        globDelayTimes.F2MCalibrateUsed = ival - globDelayTimes.F2MTuneUsed;
+                        //    }
+
+                        //}
+                        break;
+                    }
                 case AOUDataTypes.CommandType.tempColdTankFeedSet: globTankSetTemps.ColdTankSetTemp = ival; break;
                 case AOUDataTypes.CommandType.tempHotTankFeedSet: globTankSetTemps.HotTankSetTemp = ival; break;
 
@@ -588,38 +781,40 @@ namespace DemoPrototype
 
         public class GlobalDelayTimes
         {
-            private int _hotTune;
-            private int _hotCalibrate;
-            private int _coldTune;
-            private int _coldCalibrate;
-            private int _F2MCalibrate;
-            private int _F2MTune;
-            private int _F2MCalibrateUsed;
-            private int _F2MTuneUsed;
-            private int _EACalibrate;
-            private int _EATune;
-            private int _VACalibrate;
-            private int _VATune;
-            private int _hotStep;
-            private int _coldStep;
+            private double _hotTune;
+            private double _hotCalibrate;
+            private double _coldTune;
+            private double _coldCalibrate;
+            private double _F2MCalibrate;
+            private double _F2MTune;
+            private double _F2MCalibrateUsed;
+            private double _F2MTuneUsed;
+            private double _EACalibrate;
+            private double _EATune;
+            private double _VACalibrate;
+            private double _VATune;
+            private double _hotStep;
+            private double _coldStep;
+
+            private double n = 0.45;
 
             public GlobalDelayTimes()
             {
                 //these are only local so we can initialise to 0 we will never receive these from AOU. Maybe save locally and read from file later TODO
-                _hotTune = 0;// int.MinValue;
-                _hotCalibrate = 0;// int.MinValue;
-                _coldTune = 0;// int.MinValue;
-                _coldCalibrate = 0;// int.MinValue;
-                _F2MTune = 0;
-                _F2MCalibrate = 0;
-                _F2MTuneUsed = 0;
-                _F2MCalibrateUsed = 0;
-                _EATune = 0;
-                _EACalibrate = 0;
-                _VATune = 0;
-                _VACalibrate = 0;
-                _hotStep = 0;
-                _coldStep = 0;
+                _hotTune = int.MinValue;
+                _hotCalibrate = int.MinValue;
+                _coldTune =  int.MinValue;
+                _coldCalibrate = int.MinValue;
+                _F2MTune = int.MinValue;
+                _F2MCalibrate = int.MinValue;
+                _F2MTuneUsed = int.MinValue;
+                _F2MCalibrateUsed = int.MinValue;
+                _EATune = int.MinValue;
+                _EACalibrate = int.MinValue;
+                _VATune = int.MinValue;
+                _VACalibrate = int.MinValue;
+                _hotStep = 0; //only local
+                _coldStep = 0; //only local
             }
 
             public bool IsAllValuesReceived()
@@ -635,7 +830,7 @@ namespace DemoPrototype
             {
                 get
                 {
-                    if (_coldTune == int.MinValue && _coldCalibrate == int.MinValue)
+                    if (_coldTune == int.MinValue || _coldCalibrate == int.MinValue)
                         return "-";
                     else
                         return ( _coldCalibrate + _coldTune).ToString();
@@ -646,7 +841,7 @@ namespace DemoPrototype
             {
                 get
                 {
-                    if (_hotTune == int.MinValue && _hotCalibrate == int.MinValue)
+                    if (_hotTune == int.MinValue || _hotCalibrate == int.MinValue)
                         return "-";
                     else
                         return (_hotCalibrate + _hotTune).ToString();
@@ -657,81 +852,125 @@ namespace DemoPrototype
             {
                 get
                 {
-                    if (_F2MTune == int.MinValue && _F2MCalibrate == int.MinValue)
+                    if (_F2MTune == int.MinValue || _F2MCalibrate == int.MinValue)
                         return "-";
                     else
                         return (_F2MCalibrate + _F2MTune).ToString();
                 }
             }
 
-            public int HotTune
+            public string F2MUsedSumStr
+            {
+                get
+                {
+                    if (_F2MTuneUsed == int.MinValue || _F2MCalibrateUsed == int.MinValue)
+                        return "-";
+                    else
+                        return (_F2MCalibrateUsed + _F2MTuneUsed).ToString();
+                }
+            }
+
+            public string EASumStr
+            {
+                get
+                {
+                    if (_EACalibrate == int.MinValue || _EATune == int.MinValue)
+                        return "-";
+                    else
+                        return (_EACalibrate + _EATune).ToString();
+                }
+            }
+            public string VASumStr
+            {
+                get
+                {
+                    if (_VACalibrate == int.MinValue || _VATune == int.MinValue)
+                        return "-";
+                    else
+                        return (_VACalibrate + _VATune).ToString();
+                }
+            }
+
+            public string F2MTotalComputedSumStr
+            {
+                get
+                {
+                    if (_hotCalibrate == int.MinValue || _hotTune == int.MinValue)
+                        return "-";
+                    else
+                        return ((_hotCalibrate + _hotTune)*n).ToString("#,##");
+                }
+            }
+
+
+            public double HotTune
             {
                 get { return _hotTune;}
                 set { _hotTune = value; }
             }
-            public int HotCalibrate
+            public double HotCalibrate
             {
                 get { return _hotCalibrate; }
                 set { _hotCalibrate = value; }
             }
-            public int ColdTune
+            public double ColdTune
             {
                 get { return _coldTune; }
                 set { _coldTune = value; }
             }
-            public int ColdCalibrate
+            public double ColdCalibrate
             {
                 get { return _coldCalibrate; }
                 set { _coldCalibrate = value; }
             }
-            public int F2MTune
+            public double F2MTune
             {
                 get { return _F2MTune; }
                 set { _F2MTune = value; }
             }
-            public int F2MCalibrate
+            public double F2MCalibrate
             {
                 get { return _F2MCalibrate; }
                 set { _F2MCalibrate = value; }
             }
-            public int F2MTuneUsed
+            public double F2MTuneUsed
             {
                 get { return _F2MTuneUsed; }
                 set { _F2MTuneUsed = value; }
             }
-            public int F2MCalibrateUsed
+            public double F2MCalibrateUsed
             {
                 get { return _F2MCalibrateUsed; }
                 set { _F2MCalibrateUsed = value; }
             }
-            public int EATune
+            public double EATune
             {
                 get { return _EATune; }
                 set { _EATune = value; }
             }
-            public int EACalibrate
+            public double EACalibrate
             {
                 get { return _EACalibrate; }
                 set { _EACalibrate = value; }
             }
-            public int VATune
+            public double VATune
             {
                 get { return _VATune; }
                 set { _VATune = value; }
             }
-            public int VACalibrate
+            public double VACalibrate
             {
                 get { return _VACalibrate; }
                 set { _VACalibrate = value; }
             }
 
-            public int HotStep
+            public double HotStep
             {
                 get { return _hotStep; }
                 set { _hotStep = value; }
             }
 
-            public int ColdStep
+            public double ColdStep
             {
                 get { return _coldStep; }
                 set { _coldStep = value; }
@@ -752,10 +991,10 @@ namespace DemoPrototype
             {
                 get
                 {
-                    if (_hotTune == int.MinValue)
+                    if (_hotCalibrate == int.MinValue)
                         return "-";
                     else
-                        return _hotTune.ToString();
+                        return _hotCalibrate.ToString();
                 }
             }
 
@@ -766,7 +1005,7 @@ namespace DemoPrototype
                     if (_coldTune == int.MinValue)
                         return "-";
                     else
-                        return _hotTune.ToString();
+                        return _coldTune.ToString();
                 }
             }
 
@@ -780,6 +1019,94 @@ namespace DemoPrototype
                         return _coldCalibrate.ToString();
                 }
             }
+
+            public string F2MCalibrateUsedStr
+            {
+                get
+                {
+                    if (_F2MCalibrateUsed == int.MinValue)
+                        return "-";
+                    else
+                        return _F2MCalibrateUsed.ToString();
+                }
+            }
+
+            public string F2MCalibrateComputedStr
+            {
+                get
+                {
+                    if (_hotCalibrate == int.MinValue)
+                        return "-";
+                    else
+                        return (_hotCalibrate*n).ToString("0.##");
+                }
+            }
+
+            public string F2MTuneUsedStr
+            {
+                get
+                {
+                    if (_F2MTuneUsed == int.MinValue)
+                        return "-";
+                    else
+                        return _F2MTuneUsed.ToString();
+                }
+            }
+
+            public string F2MTuneComputedStr
+            {
+                get
+                {
+                    if (_hotTune == int.MinValue)
+                        return "-";
+                    else
+                        return (_hotTune*n).ToString("0.##");
+                }
+            }
+
+            public string EACalibrateStr
+            {
+                get
+                {
+                    if (_EACalibrate == int.MinValue)
+                        return "-";
+                    else
+                        return _EACalibrate.ToString();
+                }
+            }
+            public string EATuneStr
+            {
+                get
+                {
+                    if (_EATune == int.MinValue)
+                        return "-";
+                    else
+                        return _EATune.ToString();
+                }
+            }
+
+            public string VACalibrateStr
+            {
+                get
+                {
+                    if (_VACalibrate == int.MinValue)
+                        return "-";
+                    else
+                        return _VACalibrate.ToString();
+                }
+            }
+            public string VATuneStr
+            {
+                get
+                {
+                    if (_VATune == int.MinValue)
+                        return "-";
+                    else
+                        return _VATune.ToString();
+                }
+            }
+
+
 
 
         }

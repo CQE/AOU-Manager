@@ -519,12 +519,14 @@ namespace DemoPrototype
         private void AskForOffsetHot_Click(object sender, RoutedEventArgs e)
         {
             AppHelper.AskAOUForOffsetRetValveHotPeriod();
+            AskForOffsetHot.IsEnabled = false;
         }
 
        
         private void AskForOffsetRet_Click(object sender, RoutedEventArgs e)
         {
             AppHelper.AskAOUForOffsetHotFeed2RetValveTime();
+            AskForOffsetRet.IsEnabled = false;
         }
 
         private void AskForF2MHot_Click(object sender, RoutedEventArgs e)

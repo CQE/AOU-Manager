@@ -97,27 +97,35 @@
         <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="4">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="5,5,0,5"  Text="Only used for testing communication. Ask for:"  FontWeight="SemiBold"></TextBlock>
-                <StackPanel Margin="5,0,5,5" Orientation="Horizontal" >
+                <StackPanel Margin="5,0,5,0" Orientation="Horizontal" >
                     <Button Name="AskForSetHotTankTemp" Margin="0,5,5,5"   Content="SetHotTankTemp" Click="AskForSetHotTankTemp_Click"></Button>
                     <Button Name="AskForSetColdTankTemp"  Margin="5,5,5,5" Content="SetColdTankTemp" Click="AskForSetColdTankTemp_Click"></Button>
                 </StackPanel>
-                <StackPanel Margin="5,5,0,5" Orientation="Horizontal" >
-                    <Button Name="AskForTHot2Cold"  Margin="0,5,5,5" Content="THot2Cold" Click="AskForTHot2Cold_Click"></Button>
-                    <Button Name="AskForTCold2Hot"  HorizontalAlignment="Right" Margin="5,5,5,5" Content="TCold2Hot" Click="AskForTCold2Hot_Click"></Button>
-                    <Button Name="AskForTMidBuf" HorizontalAlignment="Right" Margin="5,5,5,5" Content="TMidBuf" Click="AskForTMidBuf_Click"></Button>
+                <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
+                    <Button Name="AskForTHot2Cold"  Margin="0,0,5,5" Content="THot2Cold" Click="AskForTHot2Cold_Click"></Button>
+                    <Button Name="AskForTCold2Hot"  HorizontalAlignment="Right" Margin="5,0,5,5" Content="TCold2Hot" Click="AskForTCold2Hot_Click"></Button>
+                    <Button Name="AskForTMidBuf" HorizontalAlignment="Right" Margin="5,0,5,5" Content="TMidBuf" Click="AskForTMidBuf_Click"></Button>
                 </StackPanel>
-                <StackPanel Margin="5,5,0,5" Orientation="Horizontal" >
-                    <Button Name="AskForActiveHeating"  Margin="0,5,5,5" Content="HeatActive" Click="AskForActiveHeating_Click"></Button>
-                    <Button Name="AskForActiveCooling"  HorizontalAlignment="Right" Margin="5,5,5,5" Content="CoolActive" Click="AskForActiveCooling_Click"></Button>
-                    <Button Name="AskForHeatingPause" HorizontalAlignment="Right" Margin="5,5,5,5" Content="HeatPause" Click="AskForHeatingPause_Click"></Button>
-                    <Button Name="AskForCoolingPause" HorizontalAlignment="Right" Margin="5,5,5,5" Content="CoolPause" Click="AskForCoolingPause_Click"></Button>
+                <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
+                    <Button Name="AskForActiveHeating"  Margin="0,0,5,5" Content="HeatActive" Click="AskForActiveHeating_Click"></Button>
+                    <Button Name="AskForActiveCooling"  HorizontalAlignment="Right" Margin="5,0,5,5" Content="CoolActive" Click="AskForActiveCooling_Click"></Button>
+                    <Button Name="AskForHeatingPause" HorizontalAlignment="Right" Margin="5,0,5,5" Content="HeatPause" Click="AskForHeatingPause_Click"></Button>
+                    <Button Name="AskForCoolingPause" HorizontalAlignment="Right" Margin="5,0,5,5" Content="CoolPause" Click="AskForCoolingPause_Click"></Button>
                 </StackPanel>
-                <StackPanel Margin="5,5,0,5" Orientation="Horizontal" >
-                    <Button Name="AskForOffsetHot"  Margin="0,5,5,5" Content="offsetHot" Click="AskForOffsetHot_Click"></Button>
-                    <Button Name="AskForOffsetRet"  HorizontalAlignment="Right" Margin="5,5,5,5" Content="OffsetRet" Click="AskForOffsetRet_Click"></Button>
-                    <Button Name="AskForF2MHot" HorizontalAlignment="Right" Margin="5,5,5,5" Content="HotF2M" Click="AskForF2MHot_Click"></Button>
-                    <Button Name="AskForF2MCold" HorizontalAlignment="Right" Margin="5,5,5,5" Content="ColdF2M" Click="AskForF2MCold_Click"></Button>
+                <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
+                    <Button Name="AskForOffsetRet"  HorizontalAlignment="Right" Margin="0,0,5,5" Content="OffsetRet" Click="AskForOffsetRet_Click"></Button>
+                    <Button Name="AskForOffsetHot"  Margin="5,0,5,5" Content="offsetHot" Click="AskForOffsetHot_Click"></Button>
+                    <Button Name="AskForF2MHot" HorizontalAlignment="Right" Margin="5,0,5,5" Content="HotF2M" Click="AskForF2MHot_Click"></Button>
+                    <Button Name="AskForF2MCold" Visibility="Collapsed" HorizontalAlignment="Right" Margin="5,0,5,5" Content="ColdF2M" Click="AskForF2MCold_Click"></Button>
+                    <Button Name="AskForHotDelay"  Margin="5,0,5,5" Content="HotDelay" Click="AskForOffsetHot_Click"></Button>
+                    <Button Name="AskForColdDelay"  HorizontalAlignment="Right" Margin="5,0,5,5" Content="ColdDelay" Click="AskForOffsetRet_Click"></Button>
                 </StackPanel>
+                <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
+                   
+                    <Button Name="AskForxxx" Visibility="Collapsed" HorizontalAlignment="Right" Margin="5,0,5,5" Content="xxx" Click="AskForF2MHot_Click"></Button>
+                    <Button Name="AskForyyy" Visibility="Collapsed" HorizontalAlignment="Right" Margin="5,0,5,5" Content="yyy" Click="AskForF2MCold_Click"></Button>
+                </StackPanel>
+
 
             </StackPanel>
         </Border>

@@ -548,42 +548,42 @@ namespace DemoPrototype
         */
         private void NewTHotTankTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Change Hot Tank Value", AOUDataTypes.CommandType.tempHotTankFeedSet, 100, 300, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Change Hot Tank Value", AOUDataTypes.CommandType.tempHotTankFeedSet, 100, 300,1, this);
         }
 
         private void NewTColdTankTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Change Cold Tank Value", AOUDataTypes.CommandType.tempColdTankFeedSet, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Change Cold Tank Value", AOUDataTypes.CommandType.tempColdTankFeedSet, 0, 30, 1,this);
         }
 
         private void NewActiveHeatingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Active heating time", AOUDataTypes.CommandType.heatingTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Active heating time", AOUDataTypes.CommandType.heatingTime, 0, 30, 1,this);
         }
 
         private void NewPauseHeatingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Heating pause time", AOUDataTypes.CommandType.toolHeatingFeedPause, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Heating pause time", AOUDataTypes.CommandType.toolHeatingFeedPause, 0, 30,1, this);
         }
 
         private void NewActiveCoolingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Active cooling time", AOUDataTypes.CommandType.coolingTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Active cooling time", AOUDataTypes.CommandType.coolingTime, 0, 30,1, this);
         }
 
         private void NewPauseCoolingTimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Cooling pause time", AOUDataTypes.CommandType.toolCoolingFeedPause, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Cooling pause time", AOUDataTypes.CommandType.toolCoolingFeedPause, 0, 30,1, this);
         }
 
         private void HotFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Hot return delay time", AOUDataTypes.CommandType.hotDelayTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Hot return delay time", AOUDataTypes.CommandType.hotDelayTime, 0, 30,1, this);
         }
 
         private void ColdFeedToReturnDelayCalTime_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Cold return delay time", AOUDataTypes.CommandType.coldDelayTime, 0, 30, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)TextBox_TColdTank, "Cold return delay time", AOUDataTypes.CommandType.coldDelayTime, 0, 30, 1, this);
         }
 
         private void SetHotSafeZoneLine_DragDelta(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragDeltaEventArgs e)
@@ -620,14 +620,14 @@ namespace DemoPrototype
         private void ColdFeedToReturnDelayCalTime_TextChanged(object sender, TextChangedEventArgs e)
         {
             //calculate and show new sum
-            int sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
+            double sum = GlobalVars.globDelayTimes.ColdCalibrate + GlobalVars.globDelayTimes.ColdTune;
          //   TextBlock_SumColdDelayTime.Text = sum.ToString();
         }
 
         private void HotFeedToReturnDelayCalTime_TextChanged(object sender, TextChangedEventArgs e)
         {
             //calculate and show new sum
-            int sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
+            double sum = GlobalVars.globDelayTimes.HotCalibrate + GlobalVars.globDelayTimes.HotTune;
           //  TextBlock_SumHotDelayTime.Text = sum.ToString();
         }
 

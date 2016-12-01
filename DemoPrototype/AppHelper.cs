@@ -308,11 +308,18 @@ namespace DemoPrototype
 
 
 
-        public static void AskAOUForDelayTimes()
+        public static void AskAOUForHotDelayTime()
         {
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotDelayTime);
           //  Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
         }
+
+        public static void AskAOUForColdDelayTime()
+        {
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotDelayTime);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
+        }
+
 
         public static void AskAOUForOffsetHotFeed2RetValveTime()
         {

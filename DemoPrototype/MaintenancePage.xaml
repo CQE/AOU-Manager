@@ -12,8 +12,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <!-- first column -->
@@ -206,51 +206,61 @@
 
         <!-- Column three -->
 
-        <StackPanel  Orientation="Vertical" Grid.Column="2" Width="250" Margin="5,0,0,0">
+        <StackPanel  Orientation="Vertical" Grid.Column="2"  Margin="5,0,0,0">
 
 
-            <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+            <Border Margin="5,5,5,5"  BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
                 <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
                     <TextBlock FontWeight="SemiBold" Text="Pressure (bar/psi)"></TextBlock>
                     <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="140" Text="Hot pump output"></TextBlock>
+                        <TextBlock VerticalAlignment="Center" Width="180" Text="Hot pump output"></TextBlock>
                         <TextBox Name="hotPumpOutput" IsEnabled="False" Text="55"></TextBox>
                     </StackPanel>
                     <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="140" Text="Cold pump output"></TextBlock>
+                        <TextBlock VerticalAlignment="Center" Width="180" Text="Cold pump output"></TextBlock>
                         <TextBox Name="coldPumpOutput" IsEnabled="False" Text="55"></TextBox>
                     </StackPanel>
                     <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="140" Text="Tool return"></TextBlock>
+                        <TextBlock VerticalAlignment="Center" Width="180" Text="Tool return"></TextBlock>
                         <TextBox Name="toolReturn" IsEnabled="False" Text="55"></TextBox>
                     </StackPanel>
                     <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="140" Text="Particle filter"></TextBlock>
+                        <TextBlock VerticalAlignment="Center" Width="180" Text="Particle filter"></TextBlock>
                         <TextBox Name="particleFilter" IsEnabled="False" Text="55"></TextBox>
                     </StackPanel>
                     <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="140" Text="Pneumatics"></TextBlock>
+                        <TextBlock VerticalAlignment="Center" Width="180" Text="Pneumatics"></TextBlock>
                         <TextBox Name="pneumatics" IsEnabled="False" Text="55"></TextBox>
                     </StackPanel>
 
                 </StackPanel>
             </Border>
 
-            <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+            <Border Margin="5,5,5,5"  BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
                 <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
                     <TextBlock Margin="0,0,0,0" FontWeight="SemiBold" Text="System power"></TextBlock>
-                    <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Width="180"  Text="Motors Phase Voltages and order"></TextBlock>
+                        <TextBox  Margin="5,0,0,0" IsEnabled="False" TextAlignment="Center" Text="Not Ready"></TextBox>
+                    </StackPanel>
+
+                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Width="180" Text="Heater Phase Voltages and order"></TextBlock>
+                        <TextBox  Margin="5,0,0,0" IsEnabled="False" Text="Not Ready"></TextBox>
+                    </StackPanel>
+
+                    <Border Visibility="Collapsed" Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
                         <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
                             <TextBlock FontWeight="SemiBold" Text="Voltage (VAC)"></TextBlock>
-                            <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
+                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Width="140" Text="L1"></TextBlock>
                                 <TextBox Name="vL1" IsEnabled="False" Text="230"></TextBox>
                             </StackPanel>
-                            <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
+                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Width="140" Text="L2"></TextBlock>
                                 <TextBox  Name="vL2" IsEnabled="False" Text="230"></TextBox>
                             </StackPanel>
-                            <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
+                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Width="140" Text="L3"></TextBlock>
                                 <TextBox Name="vL3" IsEnabled="False" Text="230"></TextBox>
                             </StackPanel>
@@ -259,7 +269,7 @@
                     </Border>
 
 
-                    <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                    <Border  Visibility="Collapsed" Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
                         <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
                             <TextBlock Margin="0,0,0,0" FontWeight="SemiBold" Text="Current (A)"></TextBlock>
                             <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
@@ -284,16 +294,24 @@
                 <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
                     <TextBlock FontWeight="SemiBold" Text="Safety"></TextBlock>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="140" Text="Safety Stop"></TextBlock>
-                        <TextBox IsEnabled="False" Text="not ready"></TextBox>
+                        <TextBlock VerticalAlignment="Center" Width="180" Text="Safety Stop"></TextBlock>
+                        <TextBox Margin="5,0,0,0" IsEnabled="False" HorizontalAlignment="Right" Text="Not Ready"/>
                     </StackPanel>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="140" Text="Safety Stop"></TextBlock>
-                        <TextBox IsEnabled="False" Text="not ready"></TextBox>
+                        <TextBlock VerticalAlignment="Center" Width="180" Text="Safety reset needed"></TextBlock>
+                        <TextBox Margin="5,0,0,0" IsEnabled="False" Text="Not Ready"></TextBox>
                     </StackPanel>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="140" Text="Safety Stop"></TextBlock>
-                        <TextBox IsEnabled="False" Text="not ready"></TextBox>
+                        <TextBlock VerticalAlignment="Center" Width="180" Text="Emergency"></TextBlock>
+                        <TextBox Margin="5,0,0,0" IsEnabled="False" Text="Not Ready"></TextBox>
+                    </StackPanel>
+                    <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Width="180" Text="Tempering fluid level low"></TextBlock>
+                        <TextBox Margin="5,0,0,0" IsEnabled="False" Text="Not Ready"></TextBox>
+                    </StackPanel>
+                    <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Width="180" Text="Heater over-temperature"></TextBlock>
+                        <TextBox Margin="5,0,0,0" IsEnabled="False" Text="Not Ready"></TextBox>
                     </StackPanel>
 
                 </StackPanel>

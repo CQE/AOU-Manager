@@ -117,8 +117,8 @@
                     <Button Name="AskForOffsetHot"  Margin="5,0,5,5" Content="offsetHot" Click="AskForOffsetHot_Click"></Button>
                     <Button Name="AskForF2MHot" HorizontalAlignment="Right" Margin="5,0,5,5" Content="HotF2M" Click="AskForF2MHot_Click"></Button>
                     <Button Name="AskForF2MCold" Visibility="Collapsed" HorizontalAlignment="Right" Margin="5,0,5,5" Content="ColdF2M" Click="AskForF2MCold_Click"></Button>
-                    <Button Name="AskForHotDelay"  Margin="5,0,5,5" Content="HotDelay" Click="AskForOffsetHot_Click"></Button>
-                    <Button Name="AskForColdDelay"  HorizontalAlignment="Right" Margin="5,0,5,5" Content="ColdDelay" Click="AskForOffsetRet_Click"></Button>
+                    <Button Name="AskForHotDelay"  Margin="5,0,5,5" Content="HotDelay" Click="AskForHotDelay_Click"></Button>
+                    <Button Name="AskForColdDelay"  HorizontalAlignment="Right" Margin="5,0,5,5" Content="ColdDelay" Click="AskForColdDelay_Click"></Button>
                 </StackPanel>
                 <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
                    

@@ -107,6 +107,34 @@ namespace DemoPrototype
             else
             { AskForCoolingPause.IsEnabled = false; }
 
+            if (GlobalVars.globDelayTimes.EACalibrate < 0)
+            { AskForOffsetRet.IsEnabled = true; }
+            else
+            { AskForOffsetRet.IsEnabled = false; }
+
+            if (GlobalVars.globDelayTimes.VACalibrate < 0)
+            { AskForOffsetHot.IsEnabled = true; }
+            else
+            { AskForOffsetHot.IsEnabled = false; }
+
+            if (GlobalVars.globDelayTimes.F2MCalibrateUsed < 0)
+            { AskForF2MHot.IsEnabled = true; }
+            else
+            { AskForF2MHot.IsEnabled = false; }
+
+            if (GlobalVars.globDelayTimes.HotCalibrate < 0)
+            { AskForHotDelay.IsEnabled = true; }
+            else
+            { AskForHotDelay.IsEnabled = false; }
+
+            if (GlobalVars.globDelayTimes.ColdCalibrate < 0)
+            { AskForColdDelay.IsEnabled = true; }
+            else
+            { AskForColdDelay.IsEnabled = false; }
+
+
+
+
 
 
             dTimer = new DispatcherTimer();
@@ -532,11 +560,24 @@ namespace DemoPrototype
         private void AskForF2MHot_Click(object sender, RoutedEventArgs e)
         {
             AppHelper.AskAOUForHotFeed2MouldDelayTime();
+            AskForF2MHot.IsEnabled = false;
         }
 
         private void AskForF2MCold_Click(object sender, RoutedEventArgs e)
         {
             AppHelper.AskAOUForColdFeed2MouldDelayTime();
+        }
+
+        private void AskForHotDelay_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForHotDelayTime();
+            AskForHotDelay.IsEnabled = false;
+        }
+
+        private void AskForColdDelay_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForColdDelayTime();
+            AskForColdDelay.IsEnabled = false;
         }
     }
 }

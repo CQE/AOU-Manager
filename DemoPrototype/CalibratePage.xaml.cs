@@ -286,8 +286,9 @@ namespace DemoPrototype
             {
                 SetAxisRangeForTempStep(hotStepLength);
                 //sent command and value to AOU 
-                //plot Hot Step response for x seconds
-                doStepTimer = hotStepLength;
+                //plot Hot Step response for x + 1 seconds, sometimes we miss one update. 
+                //the step time remains
+                doStepTimer = hotStepLength + 1;
                 HotStepStatus.Text = "Working...";
                 dTimer.Start();
                 Data.Updater.StartHotStep(hotStepLength*10); //must convert to deciseconds
@@ -320,7 +321,7 @@ namespace DemoPrototype
             else
             {
                 SetAxisRangeForTempStep(coldStepLength);
-                doStepTimer = coldStepLength;
+                doStepTimer = coldStepLength +1;
                 dTimer.Start(); //hope this works even if already running
                 HotStepStatus.Text = "Working...";
                 Data.Updater.StartColdStep(coldStepLength*10);

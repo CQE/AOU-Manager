@@ -118,6 +118,7 @@ namespace DemoPrototype
 
         public UInt16 Energy;
         public UInt16 Valves;
+        public UInt16 Safety;
         public UInt16 IMM;
         public UInt16 UIButtons;
         public Int16 Mode;

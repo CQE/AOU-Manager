@@ -33,6 +33,7 @@ namespace DemoPrototype
 
         public const string tagPower = "Pow";
         public const string tagValves = "Valves";
+        public const string tagSafety = "Safety";
         public const string tagEnergy = "Energy";
         public const string tagUI = "UI";
         public const string tagIMM = "IMM";
@@ -115,6 +116,8 @@ namespace DemoPrototype
              <state><Time>4721</Time>  // One second (or 10 x 1/10 second) later
                 <Valves>0100</Valves>       // Hot feed valve “off” (i.e. stopped feeding hot tempering fluid)
              </state>
+
+
  */
 
             stateData.time_sek_x_10_of_hour = 0;
@@ -140,6 +143,7 @@ namespace DemoPrototype
 
             stateData.IMM = AOUDataTypes.UInt16_NaN;
             stateData.Valves = AOUDataTypes.UInt16_NaN;
+            stateData.Safety = AOUDataTypes.UInt16_NaN;
             stateData.Mode = Int16.MaxValue;
             stateData.UIButtons = AOUDataTypes.UInt16_NaN;
 
@@ -172,6 +176,11 @@ namespace DemoPrototype
             if (AOUTagParser.ParseMMSS(tagValves, tagText, out tmpval))
             {
                 stateData.Valves = tmpval;
+            }
+
+            if (AOUTagParser.ParseMMSS(tagSafety, tagText, out tmpval))
+            {
+                stateData.Safety = tmpval;
             }
 
             if (AOUTagParser.ParseMMSS(tagEnergy, tagText, out tmpval))

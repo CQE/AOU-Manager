@@ -249,6 +249,7 @@ namespace DemoPrototype
         public static GlobalFeedTimes globFeedTimes;
         public static GlobalTankSetTemps globTankSetTemps;
         public static GlobalValveChartValues globValveChartValues;
+        public static GlobalSafetyAlarms globSafetyAlarms;
         public static GlobalInitBools globInitBools;
         public static GlobalRemoteSettings globRemoteSettings;
         public static GlobalLogSettings globLogSettings;
@@ -571,6 +572,7 @@ namespace DemoPrototype
             globFeedTimes = new GlobalFeedTimes();
             globTankSetTemps = new GlobalTankSetTemps(); 
             globValveChartValues = new GlobalValveChartValues();
+            globSafetyAlarms = new GlobalSafetyAlarms();
             globInitBools = new GlobalInitBools();
             //set running mode to idle
             GlobalAppSettings.RunningMode = 0;
@@ -1258,6 +1260,86 @@ namespace DemoPrototype
             }
 
         }
+
+        public class GlobalSafetyAlarms        {
+            private int _safetyStopLow;
+            private int _safetyStopHi;
+
+            private int _safetyResetLow;
+            private int _safetyResetHi;
+
+            private int _safetyEmergencyLow;
+            private int _safetyEmergencyHi;
+
+            private int _safetyFluidLevelLow;
+            private int _safetyFluidLevelHi;
+
+            private int _safetyOverHeatedLow;
+            private int _safetyOverHeatedHi;
+
+
+            public int SafetyStopLow
+            {
+                get { return _safetyStopLow; }
+                set { _safetyStopLow = value; }
+            }
+
+            public int SafetyStopHi
+            {
+                get { return _safetyStopHi; }
+                set { _safetyStopHi = value; }
+            }
+
+            public int SafetyResetLow
+            {
+                get { return _safetyResetLow; }
+                set { _safetyResetLow = value; }
+            }
+
+            public int SafetyResetHi
+            {
+                get { return _safetyResetHi; }
+                set { _safetyResetHi = value; }
+            }
+
+            public int SafetyEmergencyLow
+            {
+                get { return _safetyEmergencyLow; }
+                set { _safetyEmergencyLow = value; }
+            }
+
+            public int SafetyEmergencyHi
+            {
+                get { return _safetyEmergencyHi; }
+                set { _safetyEmergencyHi = value; }
+            }
+
+            public int SafetyFluidLevelLow
+            {
+                get { return _safetyFluidLevelLow; }
+                set { _safetyFluidLevelLow = value; }
+            }
+
+            public int SafetyFluidLevelHi
+            {
+                get { return _safetyFluidLevelHi; }
+                set { _safetyFluidLevelHi = value; }
+            }
+            public int SafetyOverHeatedLow
+            {
+                get { return _safetyOverHeatedLow; }
+                set { _safetyOverHeatedLow = value; }
+            }
+
+            public int SafetyOverHeatedHi
+            {
+                get { return _safetyOverHeatedHi; }
+                set { _safetyOverHeatedHi = value; }
+            }
+
+
+        }
+
 
         public class GlobalMisc
         {

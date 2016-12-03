@@ -295,23 +295,23 @@
                     <TextBlock FontWeight="SemiBold" Text="Safety"></TextBlock>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Width="180" Text="Safety Stop"></TextBlock>
-                        <TextBox Margin="5,0,0,0" IsEnabled="False" HorizontalAlignment="Right" Text="Not Ready"/>
+                        <ToggleSwitch Name="safetyStop" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
                     </StackPanel>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Width="180" Text="Safety reset needed"></TextBlock>
-                        <TextBox Margin="5,0,0,0" IsEnabled="False" Text="Not Ready"></TextBox>
+                        <ToggleSwitch Name="safetyReset" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
                     </StackPanel>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Width="180" Text="Emergency"></TextBlock>
-                        <TextBox Margin="5,0,0,0" IsEnabled="False" Text="Not Ready"></TextBox>
+                        <ToggleSwitch Name="safetyEmergency" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
                     </StackPanel>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Width="180" Text="Tempering fluid level low"></TextBlock>
-                        <TextBox Margin="5,0,0,0" IsEnabled="False" Text="Not Ready"></TextBox>
+                        <ToggleSwitch Name="safetyFluidLevel" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
                     </StackPanel>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Width="180" Text="Heater over-temperature"></TextBlock>
-                        <TextBox Margin="5,0,0,0" IsEnabled="False" Text="Not Ready"></TextBox>
+                        <ToggleSwitch Name="safetyOverHeated" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
                     </StackPanel>
 
                 </StackPanel>

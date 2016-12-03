@@ -141,11 +141,16 @@ namespace DemoPrototype
             aL2.Text = GetStringValue(double.NaN);
             aL3.Text = GetStringValue(double.NaN);
 
-
             hotFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedHot, GlobalVars.globValveChartValues.HotValveHi);
             coldFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedCold, GlobalVars.globValveChartValues.ColdValveHi);
             returnValve.IsOn = GetValveState(Data.Updater.LastPower.ValveReturn, GlobalVars.globValveChartValues.ReturnValveHi);
             coolantValve.IsOn = GetValveState(Data.Updater.LastPower.ValveCoolant, GlobalVars.globValveChartValues.CoolantValveHi);
+
+            safetyStop.IsOn = GetValveState(Data.Updater.LastPower.SafetyStop, GlobalVars.globSafetyAlarms.SafetyStopHi);
+            safetyReset.IsOn = GetValveState(Data.Updater.LastPower.SafetyReset, GlobalVars.globSafetyAlarms.SafetyResetHi);
+            safetyEmergency.IsOn = GetValveState(Data.Updater.LastPower.SafetyEmergency, GlobalVars.globSafetyAlarms.SafetyEmergencyHi);
+            safetyFluidLevel.IsOn = GetValveState(Data.Updater.LastPower.SafetyFluidLevel, GlobalVars.globSafetyAlarms.SafetyFluidLevelHi);
+            safetyOverHeated.IsOn = GetValveState(Data.Updater.LastPower.SafetyOverHeated, GlobalVars.globSafetyAlarms.SafetyOverHeatedHi);
         }
 
         private async void SaveExcelToFile(Syncfusion.XlsIO.IWorkbook workBook)

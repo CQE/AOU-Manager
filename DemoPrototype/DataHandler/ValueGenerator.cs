@@ -161,7 +161,7 @@ namespace DemoPrototype
 
             AOUDataTypes.Time_ms_to_AOUModelTimeSecX10(time_ms, out stateData.time_hours, out stateData.time_sek_x_10_of_hour);
 
-            stateData.UIButtons = 0;  stateData.Mode = 0; stateData.IMM = 0;  stateData.Valves = 0;
+            stateData.UIButtons = 0;  stateData.Mode = 0; stateData.IMM = 0;  stateData.Valves = 0; stateData.Safety = 0;
             stateData.seqState = 0;   stateData.Power = 0; stateData.Energy = 0;
 
             /* Only temperature values will be set */

@@ -35,6 +35,12 @@ namespace DemoPrototype
             ValveReturn = double.NaN;
             ValveCoolant = double.NaN;
 
+            SafetyStop = double.NaN;
+            SafetyReset = double.NaN;
+            SafetyEmergency= double.NaN;
+            SafetyFluidLevel = double.NaN;
+            SafetyOverHeated = double.NaN;
+
             PowerHeating = double.NaN;
 
             //calculated values used in graph
@@ -65,6 +71,12 @@ namespace DemoPrototype
         public double ValveFeedCold { get; set; } // on/off
         public double ValveReturn { get; set; } // cold/hot
         public double ValveCoolant { get; set; } // % ?
+
+        public double SafetyStop { get; set; }
+        public double SafetyReset { get; set; }
+        public double SafetyEmergency { get; set; }
+        public double SafetyFluidLevel { get; set; }
+        public double SafetyOverHeated { get; set; }
 
         public double PowerHeating { get; set; } // 
 

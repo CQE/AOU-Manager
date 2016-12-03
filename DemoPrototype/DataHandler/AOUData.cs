@@ -15,6 +15,11 @@ namespace DemoPrototype
         public const int VALVE_RET = 0x04;
         public const int VALVE_COOL = 0x10;
 
+        public const int SAFETY_HEATER_OVERTEMP = 0x08;  // See Heater overtemp input
+        public const int SAFETY_LEVEL_EXPANSION_VESSEL = 0x04;  // See Expansion vessel input
+        public const int SAFETY_INTERLOCK_BROKEN = 0x02;  // See Emergency input
+        public const int SAFETY_SAFETY_RELAY_ACTIVE = 0x01;  // See Safety input
+
         public const int BUTTON_ONOFF = 0x01;  // Soft on/Off;
         public const int BUTTON_EMERGENCYOFF = 0x02;  // Hard Off
         public const int BUTTON_MANUALOPHEAT = 0x04;  // Forced Heating; 
@@ -29,10 +34,19 @@ namespace DemoPrototype
         protected List<Power> newPowerValues;
 
         protected AOUDataTypes.StateType currentSeqState;
+        //MW: dont understand why we set all to low
         protected int currentHotValve = GlobalVars.globValveChartValues.HotValveLow;
         protected int currentColdValve = GlobalVars.globValveChartValues.ColdValveLow;
         protected int currentReturnValve = GlobalVars.globValveChartValues.ReturnValveLow;
-        protected int currentCoolantValve = GlobalVars.globValveChartValues.CoolantValveLow; 
+        protected int currentCoolantValve = GlobalVars.globValveChartValues.CoolantValveLow;
+        //MW: identical for safety, is this correct?
+        protected int currentSafetyStop = GlobalVars.globSafetyAlarms.SafetyStopLow;
+        protected int currentSafetyReset = GlobalVars.globSafetyAlarms.SafetyResetLow;
+        protected int currentSafetyEmergency = GlobalVars.globSafetyAlarms.SafetyEmergencyLow;
+        protected int currentSafetyFluidLevel = GlobalVars.globSafetyAlarms.SafetyFluidLevelLow;
+        protected int currentSafetyOverHeated = GlobalVars.globSafetyAlarms.SafetyOverHeatedLow;
+
+
 
         protected int currentPower = 0;
         protected uint currentEnergy = 0;
@@ -380,7 +394,7 @@ namespace DemoPrototype
                 }
             }
             else
-            {
+            { 
                 switch (mask)
                 {
                     case VALVE_HOT: return GlobalVars.globValveChartValues.HotValveLow;
@@ -424,6 +438,20 @@ namespace DemoPrototype
                 if (IsStateSet(mask, VALVE_COLD)) currentColdValve = GetValveState(state, VALVE_COLD);
                 if (IsStateSet(mask, VALVE_RET)) currentReturnValve = GetValveState(state, VALVE_RET);
                 if (IsStateSet(mask, VALVE_COOL)) currentCoolantValve = GetValveState(state, VALVE_COOL);
+            }
+
+            if (!AOUDataTypes.IsUInt16NaN(stateData.Safety))
+            {
+                // -- VALVES -- <Valves>MMSS</Valves> MASK (e.g. “3F”), STATE Bits: 0/Hot valve, 1/Cold valve, 2/Return valve, 4/Coolant valve
+                byte mask = HighByte(stateData.Safety);
+                byte state = LowByte(stateData.Safety);
+
+                if (IsStateSet(mask, SAFETY_HEATER_OVERTEMP)) currentSafetyOverHeated = GetValveState(state, SAFETY_HEATER_OVERTEMP);
+                if (IsStateSet(mask, SAFETY_LEVEL_EXPANSION_VESSEL)) currentSafetyFluidLevel = GetValveState(state, SAFETY_LEVEL_EXPANSION_VESSEL);
+                if (IsStateSet(mask, SAFETY_INTERLOCK_BROKEN)) currentSafetyEmergency = GetValveState(state, SAFETY_INTERLOCK_BROKEN);
+                if (IsStateSet(mask, SAFETY_SAFETY_RELAY_ACTIVE)) currentSafetyStop = GetValveState(state, SAFETY_SAFETY_RELAY_ACTIVE);
+                //and the fifht is a function of the others (?)
+                currentSafetyReset = currentSafetyStop; //MW:  wait for explanation
             }
 
             //if (stateData.RetForTemp < 1000 && stateData.RetForTemp > -100) //new value if hotvalve or coldvalve is high
@@ -523,6 +551,12 @@ namespace DemoPrototype
                 power.ValveFeedHot = currentHotValve;
                 power.ValveReturn = currentReturnValve;
                 power.ValveCoolant = currentCoolantValve;
+
+                power.SafetyStop = currentSafetyStop;
+                power.SafetyReset = currentSafetyReset;
+                power.SafetyEmergency = currentSafetyEmergency;
+                power.SafetyFluidLevel = currentSafetyFluidLevel;
+                power.SafetyOverHeated = currentSafetyOverHeated;
 
                 //We use TReturnForecasted for TRetFlowActive
 

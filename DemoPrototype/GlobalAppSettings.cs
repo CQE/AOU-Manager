@@ -589,6 +589,12 @@ namespace DemoPrototype
             globValveChartValues.CoolantValveLow = 40;
             globValveChartValues.CoolantValveHi = 46;
 
+            globSafetyAlarms.SafetyEmergencyHi = 1;
+            globSafetyAlarms.SafetyStopHi = 1;
+            globSafetyAlarms.SafetyResetHi = 1;
+            globSafetyAlarms.SafetyFluidLevelHi = 1;
+            globSafetyAlarms.SafetyOverHeatedHi = 1;
+
 
             /*
               * Init Log and test settings.

@@ -406,6 +406,38 @@ namespace DemoPrototype
             }
         }
 
+        protected int GetSafetyState(byte state, byte mask)
+        {
+            if (IsStateSet(state, mask))
+            {
+        //              public const int SAFETY_HEATER_OVERTEMP = 0x08;  // See Heater overtemp input
+        //public const int SAFETY_LEVEL_EXPANSION_VESSEL = 0x04;  // See Expansion vessel input
+        //public const int SAFETY_INTERLOCK_BROKEN = 0x02;  // See Emergency input
+        //public const int SAFETY_SAFETY_RELAY_ACTIVE = 0x01;  // See Safety input
+
+
+                switch (mask)
+                {
+                    case SAFETY_SAFETY_RELAY_ACTIVE: return GlobalVars.globSafetyAlarms.SafetyEmergencyHi;
+                    case SAFETY_INTERLOCK_BROKEN: return GlobalVars.globSafetyAlarms.SafetyEmergencyHi;
+                    case SAFETY_LEVEL_EXPANSION_VESSEL: return GlobalVars.globSafetyAlarms.SafetyFluidLevelHi;
+                    case SAFETY_HEATER_OVERTEMP: return GlobalVars.globSafetyAlarms.SafetyOverHeatedHi;
+                    default: return 999; // Must have default value. Error if reached.
+                }
+            }
+            else
+            {
+                switch (mask)
+                {
+                    case SAFETY_SAFETY_RELAY_ACTIVE: return GlobalVars.globSafetyAlarms.SafetyEmergencyLow;
+                    case SAFETY_INTERLOCK_BROKEN: return GlobalVars.globSafetyAlarms.SafetyEmergencyLow;
+                    case SAFETY_LEVEL_EXPANSION_VESSEL: return GlobalVars.globSafetyAlarms.SafetyFluidLevelLow;
+                    case SAFETY_HEATER_OVERTEMP: return GlobalVars.globSafetyAlarms.SafetyOverHeatedLow;
+                    default: return 999;
+                }
+            }
+        }
+
         protected bool GetStateData(string tagContent, long time_ms, out Power power)
         {
             AOUStateData stateData;
@@ -446,12 +478,12 @@ namespace DemoPrototype
                 byte mask = HighByte(stateData.Safety);
                 byte state = LowByte(stateData.Safety);
 
-                if (IsStateSet(mask, SAFETY_HEATER_OVERTEMP)) currentSafetyOverHeated = GetValveState(state, SAFETY_HEATER_OVERTEMP);
-                if (IsStateSet(mask, SAFETY_LEVEL_EXPANSION_VESSEL)) currentSafetyFluidLevel = GetValveState(state, SAFETY_LEVEL_EXPANSION_VESSEL);
-                if (IsStateSet(mask, SAFETY_INTERLOCK_BROKEN)) currentSafetyEmergency = GetValveState(state, SAFETY_INTERLOCK_BROKEN);
-                if (IsStateSet(mask, SAFETY_SAFETY_RELAY_ACTIVE)) currentSafetyStop = GetValveState(state, SAFETY_SAFETY_RELAY_ACTIVE);
+                if (IsStateSet(mask, SAFETY_HEATER_OVERTEMP)) currentSafetyOverHeated = GetSafetyState(state, SAFETY_HEATER_OVERTEMP);
+                if (IsStateSet(mask, SAFETY_LEVEL_EXPANSION_VESSEL)) currentSafetyFluidLevel = GetSafetyState(state, SAFETY_LEVEL_EXPANSION_VESSEL);
+                if (IsStateSet(mask, SAFETY_INTERLOCK_BROKEN)) currentSafetyEmergency = GetSafetyState(state, SAFETY_INTERLOCK_BROKEN);
+                if (IsStateSet(mask, SAFETY_SAFETY_RELAY_ACTIVE)) currentSafetyStop = GetSafetyState(state, SAFETY_SAFETY_RELAY_ACTIVE);
                 //and the fifht is a function of the others (?)
-                currentSafetyReset = currentSafetyStop; //MW:  wait for explanation
+                currentSafetyReset = currentSafetyFluidLevel+currentSafetyOverHeated+currentSafetyEmergency; // currentSafetyStop; //MW:  wait for explanation
             }
 
             //if (stateData.RetForTemp < 1000 && stateData.RetForTemp > -100) //new value if hotvalve or coldvalve is high

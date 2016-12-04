@@ -295,7 +295,7 @@
                     <TextBlock FontWeight="SemiBold" Text="Safety"></TextBlock>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Width="180" Text="Safety Stop"></TextBlock>
-                        <ToggleSwitch Name="safetyStop" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
+                        <ToggleSwitch Name="safetyStop" IsEnabled="False" BorderBrush="Red" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
                     </StackPanel>
                     <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Width="180" Text="Safety reset needed"></TextBlock>

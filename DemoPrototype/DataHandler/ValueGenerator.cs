@@ -183,6 +183,7 @@ namespace DemoPrototype
             }
 
             stateData.coolerTemp = RealToUInt16(ValueGenerator.GetValveCoolantValue());
+            stateData.coolantTemp = RealToUInt16(ValueGenerator.GetValveCoolantValue());
             stateData.heaterTemp = RealToUInt16(ValueGenerator.GetTheaterOilOutValue());
 
             stateData.BearHot = RealToUInt16(ValueGenerator.GetTHotTankValue());

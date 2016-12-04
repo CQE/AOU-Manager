@@ -113,20 +113,21 @@ namespace DemoPrototype
             oilMiddleTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferMid);
             oilColdSideTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferCold);
 
-            oilInletTemp.Text = GetStringValue(Data.Updater.LastPower.THeatExchangerCoolantOut); 
+            oilInletTemp.Text = GetStringValue(double.NaN);
             oilOutletTemp.Text = GetStringValue(Data.Updater.LastPower.THeaterOilOut);
 
             coolantWater.Text= GetStringValue(double.NaN);
             heatTransferOil.Text = GetStringValue(double.NaN);
 
-            retValveTemp.Text= GetStringValue(double.NaN);
-            bearingHotPumpTemp.Text = GetStringValue(double.NaN);
+            retValveTemp.Text= GetStringValue(Data.Updater.LastPower.TReturnValve); 
+            bearingHotPumpTemp.Text = GetStringValue(Data.Updater.LastPower.TBearHot);
 
-            oilExchangeInletTemp.Text = GetStringValue(double.NaN);
-            oilExchangeOutletTemp.Text = GetStringValue(double.NaN);
+            oilExchangeInletTemp.Text = GetStringValue(double.NaN); GetStringValue(double.NaN);
+
+            oilExchangeOutletTemp.Text = GetStringValue(Data.Updater.LastPower.TCoolingCartridgeOut);  //<Cool>
 
             coolantWaterExchangeInletTemp.Text = GetStringValue(double.NaN);
-            coolantWaterExchangeOutletTemp.Text = GetStringValue(double.NaN);
+            coolantWaterExchangeOutletTemp.Text = GetStringValue(Data.Updater.LastPower.TCoolant); 
 
             hotPumpOutput.Text = GetStringValue(double.NaN);
             coldPumpOutput.Text = GetStringValue(double.NaN);

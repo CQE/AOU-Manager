@@ -104,6 +104,7 @@ namespace DemoPrototype
         public Int16 RetForTemp;
 
         public UInt16 coolerTemp;
+        public UInt16 coolantTemp;
         public UInt16 heaterTemp;
 
         public UInt16 bufHotTemp;

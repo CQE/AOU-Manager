@@ -27,8 +27,10 @@ namespace DemoPrototype
             TBufferMid = double.NaN;
             TBufferCold = double.NaN;
 
-            THeatExchangerCoolantOut = double.NaN;
+            TCoolingCartridgeOut = double.NaN;
             THeaterOilOut = double.NaN;
+            TCoolant = double.NaN;
+            TBearHot = double.NaN; 
 
             ValveFeedHot = double.NaN;
             ValveFeedCold = double.NaN;
@@ -64,8 +66,11 @@ namespace DemoPrototype
         public double TBufferMid { get; set; }
         public double TBufferCold { get; set; }
 
-        public double THeatExchangerCoolantOut { get; set; }
+        public double TCoolingCartridgeOut { get; set; }
         public double THeaterOilOut { get; set; }
+        public double TCoolant { get; set; }
+        public double TBearHot { get; set; }
+
 
         public double ValveFeedHot { get; set; } // on/off
         public double ValveFeedCold { get; set; } // on/off

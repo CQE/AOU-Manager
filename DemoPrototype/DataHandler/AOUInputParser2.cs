@@ -28,6 +28,7 @@ namespace DemoPrototype
         public const string tagTempSubTagCool = "Cool";
         public const string tagTempSubTagHeat = "Heat";
         public const string tagTempSubTagBearHot = "BearHot";
+        public const string tagTempSubTagCoolant = "Coolant";
 
         public const string tagTempSubTagReturnForecasted = "RetFor";
 
@@ -157,6 +158,7 @@ namespace DemoPrototype
             AOUTagParser.ParseWord(tagTempBuHot, tagText, out stateData.bufHotTemp);
 
             AOUTagParser.ParseWord(tagTempSubTagCool, tagText, out stateData.coolerTemp);
+            AOUTagParser.ParseWord(tagTempSubTagCoolant, tagText, out stateData.coolantTemp);
             AOUTagParser.ParseWord(tagTempSubTagHeat, tagText, out stateData.heaterTemp);
 
             AOUTagParser.ParseWord(tagTempSubTagReturnForecasted, tagText, out stateData.RetForTemp);

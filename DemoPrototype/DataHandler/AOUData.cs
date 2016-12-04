@@ -595,9 +595,13 @@ namespace DemoPrototype
 
                 power.THeaterOilOut = GetValidDoubleValue(stateData.heaterTemp);
 
+               // power.
+
                 power.PowerHeating = currentPower;
 
-                power.THeatExchangerCoolantOut = GetValidDoubleValue(stateData.coolerTemp);
+                power.TCoolingCartridgeOut = GetValidDoubleValue(stateData.coolerTemp);
+                power.TCoolant = GetValidDoubleValue(stateData.coolantTemp);
+                power.TBearHot = GetValidDoubleValue(stateData.BearHot);
 
                 return true; // Only add new power if temperature data
             }

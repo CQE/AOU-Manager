@@ -307,32 +307,27 @@ namespace DemoPrototype
                         case AOUDataTypes.CommandType.TReturnThresholdCold2Hot:
                             if (pg.Name == "CalibratePage")
                                 ((CalibratePage)pg).Reset_ThresholdCold2Hot();
-                            else if (pg.Name == "OperatorPage")
-                                ((OperatorPage)pg).Reset_ThresholdCold2Hot();
+                           
                             break;
                         case AOUDataTypes.CommandType.TReturnThresholdHot2Cold:
                             if (pg.Name == "CalibratePage")
                                 ((CalibratePage)pg).Reset_ThresholdHot2Cold();
-                            else if (pg.Name == "OperatorPage")
-                                ((OperatorPage)pg).Reset_ThresholdHot2Cold();
+                           
                             break;
                         case AOUDataTypes.CommandType.TBufferHotLowerLimit:
                             if (pg.Name == "CalibratePage")
                                 ((CalibratePage)pg).Reset_ThresholdHotTankAlarm();
-                            else if (pg.Name == "OperatorPage")
-                                ((OperatorPage)pg).Reset_ThresholdHotTankAlarm();
+                           
                             break;
                         case AOUDataTypes.CommandType.TBufferMidRefThreshold:
                             if (pg.Name == "CalibratePage")
                                 ((CalibratePage)pg).Reset_ThresholdMidTankAlarm();
-                            else if (pg.Name == "OperatorPage")
-                                ((OperatorPage)pg).Reset_ThresholdMidTankAlarm();
+                           
                             break;
                         case AOUDataTypes.CommandType.TBufferColdUpperLimit:
                             if (pg.Name == "CalibratePage")
                                 ((CalibratePage)pg).Reset_ThresholdColdTankAlarm();
-                            else if (pg.Name == "OperatorPage")
-                                ((OperatorPage)pg).Reset_ThresholdColdTankAlarm();
+                           
                             break;
                         default:
                             break;

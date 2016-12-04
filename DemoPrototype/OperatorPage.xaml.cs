@@ -148,26 +148,14 @@ namespace DemoPrototype
           
             
             // Set tooltip contents
-            HLineSet_ThresholdHot2Cold.ToolTipContent = "Threshold TRetActual hot"+ " ↘ " + "cold";
-            HLineSet_ThresholdCold2Hot.ToolTipContent = "Threshold TRetActual cold" + " ↗ " + "hot";
-
-            HLineSet_ThresholdHotTankAlarm.ToolTipContent = "Lower limit THotBuffer";
-            HLineSet_ThresholdMidTankAlarm.ToolTipContent = "Threshold TMidBuffer";
-            HLineSet_ThresholdColdTankAlarm.ToolTipContent = "Upper limit TColdBuffer";
-
+  
             SetHotSafeZoneLine.ToolTipContent = "Lower limit THotTank";
             SetColdSafeZoneLine.ToolTipContent = "Upper limit TColdTank";
 
 
             // Set saved global values to all threshold lines
 
-            HLineSet_ThresholdCold2Hot.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
-            HLineSet_ThresholdHot2Cold.Y1 = GlobalVars.globThresholds.ThresholdHot2Cold;
-
-            HLineSet_ThresholdHotTankAlarm.Y1 = 10;// GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
-            HLineSet_ThresholdMidTankAlarm.Y1 = 20;// GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
-            HLineSet_ThresholdColdTankAlarm.Y1 = 30;// GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
-
+  
             //Set lineSeries colors
             Series_THotTank.Interior = new SolidColorBrush(Colors.Red);
             //Series_EB_THotTank.Interior = new SolidColorBrush(Colors.Red);
@@ -230,7 +218,7 @@ namespace DemoPrototype
             Series_THotTank.ItemsSource = null;
             Series_TColdTank.ItemsSource = null;
             //Series_TRetActual.ItemsSource = null;
-            Series_Delay_TRetActual.ItemsSource = null;
+            //Series_Delay_TRetActual.ItemsSource = null;
             /*Series_PowerHeating.ItemsSource = null;
             Series_TColdBuffer.ItemsSource = null;
             Series_THeaterOilOut.ItemsSource = null;
@@ -240,7 +228,7 @@ namespace DemoPrototype
             Series_ValveFeedCold.ItemsSource = null;
             Series_ValveFeedHot.ItemsSource = null;
           */  Series_ValveReturn.ItemsSource = null;
-            Series_Delay_TRetActual.ItemsSource = null;
+            //Series_Delay_TRetActual.ItemsSource = null;
             
         }
 
@@ -382,32 +370,7 @@ namespace DemoPrototype
             ColdSafeZone.Start = GlobalVars.globThresholds.ThresholdColdTankUpperLimit - ColdSafeZone.Width;
         }
 
-        public void Reset_ThresholdHot2Cold()
-        {
-            HLineSet_ThresholdHot2Cold.Y1 = GlobalVars.globThresholds.ThresholdHot2Cold;
-        }
-
-        public void Reset_ThresholdCold2Hot()
-        {
-            HLineSet_ThresholdCold2Hot.Y1 = GlobalVars.globThresholds.ThresholdCold2Hot;
-        }
-        //--------------------------------------------------------------------------------
-
-        public void Reset_ThresholdHotTankAlarm() //not a good name MW
-        {
-            HLineSet_ThresholdHotTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
-        }
-
-        public void Reset_ThresholdColdTankAlarm()
-        {
-            HLineSet_ThresholdColdTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
-        }
-
-        public void Reset_ThresholdMidTankAlarm()
-        {
-           this.HLineSet_ThresholdMidTankAlarm.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
-        }
-
+    
         //--------------------------------------------------------------------------------
         private void NewModeSelected(object sender, SelectionChangedEventArgs e)
         {
@@ -427,82 +390,9 @@ namespace DemoPrototype
             }
         }
         
-        private void HLineSet_ThresholdHot2Cold_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
-        {
-            string title = "Threshold TRetActual hot" + " ↘ " + "cold";
-            string message = "You are about to set new threshold value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TReturnThresholdHot2Cold, HLineSet_ThresholdHot2Cold, this);
-        }
+      
 
-        private void HLineSet_ThresholdCold2Hot_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
-        {
-            string title = "Threshold TRetActual cold" + " ↘ " + "hot";
-            string message = "You are about to set new threshold value to "; 
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TReturnThresholdCold2Hot, HLineSet_ThresholdCold2Hot, this);
-        }
-        
-        private void HLineSet_ThresholdMidTank_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
-        {
-            string title = "Buffer tank mid temperature threshold";
-            string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TBufferMidRefThreshold, HLineSet_ThresholdMidTankAlarm, this);
-        }
-
-        private void HLineSet_ThresholdHotTankAlarm_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
-        {
-            string title = "Buffer tank Hot end Lower temperature limit";
-            string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TBufferHotLowerLimit, HLineSet_ThresholdHotTankAlarm, this);
-        }
-
-        private void HLineSet_ThresholdColdTankAlarm_Dragged(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
-        {
-            string title = "Buffer tank Cold end Upper temperature limit";
-            string message = "You are about to set value to ";
-            AppHelper.SetLimitValueFromHorizontalLine(title, message, AOUDataTypes.CommandType.TBufferColdUpperLimit, HLineSet_ThresholdColdTankAlarm, this);
-        }
-
-        //
-        private void MouldingDelayVLine1_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
-        {
-            //calculate diff between lines and show result in overlaying text
-          
-            double myX1, myX2;
-            Point myPoint1, myPoint2;
-            int phaseDiff;
-            //we take x-value from the line and any y-value should do
-            myPoint1.X = AppHelper.SafeConvertToDouble(MouldingDelayVLine1.X1);
-            myPoint1.Y = 0;
-            myX1 = this.MyTuneChart.PointToValue(MyTuneChart.PrimaryAxis, myPoint1);
-            //and the other line
-            myPoint2.X = AppHelper.SafeConvertToDouble(MouldingDelayVLine2.X1);
-            myPoint2.Y = 0;
-            myX2 = this.MyTuneChart.PointToValue(MyTuneChart.PrimaryAxis, myPoint2);
-            //calculate the difference in seconds
-            phaseDiff = (int)Math.Abs(myX2 - myX1) / 1000;
-            //write result
-            PhaseDiffResult.Text = phaseDiff.ToString() + " (s)";
-        }
-
-        private void MouldingDelayVLine2_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
-        {
-            //calculate diff between lines and show result in overlaying text
-            double myX1, myX2;
-            Point myPoint1, myPoint2;
-            int phaseDiff;
-            //we take x-value from the line and any y-value should do
-            myPoint1.X = AppHelper.SafeConvertToDouble(MouldingDelayVLine1.X1);
-            myPoint1.Y = 0;
-            myX1 = this.MyTuneChart.PointToValue(MyTuneChart.PrimaryAxis, myPoint1);
-            //and the other line
-            myPoint2.X = AppHelper.SafeConvertToDouble(MouldingDelayVLine2.X1);
-            myPoint2.Y = 0;
-            myX2 = this.MyTuneChart.PointToValue(MyTuneChart.PrimaryAxis, myPoint2);
-            //calculate the difference in seconds
-            phaseDiff = (int)Math.Abs(myX2 - myX1) / 1000;
-            //write result
-            PhaseDiffResult.Text = phaseDiff.ToString() + " (s)";
-        }
+   
 
         private void FreezeEnergyChart(object sender, TappedRoutedEventArgs e)
         {
@@ -527,7 +417,7 @@ namespace DemoPrototype
                 //double firstSlope = AppHelper.SafeConvertToDouble(PhaseVLine2.X1);
                 //double secondSlope = AppHelper.SafeConvertToDouble(PhaseVLine1.X1);
                 //and what is min on the X-axis?
-                Double startX = AppHelper.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
+               // Double startX = AppHelper.SafeConvertToDouble(OperatorDelayXAxis.Minimum);
             }
             else
             {

@@ -59,6 +59,7 @@ namespace DemoPrototype
 
             InitDispatcherTimer();
 
+           
             //set and calculate delay time values
             HotFeedToReturnDelayTime.Text = GlobalVars.globDelayTimes.HotCalibrateStr;
             TextBlock_HotTune.Text = GlobalVars.globDelayTimes.HotTuneStr;
@@ -142,13 +143,21 @@ namespace DemoPrototype
                     {
                         BufMidThresholdValue.Text = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit.ToString();
                         TBufColdHLine.Y1 = GlobalVars.globThresholds.ThresholdColdTankBuffAlarmLimit;
+                        if (GlobalVars.globDelayTimes.HotCalibrate < 0)
+                        {
+                            AppHelper.AskAOUForHotDelayTime();
+                        }
+                        else
+                        {
+                            if (GlobalVars.globDelayTimes.ColdCalibrate < 0)
+                            {
+                                AppHelper.AskAOUForColdDelayTime();
+                            }
+                        }
+
                     }
                 }
             }
-            
-
-
-
 
 
             //set tooltip contents
@@ -224,7 +233,18 @@ namespace DemoPrototype
                     chartModel.UpdateNewValues(newValues);
                 }
             }
-
+            ////ask for parameters not retreived or set
+            //if (GlobalVars.globDelayTimes.HotCalibrate < 0)
+            //{
+            //    AppHelper.AskAOUForHotDelayTime();
+            //}
+            //else
+            //{
+            //    if (GlobalVars.globDelayTimes.ColdCalibrate < 0)
+            //    {
+            //        AppHelper.AskAOUForColdDelayTime();
+            //    }
+            //}
 
             if (doStepTimer > 0)
             {

@@ -258,6 +258,33 @@ namespace DemoPrototype
             Grid.SetColumnSpan(myVolumeChart, 6);
 
 
+            //ask for all values
+            if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)
+            {
+                AppHelper.AskAOUForHotTankTemp();
+            }
+            else
+               if (GlobalVars.globTankSetTemps.ColdTankSetTemp < 0)
+            {
+                AppHelper.AskAOUForColdTankTemp();
+            }
+            else
+               if
+               (GlobalVars.globFeedTimes.HeatingActive < 0)
+            {
+                AppHelper.AskAOUForHeatingTime();
+            }
+            else
+                if (GlobalVars.globFeedTimes.HeatingPause < 0)
+            {
+                AppHelper.AskAOUForHeatingPause();
+            }
+
+
+
+
+
+
             //set and calculate delay time values
             TextBlock_HotCalibrate.Text = GlobalVars.globDelayTimes.HotCalibrateStr;
             HotFeedToReturnDelayCalTime.Text = GlobalVars.globDelayTimes.HotTuneStr;

@@ -97,6 +97,7 @@ namespace DemoPrototype
                 else
                 {
                     NewTColdTankTextBox.Text = GlobalVars.globTankSetTemps.ColdTankSetTemp.ToString();
+                  
                 }
             }
             else
@@ -109,6 +110,27 @@ namespace DemoPrototype
                 else
                 {
                     NewTColdTankTextBox.Text = GlobalVars.globTankSetTemps.ColdTankSetTemp.ToString();
+                    if (GlobalVars.globFeedTimes.HeatingActive < 0)
+                    {
+                        AppHelper.AskAOUForHeatingTime();
+                    }
+                    else
+                    {
+                        if (GlobalVars.globFeedTimes.HeatingPause < 0)
+                            {
+                                AppHelper.AskAOUForHeatingPause();
+                            }
+                        else
+                            if (GlobalVars.globFeedTimes.CoolingActive < 0)
+                            {
+                                AppHelper.AskAOUForCoolingTime();
+                            }
+                            else
+                                if (GlobalVars.globFeedTimes.CoolingPause < 0)
+                                {
+                                    AppHelper.AskAOUForCoolingPause();
+                                }
+                    }
                 }
             }
             

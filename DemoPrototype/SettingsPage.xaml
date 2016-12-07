@@ -7,187 +7,193 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" ></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-          
-        </Grid.ColumnDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" >
 
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="0">
-            <StackPanel Margin="5,0,0,0" Grid.Row="1"  Orientation ="Vertical">
-                <TextBlock Margin="5,0,0,0" FontWeight="SemiBold" Text="Temperature unit to use" ></TextBlock>
-                <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
-                    <RadioButton x:Name="TempUnitCelsius"  Content="Celsius"   Margin="6,0,0,0" Checked="TempUnitCelsius_Checked"/>
-                    <RadioButton x:Name="TempUnitFahrenheit" Content="Fahrenheit"  Margin="10,0,0,0"  Checked="TempUnitFahrenheit_Checked"/>
-                </StackPanel>
-            </StackPanel>
-        </Border>
+        <Grid  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" ></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
 
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="1" Grid.ColumnSpan="1">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Log events to remote system"></TextBlock>
-                <StackPanel Margin="2,5,0,0" Grid.Row="2" Orientation="Horizontal">
-                    <ToggleSwitch  Margin="5,0,0,0"  IsOn="False" Toggled="ToggleSwitch_Toggled"></ToggleSwitch>
-                    <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" Text="Remote logger:"></TextBlock>
-                    <TextBox x:Name="remoteUri" Margin="5,0,0,0" Text="IP name or number" Height="32"></TextBox>
-                </StackPanel>
+            </Grid.ColumnDefinitions>
 
-                
-            </StackPanel>
-        </Border>
-        
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="2" Grid.ColumnSpan="1">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Change Password"></TextBlock>
-                <StackPanel Margin="2,5,0,0" Grid.Row="3" Orientation="Horizontal" Tapped="adminPassword_Tapped">
-                    <TextBlock Margin="5,5,0,0"  Width="180" Text="Password Admin"></TextBlock>
-                    <PasswordBox x:Name="adminPassword" Margin="10,0,0,3" Width="150" Height="32" VerticalAlignment="Top" GotFocus="PasswordBox_GotFocus" />
-                </StackPanel>
-
-                <StackPanel Margin="2,5,0,0" Grid.Row="4" Orientation="Horizontal">
-                    <TextBlock Margin="5,5,0,0" Width="180" Text="Password User"></TextBlock>
-                    <PasswordBox x:Name="userPassword" Margin="10,0,0,3" Width="150"  ></PasswordBox>
-                </StackPanel>
-            </StackPanel>
-        </Border>
-
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="3" Grid.ColumnSpan="1">
-            <StackPanel Orientation="Vertical">
-                <TextBlock  Margin="5,5,0,5" FontWeight="SemiBold" Text="Change Data Source"></TextBlock>
-                <StackPanel Margin="5,20,0,0" Grid.Row="5" Orientation="Horizontal">
-                    <TextBlock Margin="5,0,0,0" Width="180" VerticalAlignment="Center" Text="Select AOU Data Source"/>
-                    <ComboBox x:Name="AOUDataSourceTypesCombo" Margin="10,0,0,0" SelectionChanged="AOUDataSourceTypeChanged"/>
-                    <Button x:Name="StartStopButton" Content="Start"  Margin="10,0,0,0" Click="StartStopButton_Click"/>
-                    
-                </StackPanel>
-                <StackPanel Margin="5,20,0,0" Grid.Row="5" Orientation="Horizontal">
-                    <TextBlock x:Name="Param1Text" Margin="5,0,0,0" VerticalAlignment="Center" Text="Param1"/>
-                    <ComboBox x:Name="Param1Combo" Margin="10,0,0,0"/>
-                    <TextBlock x:Name="Param2Text" Margin="10,0,0,0" VerticalAlignment="Center" Text="Param2"/>
-                    <ComboBox x:Name="Param2Combo" Margin="10,0,0,0"></ComboBox>
-                    <TextBlock x:Name="Param3Text" Margin="10,0,0,0" VerticalAlignment="Center" Text="Param3"/>
-                    <TextBox x:Name="FileName" Margin="10,0,0,0" Width="150"></TextBox>
-                    <Button x:Name="pickButton" Content="Pick" Margin="10,0,5,0" Click="pickButton_Click"/>
-                </StackPanel>
-                <StackPanel Margin="5,5,0,0" Grid.Row="6" Orientation="Horizontal">
-                    <TextBlock x:Name="SourceStatus" Margin="5,10,0,5" VerticalAlignment="Center" Text=""/>
-                </StackPanel>
-            </StackPanel>
-        </Border>
-
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="4">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Margin="5,5,0,5"  Text="Only used for testing communication. Ask for:"  FontWeight="SemiBold"></TextBlock>
-                <StackPanel Margin="5,0,5,0" Orientation="Horizontal" >
-                    <Button Name="AskForSetHotTankTemp" Margin="0,5,5,5"   Content="SetHotTankTemp" Click="AskForSetHotTankTemp_Click"></Button>
-                    <Button Name="AskForSetColdTankTemp"  Margin="5,5,5,5" Content="SetColdTankTemp" Click="AskForSetColdTankTemp_Click"></Button>
-                </StackPanel>
-                <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
-                    <Button Name="AskForTHot2Cold"  Margin="0,0,5,5" Content="THot2Cold" Click="AskForTHot2Cold_Click"></Button>
-                    <Button Name="AskForTCold2Hot"  HorizontalAlignment="Right" Margin="5,0,5,5" Content="TCold2Hot" Click="AskForTCold2Hot_Click"></Button>
-                    <Button Name="AskForTMidBuf" HorizontalAlignment="Right" Margin="5,0,5,5" Content="TMidBuf" Click="AskForTMidBuf_Click"></Button>
-                </StackPanel>
-                <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
-                    <Button Name="AskForActiveHeating"  Margin="0,0,5,5" Content="HeatActive" Click="AskForActiveHeating_Click"></Button>
-                    <Button Name="AskForActiveCooling"  HorizontalAlignment="Right" Margin="5,0,5,5" Content="CoolActive" Click="AskForActiveCooling_Click"></Button>
-                    <Button Name="AskForHeatingPause" HorizontalAlignment="Right" Margin="5,0,5,5" Content="HeatPause" Click="AskForHeatingPause_Click"></Button>
-                    <Button Name="AskForCoolingPause" HorizontalAlignment="Right" Margin="5,0,5,5" Content="CoolPause" Click="AskForCoolingPause_Click"></Button>
-                </StackPanel>
-                <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
-                    <Button Name="AskForOffsetRet"  HorizontalAlignment="Right" Margin="0,0,5,5" Content="OffsetRet" Click="AskForOffsetRet_Click"></Button>
-                    <Button Name="AskForOffsetHot"  Margin="5,0,5,5" Content="offsetHot" Click="AskForOffsetHot_Click"></Button>
-                    <Button Name="AskForF2MHot" HorizontalAlignment="Right" Margin="5,0,5,5" Content="HotF2M" Click="AskForF2MHot_Click"></Button>
-                    <Button Name="AskForF2MCold" Visibility="Collapsed" HorizontalAlignment="Right" Margin="5,0,5,5" Content="ColdF2M" Click="AskForF2MCold_Click"></Button>
-                    <Button Name="AskForHotDelay"  Margin="5,0,5,5" Content="HotDelay" Click="AskForHotDelay_Click"></Button>
-                    <Button Name="AskForColdDelay"  HorizontalAlignment="Right" Margin="5,0,5,5" Content="ColdDelay" Click="AskForColdDelay_Click"></Button>
-                </StackPanel>
-                <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
-                   
-                    <Button Name="AskForxxx" Visibility="Collapsed" HorizontalAlignment="Right" Margin="5,0,5,5" Content="xxx" Click="AskForF2MHot_Click"></Button>
-                    <Button Name="AskForyyy" Visibility="Collapsed" HorizontalAlignment="Right" Margin="5,0,5,5" Content="yyy" Click="AskForF2MCold_Click"></Button>
-                </StackPanel>
-
-
-            </StackPanel>
-        </Border>
-
-        <StackPanel  Grid.Column="1" Grid.RowSpan="16" Orientation="Vertical">
-        
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Grid.ColumnSpan="2">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Margin="5,5,0,5"  Text="Heat transfer fluid used"  FontWeight="SemiBold"></TextBlock>
-                    <RelativePanel Margin="0,0,-0.333,0">
-                        <TextBlock Margin="5,5,0,0" Width="120" x:Name="Brand" Text="Brand"/>
-                        <TextBox Margin="15,0,10,0" x:Name="InputBrand" Text="Texatherm 32" RelativePanel.RightOf="Brand" Width="150"/>
-                        <TextBlock Margin="5,18,0,0" Width="120" x:Name="Type" Text="Type" RelativePanel.Below="Brand"/>
-                        <TextBox Margin="15,5,10,0" x:Name="InputType" Text="Mineral Oil" RelativePanel.RightOf="Type"  RelativePanel.Below="InputBrand" Width="150"/>
-                        <TextBlock Margin="5,18,0,0" Width="120" x:Name="Flash" Text="Flash point" RelativePanel.Below="Type"/>
-                        <TextBox Margin="15,5,10,0" x:Name="FlashBox" Text="220" RelativePanel.RightOf="Flash"  RelativePanel.Below="InputType" Width="50"/>
-                        <TextBlock Margin="5,18,0,0"  x:Name="FlashEnd" Text="°C (exterior stains smoke)" RelativePanel.Below="Type"  RelativePanel.RightOf="FlashBox"/>
-                        <TextBlock Margin="5,18,0,0" Width="120" x:Name="Boiling" Text="Boiling point" RelativePanel.Below="Flash"/>
-                        <TextBox Margin="15,5,10,0" x:Name="BoilingBox" Text="316" RelativePanel.RightOf="Boiling"  RelativePanel.Below="FlashBox" Background="Yellow" Width="50"/>
-                        <TextBlock Margin="5,18,0,0"  x:Name="Danger" Text="°C (danger)" RelativePanel.Below="Flash"  RelativePanel.RightOf="BoilingBox"/>
-                        <TextBlock Margin="5,18,0,0" Width="120" x:Name="Ignition" Text="Auto ignition" RelativePanel.Below="Boiling"/>
-                        <TextBox Margin="15,5,10,0" x:Name="IgnitionBox" Text="320" RelativePanel.RightOf="Ignition"  RelativePanel.Below="BoilingBox" Background="Red" Width="50"/>
-                        <TextBlock Margin="5,18,0,0"  x:Name="Fire" Text="°C (fire)" RelativePanel.Below="Boiling"  RelativePanel.RightOf="IgnitionBox"/>
-                        <TextBlock Margin="5,25,0,0" Width="120" x:Name="Save" Text="Save as" RelativePanel.Below="Ignition"/>
-                        <TextBox Margin="15,20,10,0" x:Name="SaveBox"  RelativePanel.RightOf="Save" RelativePanel.Below="Fire" Width="150" TextChanged="SaveBox_TextChanged"/>
-                        <Button x:Name="PickFluidFileSave" Content="Pick" Margin="5,20,0,0" RelativePanel.Below="Ignition" RelativePanel.RightOf="SaveBox" Click="PickFluidFileSave_Click"/>
-                        <TextBlock Margin="5,15,0,0" Width="120" x:Name="Recall" Text="Recall from" RelativePanel.Below="Save"/>
-                        <TextBox Margin="15,10,10,0" x:Name="RecallBox"  RelativePanel.RightOf="Brand" RelativePanel.Below="Save" Width="150"/>
-                        <Button x:Name="PickFluidFileRecall" Content="Pick" Margin="5,10,0,10" RelativePanel.Below="Save" RelativePanel.RightOf="RecallBox" Click="PickFluidFileRecall_Click"/>
-                        <Button x:Name="SaveFluidFile" Content="Save" Margin="71.333,20,-66.333,0" RelativePanel.Below="Ignition" RelativePanel.RightOf="SaveBox" RenderTransformOrigin="2.135,0.479" Click="SaveFluidFile_Click"/>
-                    </RelativePanel>
-                </StackPanel>
-        </Border>
-
-        <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="4" Grid.RowSpan="5" Grid.Column="1" Grid.ColumnSpan="1">
-            <StackPanel Margin="5,5,10,5" Orientation="Vertical">
-                <TextBlock  Margin="5,5,5,0" Text="Manage System parameters"  FontWeight="SemiBold"></TextBlock>
-                <StackPanel Margin="5,5,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" Orientation="Vertical">
-                    <TextBlock Margin="5,5,0,0"  Text="Save parameters to file"  FontWeight="SemiBold"></TextBlock>
-                    <TextBlock Margin="5,0,0,0"  Text="Description of the System parameters set to save" ></TextBlock>
-                    <TextBox Margin="5,5,30,0" Width="300"></TextBox>
-                    <TextBlock Margin="5,0,0,0"  Text="Save as:" ></TextBlock>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Margin="35,0,5,5" Width="300"></TextBox>
-                        <Button Margin="0,0,5,2" Content="Save"></Button>
+            <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="0">
+                <StackPanel Margin="5,0,0,0" Grid.Row="1"  Orientation ="Vertical">
+                    <TextBlock Margin="5,0,0,0" FontWeight="SemiBold" Text="Temperature unit to use" ></TextBlock>
+                    <StackPanel Margin="5,10,5,5" Orientation="Horizontal">
+                        <RadioButton x:Name="TempUnitCelsius"  Content="Celsius"   Margin="6,0,0,0" Checked="TempUnitCelsius_Checked"/>
+                        <RadioButton x:Name="TempUnitFahrenheit" Content="Fahrenheit"  Margin="10,0,0,0"  Checked="TempUnitFahrenheit_Checked"/>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Margin="5,5,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" Orientation="Vertical">
-                    <TextBlock Margin="5,5,0,0"  Text="Recall parameters to file"  FontWeight="SemiBold"></TextBlock>
-                    <TextBlock Margin="5,0,0,5"  Text="Recall from:" ></TextBlock>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Margin="30,0,5,5" Width="300"></TextBox>
-                        <Button Margin="0,0,5,5" Content="Recall"></Button>
+            </Border>
+
+            <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="1" Grid.ColumnSpan="1">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Log events to remote system"></TextBlock>
+                    <StackPanel Margin="2,5,0,0" Grid.Row="2" Orientation="Horizontal">
+                        <ToggleSwitch  Margin="5,0,0,0"  IsOn="False" Toggled="ToggleSwitch_Toggled"></ToggleSwitch>
+                        <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" Text="Remote logger:"></TextBlock>
+                        <TextBox x:Name="remoteUri" Margin="5,0,0,0" Text="IP name or number" Height="32"></TextBox>
                     </StackPanel>
-                    <TextBlock Margin="5,5,0,0"  Text="Description when saved:" ></TextBlock>
-                    <TextBlock Margin="35,5,0,0"  Text="Manufacturer datasheet" ></TextBlock>
-                    <TextBlock Margin="5,5,0,0"  Text="Date and time when saved:" ></TextBlock>
-                    <TextBlock Margin="35,5,0,0"  Text="2016-10-16 08:14" ></TextBlock>
+
 
                 </StackPanel>
+            </Border>
+
+            <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="2" Grid.ColumnSpan="1">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Change Password"></TextBlock>
+                    <StackPanel Margin="2,5,0,0" Grid.Row="3" Orientation="Horizontal" Tapped="adminPassword_Tapped">
+                        <TextBlock Margin="5,5,0,0"  Width="180" Text="Password Admin"></TextBlock>
+                        <PasswordBox x:Name="adminPassword" Margin="10,0,0,3" Width="150" Height="32" VerticalAlignment="Top" GotFocus="PasswordBox_GotFocus" />
+                    </StackPanel>
+
+                    <StackPanel Margin="2,5,0,0" Grid.Row="4" Orientation="Horizontal">
+                        <TextBlock Margin="5,5,0,0" Width="180" Text="Password User"></TextBlock>
+                        <PasswordBox x:Name="userPassword" Margin="10,0,0,3" Width="150"  ></PasswordBox>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="3" Grid.ColumnSpan="1">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock  Margin="5,5,0,5" FontWeight="SemiBold" Text="Change Data Source"></TextBlock>
+                    <StackPanel Margin="5,20,0,0" Grid.Row="5" Orientation="Horizontal">
+                        <TextBlock Margin="5,0,0,0" Width="180" VerticalAlignment="Center" Text="Select AOU Data Source"/>
+                        <ComboBox x:Name="AOUDataSourceTypesCombo" Margin="10,0,0,0" SelectionChanged="AOUDataSourceTypeChanged"/>
+                        <Button x:Name="StartStopButton" Content="Start"  Margin="10,0,0,0" Click="StartStopButton_Click"/>
+
+                    </StackPanel>
+                    <StackPanel Margin="5,20,0,0" Grid.Row="5" Orientation="Horizontal">
+                        <TextBlock x:Name="Param1Text" Margin="5,0,0,0" VerticalAlignment="Center" Text="Param1"/>
+                        <ComboBox x:Name="Param1Combo" Margin="10,0,0,0"/>
+                        <TextBlock x:Name="Param2Text" Margin="10,0,0,0" VerticalAlignment="Center" Text="Param2"/>
+                        <ComboBox x:Name="Param2Combo" Margin="10,0,0,0"></ComboBox>
+                        <TextBlock x:Name="Param3Text" Margin="10,0,0,0" VerticalAlignment="Center" Text="Param3"/>
+                        <TextBox x:Name="FileName" Margin="10,0,0,0" Width="150"></TextBox>
+                        <Button x:Name="pickButton" Content="Pick" Margin="10,0,5,0" Click="pickButton_Click"/>
+                    </StackPanel>
+                    <StackPanel Margin="5,5,0,0" Grid.Row="6" Orientation="Horizontal">
+                        <TextBlock x:Name="SourceStatus" Margin="5,10,0,5" VerticalAlignment="Center" Text=""/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Visibility="Collapsed" Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="4">
+                <StackPanel Visibility="Collapsed" Orientation="Vertical">
+                    <TextBlock Margin="5,5,0,5"  Text="Only used for testing communication. Ask for:"  FontWeight="SemiBold"></TextBlock>
+                    <StackPanel Margin="5,0,5,0" Orientation="Horizontal" >
+                        <Button Name="AskForSetHotTankTemp" Margin="0,5,5,5"   Content="SetHotTankTemp" Click="AskForSetHotTankTemp_Click"></Button>
+                        <Button Name="AskForSetColdTankTemp"  Margin="5,5,5,5" Content="SetColdTankTemp" Click="AskForSetColdTankTemp_Click"></Button>
+                    </StackPanel>
+                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
+                        <Button Name="AskForTHot2Cold"  Margin="0,0,5,5" Content="THot2Cold" Click="AskForTHot2Cold_Click"></Button>
+                        <Button Name="AskForTCold2Hot"  HorizontalAlignment="Right" Margin="5,0,5,5" Content="TCold2Hot" Click="AskForTCold2Hot_Click"></Button>
+                        <Button Name="AskForTMidBuf" HorizontalAlignment="Right" Margin="5,0,5,5" Content="TMidBuf" Click="AskForTMidBuf_Click"></Button>
+                    </StackPanel>
+                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
+                        <Button Name="AskForActiveHeating"  Margin="0,0,5,5" Content="HeatActive" Click="AskForActiveHeating_Click"></Button>
+                        <Button Name="AskForActiveCooling"  HorizontalAlignment="Right" Margin="5,0,5,5" Content="CoolActive" Click="AskForActiveCooling_Click"></Button>
+                        <Button Name="AskForHeatingPause" HorizontalAlignment="Right" Margin="5,0,5,5" Content="HeatPause" Click="AskForHeatingPause_Click"></Button>
+                        <Button Name="AskForCoolingPause" HorizontalAlignment="Right" Margin="5,0,5,5" Content="CoolPause" Click="AskForCoolingPause_Click"></Button>
+                    </StackPanel>
+                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
+                        <Button Name="AskForOffsetRet"  HorizontalAlignment="Right" Margin="0,0,5,5" Content="OffsetRet" Click="AskForOffsetRet_Click"></Button>
+                        <Button Name="AskForOffsetHot"  Margin="5,0,5,5" Content="offsetHot" Click="AskForOffsetHot_Click"></Button>
+                        <Button Name="AskForF2MHot" HorizontalAlignment="Right" Margin="5,0,5,5" Content="HotF2M" Click="AskForF2MHot_Click"></Button>
+                        <Button Name="AskForF2MCold" Visibility="Collapsed" HorizontalAlignment="Right" Margin="5,0,5,5" Content="ColdF2M" Click="AskForF2MCold_Click"></Button>
+                        <Button Name="AskForHotDelay"  Margin="5,0,5,5" Content="HotDelay" Click="AskForHotDelay_Click"></Button>
+                        <Button Name="AskForColdDelay"  HorizontalAlignment="Right" Margin="5,0,5,5" Content="ColdDelay" Click="AskForColdDelay_Click"></Button>
+                    </StackPanel>
+                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
+
+                        <Button Name="AskForxxx" Visibility="Collapsed" HorizontalAlignment="Right" Margin="5,0,5,5" Content="xxx" Click="AskForF2MHot_Click"></Button>
+                        <Button Name="AskForyyy" Visibility="Collapsed" HorizontalAlignment="Right" Margin="5,0,5,5" Content="yyy" Click="AskForF2MCold_Click"></Button>
+                    </StackPanel>
+
+
+                </StackPanel>
+            </Border>
+
+            <StackPanel  Grid.Column="1" Grid.RowSpan="16" Orientation="Vertical">
+
+                <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Grid.ColumnSpan="2">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Margin="5,5,0,5"  Text="Heat transfer fluid used"  FontWeight="SemiBold"></TextBlock>
+                        <RelativePanel Margin="0,0,-0.333,0">
+                            <TextBlock Margin="5,5,0,0" Width="120" x:Name="Brand" Text="Brand"/>
+                            <TextBox Margin="15,0,10,0" x:Name="InputBrand" Text="Texatherm 32" RelativePanel.RightOf="Brand" Width="150"/>
+                            <TextBlock Margin="5,18,0,0" Width="120" x:Name="Type" Text="Type" RelativePanel.Below="Brand"/>
+                            <TextBox Margin="15,5,10,0" x:Name="InputType" Text="Mineral Oil" RelativePanel.RightOf="Type"  RelativePanel.Below="InputBrand" Width="150"/>
+                            <TextBlock Margin="5,18,0,0" Width="120" x:Name="Flash" Text="Flash point" RelativePanel.Below="Type"/>
+                            <TextBox Margin="15,5,10,0" x:Name="FlashBox" Text="220" RelativePanel.RightOf="Flash"  RelativePanel.Below="InputType" Width="50"/>
+                            <TextBlock Margin="5,18,0,0"  x:Name="FlashEnd" Text="°C (exterior stains smoke)" RelativePanel.Below="Type"  RelativePanel.RightOf="FlashBox"/>
+                            <TextBlock Margin="5,18,0,0" Width="120" x:Name="Boiling" Text="Boiling point" RelativePanel.Below="Flash"/>
+                            <TextBox Margin="15,5,10,0" x:Name="BoilingBox" Text="316" RelativePanel.RightOf="Boiling"  RelativePanel.Below="FlashBox" Background="Yellow" Width="50"/>
+                            <TextBlock Margin="5,18,0,0"  x:Name="Danger" Text="°C (danger)" RelativePanel.Below="Flash"  RelativePanel.RightOf="BoilingBox"/>
+                            <TextBlock Margin="5,18,0,0" Width="120" x:Name="Ignition" Text="Auto ignition" RelativePanel.Below="Boiling"/>
+                            <TextBox Margin="15,5,10,0" x:Name="IgnitionBox" Text="320" RelativePanel.RightOf="Ignition"  RelativePanel.Below="BoilingBox" Background="Red" Width="50"/>
+                            <TextBlock Margin="5,18,0,0"  x:Name="Fire" Text="°C (fire)" RelativePanel.Below="Boiling"  RelativePanel.RightOf="IgnitionBox"/>
+                            <TextBlock Margin="5,15,0,0" Width="120" x:Name="Save" Text="Save as" RelativePanel.Below="Ignition"/>
+                            <TextBox Margin="15,15,10,0" x:Name="SaveBox"  RelativePanel.RightOf="Save" RelativePanel.Below="Fire" Width="150" TextChanged="SaveBox_TextChanged"/>
+                            <Button x:Name="PickFluidFileSave" Content="Pick" Margin="5,15,0,0" RelativePanel.Below="Ignition" RelativePanel.RightOf="SaveBox" Click="PickFluidFileSave_Click" HorizontalAlignment="Stretch"/>
+                            <TextBlock Margin="5,15,0,0" Width="120" x:Name="Recall" Text="Recall from" RelativePanel.Below="Save"/>
+                            <TextBox Margin="15,10,10,0" x:Name="RecallBox"  RelativePanel.RightOf="Brand" RelativePanel.Below="Save" Width="150"/>
+                            <Button x:Name="PickFluidFileRecall" Content="Pick" Margin="5,10,0,10" RelativePanel.Below="Save" RelativePanel.RightOf="RecallBox" Click="PickFluidFileRecall_Click"/>
+                            <Button x:Name="SaveFluidFile" Content="Save" Margin="10,15,0,0" RelativePanel.Below="Ignition" RelativePanel.RightOf="PickFluidFileSave" RenderTransformOrigin="2.135,0.479" Click="SaveFluidFile_Click" HorizontalAlignment="Right"/>
+                        </RelativePanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="4" Grid.RowSpan="5" Grid.Column="1" Grid.ColumnSpan="1">
+                    <StackPanel Margin="5,5,10,5" Orientation="Vertical">
+                        <TextBlock  Margin="5,5,5,0" Text="Manage System parameters"  FontWeight="SemiBold"></TextBlock>
+                        <StackPanel Margin="5,5,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" Orientation="Vertical">
+                            <TextBlock Margin="5,5,0,0"  Text="Save parameters to file"  FontWeight="SemiBold"></TextBlock>
+                            <TextBlock Margin="5,0,0,0"  Text="Description of the System parameters set to save" ></TextBlock>
+                            <TextBox Margin="5,5,30,0" Width="300"></TextBox>
+                            <TextBlock Margin="5,0,0,0"  Text="Save as:" ></TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Margin="35,0,5,5" Width="300"></TextBox>
+                                <Button Margin="0,0,5,2" Content="Save"></Button>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Margin="5,5,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" Orientation="Vertical">
+                            <TextBlock Margin="5,5,0,0"  Text="Recall parameters to file"  FontWeight="SemiBold"></TextBlock>
+                            <TextBlock Margin="5,0,0,5"  Text="Recall from:" ></TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Margin="30,0,5,5" Width="300"></TextBox>
+                                <Button Margin="0,0,5,5" Content="Recall"></Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5,5,0,0"  Text="Description when saved:" ></TextBlock>
+                                <TextBlock Margin="35,5,0,0"  Text="Manufacturer datasheet" ></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5,5,0,0"  Text="Date and time when saved:" ></TextBlock>
+                                <TextBlock Margin="35,5,0,0"  Text="2016-10-16 08:14" ></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
             </StackPanel>
-        </Border>
-        </StackPanel>
-    </Grid>
+        </Grid>
+    </ScrollViewer>
 </Page>

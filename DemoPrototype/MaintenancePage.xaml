@@ -8,374 +8,374 @@
     xmlns:sfgrid="using:Syncfusion.UI.Xaml.Grid"
     mc:Ignorable="d">
 
-    <Grid x:Name="MaintenanceGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" >
+        <Grid x:Name="MaintenanceGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <!-- first column -->
-        <StackPanel Margin="5,0,0,0" Orientation="Vertical" Width="250" HorizontalAlignment="Left">
-            <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                    <TextBlock FontWeight="SemiBold" Text="Valves"></TextBlock>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Width="110"  VerticalAlignment="Center" Text="Hot feed valve"></TextBlock>
-                        <ToggleSwitch Name="hotFeedValve" IsEnabled="False" Margin="5,0,0,0" HorizontalAlignment="Right"></ToggleSwitch>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Width="110" VerticalAlignment="Center" Text="Cold feed valve"></TextBlock>
-                        <ToggleSwitch Name="coldFeedValve" IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Width="110" VerticalAlignment="Center" Text="Return valve"></TextBlock>
-                        <ToggleSwitch Name="returnValve" IsEnabled="False"  Margin="5,0,0,0" HorizontalAlignment="Right"></ToggleSwitch>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Width="110" VerticalAlignment="Center" Text="Coolant valve"></TextBlock>
-                        <ToggleSwitch Name="coolantValve" IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-
-            <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                    <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Pumps"></TextBlock>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock  Width="110"  VerticalAlignment="Center" Text="Pump hot"></TextBlock>
-                        <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock  Width="110" VerticalAlignment="Center" Text="Pump cold"></TextBlock>
-                        <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-
-            <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                    <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Heating cartridge"></TextBlock>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock  Width="110"  VerticalAlignment="Center" Text="Disable heater"></TextBlock>
-                        <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock  Width="110"  VerticalAlignment="Center" Text="Heater power"></TextBlock>
-                        <TextBlock  Margin="15,0,0,0" VerticalAlignment="Center" Text="{Binding ElementName=mySlider,Path=Value}"></TextBlock>
-                        <TextBlock   VerticalAlignment="Center" Text=" %"></TextBlock>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <Slider IsEnabled="False" x:Name="mySlider" Width="110"  Minimum="0" Maximum="100"></Slider>
-                        <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-
-            <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                    <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Cooling cartridge"></TextBlock>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock  Width="110"  VerticalAlignment="Center" Text="Disable cooler"></TextBlock>
-                        <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock  Width="110"  VerticalAlignment="Center" Text="Cooler power"></TextBlock>
-                        <TextBlock  Margin="15,0,0,0" VerticalAlignment="Center" Text="{Binding ElementName=myCoolSlider,Path=Value}"></TextBlock>
-                        <TextBlock   VerticalAlignment="Center" Text=" %"></TextBlock>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <Slider IsEnabled="False"  x:Name="myCoolSlider" Width="110" Minimum="0" Maximum="100"></Slider>
-                        <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-
-
-
-            <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                    <TextBlock FontWeight="SemiBold" Text="Flow (lpm)"></TextBlock>
-                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="140" Text="Coolant water"></TextBlock>
-                        <TextBox Name="coolantWater" IsEnabled="False" Text="-"></TextBox>
-                    </StackPanel>
-                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="140" Text="Heat transfer oil"></TextBlock>
-                        <TextBox Name="heatTransferOil" IsEnabled="False" Text="-"></TextBox>
-                    </StackPanel>
-
-                </StackPanel>
-            </Border>
-
-        </StackPanel>
-
-        <!-- Column 2-->
-
-        <StackPanel Grid.Column="1" Orientation="Vertical" Margin='5,0,0,0'>
-
-            <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                    <TextBlock Name="tempHeaderText" FontWeight="SemiBold" Text="Temperature (C)"></TextBlock>
-
-                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="140" Text="Return valve"></TextBlock>
-                        <TextBox  Name ="retValveTemp" IsEnabled="False" Text="-" Width="30"></TextBox>
-                    </StackPanel>
-                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="140" Text="Bearing hot pump"></TextBlock>
-                        <TextBox  Name="bearingHotPumpTemp" IsEnabled="False" Text="-" Width="40"/>
-                    </StackPanel>
-
-                    <Border Margin="5,10,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                        <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                            <TextBlock  FontWeight="SemiBold" Text="Accumulator tanks"></TextBlock>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="Hot tank"></TextBlock>
-                                <TextBox Name="hotTankTemp" IsEnabled="False" Text="-" Width="30"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="Cold tank"></TextBlock>
-                                <TextBox Name="coldTankTemp" IsEnabled="False" Text="-" Width="40"></TextBox>
-                            </StackPanel>
+            <!-- first column -->
+            <StackPanel Margin="5,0,0,0" Orientation="Vertical" Width="250" HorizontalAlignment="Left">
+                <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                    <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
+                        <TextBlock FontWeight="SemiBold" Text="Valves"></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Width="110"  VerticalAlignment="Center" Text="Hot feed valve"></TextBlock>
+                            <ToggleSwitch Name="hotFeedValve" IsEnabled="False" Margin="5,0,0,0" HorizontalAlignment="Right"></ToggleSwitch>
                         </StackPanel>
-                    </Border>
-
-                    <Border Margin="5,10,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                        <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                            <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Buffer tank"></TextBlock>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="Hot side"></TextBlock>
-                                <TextBox Name="oilHotSideTemp" IsEnabled="False" Text="-"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="Middle"></TextBlock>
-                                <TextBox Name="oilMiddleTemp" IsEnabled="False" Text="-"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="Cold side"></TextBlock>
-                                <TextBox Name="oilColdSideTemp" IsEnabled="False" Text="-"></TextBox>
-                            </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Width="110" VerticalAlignment="Center" Text="Cold feed valve"></TextBlock>
+                            <ToggleSwitch Name="coldFeedValve" IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
                         </StackPanel>
-                    </Border>
-                    <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                        <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                            <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Heating cartridges"/>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="Oil inlet"/>
-                                <TextBox x:Name="oilInletTemp" IsEnabled="False" Text="-"/>
-                            </StackPanel>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="Oil outlet"/>
-                                <TextBox x:Name="oilOutletTemp" IsEnabled="False" Text="-"/>
-                            </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Width="110" VerticalAlignment="Center" Text="Return valve"></TextBlock>
+                            <ToggleSwitch Name="returnValve" IsEnabled="False"  Margin="5,0,0,0" HorizontalAlignment="Right"></ToggleSwitch>
                         </StackPanel>
-                    </Border>
-                    <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                        <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                            <TextBlock FontWeight="SemiBold" Margin="5,10,0,0" Text="Cooling cartridge"></TextBlock>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="Oil inlet"></TextBlock>
-                                <TextBox Name="oilExchangeInletTemp" IsEnabled="False" Text="-"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="Oil outlet"></TextBlock>
-                                <TextBox Name="oilExchangeOutletTemp" IsEnabled="False" Text="-"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="Coolant water inlet"></TextBlock>
-                                <TextBox Name="coolantWaterExchangeInletTemp" IsEnabled="False" Text="-"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="Coolant water outlet"></TextBlock>
-                                <TextBox Name="coolantWaterExchangeOutletTemp" IsEnabled="False" Text="-"></TextBox>
-                            </StackPanel>
-
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Width="110" VerticalAlignment="Center" Text="Coolant valve"></TextBlock>
+                            <ToggleSwitch Name="coolantValve" IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
                         </StackPanel>
-                    </Border>
-
-                </StackPanel>
-            </Border>
-
-        </StackPanel>
-
-        <!-- Column three -->
-
-        <StackPanel  Orientation="Vertical" Grid.Column="2"  Margin="5,0,0,0">
-
-
-            <Border Margin="5,5,5,5"  BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                    <TextBlock FontWeight="SemiBold" Text="Pressure (bar/psi)"></TextBlock>
-                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="180" Text="Hot pump output"></TextBlock>
-                        <TextBox Name="hotPumpOutput" IsEnabled="False" Text="-"></TextBox>
                     </StackPanel>
-                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="180" Text="Cold pump output"></TextBlock>
-                        <TextBox Name="coldPumpOutput" IsEnabled="False" Text="-"></TextBox>
-                    </StackPanel>
-                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="180" Text="Tool return"></TextBlock>
-                        <TextBox Name="toolReturn" IsEnabled="False" Text="-"></TextBox>
-                    </StackPanel>
-                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="180" Text="Particle filter"></TextBlock>
-                        <TextBox Name="particleFilter" IsEnabled="False" Text="-"></TextBox>
-                    </StackPanel>
-                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="180" Text="Pneumatics"></TextBlock>
-                        <TextBox Name="pneumatics" IsEnabled="False" Text="-"></TextBox>
-                    </StackPanel>
+                </Border>
 
-                </StackPanel>
-            </Border>
-
-            <Border Margin="5,5,5,5"  BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                    <TextBlock Margin="0,0,0,0" FontWeight="SemiBold" Text="System power"></TextBlock>
-                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="180"  Text="Motors Phase Voltages and order"></TextBlock>
-                        <TextBox  Margin="5,0,0,0" IsEnabled="False" TextAlignment="Center" Text="Not Ready"></TextBox>
-                    </StackPanel>
-
-                    <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="180" Text="Heater Phase Voltages and order"></TextBlock>
-                        <TextBox  Margin="5,0,0,0" IsEnabled="False" Text="Not Ready"></TextBox>
-                    </StackPanel>
-
-                    <Border Visibility="Collapsed" Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                        <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                            <TextBlock FontWeight="SemiBold" Text="Voltage (VAC)"></TextBlock>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="L1"></TextBlock>
-                                <TextBox Name="vL1" IsEnabled="False" Text="230"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="L2"></TextBlock>
-                                <TextBox  Name="vL2" IsEnabled="False" Text="230"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="L3"></TextBlock>
-                                <TextBox Name="vL3" IsEnabled="False" Text="230"></TextBox>
-                            </StackPanel>
-
+                <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                    <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
+                        <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Pumps"></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock  Width="110"  VerticalAlignment="Center" Text="Pump hot"></TextBlock>
+                            <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
                         </StackPanel>
-                    </Border>
-
-
-                    <Border  Visibility="Collapsed" Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                        <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                            <TextBlock Margin="0,0,0,0" FontWeight="SemiBold" Text="Current (A)"></TextBlock>
-                            <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="L1"></TextBlock>
-                                <TextBox  Name="aL1" IsEnabled="False" Text="35"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="L2"></TextBlock>
-                                <TextBox Name="aL2" IsEnabled="False" Text="35"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Width="140" Text="L3"></TextBlock>
-                                <TextBox Name="aL3" IsEnabled="False" Text="35"></TextBox>
-                            </StackPanel>
-
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock  Width="110" VerticalAlignment="Center" Text="Pump cold"></TextBlock>
+                            <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
                         </StackPanel>
-                    </Border>
-                </StackPanel>
-            </Border>
+                    </StackPanel>
+                </Border>
 
-            <Border Margin="5,5,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
-                <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                    <TextBlock FontWeight="SemiBold" Text="Safety"></TextBlock>
-                    <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="180" Text="Safety Stop"></TextBlock>
-                        <ToggleSwitch Name="safetyStop" IsEnabled="False" BorderBrush="Red" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
-                    </StackPanel>
-                    <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="180" Text="Safety reset needed"></TextBlock>
-                        <ToggleSwitch Name="safetyReset" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
-                    </StackPanel>
-                    <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="180" Text="Emergency"></TextBlock>
-                        <ToggleSwitch Name="safetyEmergency" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
-                    </StackPanel>
-                    <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="180" Text="Tempering fluid level low"></TextBlock>
-                        <ToggleSwitch Name="safetyFluidLevel" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
-                    </StackPanel>
-                    <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Width="180" Text="Heater over-temperature"></TextBlock>
-                        <ToggleSwitch Name="safetyOverHeated" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
-                    </StackPanel>
+                <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                    <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
+                        <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Heating cartridge"></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock  Width="110"  VerticalAlignment="Center" Text="Disable heater"></TextBlock>
+                            <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
+                        </StackPanel>
 
-                </StackPanel>
-            </Border>
-            <!-- /StackPanel >
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock  Width="110"  VerticalAlignment="Center" Text="Heater power"></TextBlock>
+                            <TextBlock  Margin="15,0,0,0" VerticalAlignment="Center" Text="{Binding ElementName=mySlider,Path=Value}"></TextBlock>
+                            <TextBlock   VerticalAlignment="Center" Text=" %"></TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Slider IsEnabled="False" x:Name="mySlider" Width="110"  Minimum="0" Maximum="100"></Slider>
+                            <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                    <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
+                        <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Cooling cartridge"></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock  Width="110"  VerticalAlignment="Center" Text="Disable cooler"></TextBlock>
+                            <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock  Width="110"  VerticalAlignment="Center" Text="Cooler power"></TextBlock>
+                            <TextBlock  Margin="15,0,0,0" VerticalAlignment="Center" Text="{Binding ElementName=myCoolSlider,Path=Value}"></TextBlock>
+                            <TextBlock   VerticalAlignment="Center" Text=" %"></TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Slider IsEnabled="False"  x:Name="myCoolSlider" Width="110" Minimum="0" Maximum="100"></Slider>
+                            <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+
+
+                <Border Visibility="Collapsed" Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                    <StackPanel Visibility="Collapsed" Margin="5,5,5,5" Orientation="Vertical">
+                        <TextBlock FontWeight="SemiBold" Text="Flow (lpm)"></TextBlock>
+                        <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="140" Text="Coolant water"></TextBlock>
+                            <TextBox Name="coolantWater" IsEnabled="False" Text="-"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="140" Text="Heat transfer oil"></TextBlock>
+                            <TextBox Name="heatTransferOil" IsEnabled="False" Text="-"></TextBox>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+
+            <!-- Column 2-->
+
+            <StackPanel Grid.Column="1" Orientation="Vertical" Margin='5,0,0,0'>
+
+                <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                    <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
+                        <TextBlock Name="tempHeaderText" FontWeight="SemiBold" Text="Temperature (C)"></TextBlock>
+
+                        <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="140" Text="Return valve"></TextBlock>
+                            <TextBox  Name ="retValveTemp" IsEnabled="False" Text="-" Width="30"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="140" Text="Bearing hot pump"></TextBlock>
+                            <TextBox  Name="bearingHotPumpTemp" IsEnabled="False" Text="-" Width="40"/>
+                        </StackPanel>
+                        <Border Margin="5,8,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                            <StackPanel  Margin="5,2,5,5" Orientation="Vertical">
+                                <TextBlock  FontWeight="SemiBold" Text="Accumulator tanks"/>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="Hot tank"/>
+                                    <TextBox x:Name="hotTankTemp" IsEnabled="False" Text="-" Width="30"/>
+                                </StackPanel>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="Cold tank"/>
+                                    <TextBox x:Name="coldTankTemp" IsEnabled="False" Text="-" Width="40"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                            <StackPanel  Margin="5,2,5,5" Orientation="Vertical">
+                                <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Buffer tank"></TextBlock>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="Hot side"></TextBlock>
+                                    <TextBox Name="oilHotSideTemp" IsEnabled="False" Text="-"></TextBox>
+                                </StackPanel>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="Middle"></TextBlock>
+                                    <TextBox Name="oilMiddleTemp" IsEnabled="False" Text="-"></TextBox>
+                                </StackPanel>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="Cold side"></TextBlock>
+                                    <TextBox Name="oilColdSideTemp" IsEnabled="False" Text="-"></TextBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                            <StackPanel  Margin="5,2,5,5" Orientation="Vertical">
+                                <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Heating cartridges"/>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="Oil inlet"/>
+                                    <TextBox x:Name="oilInletTemp" IsEnabled="False" Text="-"/>
+                                </StackPanel>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="Oil outlet"/>
+                                    <TextBox x:Name="oilOutletTemp" IsEnabled="False" Text="-"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                            <StackPanel  Margin="5,2,5,5" Orientation="Vertical">
+                                <TextBlock FontWeight="SemiBold" Margin="5,0,0,0" Text="Cooling cartridge"></TextBlock>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="Oil inlet"></TextBlock>
+                                    <TextBox Name="oilExchangeInletTemp" IsEnabled="False" Text="-"></TextBox>
+                                </StackPanel>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="Oil outlet"></TextBlock>
+                                    <TextBox Name="oilExchangeOutletTemp" IsEnabled="False" Text="-"></TextBox>
+                                </StackPanel>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="Coolant water inlet"></TextBlock>
+                                    <TextBox Name="coolantWaterExchangeInletTemp" IsEnabled="False" Text="-"></TextBox>
+                                </StackPanel>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="Coolant water outlet"></TextBlock>
+                                    <TextBox Name="coolantWaterExchangeOutletTemp" IsEnabled="False" Text="-"></TextBox>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+
+            <!-- Column three -->
+
+            <StackPanel  Orientation="Vertical" Grid.Column="2"  Margin="5,0,0,0">
+
+
+                <Border Margin="5,5,5,5"  BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                    <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
+                        <TextBlock Margin="0,0,0,0" FontWeight="SemiBold" Text="System power"/>
+                        <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="180"  Text="Motors Phase Voltages and order"/>
+                            <TextBox  Margin="5,0,0,0" IsEnabled="False" TextAlignment="Center" Text="Not Ready"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="180" Text="Heater Phase Voltages and order"/>
+                            <TextBox  Margin="5,0,0,0" IsEnabled="False" Text="Not Ready"/>
+                        </StackPanel>
+
+                        <Border Visibility="Collapsed" Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                            <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
+                                <TextBlock FontWeight="SemiBold" Text="Voltage (VAC)"/>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="L1"/>
+                                    <TextBox x:Name="vL1" IsEnabled="False" Text="230"/>
+                                </StackPanel>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="L2"/>
+                                    <TextBox  x:Name="vL2" IsEnabled="False" Text="230"/>
+                                </StackPanel>
+                                <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="L3"/>
+                                    <TextBox x:Name="vL3" IsEnabled="False" Text="230"/>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </Border>
+
+
+                        <Border  Visibility="Collapsed" Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                            <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
+                                <TextBlock Margin="0,0,0,0" FontWeight="SemiBold" Text="Current (A)"/>
+                                <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="L1"/>
+                                    <TextBox  x:Name="aL1" IsEnabled="False" Text="35"/>
+                                </StackPanel>
+                                <StackPanel Margin="5,2,0,0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="L2"/>
+                                    <TextBox x:Name="aL2" IsEnabled="False" Text="35"/>
+                                </StackPanel>
+                                <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Width="140" Text="L3"/>
+                                    <TextBox x:Name="aL3" IsEnabled="False" Text="35"/>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+
+                <Border Margin="5,5,5,5"  BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                    <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
+                        <TextBlock FontWeight="SemiBold" Text="Pressure (bar/psi)"/>
+                        <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="180" Text="Hot pump output"/>
+                            <TextBox x:Name="hotPumpOutput" IsEnabled="False" Text="-"/>
+                        </StackPanel>
+                        <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="180" Text="Cold pump output"/>
+                            <TextBox x:Name="coldPumpOutput" IsEnabled="False" Text="-"/>
+                        </StackPanel>
+                        <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="180" Text="Tool return"/>
+                            <TextBox x:Name="toolReturn" IsEnabled="False" Text="-"/>
+                        </StackPanel>
+                        <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="180" Text="Particle filter"/>
+                            <TextBox x:Name="particleFilter" IsEnabled="False" Text="-"/>
+                        </StackPanel>
+                        <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="180" Text="Pneumatics"/>
+                            <TextBox x:Name="pneumatics" IsEnabled="False" Text="-"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Border>
+
+                <Border Margin="5,5,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                    <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
+                        <TextBlock FontWeight="SemiBold" Text="Safety"/>
+                        <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="180" Text="Safety Stop"/>
+                            <ToggleSwitch x:Name="safetyStop" IsEnabled="False" BorderBrush="Red" Margin="5,0,0,0"  HorizontalAlignment="Right"/>
+                        </StackPanel>
+                        <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="180" Text="Safety reset needed"/>
+                            <ToggleSwitch x:Name="safetyReset" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"/>
+                        </StackPanel>
+                        <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="180" Text="Emergency"/>
+                            <ToggleSwitch x:Name="safetyEmergency" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"/>
+                        </StackPanel>
+                        <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="180" Text="Tempering fluid level low"/>
+                            <ToggleSwitch x:Name="safetyFluidLevel" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"/>
+                        </StackPanel>
+                        <StackPanel Margin="5,2,0,5" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="180" Text="Heater over-temperature"/>
+                            <ToggleSwitch x:Name="safetyOverHeated" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Border>
+                <!-- /StackPanel >
 
         <StackPanel Grid.Column="3" Margin='20,0,0,0' 
               <Line Stroke="#FF4D4D4D" StrokeThickness="3" Height="5"/>
             -->
 
 
-        </StackPanel>
-
-
-        <!-- last column -->
-
-        <Border Margin="5,5,20,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Column="3">
-            <StackPanel Margin="10,0,5,5" Grid.Row="1"  Orientation ="Vertical">
-                <TextBlock FontWeight="SemiBold" Margin="0,5,0,10" Text="System events Log list"></TextBlock>
-                <sfgrid:SfDataGrid x:Name="LogGrid"  Height='600' HeaderRowHeight="30"  
-                               AutoGenerateColumns="False" ItemsSource="{Binding logMessages}">
-                    <sfgrid:SfDataGrid.HeaderStyle >
-                        <Style  TargetType="sfgrid:GridHeaderCellControl">
-                            <Setter Property="Background" Value="LightGray" />
-                            <Setter Property="FontSize" Value="14" />
-                        </Style>
-                    </sfgrid:SfDataGrid.HeaderStyle>
-
-                    <sfgrid:SfDataGrid.Columns>
-                        <sfgrid:GridTextColumn MappingName="time" Width="100" AllowSorting="False" AllowFiltering="False">
-                            <sfgrid:GridTextColumn.CellStyle>
-                                <Style TargetType="sfgrid:GridCell">
-                                    <Setter Property="FontSize" Value="12" />
-                                </Style>
-                            </sfgrid:GridTextColumn.CellStyle>
-                        </sfgrid:GridTextColumn>
-
-                        <sfgrid:GridNumericColumn MappingName="prio"  Width="70" AllowSorting="True" AllowFiltering="True">
-                            <sfgrid:GridNumericColumn.CellStyle>
-                                <Style TargetType="sfgrid:GridCell">
-                                    <Setter Property="FontSize" Value="12" />
-                                </Style>
-                            </sfgrid:GridNumericColumn.CellStyle>
-                        </sfgrid:GridNumericColumn>
-
-                        <sfgrid:GridTextColumn MappingName="message" ColumnSizer="Star" AllowSorting="True" AllowFiltering="True">
-                            <sfgrid:GridTextColumn.CellStyle>
-                                <Style TargetType="sfgrid:GridCell">
-                                    <Setter Property="FontSize" Value="12" />
-                                </Style>
-                            </sfgrid:GridTextColumn.CellStyle>
-                        </sfgrid:GridTextColumn>
-
-                    </sfgrid:SfDataGrid.Columns>
-                </sfgrid:SfDataGrid>
-
-                <!-- sfgrid:SfDataGrid x:Name="LogGrid" Height="500" ColumnSizer="Star" AllowSorting="True" AllowFiltering="True" ItemsSource="{Binding logMessages}"/ -->
-
-
-                <Button x:Name="exportButton"  Margin="0,10,0,0" Content="Export to Excel file" Click="exportButton_Click"></Button>
-
             </StackPanel>
-        </Border>
 
 
-    </Grid>
+            <!-- last column -->
+
+            <Border Margin="5,5,20,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Column="3">
+                <StackPanel Margin="10,0,5,5" Grid.Row="1"  Orientation ="Vertical">
+                    <TextBlock FontWeight="SemiBold" Margin="0,5,0,10" Text="System events Log list"></TextBlock>
+                    <sfgrid:SfDataGrid x:Name="LogGrid"  Height='500' HeaderRowHeight="30"  
+                               AutoGenerateColumns="False" ItemsSource="{Binding logMessages}">
+                        <sfgrid:SfDataGrid.HeaderStyle >
+                            <Style  TargetType="sfgrid:GridHeaderCellControl">
+                                <Setter Property="Background" Value="LightGray" />
+                                <Setter Property="FontSize" Value="14" />
+                            </Style>
+                        </sfgrid:SfDataGrid.HeaderStyle>
+
+                        <sfgrid:SfDataGrid.Columns>
+                            <sfgrid:GridTextColumn MappingName="time" Width="100" AllowSorting="False" AllowFiltering="False">
+                                <sfgrid:GridTextColumn.CellStyle>
+                                    <Style TargetType="sfgrid:GridCell">
+                                        <Setter Property="FontSize" Value="12" />
+                                    </Style>
+                                </sfgrid:GridTextColumn.CellStyle>
+                            </sfgrid:GridTextColumn>
+
+                            <sfgrid:GridNumericColumn MappingName="prio"  Width="70" AllowSorting="True" AllowFiltering="True">
+                                <sfgrid:GridNumericColumn.CellStyle>
+                                    <Style TargetType="sfgrid:GridCell">
+                                        <Setter Property="FontSize" Value="12" />
+                                    </Style>
+                                </sfgrid:GridNumericColumn.CellStyle>
+                            </sfgrid:GridNumericColumn>
+
+                            <sfgrid:GridTextColumn MappingName="message" ColumnSizer="Star" AllowSorting="True" AllowFiltering="True">
+                                <sfgrid:GridTextColumn.CellStyle>
+                                    <Style TargetType="sfgrid:GridCell">
+                                        <Setter Property="FontSize" Value="12" />
+                                    </Style>
+                                </sfgrid:GridTextColumn.CellStyle>
+                            </sfgrid:GridTextColumn>
+
+                        </sfgrid:SfDataGrid.Columns>
+                    </sfgrid:SfDataGrid>
+
+                    <!-- sfgrid:SfDataGrid x:Name="LogGrid" Height="500" ColumnSizer="Star" AllowSorting="True" AllowFiltering="True" ItemsSource="{Binding logMessages}"/ -->
+
+
+                    <Button x:Name="exportButton"  Margin="0,10,0,0" Content="Export to Excel file" Click="exportButton_Click"></Button>
+
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
 </Page>

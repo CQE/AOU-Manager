@@ -906,7 +906,11 @@ namespace DemoPrototype
                     if (_hotCalibrate == int.MinValue || _hotTune == int.MinValue)
                         return "-";
                     else
-                        return ((_hotCalibrate + _hotTune)*n).ToString("#,##");
+                    {
+                        double dval = (_hotCalibrate + _hotTune) * n;
+                        return dval.ToString("0.##");
+                    }
+                        
                 }
             }
 

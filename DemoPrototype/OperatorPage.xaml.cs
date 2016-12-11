@@ -86,57 +86,28 @@ namespace DemoPrototype
             //set tool temp mode
             SetToolTemperingText();
 
-            //set tank temperatures, check if received. only ONE each time.
+            //ASk AOU
+            AppHelper.AskAOUForTemps();
+            AppHelper.AskAOUForMouldTimes();
+
+            //set tank temperatures, check if received.
             if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)
             {
-                AppHelper.AskAOUForHotTankTemp();
-                if (GlobalVars.globTankSetTemps.ColdTankSetTemp < 0)
-                {
-                    NewTColdTankTextBox.Text = "-";
-                }
-                else
-                {
-                    NewTColdTankTextBox.Text = GlobalVars.globTankSetTemps.ColdTankSetTemp.ToString();
-                  
-                }
+                NewTHotTankTextBox.Text = "-"; ;
             }
             else
             {
                 NewTHotTankTextBox.Text = GlobalVars.globTankSetTemps.HotTankSetTemp.ToString();
-                if (GlobalVars.globTankSetTemps.ColdTankSetTemp < 0)
-                {
-                    AppHelper.AskAOUForColdTankTemp();
-                }
-                else
-                {
-                    NewTColdTankTextBox.Text = GlobalVars.globTankSetTemps.ColdTankSetTemp.ToString();
-                    if (GlobalVars.globFeedTimes.HeatingActive < 0)
-                    {
-                        AppHelper.AskAOUForHeatingTime();
-                    }
-                    else
-                    {
-                        if (GlobalVars.globFeedTimes.HeatingPause < 0)
-                            {
-                                AppHelper.AskAOUForHeatingPause();
-                            }
-                        else
-                            if (GlobalVars.globFeedTimes.CoolingActive < 0)
-                            {
-                                AppHelper.AskAOUForCoolingTime();
-                            }
-                            else
-                                if (GlobalVars.globFeedTimes.CoolingPause < 0)
-                                {
-                                    AppHelper.AskAOUForCoolingPause();
-                                }
-                    }
-                }
             }
-            
-            
-            
-
+            if (GlobalVars.globTankSetTemps.ColdTankSetTemp < 0)
+            {
+                NewTColdTankTextBox.Text = "-";
+            }
+            else
+            {
+                NewTColdTankTextBox.Text = GlobalVars.globTankSetTemps.ColdTankSetTemp.ToString();
+            }
+                  
             //set feed times
             if (GlobalVars.globFeedTimes.HeatingActive>= 0)
             {

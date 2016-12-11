@@ -262,6 +262,77 @@ namespace DemoPrototype
             }
         }
 
+
+        public static void AskAOUForTemps()
+        {
+            string msg = "Asked for: ";
+            if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)
+            {
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempHotTankFeedSet);
+                msg += "setHotTankTemp";
+            }
+
+            if (GlobalVars.globTankSetTemps.ColdTankSetTemp < 0)
+            {
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet);
+                msg += " setColdTankTemp";
+            }
+            ShowMessageBox(msg);
+
+        }
+
+        public static void AskAOUForMouldTimes()
+        {
+            string msg = "Asked for: ";
+            if (GlobalVars.globFeedTimes.HeatingActive < 0)
+            {
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.heatingTime);
+                msg += "heatingTime ";
+            }
+
+            if (GlobalVars.globFeedTimes.HeatingPause < 0)
+            {
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.toolHeatingFeedPause);
+                msg += "toolHeatingFeedPause ";
+            }
+
+            if (GlobalVars.globFeedTimes.CoolingActive < 0)
+            {
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coolingTime);
+                msg += "coolingTime ";
+            }
+            if (GlobalVars.globFeedTimes.CoolingPause < 0)
+            {
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.toolCoolingFeedPause);
+                msg += "toolCoolingFeedPause ";
+            }
+            ShowMessageBox(msg);
+        }
+
+        public static void AskAOUForDelayTimes()
+        {
+            if (GlobalVars.globDelayTimes.HotCalibrate < 0 && GlobalVars.globDelayTimes.HotTune <0)
+            {
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotDelayTime);
+            }
+            if (GlobalVars.globDelayTimes.ColdCalibrate < 0 && GlobalVars.globDelayTimes.ColdTune <0)
+            {
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
+            }
+
+        }
+
+
+        public static void AskAOUForFeedTimes()
+        {
+            if (GlobalVars.globDelayTimes.EACalibrate < 0 && GlobalVars.globDelayTimes.EATune < 0)
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetRetValveHotPeriod);
+            if (GlobalVars.globDelayTimes.VACalibrate < 0 && GlobalVars.globDelayTimes.VATune < 0)
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetHotFeed2RetValveTime);
+            if (GlobalVars.globDelayTimes.F2MCalibrate < 0 && GlobalVars.globDelayTimes.F2MTune < 0)
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotFeed2MouldDelayTime);
+        }
+        
         public static void AskAOUForHeatingTime()
         {
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.heatingTime);
@@ -346,7 +417,8 @@ namespace DemoPrototype
 
         public static void AskAOUForColdTankTemp()
         {
-            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet); 
+            
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet); 
         }
 
         public static async void ShowMessageBox(string text)

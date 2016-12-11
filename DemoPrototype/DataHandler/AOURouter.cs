@@ -157,7 +157,8 @@ namespace DemoPrototype
                 logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), message, 12, 0));
                 if (aouData.SendData(text + "\n"))   //always end data with newline
                 {
-                    Task.Delay(1000); // Test: Insert delay
+                    Task.Delay(2000); // Test: Insert delay
+                    //AppHelper.ShowMessageBox(text);
                 }
             }
             else

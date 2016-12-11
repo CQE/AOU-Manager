@@ -234,7 +234,7 @@ namespace DemoPrototype
             {
                 dataWriteObject.WriteString(textToSend);
                 storeAsyncTask = dataWriteObject.StoreAsync().AsTask();
-                UInt32 bytesWritten = await storeAsyncTask;
+                UInt32 bytesWritten = await storeAsyncTask.ConfigureAwait(false);
                 textToSend = ""; 
             }
         }
@@ -258,7 +258,7 @@ namespace DemoPrototype
                 if (Connected)
                 {
                     dataWriteObject = new DataWriter(serialPort.OutputStream);
-                    await WriteAsync();
+                    await WriteAsync().ConfigureAwait(false);
                 }
                 else
                 {
@@ -310,7 +310,7 @@ namespace DemoPrototype
 
             // Launch the task and wait
             // AddDataLogText("await loadAsyncTask");
-            UInt32 bytesRead = await loadAsyncTask;
+            UInt32 bytesRead = await loadAsyncTask.ConfigureAwait(false);
             if (debugMode != AOUSettings.DebugMode.noDebug)
             { 
                 AddDataLogText("bytesRead:" + bytesRead);
@@ -332,7 +332,7 @@ namespace DemoPrototype
                     // keep reading the serial input
                     while (true)
                     {
-                        await ReadAsync(ReadCancellationTokenSource.Token);
+                        await ReadAsync(ReadCancellationTokenSource.Token).ConfigureAwait(false);
                     }
                 }
             }

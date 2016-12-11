@@ -94,8 +94,9 @@ namespace DemoPrototype
             //set threshold levels (should have better names)
             TBufHotHLine.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
             TBufMidHLine.Y1 = GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit;
-            
 
+            AppHelper.AskAOUForDelayTimes();
+            AppHelper.AskAOUForFeedTimes();
 
             //we can NOT ask two commands
             if (GlobalVars.globThresholds.ThresholdHot2Cold<0)

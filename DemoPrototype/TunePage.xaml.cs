@@ -258,6 +258,10 @@ namespace DemoPrototype
             Grid.SetColumnSpan(myVolumeChart, 6);
 
 
+
+            AppHelper.AskAOUForDelayTimes();
+            AppHelper.AskAOUForFeedTimes();
+
             //ask for all values
             if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)
             {

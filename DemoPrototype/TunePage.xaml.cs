@@ -259,8 +259,8 @@ namespace DemoPrototype
 
 
 
-            AppHelper.AskAOUForDelayTimes();
-            AppHelper.AskAOUForFeedTimes();
+            //AppHelper.AskAOUForDelayTimes();
+            //AppHelper.AskAOUForFeedTimes();
 
             //ask for all values
             if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)

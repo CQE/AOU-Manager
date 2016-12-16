@@ -20,19 +20,22 @@
             <!-- first column -->
             <StackPanel Margin="5,0,0,0" Orientation="Vertical" Width="250" HorizontalAlignment="Left">
                 <Border Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
+                   
                     <StackPanel  Margin="5,5,5,5" Orientation="Vertical">
-                        <TextBlock FontWeight="SemiBold" Text="Valves"></TextBlock>
+                        <TextBlock FontWeight="SemiBold" Text="Force valves"></TextBlock>
+                        <TextBlock Visibility="Visible" Text="Set running mode Idle to enable" Name="forceHelpText"></TextBlock>
+                        <Button Visibility="Collapsed" Name="FocusButton"></Button>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="110"  VerticalAlignment="Center" Text="Hot feed valve"></TextBlock>
-                            <ToggleSwitch Name="hotFeedValve" IsEnabled="False" Margin="5,0,0,0" HorizontalAlignment="Right"></ToggleSwitch>
+                            <ToggleSwitch Name="hotFeedValve" IsEnabled="False" Toggled="hotFeedValve_Toggled"  Margin="5,0,0,0" HorizontalAlignment="Right"></ToggleSwitch>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="110" VerticalAlignment="Center" Text="Cold feed valve"></TextBlock>
-                            <ToggleSwitch Name="coldFeedValve" IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
+                            <ToggleSwitch Name="coldFeedValve" IsEnabled="False" Toggled="coldFeedValve_Toggled" Margin="5,0,0,0"></ToggleSwitch>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="110" VerticalAlignment="Center" Text="Return valve"></TextBlock>
-                            <ToggleSwitch Name="returnValve" IsEnabled="False"  Margin="5,0,0,0" HorizontalAlignment="Right"></ToggleSwitch>
+                            <ToggleSwitch Name="returnValve" IsEnabled="False"  Margin="5,0,0,0" Toggled="returnValve_Toggled" HorizontalAlignment="Right"></ToggleSwitch>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="110" VerticalAlignment="Center" Text="Coolant valve"></TextBlock>
@@ -96,7 +99,7 @@
                         </StackPanel>
                     </StackPanel>
                 </Border>
-
+                <Button Visibility="Collapsed" Content="Valves" Click="Button_Click"></Button>
 
 
                 <Border Visibility="Collapsed" Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >

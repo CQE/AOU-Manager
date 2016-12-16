@@ -418,10 +418,26 @@ namespace DemoPrototype
         public static void AskAOUForColdTankTemp()
         {
             
-            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet); 
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet); 
         }
 
-        public static async void ShowMessageBox(string text)
+        public static void AskAOUForValves()
+        {
+
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.forceValves);
+        }
+
+        public static void SetValves2(AOUDataTypes.CommandType cmd, int val)
+        {
+          
+          Data.Updater.SetValveValue(cmd, (int)val);
+          
+
+            //Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet);
+        }
+
+
+        public static async void ShowMessageBox(string text, Control nextControl = null)
         {
             try
             {
@@ -434,7 +450,13 @@ namespace DemoPrototype
             {
                 Data.Updater.CreateLogMessage(text);
             }
+            if (nextControl != null)
+            {
+                nextControl.Focus(FocusState.Pointer);
+            }
         }
+
+
 
         /*
         var savePicker = new FileSavePicker();

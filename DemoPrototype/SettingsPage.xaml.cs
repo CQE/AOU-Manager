@@ -625,5 +625,10 @@ namespace DemoPrototype
 
         }
 
+        private void AskForValves_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForValves();
+            AskForValves.IsEnabled = false;
+        }
     }
 }

@@ -43,6 +43,8 @@ namespace DemoPrototype
 
         public const string tagRetValue = "ret";
 
+        public const string tagForceValves = "forceValves"; 
+
         public const string tagLog = "log";
         public const string tagLogSubTagMsg = "Msg";
 
@@ -179,6 +181,12 @@ namespace DemoPrototype
             {
                 stateData.Valves = tmpval;
             }
+
+            //if (AOUTagParser.ParseMMSS(tagForceValves, tagText, out tmpval))
+            //{
+            //    stateData.Valves = tmpval;
+            //}
+
 
             if (AOUTagParser.ParseMMSS(tagSafety, tagText, out tmpval))
             {

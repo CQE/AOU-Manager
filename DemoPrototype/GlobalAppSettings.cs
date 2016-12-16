@@ -294,18 +294,18 @@ namespace DemoPrototype
             globTankSetTemps.ColdTankSetTemp = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet);
             globTankSetTemps.HotTankSetTemp = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.tempHotTankFeedSet);
 
-            globThresholds.ThresholdCold2Hot = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TReturnThresholdCold2Hot); 
+            globThresholds.ThresholdCold2Hot = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TReturnThresholdCold2Hot);
             globThresholds.ThresholdHot2Cold = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TReturnThresholdHot2Cold);
 
             globThresholds.ThresholdColdTankUpperLimit = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TBufferColdUpperLimit);
             globThresholds.ThresholdMidBuffTankAlarmLimit = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TBufferMidRefThreshold);
             globThresholds.ThresholdHotTankLowLimit = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TBufferHotLowerLimit);
 
-            globThresholds.ThresholdColdTankBuffAlarmLimit = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TColdTankAlarmHighThreshold); 
-            globThresholds.ThresholdHotBuffTankAlarmLimit = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.THotTankAlarmLowThreshold); 
+            globThresholds.ThresholdColdTankBuffAlarmLimit = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.TColdTankAlarmHighThreshold);
+            globThresholds.ThresholdHotBuffTankAlarmLimit = ValueGenerator.GetStaticCommandValue(AOUDataTypes.CommandType.THotTankAlarmLowThreshold);
         }
 
-        public static void SetCommandValue(AOUDataTypes.CommandType cmd, string value)
+        public static void SetCommandValue(AOUDataTypes.CommandType cmd, string value="0")
         {
             int ival;
             double dval;
@@ -319,13 +319,35 @@ namespace DemoPrototype
                 //strip 0x
                 string hexString = value.Substring(2); //  "0004";
                 ival = int.Parse(hexString, System.Globalization.NumberStyles.HexNumber);
-            } 
+            }
             //int ival = int.TryParse(value);
             // Add ret cmd and ival to list of changed values. Perhaps cmd sent too
-           // retReceived.Add(new CommandReceived(cmd, ival)); MOVED to after switch /MW
+            // retReceived.Add(new CommandReceived(cmd, ival)); MOVED to after switch /MW
             //special handling of times    
             switch (cmd)
             {
+                case AOUDataTypes.CommandType.forceValves:
+                    {
+                        //divide into mask ant state
+                        // -- VALVES -- <Valves>MMSS</Valves> MASK (e.g. “3F”), STATE Bits: 0/Hot valve, 1/Cold valve, 2/Return valve, 4/Coolant valve
+                        byte mask = (Byte)(ival & 0xff);
+                        byte state = (Byte)(ival >> 8);
+
+                        //gl
+
+                        //if (IsStateSet(mask, VALVE_HOT)) currentHotValve = GetValveState(state, VALVE_HOT);
+                        //if (IsStateSet(mask, VALVE_COLD)) currentColdValve = GetValveState(state, VALVE_COLD);
+                        //if (IsStateSet(mask, VALVE_RET)) currentReturnValve = GetValveState(state, VALVE_RET);
+                        //if (IsStateSet(mask, VALVE_COOL)) currentCoolantValve = GetValveState(state, VALVE_COOL);
+
+
+
+                        break;
+                    }
+                    
+                
+                
+                
                 //for delay times, we cannot divide delay into calibrate and tune when returned TODO how hanlde?
 
                 case AOUDataTypes.CommandType.coldDelayTime:
@@ -579,15 +601,19 @@ namespace DemoPrototype
 
             globValveChartValues.HotValveLow = 18; // ToDo: Trim
             globValveChartValues.HotValveHi = 24;
+            globValveChartValues.HotValveValue = 0; //off
 
             globValveChartValues.ColdValveLow = 26;
             globValveChartValues.ColdValveHi = 32;
+            globValveChartValues.ColdValveValue = 0;
 
             globValveChartValues.ReturnValveLow = 34;
             globValveChartValues.ReturnValveHi = 38;
+            globValveChartValues.ReturnValveValue = 0;
 
             globValveChartValues.CoolantValveLow = 40;
             globValveChartValues.CoolantValveHi = 46;
+            globValveChartValues.CoolantValveValue = 0;
 
             globSafetyAlarms.SafetyEmergencyHi = 1;
             globSafetyAlarms.SafetyStopHi = 1;
@@ -1214,15 +1240,19 @@ namespace DemoPrototype
         { 
             private int _hotValveLow;
             private int _hotValveHi;
+            private int _hotValveValue;
 
             private int _coldValveLow;
             private int _coldValveHi;
+            private int _coldValveValue;
 
             private int _returnValveLow;
             private int _returnValveHi;
+            private int _returnValveValue;
 
             private int _coolantValveLow;
             private int _coolantValveHi;
+            private int _coolantValveValue;
 
 
             public int HotValveLow
@@ -1236,6 +1266,13 @@ namespace DemoPrototype
                 set { _hotValveHi = value; }
             }
 
+            public int HotValveValue
+            {
+                get { return _hotValveValue; }
+                set { _hotValveValue = value; }
+            }
+
+
             public int ColdValveLow
             {
                 get { return _coldValveLow; }
@@ -1245,6 +1282,11 @@ namespace DemoPrototype
             {
                 get { return _coldValveHi; }
                 set { _coldValveHi = value; }
+            }
+            public int ColdValveValue
+            {
+                get { return _coldValveValue; }
+                set { _coldValveValue = value; }
             }
 
             public int ReturnValveLow
@@ -1257,6 +1299,13 @@ namespace DemoPrototype
                 get { return _returnValveHi; }
                 set { _returnValveHi = value; }
             }
+            public int ReturnValveValue
+            {
+                get { return _returnValveValue; }
+                set { _returnValveValue = value; }
+            }
+
+
 
             public int CoolantValveLow
             {
@@ -1267,6 +1316,11 @@ namespace DemoPrototype
             {
                 get { return _coolantValveHi; }
                 set { _coolantValveHi = value; }
+            }
+            public int CoolantValveValue
+            {
+                get { return _coolantValveValue; }
+                set { _coolantValveValue = value; }
             }
 
         }
@@ -1482,5 +1536,8 @@ namespace DemoPrototype
 
         public static SolidColorBrush gray { get { return new SolidColorBrush(Windows.UI.Colors.DarkSlateGray); } }
     }
+
+
+   
 
 }

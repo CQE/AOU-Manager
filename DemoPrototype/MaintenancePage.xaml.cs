@@ -25,6 +25,7 @@ namespace DemoPrototype
     {
         private DispatcherTimer dTimer;
         private LogMessageViewModel logMsgModel;
+        private bool inInit = true;
 
         public MaintenancePage()
         {
@@ -32,6 +33,7 @@ namespace DemoPrototype
 
             this.Loaded += MaintenancePage_Loaded;
             this.Unloaded += MaintenancePage_Unloaded;
+            inInit = true;
 
             this.InitializeComponent();
 
@@ -41,8 +43,29 @@ namespace DemoPrototype
             UpdateLogMessages(true);
 
             InitDispatcherTimer();
-          //  AppHelper.AskAOUForTankTemps();
 
+            if (GlobalAppSettings.RunningMode != (int)AOUDataTypes.AOURunningMode.Idle)
+            {
+                hotFeedValve.IsEnabled = false;
+                coldFeedValve.IsEnabled = false;
+                returnValve.IsEnabled = false;
+               forceHelpText.Text = "Set running mode Idle to enable";
+            }
+            else
+            {
+                hotFeedValve.IsEnabled = true;
+                coldFeedValve.IsEnabled = true;
+                returnValve.IsEnabled = true;
+                forceHelpText.Text = "";
+            }
+            //  AppHelper.AskAOUForTankTemps();
+
+            hotFeedValve.IsOn = GetValveState(GlobalVars.globValveChartValues.HotValveValue, GlobalVars.globValveChartValues.HotValveHi);
+            coldFeedValve.IsOn = GetValveState(GlobalVars.globValveChartValues.ColdValveValue, GlobalVars.globValveChartValues.ColdValveHi);
+            returnValve.IsOn = GetValveState(GlobalVars.globValveChartValues.ReturnValveValue, GlobalVars.globValveChartValues.ReturnValveHi);
+            coolantValve.IsOn = GetValveState(GlobalVars.globValveChartValues.CoolantValveValue, GlobalVars.globValveChartValues.CoolantValveHi);
+
+            inInit = false;
         }
 
         private void MaintenancePage_Unloaded(object sender, RoutedEventArgs e)
@@ -142,6 +165,8 @@ namespace DemoPrototype
             aL2.Text = GetStringValue(double.NaN);
             aL3.Text = GetStringValue(double.NaN);
 
+
+            
             hotFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedHot, GlobalVars.globValveChartValues.HotValveHi);
             coldFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedCold, GlobalVars.globValveChartValues.ColdValveHi);
             returnValve.IsOn = GetValveState(Data.Updater.LastPower.ValveReturn, GlobalVars.globValveChartValues.ReturnValveHi);
@@ -177,6 +202,101 @@ namespace DemoPrototype
             options.ExcelVersion = Syncfusion.XlsIO.ExcelVersion.Excel2013;
             var excelEngine = LogGrid.ExportToExcel(LogGrid.View, options);
             SaveExcelToFile(excelEngine.Excel.Workbooks[0]);
+        }
+
+        private void hotFeedValve_Toggled(object sender, RoutedEventArgs e)
+        {
+            //check if idle and not init, only show message if button enabled
+            if (GlobalAppSettings.RunningMode != (int)AOUDataTypes.AOURunningMode.Idle && hotFeedValve.IsEnabled )
+            {
+                AppHelper.ShowMessageBox("AOU must be in mode IDLE for this command");
+                return;
+            }
+            //Buttom must still be enabled to send command
+            int val = 100; //mask int
+            if (hotFeedValve.IsOn)
+            {
+                val = val + 1;
+                GlobalVars.globValveChartValues.HotValveValue = GlobalVars.globValveChartValues.HotValveHi;
+            }
+            else
+                GlobalVars.globValveChartValues.HotValveValue = GlobalVars.globValveChartValues.HotValveLow;
+            if (hotFeedValve.IsEnabled && !inInit)
+            {
+                Data.Updater.SetCommandValue(AOUDataTypes.CommandType.forceValves, val); //hard converted to "0101"
+                hotFeedValve.IsEnabled = false;
+            }
+        }
+
+        private void hotFeedValve_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            AppHelper.ShowMessageBox("Tapped");
+        }
+
+        private void hotFeedValve_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //check if idle
+            if (GlobalAppSettings.RunningMode != (int)AOUDataTypes.AOURunningMode.Idle)
+            {
+                AppHelper.ShowMessageBox("AOU must be in mode IDLE for this command",FocusButton);
+                return;
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskAOUForValves();
+        }
+
+        private void coldFeedValve_Toggled(object sender, RoutedEventArgs e)
+        {
+            //check if idle
+            if (GlobalAppSettings.RunningMode != (int)AOUDataTypes.AOURunningMode.Idle && coldFeedValve.IsEnabled)
+            {
+                AppHelper.ShowMessageBox("AOU must be in mode IDLE for this command");
+                return;
+            }
+            int val = 200; //mask int
+            if (coldFeedValve.IsOn)
+            {
+                val = val + 2;
+                GlobalVars.globValveChartValues.ColdValveValue = GlobalVars.globValveChartValues.ColdValveHi;
+            }
+            else
+                GlobalVars.globValveChartValues.ColdValveValue = GlobalVars.globValveChartValues.ColdValveLow;
+
+            if (coldFeedValve.IsEnabled)
+                if (coldFeedValve.IsEnabled && !inInit)
+                {
+                    Data.Updater.SetCommandValue(AOUDataTypes.CommandType.forceValves, val); //hard converted to "0101"
+                    coldFeedValve.IsEnabled = false;
+
+                }
+        }
+
+        private void returnValve_Toggled(object sender, RoutedEventArgs e)
+        {
+            //check if idle
+            if (GlobalAppSettings.RunningMode != (int)AOUDataTypes.AOURunningMode.Idle && returnValve.IsEnabled)
+            {
+                AppHelper.ShowMessageBox("AOU must be in mode IDLE for this command");
+                return;
+            }
+            int val = 400; //mask int
+            if (returnValve.IsOn)
+            {
+                val = val + 4;
+                GlobalVars.globValveChartValues.ReturnValveValue = GlobalVars.globValveChartValues.ReturnValveHi;
+            }
+            else
+                GlobalVars.globValveChartValues.ReturnValveValue = GlobalVars.globValveChartValues.ReturnValveLow;
+
+            if (returnValve.IsEnabled && !inInit)
+            {
+                Data.Updater.SetCommandValue(AOUDataTypes.CommandType.forceValves, val); //hard converted to "0101
+                returnValve.IsEnabled = false;
+            }
+             
         }
     }
 

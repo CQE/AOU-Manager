@@ -169,9 +169,30 @@ namespace DemoPrototype
 
         public void SendCommandToPlc(AOUDataTypes.CommandType cmd, int value) 
         {
-            SendTagCommandToPlc(GlobalVars.aouCommands.StringValue(cmd), value.ToString());
+            if (cmd == AOUDataTypes.CommandType.forceValves)
+            {
+                //add bitmask stuff here
+                string myString = value.ToString("000#"); //add 0 before so 101 gets 0101
+                //if (value == 1)
+                //    myString = "0101"; 
+                //else
+                //    myString = "0202";
+                SendTagCommandToPlc(GlobalVars.aouCommands.StringValue(cmd), myString);
+            }
+            else
+                SendTagCommandToPlc(GlobalVars.aouCommands.StringValue(cmd), value.ToString());
             Task.Delay(50);
         }
+
+        public void SendValveCommandToPlc(AOUDataTypes.CommandType cmd, int value)
+        {
+            if (value == 1)
+            {
+                SendTagCommandToPlc(GlobalVars.aouCommands.StringValue(cmd), "0101");
+                Task.Delay(50);
+            }
+        }
+
 
         public void AskCommandValueFromPlc(AOUDataTypes.CommandType cmd)
         {
@@ -194,7 +215,7 @@ namespace DemoPrototype
                     AOUData.CommandReturn ret = aouData.GetNextCommandReturn();
                     AOUDataTypes.CommandType cmd = GlobalVars.aouCommands.Command(ret.parameter);
                     logMessages.Add(new AOULogMessage(ret.time_ms, "Plc return " + ret.parameter + "=" + ret.value, 13, 0));  //kraschade vid count=18
-                    GlobalVars.SetCommandValue(cmd,ret.value);
+                    GlobalVars.SetCommandValue(cmd,ret.value); //MW: here we need to handle valves too
                     // ToDo: (Check if Waiting and) notice page that new value have received
                 }
             }

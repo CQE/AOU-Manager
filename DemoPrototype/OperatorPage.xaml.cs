@@ -87,8 +87,8 @@ namespace DemoPrototype
             SetToolTemperingText();
 
             //ASk AOU
-            AppHelper.AskAOUForTemps();
-            AppHelper.AskAOUForMouldTimes();
+            //AppHelper.AskAOUForTemps();
+            //AppHelper.AskAOUForMouldTimes();
 
             //set tank temperatures, check if received.
             if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)
@@ -739,6 +739,10 @@ namespace DemoPrototype
 
         }
 
+        private void TextBlock_ToolTempering_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 }

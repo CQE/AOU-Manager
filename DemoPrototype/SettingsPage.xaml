@@ -96,12 +96,13 @@
                 </StackPanel>
             </Border>
 
-            <Border Visibility="Collapsed" Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="4">
-                <StackPanel Visibility="Collapsed" Orientation="Vertical">
+            <Border Visibility="Visible" Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="4">
+                <StackPanel Visibility="Visible" Orientation="Vertical">
                     <TextBlock Margin="5,5,0,5"  Text="Only used for testing communication. Ask for:"  FontWeight="SemiBold"></TextBlock>
                     <StackPanel Margin="5,0,5,0" Orientation="Horizontal" >
                         <Button Name="AskForSetHotTankTemp" Margin="0,5,5,5"   Content="SetHotTankTemp" Click="AskForSetHotTankTemp_Click"></Button>
                         <Button Name="AskForSetColdTankTemp"  Margin="5,5,5,5" Content="SetColdTankTemp" Click="AskForSetColdTankTemp_Click"></Button>
+                        <Button Name="AskForValves"  Margin="5,5,5,5" Content="GetValves" Click="AskForValves_Click" ></Button>
                     </StackPanel>
                     <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
                         <Button Name="AskForTHot2Cold"  Margin="0,0,5,5" Content="THot2Cold" Click="AskForTHot2Cold_Click"></Button>

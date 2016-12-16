@@ -52,7 +52,7 @@ namespace DemoPrototype
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.offsetRetValveHotPeriod, "offsRetValveHotPer"));
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.hotFeed2MouldDelayTime, "hotFe2MoDelayTim"));
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.coldFeed2MouldDelayTime, "coldFe2MoDelayTim"));
-
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.forceValves, "forceValves"));
         }
 
         public string StringValue(AOUDataTypes.CommandType cmd)
@@ -102,6 +102,15 @@ namespace DemoPrototype
      
             #define CMD_hotFeed2MouldDelayTime 23
             #define CMD_coldFeed2MouldDelayTime 24
+            
+            #define CMD_HOTMOINOUTDELAYTIM    25 // Converted to hotPumptime_ToolEntryMs2ToolExitMs
+            #define CMD_COLDMOINOUTDELAYTIM   26 // Converted to coldPumptime_ToolEntryMs2ToolExitMs
+
+            #define CMD_HOTMO2REDELAYTIM      27 // Converted to hotPumptime_ToolExit2ReturnValveMs
+            #define CMD_COLDMO2REDELAYTIM     28 // Converted to coldPumptime_ToolExit2ReturnValveMs
+            
+            #define CMD_FORCEVALVES           29 // Force valves
+
 
         */
         public enum CommandType
@@ -116,7 +125,9 @@ namespace DemoPrototype
             heatingTime, coolingTime,
             toolHeatingFeedPause, toolCoolingFeedPause,
             offsetHotFeed2RetValveTime, offsetRetValveHotPeriod,
-            hotFeed2MouldDelayTime, coldFeed2MouldDelayTime
+            hotFeed2MouldDelayTime, coldFeed2MouldDelayTime,
+           // HOTMOINOUTDELAYTIM, COLDMOINOUTDELAYTIM, HOTMO2REDELAYTIM, COLDMO2REDELAYTIM, 
+            forceValves
         }
 //----------------------------------------------------------------------------------------------------------------------------
         public enum HT_StateType {

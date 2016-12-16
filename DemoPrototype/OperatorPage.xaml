@@ -51,7 +51,7 @@
                 <TextBlock Name="RMode" Margin="10,5,0,5" Grid.Row="1"  Text="Running mode"  ></TextBlock>
                 <TextBlock Name="TTEmp"  Grid.Row="2" Margin="10,0,0,0"   Text="Tool tempering" ></TextBlock>
                 <ComboBox Margin="0,0,0,0" Grid.Row="1" Grid.Column="1" x:Name ="RunningModeCombo"   SelectionChanged="NewModeSelected"/>
-                <TextBlock Margin="0,0,0,0" Grid.Row="2" Grid.Column="1" Name="TextBlock_ToolTempering" Text="Not Yet Working" ></TextBlock>
+                <TextBlock Margin="0,0,0,0" Grid.Row="2" Grid.Column="1" Name="TextBlock_ToolTempering" Text="Not Yet Working" SelectionChanged="TextBlock_ToolTempering_SelectionChanged" ></TextBlock>
  
 
 

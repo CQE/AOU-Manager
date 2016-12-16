@@ -522,7 +522,7 @@ namespace DemoPrototype
             }
 
 
-            if (!AOUDataTypes.IsUInt16NaN(stateData.UIButtons))
+            if (!AOUDataTypes.IsUInt16NaN(stateData.UIButtons)) //changes to 16+16 bits from 8+8 bits
             {
                 // UI>MMSS</UI> (hex) MM=8bit mask, SS=8bits. 2 hex digits MASK (e.g. “3F”), and 2 hex digits STATE (e.g. “12”).
                 byte mask = HighByte(stateData.UIButtons);

@@ -188,6 +188,15 @@ namespace DemoPrototype
             }
         }
 
+        public void SetValveValue(AOUDataTypes.CommandType cmd, int value)
+        {
+            if (dataRouter.IsConnected)
+            {
+                if (value == 1)
+                    dataRouter.SendValveCommandToPlc(cmd, value);
+            }
+        }
+
         public void SetRunningMode(AOUDataTypes.AOURunningMode mode)
         {
             if (dataRouter.IsConnected)

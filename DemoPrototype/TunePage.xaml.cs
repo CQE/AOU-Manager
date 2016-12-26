@@ -259,8 +259,8 @@ namespace DemoPrototype
 
 
 
-            //AppHelper.AskAOUForDelayTimes();
-            //AppHelper.AskAOUForFeedTimes();
+            AppHelper.AskAOUForDelayTimes();
+            AppHelper.AskAOUForFeedTimes();
 
             //ask for all values
             if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)
@@ -283,12 +283,7 @@ namespace DemoPrototype
             {
                 AppHelper.AskAOUForHeatingPause();
             }
-
-
-
-
-
-
+            
             //set and calculate delay time values
             TextBlock_HotCalibrate.Text = GlobalVars.globDelayTimes.HotCalibrateStr;
             HotFeedToReturnDelayCalTime.Text = GlobalVars.globDelayTimes.HotTuneStr;
@@ -317,8 +312,6 @@ namespace DemoPrototype
             VACalText.Text = GlobalVars.globDelayTimes.VACalibrateStr;
             VATuneText.Text = GlobalVars.globDelayTimes.VATuneStr;
             VATotalText.Text = GlobalVars.globDelayTimes.VASumStr;
-
-
             InitDispatcherTimer();
         }
 

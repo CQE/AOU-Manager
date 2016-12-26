@@ -20,12 +20,31 @@ namespace DemoPrototype
         public const int SAFETY_INTERLOCK_BROKEN = 0x02;  // See Emergency input
         public const int SAFETY_SAFETY_RELAY_ACTIVE = 0x01;  // See Safety input
 
-        public const int BUTTON_ONOFF = 0x01;  // Soft on/Off;
-        public const int BUTTON_EMERGENCYOFF = 0x02;  // Hard Off
-        public const int BUTTON_MANUALOPHEAT = 0x04;  // Forced Heating; 
-        public const int BUTTON_MANUALOPCOOL = 0x08;  // Forced Cooling
-        public const int BUTTON_CYCLE = 0x10;  // Forced Cycling; 
+        public const int BUTTON_ONOFF = 0x0001;  // Soft on/Off;
+        public const int BUTTON_EMERGENCYOFF = 0x0002;  // Hard Off
+        public const int BUTTON_MANUALOPHEAT = 0x0004;  // Forced Heating; 
+        public const int BUTTON_MANUALOPCOOL = 0x0008;  // Forced Cooling
+        public const int BUTTON_CYCLE = 0x0010;  // Forced Cycling; 
         public const int BUTTON_RUN = 0x0020;  // Run with IMM
+        public const int BUTTON_PUMP_COLD = 0x0100; // Pump cold running
+        public const int BUTTON_COOLER_ENABLED = 0x0200; // Cooler enabled
+        public const int BUTTON_PUMP_HOT = 0x0400; // Pump hot running
+        public const int BUTTON_HEATER_ENABLED = 0x0800; // Heater enabled
+        /*
+        #define BUTTON_ONOFF          0x0001  // Soft on/Off
+        #define BUTTON_EMERGENCYOFF   0x0002  // Hard Off
+
+        #define BUTTON_MANUALOPHEAT   0x0004  // Forced Heating
+        #define BUTTON_MANUALOPCOOL   0x0008  // Forced Cooling
+
+        #define BUTTON_CYCLE          0x0010  // Forced Cycling
+        #define BUTTON_RUN            0x0020  // Run with IMM
+
+        #define BUTTON_PUMP_COLD      0x0100 // Pump cold running
+        #define BUTTON_COOLER_ENABLED 0x0200 // Cooler enabled
+        #define BUTTON_PUMP_HOT       0x0400 // Pump hot running
+        #define BUTTON_HEATER_ENABLED 0x0800 // Heater enabled
+        */
 
         private string dataLogStr = "";
         private string dataErrStr = "";
@@ -208,9 +227,20 @@ namespace DemoPrototype
             int res = state & mask;
             return (res != 0);
         }
+        protected bool IsStateSet(ushort state, ushort mask)
+        {
+            int res = state & mask;
+            return (res != 0);
+        }
+
+        protected bool IsStateSet16(ushort state, ushort mask)
+        {
+            int res = state & mask;
+            return (res != 0);
+        }
 
         #endregion
- 
+
         #region Public methods
 
         /* Log end error tracking */
@@ -380,6 +410,18 @@ namespace DemoPrototype
             }
          }
 
+        protected AOUDataTypes.ButtonState GetButtonState(ushort state, ushort mask)
+        {
+            if (IsStateSet(state, mask))
+            {
+                return AOUDataTypes.ButtonState.on;
+            }
+            else
+            {
+                return AOUDataTypes.ButtonState.off;
+            }
+        }
+
         protected int GetValveState(byte state, byte mask)
         {
             if (IsStateSet(state, mask))
@@ -472,6 +514,42 @@ namespace DemoPrototype
                 if (IsStateSet(mask, VALVE_COOL)) currentCoolantValve = GetValveState(state, VALVE_COOL);
             }
 
+            if (!AOUDataTypes.IsUint32NaN (stateData.FrontAndMode))
+            {
+                //BUTTON_COOLER_ENABLED, BUTTON_HEATER_ENABLED,  BUTTON_PUMP_COLD, BUTTON_PUMP_HOT
+               
+
+
+                byte mask = (byte) (stateData.FrontAndMode >> 16);//HighByte(stateData.Valves);
+                ushort mask2 = (ushort)(stateData.FrontAndMode >> 16);
+                UInt16 mask3 = (UInt16)(stateData.FrontAndMode >> 16);
+                byte state = (byte) (stateData.FrontAndMode & 0xff); //LowByte(stateData.Valves);
+                ushort state16 = (ushort)(stateData.FrontAndMode & 0xffff);
+                if (IsStateSet16(mask2, (ushort) SAFETY_HEATER_OVERTEMP)) currentSafetyOverHeated = GetSafetyState(state, SAFETY_HEATER_OVERTEMP);
+
+        //          public const int BUTTON_PUMP_COLD = 0x0100; // Pump cold running
+        //public const int BUTTON_COOLER_ENABLED = 0x0200; // Cooler enabled
+        //public const int BUTTON_PUMP_HOT = 0x0400; // Pump hot running
+        //public const int BUTTON_HEATER_ENABLED = 0x0800; // Heater enable
+                if (IsStateSet16(mask2, BUTTON_PUMP_COLD)) currentUIButtons.ButtonPumpCold = GetButtonState(state16, BUTTON_PUMP_COLD);
+                if (IsStateSet16(mask2, BUTTON_PUMP_HOT)) currentUIButtons.ButtonPumpHot = GetButtonState(state16, BUTTON_PUMP_HOT);
+                if (IsStateSet16(mask2, BUTTON_HEATER_ENABLED)) currentUIButtons.ButtonHeater = GetButtonState(state16, BUTTON_HEATER_ENABLED);
+                if (IsStateSet16(mask2, BUTTON_COOLER_ENABLED)) currentUIButtons.ButtonCooler = GetButtonState(state16, BUTTON_COOLER_ENABLED);
+                
+                if (IsStateSet(mask, BUTTON_ONOFF)) currentUIButtons.OnOffButton = GetButtonState(state, BUTTON_ONOFF);
+                if (IsStateSet(mask, BUTTON_EMERGENCYOFF)) currentUIButtons.ButtonEmergencyOff = GetButtonState(state, BUTTON_EMERGENCYOFF);
+
+                if (IsStateSet(mask, BUTTON_MANUALOPHEAT)) currentUIButtons.ButtonForcedHeating = GetButtonState(state, BUTTON_MANUALOPHEAT);
+                if (IsStateSet(mask, BUTTON_MANUALOPCOOL)) currentUIButtons.ButtonForcedCooling = GetButtonState(state, BUTTON_MANUALOPCOOL);
+                if (IsStateSet(mask, BUTTON_CYCLE)) currentUIButtons.ButtonForcedCycling = GetButtonState(state, BUTTON_CYCLE);
+                if (IsStateSet(mask, BUTTON_RUN)) currentUIButtons.ButtonRunWithIMM = GetButtonState(state, BUTTON_RUN);
+                isUIButtonsChanged = true;
+
+            }
+
+
+
+
             if (!AOUDataTypes.IsUInt16NaN(stateData.Safety))
             {
                 // -- VALVES -- <Valves>MMSS</Valves> MASK (e.g. “3F”), STATE Bits: 0/Hot valve, 1/Cold valve, 2/Return valve, 4/Coolant valve
@@ -550,6 +628,7 @@ namespace DemoPrototype
                 Int16 mode = stateData.Mode;
                 currentMode = (AOUDataTypes.HT_StateType)mode;
                 isModesChanged = true;
+
             }
 
             if (stateData.hotTankTemp < 1000) // Only temperature data. ToDo better test

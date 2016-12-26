@@ -164,11 +164,17 @@ namespace DemoPrototype
             public ButtonState ButtonForcedCooling;
             public ButtonState ButtonForcedCycling;
             public ButtonState ButtonRunWithIMM;
+            public ButtonState ButtonPumpHot;
+            public ButtonState ButtonPumpCold;
+            public ButtonState ButtonHeater;
+            public ButtonState ButtonCooler;
         }
 
         //----------------------------------------------------------------------------------------------------------------------------
         // The same as double.IsNaN for UInt16
         public const UInt16 UInt16_NaN = UInt16.MaxValue;
+        public const UInt32 UInt32_NaN = UInt32.MaxValue;
+        public const Int16 Int16_NaN = Int16.MaxValue;
 
         public static bool IsUInt16NaN(UInt16 value)
         {
@@ -177,7 +183,12 @@ namespace DemoPrototype
 
         public static bool IsInt16NaN(Int16 value)
         {
-            return value == Int16.MaxValue;
+            return value == Int16_NaN;
+        }
+
+        public static bool IsUint32NaN(UInt32 value)
+        {
+            return value == UInt32.MaxValue;
         }
 
         public static void Time_ms_to_AOUModelTimeSecX10(long time_ms, out UInt16 time_hours, out UInt16 time_sek_x_10)

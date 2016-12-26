@@ -277,7 +277,7 @@ namespace DemoPrototype
                 Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet);
                 msg += " setColdTankTemp";
             }
-            ShowMessageBox(msg);
+            //ShowMessageBox(msg);
 
         }
 
@@ -306,7 +306,7 @@ namespace DemoPrototype
                 Data.Updater.AskCommandValue(AOUDataTypes.CommandType.toolCoolingFeedPause);
                 msg += "toolCoolingFeedPause ";
             }
-            ShowMessageBox(msg);
+            //ShowMessageBox(msg);
         }
 
         public static void AskAOUForDelayTimes()
@@ -329,7 +329,7 @@ namespace DemoPrototype
                 Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetRetValveHotPeriod);
             if (GlobalVars.globDelayTimes.VACalibrate < 0 && GlobalVars.globDelayTimes.VATune < 0)
                 Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetHotFeed2RetValveTime);
-            if (GlobalVars.globDelayTimes.F2MCalibrate < 0 && GlobalVars.globDelayTimes.F2MTune < 0)
+            if (GlobalVars.globDelayTimes.F2MCalibrateUsed < 0 && GlobalVars.globDelayTimes.F2MTuneUsed < 0)
                 Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotFeed2MouldDelayTime);
         }
         

@@ -38,8 +38,9 @@ namespace DemoPrototype
         public const string tagEnergy = "Energy";
         public const string tagUI = "UI";
         public const string tagIMM = "IMM";
-        public const string tagMode = "Mode";
+        public const string tagMode = "TMode";//  "Mode";
         public const string tagSeqState = "Seq";
+        public const string tagFront = "FMode";
 
         public const string tagRetValue = "ret";
 
@@ -90,7 +91,9 @@ namespace DemoPrototype
 
         public static bool ParseState(string tagText, out AOUStateData stateData)
         {
-            long temp; UInt16 tmpval;
+            long temp;
+            UInt16 tmpval;
+            UInt32 tmplval;
             /* 
              <state><Time>19</Time><temp><Heat>34</Heat><Hot>31</Hot><Ret>27</Ret><BuHot>30</BuHot><BuMid>29</BuMid><BuCold>27</BuCold><Cool>32</Cool><Cold>30</Cold><BearHot>0</BearHot>
              <ch9>0</ch9><ch10>0</ch10><ch11>0</ch11><ch12>0</ch12><ch13>0</ch13><ch14>0</ch14><ch15>0</ch15><avg>28</avg></temp></stateData> // Arduino data
@@ -149,6 +152,7 @@ namespace DemoPrototype
             stateData.Safety = AOUDataTypes.UInt16_NaN;
             stateData.Mode = Int16.MaxValue;
             stateData.UIButtons = AOUDataTypes.UInt16_NaN;
+            stateData.FrontAndMode = AOUDataTypes.UInt32_NaN;
 
             AOUTagParser.ParseWordTime_sek_x_10(tagText, out stateData.time_hours, out stateData.time_sek_x_10_of_hour);
 
@@ -207,6 +211,12 @@ namespace DemoPrototype
             {
                 stateData.IMM = tmpval;
             }
+
+            if (AOUTagParser.ParseMMMMSSSS(tagFront, tagText, out tmplval))
+            {
+                stateData.FrontAndMode = tmplval;
+            }
+
 
             if (AOUTagParser.ParseMMSS(tagMode, tagText, out tmpval))
             {

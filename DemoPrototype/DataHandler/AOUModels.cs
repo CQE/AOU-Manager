@@ -122,6 +122,7 @@ namespace DemoPrototype
         public UInt16 Safety;
         public UInt16 IMM;
         public UInt16 UIButtons;
+        public UInt32 FrontAndMode;
         public Int16 Mode;
     }
 }

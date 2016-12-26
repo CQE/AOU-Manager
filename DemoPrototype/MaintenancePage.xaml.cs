@@ -123,8 +123,10 @@ namespace DemoPrototype
 
         void UpdateTick(object sender, object e)
         {
-            UpdateLogMessages(false);
+            AOUDataTypes.UI_Buttons buttons = new AOUDataTypes.UI_Buttons();
 
+            UpdateLogMessages(false);
+            
             var t1 = GetStringValue(Data.Updater.LastPower.TReturnActual);
             var t2 = GetStringValue(Data.Updater.LastPower.TReturnForecasted);
 
@@ -177,6 +179,52 @@ namespace DemoPrototype
             safetyEmergency.IsOn = GetValveState(Data.Updater.LastPower.SafetyEmergency, GlobalVars.globSafetyAlarms.SafetyEmergencyHi);
             safetyFluidLevel.IsOn = GetValveState(Data.Updater.LastPower.SafetyFluidLevel, GlobalVars.globSafetyAlarms.SafetyFluidLevelHi);
             safetyOverHeated.IsOn = GetValveState(Data.Updater.LastPower.SafetyOverHeated, GlobalVars.globSafetyAlarms.SafetyOverHeatedHi);
+
+            if (Data.Updater.UIButtonsChanged(out buttons))
+            {
+                //UpdateFromUIButtons(buttons);
+                if (buttons.OnOffButton == AOUDataTypes.ButtonState.on)
+                {
+                    //string s = "On";
+                }
+                else
+                {
+                    //string s = "Off";
+                }
+                //pump hot
+                if (buttons.ButtonPumpHot == AOUDataTypes.ButtonState.on)
+                {
+                    ButtonPumpHot.IsOn = true;
+                }
+                else
+                {
+                    ButtonPumpHot.IsOn = false;
+                }
+                if (buttons.ButtonPumpCold == AOUDataTypes.ButtonState.on)
+                {
+                    ButtonPumpCold.IsOn = true;
+                }
+                else
+                {
+                    ButtonPumpCold.IsOn = false;
+                }
+                if (buttons.ButtonHeater == AOUDataTypes.ButtonState.on)
+                {
+                    ButtonHeater.IsOn = true;
+                }
+                else
+                {
+                    ButtonHeater.IsOn = false;
+                }
+                if (buttons.ButtonCooler == AOUDataTypes.ButtonState.on)
+                {
+                    ButtonCooler.IsOn = true;
+                }
+                else
+                {
+                    ButtonCooler.IsOn = false;
+                }
+            }
         }
 
         private async void SaveExcelToFile(Syncfusion.XlsIO.IWorkbook workBook)

@@ -74,73 +74,73 @@ namespace DemoPrototype
 
 
             //check if ask-buttons are needed
-            //if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)
-            //{ AskForSetHotTankTemp.IsEnabled = true;
-            //    AskForSetHotTankTemp_Click(null,null) ;
-            //}
+            if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)
+            { AskForSetHotTankTemp.IsEnabled = true;
+                AskForSetHotTankTemp_Click(null,null) ;
+            }
 
-            //else
-            //{ AskForSetHotTankTemp.IsEnabled = false; }
-            //if (GlobalVars.globTankSetTemps.ColdTankSetTemp < 0)
-            //{ AskForSetColdTankTemp.IsEnabled = true;
-            //  //  AskForSetColdTankTemp_Click(null, null);
-            //}
-            //else
-            //{ AskForSetColdTankTemp.IsEnabled = false; }
-            //if (GlobalVars.globThresholds.ThresholdHot2Cold < 0)
-            //{ AskForTHot2Cold.IsEnabled = true; }
-            //else
-            //{ AskForTHot2Cold.IsEnabled = false; }
-            //if (GlobalVars.globThresholds.ThresholdCold2Hot < 0)
-            //{ AskForTCold2Hot.IsEnabled = true; }
-            //else
-            //{ AskForTCold2Hot.IsEnabled = false; }
-            //if (GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit < 0)
-            //{ AskForTMidBuf.IsEnabled = true; }
-            //else
-            //{ AskForTMidBuf.IsEnabled = false; }
-            ////times
-            //if (GlobalVars.globFeedTimes.HeatingActive < 0)
-            //{ AskForActiveHeating.IsEnabled = true; }
-            //else
-            //{ AskForActiveHeating.IsEnabled = false; }
-            //if (GlobalVars.globFeedTimes.HeatingPause < 0)
-            //{ AskForHeatingPause.IsEnabled = true; }
-            //else
-            //{ AskForHeatingPause.IsEnabled = false; }
-            //if (GlobalVars.globFeedTimes.CoolingActive < 0)
-            //{ AskForActiveCooling.IsEnabled = true; }
-            //else
-            //{ AskForActiveCooling.IsEnabled = false; }
-            //if (GlobalVars.globFeedTimes.CoolingPause < 0)
-            //{ AskForCoolingPause.IsEnabled = true; }
-            //else
-            //{ AskForCoolingPause.IsEnabled = false; }
+            else
+            { AskForSetHotTankTemp.IsEnabled = false; }
+            if (GlobalVars.globTankSetTemps.ColdTankSetTemp < 0)
+            { AskForSetColdTankTemp.IsEnabled = true;
+                AskForSetColdTankTemp_Click(null, null);
+            }
+            else
+            { AskForSetColdTankTemp.IsEnabled = false; }
+            if (GlobalVars.globThresholds.ThresholdHot2Cold < 0)
+            { AskForTHot2Cold.IsEnabled = true; }
+            else
+            { AskForTHot2Cold.IsEnabled = false; }
+            if (GlobalVars.globThresholds.ThresholdCold2Hot < 0)
+            { AskForTCold2Hot.IsEnabled = true; }
+            else
+            { AskForTCold2Hot.IsEnabled = false; }
+            if (GlobalVars.globThresholds.ThresholdMidBuffTankAlarmLimit < 0)
+            { AskForTMidBuf.IsEnabled = true; }
+            else
+            { AskForTMidBuf.IsEnabled = false; }
+            //times
+            if (GlobalVars.globFeedTimes.HeatingActive < 0)
+            { AskForActiveHeating.IsEnabled = true; }
+            else
+            { AskForActiveHeating.IsEnabled = false; }
+            if (GlobalVars.globFeedTimes.HeatingPause < 0)
+            { AskForHeatingPause.IsEnabled = true; }
+            else
+            { AskForHeatingPause.IsEnabled = false; }
+            if (GlobalVars.globFeedTimes.CoolingActive < 0)
+            { AskForActiveCooling.IsEnabled = true; }
+            else
+            { AskForActiveCooling.IsEnabled = false; }
+            if (GlobalVars.globFeedTimes.CoolingPause < 0)
+            { AskForCoolingPause.IsEnabled = true; }
+            else
+            { AskForCoolingPause.IsEnabled = false; }
 
-            //if (GlobalVars.globDelayTimes.EACalibrate < 0)
-            //{ AskForOffsetRet.IsEnabled = true; }
-            //else
-            //{ AskForOffsetRet.IsEnabled = false; }
+            if (GlobalVars.globDelayTimes.EACalibrate < 0)
+            { AskForOffsetRet.IsEnabled = true; }
+            else
+            { AskForOffsetRet.IsEnabled = false; }
 
-            //if (GlobalVars.globDelayTimes.VACalibrate < 0)
-            //{ AskForOffsetHot.IsEnabled = true; }
-            //else
-            //{ AskForOffsetHot.IsEnabled = false; }
+            if (GlobalVars.globDelayTimes.VACalibrate < 0)
+            { AskForOffsetHot.IsEnabled = true; }
+            else
+            { AskForOffsetHot.IsEnabled = false; }
 
-            //if (GlobalVars.globDelayTimes.F2MCalibrateUsed < 0)
-            //{ AskForF2MHot.IsEnabled = true; }
-            //else
-            //{ AskForF2MHot.IsEnabled = false; }
+            if (GlobalVars.globDelayTimes.F2MCalibrateUsed < 0)
+            { AskForF2MHot.IsEnabled = true; }
+            else
+            { AskForF2MHot.IsEnabled = false; }
 
-            //if (GlobalVars.globDelayTimes.HotCalibrate < 0)
-            //{ AskForHotDelay.IsEnabled = true; }
-            //else
-            //{ AskForHotDelay.IsEnabled = false; }
+            if (GlobalVars.globDelayTimes.HotCalibrate < 0)
+            { AskForHotDelay.IsEnabled = true; }
+            else
+            { AskForHotDelay.IsEnabled = false; }
 
-            //if (GlobalVars.globDelayTimes.ColdCalibrate < 0)
-            //{ AskForColdDelay.IsEnabled = true; }
-            //else
-            //{ AskForColdDelay.IsEnabled = false; }
+            if (GlobalVars.globDelayTimes.ColdCalibrate < 0)
+            { AskForColdDelay.IsEnabled = true; }
+            else
+            { AskForColdDelay.IsEnabled = false; }
 
 
 

@@ -87,8 +87,8 @@ namespace DemoPrototype
             SetToolTemperingText();
 
             //ASk AOU
-            //AppHelper.AskAOUForTemps();
-            //AppHelper.AskAOUForMouldTimes();
+            AppHelper.AskAOUForTemps();
+            AppHelper.AskAOUForMouldTimes();
 
             //set tank temperatures, check if received.
             if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)
@@ -293,8 +293,7 @@ namespace DemoPrototype
             int temp = 0;
             if (Data.Updater.HotTankSetTempChanged(out temp))
             {
-                NewTHotTankTextBox.Text= temp.ToString();
-                
+                NewTHotTankTextBox.Text= temp.ToString();              
 
                 //else
                 //{ TextBox_THotTankCaution.Text = "Below coolant"; }
@@ -712,6 +711,7 @@ namespace DemoPrototype
                 // What to display when emergency button is pushed
             }
 
+            //only one button should be set, or if none, Idle
             if (buttons.ButtonForcedHeating == AOUDataTypes.ButtonState.on)
             {
                 runningMode = 1;
@@ -727,6 +727,10 @@ namespace DemoPrototype
             else if (buttons.ButtonRunWithIMM == AOUDataTypes.ButtonState.on)
             {
                 runningMode = 4;
+            }
+            else //default = Idle
+            {
+                runningMode = 0;
             }
 
             if (runningMode >= 0 && RunningModeCombo.SelectedIndex != runningMode)

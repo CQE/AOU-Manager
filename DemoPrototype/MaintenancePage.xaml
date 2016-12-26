@@ -49,11 +49,11 @@
                         <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Pumps"></TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock  Width="110"  VerticalAlignment="Center" Text="Pump hot"></TextBlock>
-                            <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
+                            <ToggleSwitch IsEnabled="False" Margin="5,0,0,0" Name="ButtonPumpHot"  HorizontalAlignment="Right"></ToggleSwitch>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock  Width="110" VerticalAlignment="Center" Text="Pump cold"></TextBlock>
-                            <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"></ToggleSwitch>
+                            <ToggleSwitch IsEnabled="False"  Name="ButtonPumpCold" Margin="5,0,0,0"></ToggleSwitch>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -63,7 +63,7 @@
                         <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Heating cartridge"></TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock  Width="110"  VerticalAlignment="Center" Text="Disable heater"></TextBlock>
-                            <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
+                            <ToggleSwitch Name="ButtonHeater" IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -84,7 +84,7 @@
                         <TextBlock FontWeight="SemiBold" Margin="0,0,0,0" Text="Cooling cartridge"></TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock  Width="110"  VerticalAlignment="Center" Text="Disable cooler"></TextBlock>
-                            <ToggleSwitch IsEnabled="False" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
+                            <ToggleSwitch IsEnabled="False" Name="ButtonCooler" Margin="5,0,0,0"  HorizontalAlignment="Right"></ToggleSwitch>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">

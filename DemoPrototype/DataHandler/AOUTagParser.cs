@@ -147,6 +147,24 @@ namespace DemoPrototype
             return false;
         }
 
+        public static bool ParseMMMMSSSS(string tag, string textline, out UInt32 mmmmssss)
+        {
+            int endpos = 0;
+            string tagValue = "";
+
+            if (FindTagAndExtractText(tag, textline, out tagValue, out endpos) && tagValue.Length == 8)
+            {
+                if (UInt32.TryParse(tagValue, System.Globalization.NumberStyles.HexNumber, null, out mmmmssss))
+                {
+                    return true;
+                }
+            }
+            mmmmssss = 0;
+            return false;
+        }
+
+
+
         public static bool Parsedouble(string tag, string textline, out double value)
         {
             int endpos = 0;

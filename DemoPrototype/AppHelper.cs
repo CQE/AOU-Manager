@@ -197,7 +197,11 @@ namespace DemoPrototype
                             if (pg.Name == "TunePage")
                                 GlobalVars.globDelayTimes.F2MTuneUsed = val;
                             else
+                            { 
                                 GlobalVars.globDelayTimes.F2MCalibrateUsed= val;
+                            //?????
+                            GlobalVars.globDelayTimes.F2MHotCalibrate = val;
+                            }
                             //Calculate new val to send
                             //val = (GlobalVars.globDelayTimes.F2MTuneUsed + GlobalVars.globDelayTimes.F2MCalibrateUsed) * 10;
                             val = Math.Max(GlobalVars.globDelayTimes.F2MTuneUsed, 0) + Math.Max(GlobalVars.globDelayTimes.F2MCalibrateUsed, 0);
@@ -207,6 +211,7 @@ namespace DemoPrototype
                         {
                             //save new value
                             GlobalVars.globDelayTimes.F2MCalibrateUsed = val;
+                            GlobalVars.globDelayTimes.F2MColdCalibrate = val; //TODO this is a mess
                             //and now what? MW
                             //val = (GlobalVars.globDelayTimes.F2MTuneUsed + GlobalVars.globDelayTimes.F2MCalibrateUsed) * 10;
                             val = Math.Max(GlobalVars.globDelayTimes.F2MTuneUsed, 0) + Math.Max(GlobalVars.globDelayTimes.F2MCalibrateUsed, 0);
@@ -244,7 +249,22 @@ namespace DemoPrototype
                             //save new value
                             GlobalVars.globDelayTimes.ColdStep = val;
                         }
-                        
+                        //two new commands again
+                        //AOUDataTypes.CommandType.HOTMOINOUTDELAYTIM
+                        if (cmd == AOUDataTypes.CommandType.HOTMOINOUTDELAYTIM)
+                        {
+                            //save new value
+                            GlobalVars.globDelayTimes.HotMoInOut = val;
+                            val = val * 10;
+                        }
+                        if (cmd == AOUDataTypes.CommandType.COLDMOINOUTDELAYTIM)
+                        {
+                            //save new value
+                            GlobalVars.globDelayTimes.ColdMoInOut = val;
+                            val = val * 10;
+                        }
+
+
                         //*/
                         if (sendToAOU==true) 
                             Data.Updater.SetCommandValue(cmd, (int)val);

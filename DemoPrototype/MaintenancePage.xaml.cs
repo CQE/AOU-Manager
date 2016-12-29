@@ -130,6 +130,9 @@ namespace DemoPrototype
             var t1 = GetStringValue(Data.Updater.LastPower.TReturnActual);
             var t2 = GetStringValue(Data.Updater.LastPower.TReturnForecasted);
 
+            //elapsed time
+            elapsedTime.Text = GetStringValue(Data.Updater.LastPower.ElapsedTime/1000);
+
             hotTankTemp.Text = GetStringValue(Data.Updater.LastPower.THotTank);
             coldTankTemp.Text = GetStringValue(Data.Updater.LastPower.TColdTank);
             //returnValveTemp.Text = GetStringValue(Data.Updater.LastPower.TReturnValve);

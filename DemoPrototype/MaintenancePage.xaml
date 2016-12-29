@@ -135,6 +135,10 @@
                             <TextBlock VerticalAlignment="Center" Width="140" Text="Bearing hot pump"></TextBlock>
                             <TextBox  Name="bearingHotPumpTemp" IsEnabled="False" Text="-" Width="40"/>
                         </StackPanel>
+                        <StackPanel Margin="5,5,0,0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Width="140" Text="Elapsed time:"></TextBlock>
+                            <TextBox  Name="elapsedTime" IsEnabled="False" Text="-" Width="40"/>
+                        </StackPanel>
                         <Border Margin="5,8,5,5" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5" >
                             <StackPanel  Margin="5,2,5,5" Orientation="Vertical">
                                 <TextBlock  FontWeight="SemiBold" Text="Accumulator tanks"/>

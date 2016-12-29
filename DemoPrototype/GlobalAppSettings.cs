@@ -344,10 +344,11 @@ namespace DemoPrototype
 
                         break;
                     }
-                    
-                
-                
-                
+                //two new commands     
+
+               // case AOUDataTypes.CommandType.HOTMO2REDELAYTIM  : globDelayTimes. = ival / 10; ival = ival / 10; break;
+
+
                 //for delay times, we cannot divide delay into calibrate and tune when returned TODO how hanlde?
 
                 case AOUDataTypes.CommandType.coldDelayTime:
@@ -816,13 +817,17 @@ namespace DemoPrototype
         public class GlobalDelayTimes
         {
             private double _hotTune;
-            private double _hotCalibrate;
+            private double _hotCalibrate;  //sum = hotDelayTime
             private double _coldTune;
-            private double _coldCalibrate;
-            private double _F2MCalibrate;
-            private double _F2MTune;
+            private double _coldCalibrate;  // sum = coldDelayTime
+            private double _F2MHotCalibrate;
+            private double _F2MHotTune;         //sum = ColdF2MDelayTime   
+            private double _F2MColdCalibrate;
+            private double _F2MColdTune;         //sum = ColdF2MDelayTime   
             private double _F2MCalibrateUsed;
             private double _F2MTuneUsed;
+            private double _hotMoInOut;
+            private double _coldMoInOut;
             private double _EACalibrate;
             private double _EATune;
             private double _VACalibrate;
@@ -837,10 +842,14 @@ namespace DemoPrototype
                 //these are only local so we can initialise to 0 we will never receive these from AOU. Maybe save locally and read from file later TODO
                 _hotTune = int.MinValue;
                 _hotCalibrate = int.MinValue;
+                _hotMoInOut = int.MinValue;
+                _coldMoInOut = int.MinValue;
                 _coldTune =  int.MinValue;
                 _coldCalibrate = int.MinValue;
-                _F2MTune = int.MinValue;
-                _F2MCalibrate = int.MinValue;
+                _F2MHotTune = int.MinValue;
+                _F2MHotCalibrate = int.MinValue;
+                _F2MColdTune = int.MinValue;
+                _F2MColdCalibrate = int.MinValue;
                 _F2MTuneUsed = int.MinValue;
                 _F2MCalibrateUsed = int.MinValue;
                 _EATune = int.MinValue;
@@ -860,6 +869,66 @@ namespace DemoPrototype
                 _coldCalibrate != int.MinValue;
             }
 
+            public double FeedShareVal
+            {
+                get
+                {
+                    if (_hotMoInOut == int.MinValue || _hotCalibrate == int.MinValue || _F2MHotCalibrate == int.MinValue)
+                        return 0;
+                    else
+                        return (_F2MHotCalibrate/(_hotCalibrate- _F2MHotCalibrate - _hotMoInOut));
+                }
+            }
+
+            public double MouldShareVal
+            {
+                get
+                {
+                    if (_hotMoInOut == int.MinValue || _hotCalibrate == int.MinValue )
+                        return 0;
+                    else
+                        return ( _hotMoInOut/ _hotCalibrate );
+                }
+            }
+
+
+            public string HotRetHoseStr
+                //logic: all three parts needs to be defined
+            {
+                get
+                {
+                    if (_hotMoInOut == int.MinValue || _hotCalibrate == int.MinValue || _F2MHotCalibrate == int.MinValue )
+                        return "-";
+                    else
+                        return (_hotCalibrate - _F2MHotCalibrate - _hotMoInOut).ToString();
+                }
+            }
+
+            public double HotRetHoseVal
+            //logic: all three parts needs to be defined
+            {
+                get
+                {
+                    if (_hotMoInOut == int.MinValue || _hotCalibrate == int.MinValue || _F2MHotCalibrate == int.MinValue)
+                        return 0; //or min?
+                    else
+                        return (_hotCalibrate - _F2MHotCalibrate - _hotMoInOut);
+                }
+            }
+
+
+
+            public string ColdRetHoseStr
+            {
+                get
+                {
+                    if (_coldMoInOut == int.MinValue || _coldCalibrate == int.MinValue || _F2MColdCalibrate == int.MinValue)
+                        return "-";
+                    else
+                        return (_coldCalibrate - _F2MColdCalibrate - _coldMoInOut).ToString();
+                }
+            }
+
             public string ColdDelayTimeSumStr
             {
                 get
@@ -872,6 +941,7 @@ namespace DemoPrototype
             }
 
             public string HotDelayTimeSumStr
+                //old version. Keep.
             {
                 get
                 {
@@ -882,14 +952,39 @@ namespace DemoPrototype
                 }
             }
 
-            public string F2MTimeSumStr
+            public string TotalHotDelayTimeSumStr
+            //new logic
             {
                 get
                 {
-                    if (_F2MTune == int.MinValue || _F2MCalibrate == int.MinValue)
+                    if (_hotCalibrate == int.MinValue)
                         return "-";
                     else
-                        return (_F2MCalibrate + _F2MTune).ToString();
+                        return _hotCalibrate.ToString();
+                }
+            }
+
+
+
+            public string F2MColdTimeSumStr
+            {
+                get
+                {
+                    if (_F2MColdTune == int.MinValue || _F2MColdCalibrate == int.MinValue)
+                        return "-";
+                    else
+                        return (_F2MColdCalibrate + _F2MColdTune).ToString();
+                }
+            }
+
+            public string F2MHotTimeSumStr
+            {
+                get
+                {
+                    if (_F2MHotTune == int.MinValue || _F2MHotCalibrate == int.MinValue)
+                        return "-";
+                    else
+                        return (_F2MHotCalibrate + _F2MHotTune).ToString();
                 }
             }
 
@@ -961,16 +1056,45 @@ namespace DemoPrototype
                 get { return _coldCalibrate; }
                 set { _coldCalibrate = value; }
             }
-            public double F2MTune
+
+
+
+            public double HotMoInOut
             {
-                get { return _F2MTune; }
-                set { _F2MTune = value; }
+                get { return _hotMoInOut; }
+                set { _hotMoInOut = value; }
             }
-            public double F2MCalibrate
+
+            public double ColdMoInOut
             {
-                get { return _F2MCalibrate; }
-                set { _F2MCalibrate = value; }
+                get { return _coldMoInOut; }
+                set { _coldMoInOut = value; }
             }
+
+
+            public double F2MColdTune
+            {
+                get { return _F2MColdTune; }
+                set { _F2MColdTune = value; }
+            }
+            public double F2MColdCalibrate
+            {
+                get { return _F2MColdCalibrate; }
+                set { _F2MColdCalibrate = value; }
+            }
+
+            public double F2MHotTune
+            {
+                get { return _F2MHotTune; }
+                set { _F2MHotTune = value; }
+            }
+            public double F2MHotCalibrate
+            {
+                get { return _F2MHotCalibrate; }
+                set { _F2MHotCalibrate = value; }
+            }
+
+
             public double F2MTuneUsed
             {
                 get { return _F2MTuneUsed; }
@@ -1013,7 +1137,52 @@ namespace DemoPrototype
                 get { return _coldStep; }
                 set { _coldStep = value; }
             }
-            
+
+            public string HotMoInOutStr
+            {
+                get
+                {
+                    if (_hotMoInOut == int.MinValue)
+                        return "-";
+                    else
+                        return _hotMoInOut.ToString();
+                }
+            }
+
+            public string ColdMoInOutStr
+            {
+                get
+                {
+                    if (_coldMoInOut == int.MinValue)
+                        return "-";
+                    else
+                        return _coldMoInOut.ToString();
+                }
+            }
+
+
+            public string HotF2MStr
+            {
+                get
+                {
+                    if (_F2MHotCalibrate == int.MinValue)
+                        return "-";
+                    else
+                        return _F2MHotCalibrate.ToString();
+                }
+            }
+
+            public string ColdF2MStr
+            {
+                get
+                {
+                    if (_F2MColdCalibrate == int.MinValue)
+                        return "-";
+                    else
+                        return _F2MColdCalibrate.ToString();
+                }
+            }
+
             public string HotTuneStr
             {
                 get

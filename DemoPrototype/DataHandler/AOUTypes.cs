@@ -52,6 +52,12 @@ namespace DemoPrototype
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.offsetRetValveHotPeriod, "offsRetValveHotPer"));
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.hotFeed2MouldDelayTime, "hotFe2MoDelayTim"));
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.coldFeed2MouldDelayTime, "coldFe2MoDelayTim"));
+            // HOTMOINOUTDELAYTIM, COLDMOINOUTDELAYTIM, HOTMO2REDELAYTIM, COLDMO2REDELAYTIM, 
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.HOTMOINOUTDELAYTIM, "hotMoInOutDelayTim"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.COLDMOINOUTDELAYTIM, "coldMoInOutDelayTim"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.HOTMO2REDELAYTIM, "hotMo2ReDelayTim"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.COLDMO2REDELAYTIM, "coldMo2ReDelayTim"));
+            
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.forceValves, "forceValves"));
         }
 
@@ -126,7 +132,7 @@ namespace DemoPrototype
             toolHeatingFeedPause, toolCoolingFeedPause,
             offsetHotFeed2RetValveTime, offsetRetValveHotPeriod,
             hotFeed2MouldDelayTime, coldFeed2MouldDelayTime,
-           // HOTMOINOUTDELAYTIM, COLDMOINOUTDELAYTIM, HOTMO2REDELAYTIM, COLDMO2REDELAYTIM, 
+            HOTMOINOUTDELAYTIM, COLDMOINOUTDELAYTIM, HOTMO2REDELAYTIM, COLDMO2REDELAYTIM, 
             forceValves
         }
 //----------------------------------------------------------------------------------------------------------------------------

@@ -55,7 +55,7 @@ namespace DemoPrototype
         {
             int value = 0;
             int.TryParse(strValue, out value);
-
+            //TODO: work for float
             this.InitializeComponent();
 
             this.valueSlider.Visibility = Visibility.Visible;

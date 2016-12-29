@@ -69,7 +69,7 @@ namespace DemoPrototype
             initFluids();
 
 
-            AskForAllParameters();
+           // AskForAllParameters();
 
 
 

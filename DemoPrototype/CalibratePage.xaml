@@ -8,7 +8,7 @@
     xmlns:chart="using:Syncfusion.UI.Xaml.Charts"
     mc:Ignorable="d">
 
-    <Grid x:Name="CalibrateGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid x:Name="CalibrateGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="0,2,0,-2">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -25,24 +25,24 @@
 
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="1.9*"></ColumnDefinition>
+            <ColumnDefinition Width="1.9*"></ColumnDefinition>
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="1*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="1.8*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.9*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1.5*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <!-- First border row 0-4, all cols -->
         <Border  Margin="5,5,10,5" Grid.Row="0" Grid.RowSpan="5" Grid.Column="0" Grid.ColumnSpan="13" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
-            <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Vertical" Margin="-164,-196,164,196">
                 <TextBlock Margin="5,0,0,0" Text="Feed and Return delay timings (s)" FontWeight="SemiBold"></TextBlock>
             </StackPanel>
         </Border>
@@ -110,6 +110,7 @@
 
         <Button Visibility="Visible"  Margin="10,20,0,0" Grid.Row="4" Grid.Column="0" Width="100" HorizontalAlignment="Right" Content="Run/Freeze" Name="Button_Freeze_Run" Click="Button_Freeze_Run_Click"></Button>
 
+        <!--
         <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="3"> Trip time Feed-to-Return (s)</TextBlock>
         <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="9" HorizontalAlignment="Right"   Text="Calibrate"></TextBlock>
         <TextBlock Margin="30,11,0,0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="10"  HorizontalAlignment="Left" Text="+"></TextBlock>
@@ -135,6 +136,47 @@
         <TextBlock Grid.Row="2" Grid.Column="10" Name="TextBlock_ColdTune" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,0,20" Width= "30" Text="220"></TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="11" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,20" Text="="></TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="11" HorizontalAlignment="Left" Name="TextBlock_SumColdDelayTime" VerticalAlignment="Center"  Margin="55,0,0,20" Text="210"></TextBlock>
+-->
+
+        <TextBlock  Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="2" Margin="0,0,0,0" VerticalAlignment="Center" Text="Trip"   HorizontalAlignment="Left"></TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,0,0,0"  VerticalAlignment="Center" HorizontalAlignment="Left"    Text="Time (s)"></TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="8" VerticalAlignment="Top"  HorizontalAlignment="Left" Width="30" Margin="10,0,0,0"   Text="Hot"></TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="10"  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,0,0"   Text="Share" ></TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="9" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,0"   Text="Cold"></TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Center"    Margin="20,0,0,0" Text="Source" ></TextBlock>
+
+
+        <TextBlock  Grid.Row="1" Grid.Column="7" Grid.ColumnSpan="2" Margin="0,10,0,6" VerticalAlignment="Bottom" Text="Feed hoses"   HorizontalAlignment="Left"></TextBlock>
+        <TextBox Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,0,0,0" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Name="HotF2MHoses" GotFocus="HotF2MHoses_GotFocus" TextChanged="HotF2MHoses_TextChanged" Text="-"></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="9" VerticalAlignment="Bottom"  HorizontalAlignment="Left" Width="30" Margin="0,0,0,0"  Name="ColdF2MHoses"  GotFocus="ColdF2MHoses_GotFocus"  TextChanged="ColdF2MHoses_TextChanged" Text="-"></TextBox>
+        <Slider Grid.Row="1" Grid.Column="10"  VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,3"   Width="60" FontSize="11" Height="31"  Minimum="0" Maximum="100" StepFrequency="1" Name="FeedSlider" ValueChanged="FeedSlider_ValueChanged" Value="0" Grid.ColumnSpan="2"></Slider>
+        <TextBlock Grid.Row="2" Grid.Column="10" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="11" Foreground="Black" Name="FeedSliderValueText" Text="-"></TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="11" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,6"  Text="Feed/Return hose"></TextBlock>
+        <ComboBox Grid.Row="1" Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Bottom"  SelectionChanged="FeedHoseSource_SelectionChanged"  Margin="10,0,0,0" Name="FeedHoseSource" ></ComboBox>
+
+        <TextBlock  Grid.Row="2" Grid.Column="7" Grid.ColumnSpan="2" Margin="0,10,0,0" VerticalAlignment="Center" Text="Mould"  Foreground="Black" HorizontalAlignment="Left"></TextBlock>
+        <TextBox Grid.Row="2" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,11,0,0" Width="30" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" Name="HotMould"  GotFocus="HotMould_GotFocus" TextChanged="HotMould_TextChanged" Text="-"></TextBox>
+        <TextBox Grid.Row="2" Grid.Column="9" VerticalAlignment="Center"  HorizontalAlignment="Left" Width="30" Margin="0,11,0,0"  Foreground="Black" Name="ColdMould"  GotFocus="ColdMould_GotFocus"  TextChanged="ColdMould_TextChanged" Text="-"></TextBox>
+        <Slider Grid.Row="2" Grid.Column="10"  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,10,0,0" Width="60" Height="31"  Minimum="0" Maximum="100" Value="0" ValueChanged="MouldSlider_ValueChanged" Name="MouldSlider" Grid.ColumnSpan="2"></Slider>
+        <TextBlock Grid.Row="2" Grid.Column="11" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,8,0,0"  Foreground="Black" Text="Time/Total"></TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="11" Foreground="Black" Name="MouldSliderValueText" Text="-"></TextBlock>
+        <ComboBox Grid.Row="2" Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Center"   Foreground="Black" Name="MouldSource" SelectionChanged="MouldSource_SelectionChanged" Margin="10,11,0,0" ></ComboBox>
+
+        <TextBlock  Grid.Row="3" Grid.Column="7" Grid.ColumnSpan="2" Margin="0,17,0,0" VerticalAlignment="Top" Text="Return hose"  Foreground="Black" HorizontalAlignment="Left"></TextBlock>
+        <TextBox Grid.Row="3" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,12,0,0" Width="30" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Black" Name="HotRetHose"  TextChanged="HotRetHose_TextChanged"  Text="-"></TextBox>
+        <TextBox Grid.Row="3" Grid.Column="9" VerticalAlignment="Top"  HorizontalAlignment="Left" Width="30" Margin="0,12,0,0"  Foreground="Black" Name="ColdRetHose" Text="-"></TextBox>
+        <ComboBox Grid.Row="3" Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Name="ReturnHoseSource" Foreground="Black" Margin="10,12,0,0" ></ComboBox>
+
+        <TextBlock  Grid.Row="4" Grid.Column="7" Grid.ColumnSpan="2" Margin="0,7,0,0" VerticalAlignment="Top" Text="Total"  Foreground="Black" HorizontalAlignment="Left"></TextBlock>
+        <TextBox Grid.Row="4" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,0,0,0" Width="30" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Black" Name="HotFeedToReturnDelayTime" GotFocus="HotFeedToReturnDelayTime_GotFocus" TextChanged="HotFeedToReturnDelayTime_TextChanged_1"  Text="-"></TextBox>
+        <TextBox Grid.Row="4" Grid.Column="9" VerticalAlignment="Top"  HorizontalAlignment="Left" Width="30" Margin="0,0,0,0"  Foreground="Black" Text="-" Name="ColdFeedToReturnDelayTime" GotFocus="ColdFeedToReturnDelayTime_GotFocus" TextChanged="ColdFeedToReturnDelayTime_TextChanged_1" ></TextBox>
+        <ComboBox Grid.Row="4" Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Top"  Name="TotalSource"  SelectionChanged="TotalSource_SelectionChanged" Foreground="Black" Margin="10,0,0,0" ></ComboBox>
+
+        <TextBox Name="FocusControl" Visibility="Collapsed" Grid.Row="1" Height="1" Width="1" Margin="90,0,0,0" BorderThickness="0" BorderBrush="White" ></TextBox>
+
+
+        <!--     
+        
 
         <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="7" Grid.ColumnSpan="3"> Trip time Feed-to-Mould (s)</TextBlock>
         <TextBlock Margin="0,11,0,0" VerticalAlignment="Center" Grid.Row="3" Grid.Column="9" HorizontalAlignment="Right"   Text="Calibrate"></TextBlock>
@@ -160,7 +202,7 @@
 
 
 
-
+-->
 
 
 
@@ -288,20 +330,20 @@
 
         <!-- Volume active timing -->
 
-        <TextBlock Grid.Row="10" Grid.Column="6" Grid.ColumnSpan="3"  Margin="40,10,0,0"  Text="Change Return Valve Switching Period (s)" VerticalAlignment="Top"></TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="6" Grid.ColumnSpan="3"  Margin="30,10,0,0"  Text="Change Return Valve Switching Period (s)" VerticalAlignment="Top"></TextBlock>
         <TextBlock Grid.Row="10" Grid.Column="6" Grid.ColumnSpan="2"  Margin="50,26,0,0"  Text="" VerticalAlignment="Top"></TextBlock>
-        <TextBlock Margin="70,10,0,0" Grid.Row="10" Grid.Column="8" Grid.ColumnSpan="2" > Calibrate</TextBlock>
-        <TextBlock Margin="50,10,0,0" Grid.Row="10" Grid.Column="9" HorizontalAlignment="Right" Grid.ColumnSpan="1"  Text="+"></TextBlock>
-        <TextBlock Margin="20,10,0,0" Grid.Row="10" Grid.Column="10"   HorizontalAlignment="Left" Text="Tune"></TextBlock>
-        <TextBlock Margin="0,10,0,0" Grid.Row="10" Grid.Column="11" Grid.ColumnSpan="2"  Text="="></TextBlock>
-        <TextBlock Margin="0,10,0,0" Grid.Row="10" Grid.Column="11" HorizontalAlignment="Right"  Text="Total"></TextBlock>
+        <TextBlock Margin="80,10,0,0" Grid.Row="10" Grid.Column="8" Grid.ColumnSpan="2" > Calibrate</TextBlock>
+        <TextBlock Margin="10,10,0,0" Grid.Row="10" Grid.Column="10" HorizontalAlignment="Left" Grid.ColumnSpan="1"  Text="+"></TextBlock>
+        <TextBlock Margin="40,10,0,0" Grid.Row="10" Grid.Column="10" Grid.ColumnSpan="2"  HorizontalAlignment="Left" Text="Tune"></TextBlock>
+        <TextBlock Margin="0,10,0,0" Grid.Row="10" Grid.Column="11" Grid.ColumnSpan="1" HorizontalAlignment="Center" Text="="></TextBlock>
+        <TextBlock Margin="0,10,0,0" Grid.Row="10" Grid.Column="12" HorizontalAlignment="Left"  Text="Total"></TextBlock>
 
-        <TextBlock  Margin="40,20,0,0"  Grid.Row="10" Grid.ColumnSpan="2" VerticalAlignment="Center" Grid.Column="6" Text="Volume active timing"></TextBlock>
-        <TextBox Grid.Row="10" Margin="70,20,0,0" Grid.Column="8" Grid.ColumnSpan="2" HorizontalAlignment="Left" Name="VACalText"  GotFocus="VACalText_GotFocus" TextChanged="VACalText_TextChanged" VerticalAlignment="Center"   Text="110"></TextBox>
-        <TextBlock Grid.Row="10" Grid.Column="9" VerticalAlignment="Center" Margin="50,20,0,0" HorizontalAlignment="Right" Text="+"></TextBlock>
-        <TextBlock Grid.Row="10" Grid.Column="10" Grid.ColumnSpan="2" Width="30" Margin="20,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="VATuneText"  Text="33"></TextBlock>
-        <TextBlock  Grid.Row="10" Grid.Column="11" Grid.ColumnSpan="2" VerticalAlignment="Center"  Margin="2,20,0,0" Text="="></TextBlock>
-        <TextBlock  Grid.Row="10" Grid.Column="11" Name="VATotalText" Margin="5,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Right" Text="122"></TextBlock>
+        <TextBlock  Margin="30,20,0,0"  Grid.Row="10" Grid.ColumnSpan="2" VerticalAlignment="Center" Grid.Column="6" Text="Volume active timing"></TextBlock>
+        <TextBox Grid.Row="10" Margin="80,20,0,0" Grid.Column="8" Grid.ColumnSpan="2" HorizontalAlignment="Left" Name="VACalText"  GotFocus="VACalText_GotFocus" TextChanged="VACalText_TextChanged" VerticalAlignment="Center"   Text="110"></TextBox>
+        <TextBlock Grid.Row="10" Grid.Column="10" VerticalAlignment="Center" Margin="10,20,0,0" HorizontalAlignment="Left" Text="+"></TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="10" Grid.ColumnSpan="2" Width="30" Margin="40,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="VATuneText"  Text="33"></TextBlock>
+        <TextBlock  Grid.Row="10" Grid.Column="11" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,20,0,0" Text="="></TextBlock>
+        <TextBlock  Grid.Row="10" Grid.Column="12" Name="VATotalText" Margin="5,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="122"></TextBlock>
 
 
     </Grid>

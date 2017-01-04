@@ -108,6 +108,7 @@ namespace DemoPrototype
         public bool isModesChanged = false;
 
         bool UpdateDataRunning = false;
+        string UpdateDataTail = "";
 
         private DateTime lastDataRealTime;
         private long lastDataTime_ms;
@@ -726,7 +727,12 @@ namespace DemoPrototype
             newPowerValues = new List<Power>();
             newLogMessages = new List<AOULogMessage>();
 
+            // string textDataStream = UpdateDataTail + GetTextData();
             string textDataStream = GetTextData();
+            if (UpdateDataTail.Length>0)
+               // newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "Added back line: " + UpdateDataTail, 11, 0));
+
+            UpdateDataTail = string.Empty;
 
             if (HaveLogs())
             {
@@ -751,6 +757,16 @@ namespace DemoPrototype
 
                 string tagContent;
                 string nextTag = AOUInputParser2.GetNextTag(textDataStream, out time_ms, out tagContent, out loglines, out nextLines);
+                //are we ready?
+                if (textDataStream == nextLines)
+                {
+                    //what to do here?
+                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "Incomplete line: " + textDataStream, 11, 0));
+                    UpdateDataTail = textDataStream;
+                    UpdateDataRunning = false;
+                    return;
+                }
+
                 textDataStream = nextLines;
 
                 // Save last AOU time for adding log messages without time

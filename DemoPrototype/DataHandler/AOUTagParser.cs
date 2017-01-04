@@ -40,7 +40,39 @@ namespace DemoPrototype
             }
         }
 
- 
+
+        public static string FindNextTextLine2(string input, out string nextLines)
+        {
+            int lfIndex = -1;
+
+            nextLines = string.Empty;
+
+            if (input != null && input != string.Empty && input.Length > 0 &&
+                (lfIndex = input.IndexOf((char)10)) >= 0)  // Index for end of line char ("\n" or LF)
+            {
+                // Take the input that is beyond the end of line, and submit it for further processing
+                if (input.Length > (lfIndex + 1))
+                {
+                    nextLines = input.Substring(lfIndex + 1); // Get rest of the text
+                }
+                // Return the whole text line except for the end of line char at the end
+                return (input.Substring(0, lfIndex).Trim());
+            }
+            else
+            {
+                // If no end of line, return nothing and submit all for further processing
+                if (input != null && input != string.Empty && input.Length > 0 && lfIndex < 0)
+                    nextLines = input;
+
+                // Return nothing
+                // return (null);
+                return string.Empty; //tetar detta MW
+            }
+        }
+
+
+
+
         // Find tag and it's content. tagEndPos is the position after the end tag
         public static bool GetTagAndContent(string text, out string tag, out string content, out int tagEndPos)
         {

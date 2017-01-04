@@ -203,7 +203,8 @@ namespace DemoPrototype
             else
             {
                 // Only text and no timestamp. Take latest timestamp and return as log message
-                text = AOUXMLCreator.CreateLogXmlString(timeAdd + lastTimeStamp, text.Trim());
+                //cannot remove /r/n
+                text = AOUXMLCreator.CreateLogXmlString(timeAdd + lastTimeStamp, text.Trim()) + "\r\n";
                 textData = newTextData;
             }
 

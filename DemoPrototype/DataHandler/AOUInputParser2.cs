@@ -60,9 +60,23 @@ namespace DemoPrototype
             logs = new List<string>(); // Init log list for log tags and unknown lines
 
             string tag = ""; // init return value
+            string nextLines2; //MW
 
             // Get next whole line in input text
-            string firstLineInText = AOUTagParser.FindNextTextLine(text, out nextLines);
+            //string firstLineInText = AOUTagParser.FindNextTextLine(text, out nextLines);
+            string firstLineInText = AOUTagParser.FindNextTextLine2(text, out nextLines); //MW
+         /*   if (firstLineInText != firstLineInText2)
+            {
+                logs.Add("Text: " + firstLineInText);
+                logs.Add("Text2: " + firstLineInText2);
+            }
+
+            if (nextLines != nextLines2)
+            {
+                logs.Add("Next: " + nextLines);
+                logs.Add("Next2: " + nextLines2);
+            }
+           */ 
 
             int tagEndPos; // For next string index after tag pair
 
@@ -74,16 +88,18 @@ namespace DemoPrototype
                 int tagStart = firstLineInText.IndexOf(tag); // Get start position for next tag. Normally index 1
                 if (tagStart > 1)
                 {
-                    logs.Add("Before:"+firstLineInText); // log unknown text before tag
+                  //  logs.Add("Before:"+firstLineInText); // log unknown text before tag
                 }
                 else if (tagEndPos < firstLineInText.Length)
                 {
-                    logs.Add("After:" + firstLineInText.Substring(tagEndPos)); // log unknown text after tag pair
+                   // logs.Add("After:" + firstLineInText.Substring(tagEndPos)); // log unknown text after tag pair
                 }
             }
             else
             {
-                logs.Add(firstLineInText); // No tag. Add to logs
+                //never add empty lines
+                if (firstLineInText.Length>0)
+                   logs.Add(firstLineInText); // No tag. Add to logs
             }
 
             return tag; // Return next tag found

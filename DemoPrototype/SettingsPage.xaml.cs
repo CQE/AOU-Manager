@@ -630,5 +630,38 @@ namespace DemoPrototype
             AppHelper.AskAOUForValves();
             AskForValves.IsEnabled = false;
         }
+
+        private void DeleteLogFiles_Click(object sender, RoutedEventArgs e)
+        {
+            //we want to delete all files older than date
+            DirectoryInfo folder = new DirectoryInfo("C:\\Users\\Mia\\Pictures\\AOU-Logs");
+
+            FileInfo[] files = folder.GetFiles();
+            long folderSize = files.Sum(fi => fi.Length);
+            long folderSizeLimit = 1000;
+            long amountToDelete = 1;
+
+            if (folderSize > folderSizeLimit)
+            {
+                // Sort the list of files with the oldest first.
+                Array.Sort(files,
+                           (fi1, fi2) => fi1.CreationTime.CompareTo(fi2.CreationTime));
+
+                long amountDeleted = 0L;
+
+                foreach (FileInfo file in files)
+                {
+                    amountDeleted += file.Length;
+                    AppHelper.ShowMessageBox("You are about to delete 1 file");
+                    file.Delete();
+
+                    if (amountDeleted >= amountToDelete)
+                    {
+                        break;
+                    }
+
+                }
+            }
+        }
     }
 }

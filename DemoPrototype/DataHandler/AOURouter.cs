@@ -400,6 +400,8 @@ namespace DemoPrototype
             logMessages.Add(new AOULogMessage(time, text, prio, 0));
         }
 
+
+
         // Save to files in Image folder
         private void AddLogToFile(AOULogMessage[] logs)
         {

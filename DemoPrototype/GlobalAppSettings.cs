@@ -315,6 +315,9 @@ namespace DemoPrototype
             }
             else
             {
+                //check for null
+                if (value == null)
+                    return;
                 //check if "0x000"-format
                 //strip 0x
                 string hexString = value.Substring(2); //  "0004";
@@ -892,6 +895,27 @@ namespace DemoPrototype
             }
 
 
+            public double F2MHotCalibrateAuto (double share)
+            {
+                    if (_hotCalibrate == int.MinValue || _hotMoInOut == int.MinValue)
+                        return 0;
+                    else
+                        return (_hotCalibrate - _hotMoInOut) * share/(1+share);
+               
+            }
+                     
+
+            public double HotCalibrateMin
+            {
+                get
+                {
+                    if (_hotMoInOut == int.MinValue || _F2MHotCalibrate == int.MinValue)
+                        return 0;
+                    else
+                        return Math.Abs(_F2MHotCalibrate-_hotMoInOut);
+                }
+            }
+
             public string HotRetHoseStr
                 //logic: all three parts needs to be defined
             {
@@ -900,7 +924,7 @@ namespace DemoPrototype
                     if (_hotMoInOut == int.MinValue || _hotCalibrate == int.MinValue || _F2MHotCalibrate == int.MinValue )
                         return "-";
                     else
-                        return (_hotCalibrate - _F2MHotCalibrate - _hotMoInOut).ToString();
+                        return (_hotCalibrate - _F2MHotCalibrate - _hotMoInOut).ToString("0.##");
                 }
             }
 
@@ -910,7 +934,7 @@ namespace DemoPrototype
                 get
                 {
                     if (_hotMoInOut == int.MinValue || _hotCalibrate == int.MinValue || _F2MHotCalibrate == int.MinValue)
-                        return 0; //or min?
+                        return int.MinValue; //or min?
                     else
                         return (_hotCalibrate - _F2MHotCalibrate - _hotMoInOut);
                 }
@@ -925,7 +949,7 @@ namespace DemoPrototype
                     if (_coldMoInOut == int.MinValue || _coldCalibrate == int.MinValue || _F2MColdCalibrate == int.MinValue)
                         return "-";
                     else
-                        return (_coldCalibrate - _F2MColdCalibrate - _coldMoInOut).ToString();
+                        return (_coldCalibrate - _F2MColdCalibrate - _coldMoInOut).ToString("0.##");
                 }
             }
 
@@ -936,7 +960,7 @@ namespace DemoPrototype
                     if (_coldTune == int.MinValue || _coldCalibrate == int.MinValue)
                         return "-";
                     else
-                        return ( _coldCalibrate + _coldTune).ToString();
+                        return ( _coldCalibrate + _coldTune).ToString("0.##");
                 }
             }
 
@@ -948,7 +972,7 @@ namespace DemoPrototype
                     if (_hotTune == int.MinValue || _hotCalibrate == int.MinValue)
                         return "-";
                     else
-                        return (_hotCalibrate + _hotTune).ToString();
+                        return (_hotCalibrate + _hotTune).ToString("0.##");
                 }
             }
 
@@ -960,7 +984,7 @@ namespace DemoPrototype
                     if (_hotCalibrate == int.MinValue)
                         return "-";
                     else
-                        return _hotCalibrate.ToString();
+                        return _hotCalibrate.ToString("0.#");
                 }
             }
 
@@ -1094,6 +1118,7 @@ namespace DemoPrototype
                 set { _F2MHotCalibrate = value; }
             }
 
+           
 
             public double F2MTuneUsed
             {
@@ -1145,7 +1170,7 @@ namespace DemoPrototype
                     if (_hotMoInOut == int.MinValue)
                         return "-";
                     else
-                        return _hotMoInOut.ToString();
+                        return _hotMoInOut.ToString("0.##");
                 }
             }
 
@@ -1156,7 +1181,7 @@ namespace DemoPrototype
                     if (_coldMoInOut == int.MinValue)
                         return "-";
                     else
-                        return _coldMoInOut.ToString();
+                        return _coldMoInOut.ToString("0.##");
                 }
             }
 
@@ -1168,7 +1193,7 @@ namespace DemoPrototype
                     if (_F2MHotCalibrate == int.MinValue)
                         return "-";
                     else
-                        return _F2MHotCalibrate.ToString();
+                        return _F2MHotCalibrate.ToString("0.##");
                 }
             }
 
@@ -1179,7 +1204,7 @@ namespace DemoPrototype
                     if (_F2MColdCalibrate == int.MinValue)
                         return "-";
                     else
-                        return _F2MColdCalibrate.ToString();
+                        return _F2MColdCalibrate.ToString("0.##");
                 }
             }
 
@@ -1190,7 +1215,7 @@ namespace DemoPrototype
                     if (_hotTune == int.MinValue)
                         return "-";
                     else
-                        return _hotTune.ToString();
+                        return _hotTune.ToString("0.##");
                 }
             }
 
@@ -1201,7 +1226,7 @@ namespace DemoPrototype
                     if (_hotCalibrate == int.MinValue)
                         return "-";
                     else
-                        return _hotCalibrate.ToString();
+                        return _hotCalibrate.ToString("0.##");
                 }
             }
 
@@ -1212,7 +1237,7 @@ namespace DemoPrototype
                     if (_coldTune == int.MinValue)
                         return "-";
                     else
-                        return _coldTune.ToString();
+                        return _coldTune.ToString("0.##");
                 }
             }
 
@@ -1223,7 +1248,7 @@ namespace DemoPrototype
                     if (_coldCalibrate == int.MinValue)
                         return "-";
                     else
-                        return _coldCalibrate.ToString();
+                        return _coldCalibrate.ToString("0.##");
                 }
             }
 
@@ -1234,7 +1259,7 @@ namespace DemoPrototype
                     if (_F2MCalibrateUsed == int.MinValue)
                         return "-";
                     else
-                        return _F2MCalibrateUsed.ToString();
+                        return _F2MCalibrateUsed.ToString("0.##");
                 }
             }
 

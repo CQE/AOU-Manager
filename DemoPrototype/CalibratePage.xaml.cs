@@ -63,13 +63,13 @@ namespace DemoPrototype
             //set and calculate delay time values
             FeedHoseSource.Items.Add("Manual");
             FeedHoseSource.Items.Add("Auto");
-            FeedHoseSource.SelectedItem = "Manual"; //=Auto
             MouldSource.Items.Add("Manual");
             MouldSource.Items.Add("Auto");
-            MouldSource.SelectedItem = "Manual";
             ReturnHoseSource.Items.Add("Auto"); //always
-            ReturnHoseSource.SelectedItem = "Auto";
             TotalSource.Items.Add("Manual"); //always
+            FeedHoseSource.SelectedItem = "Auto"; //=Auto
+            MouldSource.SelectedItem = "Auto";
+            ReturnHoseSource.SelectedItem = "Auto";
             TotalSource.SelectedItem = "Manual";
 
 
@@ -77,22 +77,20 @@ namespace DemoPrototype
             //row1
             HotF2MHoses.Text = GlobalVars.globDelayTimes.HotF2MStr;
             ColdF2MHoses.Text = GlobalVars.globDelayTimes.ColdF2MStr;
-            FeedSlider.IsEnabled = false;
+            FeedSlider.IsEnabled = true;
+            FeedSlider.Value = 100; //default
 
 
             //row2
             HotMould.Text = GlobalVars.globDelayTimes.HotMoInOutStr;
             ColdMould.Text = GlobalVars.globDelayTimes.ColdMoInOutStr;
+            MouldSlider.IsEnabled = true;
+            MouldSlider.Value = 10; //default
 
-            //total delay times
+            //total delay times, row4
             HotFeedToReturnDelayTime.Text = GlobalVars.globDelayTimes.TotalHotDelayTimeSumStr;
-            //   TextBlock_HotTune.Text = GlobalVars.globDelayTimes.HotTuneStr;
-            //   TextBlock_SumHotDelayTime.Text = GlobalVars.globDelayTimes.HotDelayTimeSumStr;
-
             ColdFeedToReturnDelayTime.Text = GlobalVars.globDelayTimes.ColdDelayTimeSumStr;
-            // TextBlock_ColdTune.Text = GlobalVars.globDelayTimes.ColdTuneStr;
-            // TextBlock_SumColdDelayTime.Text = GlobalVars.globDelayTimes.ColdDelayTimeSumStr;     //sum.ToString();
-
+    
             //and the last one, calculated
             HotRetHose.Text = GlobalVars.globDelayTimes.HotRetHoseStr;
             ColdRetHose.Text = GlobalVars.globDelayTimes.ColdRetHoseStr;
@@ -563,7 +561,8 @@ namespace DemoPrototype
         private void HotFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, FocusControl, "Change Hot feed-to-return delay time", AOUDataTypes.CommandType.hotDelayTime, 0, 30, 0.5, this);         
+            double minVal = GlobalVars.globDelayTimes.HotCalibrateMin;
+            AppHelper.GetValueToTextBox((TextBox)sender, FocusControl, "Change Hot feed-to-return delay time", AOUDataTypes.CommandType.hotDelayTime, (int) minVal, 90, 0.5, this);         
         }
 
         private void ColdFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
@@ -742,7 +741,8 @@ namespace DemoPrototype
             //if auto, change times
             if (MouldSlider.IsEnabled)
             {
-                GlobalVars.globDelayTimes.HotMoInOut = GlobalVars.globDelayTimes.HotCalibrate * MouldSlider.Value / 100; //TODO check this
+                if (GlobalVars.globDelayTimes.HotCalibrate > int.MinValue)
+                    GlobalVars.globDelayTimes.HotMoInOut = GlobalVars.globDelayTimes.HotCalibrate * MouldSlider.Value / 100; //TODO check this
                 HotMould.Text = GlobalVars.globDelayTimes.HotMoInOutStr;
             }
         }
@@ -754,8 +754,15 @@ namespace DemoPrototype
 
             if (FeedSlider.IsEnabled)
             {
-                GlobalVars.globDelayTimes.F2MHotCalibrate = GlobalVars.globDelayTimes.HotRetHoseVal * FeedSlider.Value / 100;
-                HotF2MHoses.Text = GlobalVars.globDelayTimes.HotF2MStr;
+                //if we have auto, we need auto value
+                GlobalVars.globDelayTimes.F2MHotCalibrate = GlobalVars.globDelayTimes.F2MHotCalibrateAuto(FeedSlider.Value/100);
+                //can change values only if HotRetHoseVal is defined
+              /*  if (GlobalVars.globDelayTimes.HotRetHoseVal > int.MinValue) //could have better check
+                {
+                    GlobalVars.globDelayTimes.F2MHotCalibrate = GlobalVars.globDelayTimes.HotRetHoseVal * FeedSlider.Value / 100;
+                }
+*/              HotF2MHoses.Text = GlobalVars.globDelayTimes.HotF2MStr;
+                HotRetHose.Text = GlobalVars.globDelayTimes.HotRetHoseStr;
             }
         }
 
@@ -784,7 +791,17 @@ namespace DemoPrototype
 
         private void HotMould_TextChanged(object sender, TextChangedEventArgs e)
         {
-            HotRetHose.Text = GlobalVars.globDelayTimes.HotRetHoseStr;
+            //must check if auto or manual
+            if (MouldSlider.IsEnabled) //auto
+            {
+                GlobalVars.globDelayTimes.F2MHotCalibrate = GlobalVars.globDelayTimes.F2MHotCalibrateAuto(FeedSlider.Value / 100);
+                HotF2MHoses.Text = GlobalVars.globDelayTimes.HotF2MStr;
+            }
+            else //manual
+            {
+                //what here?
+            }
+            HotRetHose.Text = GlobalVars.globDelayTimes.HotRetHoseStr;  //fel MW
         }
 
         private void ColdMould_TextChanged(object sender, TextChangedEventArgs e)
@@ -794,11 +811,26 @@ namespace DemoPrototype
 
         private void HotFeedToReturnDelayTime_TextChanged_1(object sender, TextChangedEventArgs e)
         {
+            //check if row2 = auto
+            if (MouldSlider.IsEnabled) //auto
+            {
+                if (GlobalVars.globDelayTimes.HotCalibrate > int.MinValue)
+                {
+                    GlobalVars.globDelayTimes.HotMoInOut = GlobalVars.globDelayTimes.HotCalibrate * MouldSlider.Value / 100; //TODO check this
+                    HotMould.Text = GlobalVars.globDelayTimes.HotMoInOutStr;
+                }
+                if (FeedSlider.IsEnabled) //auto
+                {
+                    GlobalVars.globDelayTimes.F2MHotCalibrate = (FeedSlider.Value / 100) * (GlobalVars.globDelayTimes.HotCalibrate - GlobalVars.globDelayTimes.HotCalibrate * (MouldSlider.Value / 100)) / (1 + FeedSlider.Value / 100);
+                    HotF2MHoses.Text = GlobalVars.globDelayTimes.HotF2MStr;
+                }
+            }    
             HotRetHose.Text = GlobalVars.globDelayTimes.HotRetHoseStr;
         }
 
         private void ColdFeedToReturnDelayTime_TextChanged_1(object sender, TextChangedEventArgs e)
         {
+
             ColdRetHose.Text = GlobalVars.globDelayTimes.ColdRetHoseStr;
         }
 
@@ -819,7 +851,7 @@ namespace DemoPrototype
         private void SetFeedSlider()
         {
             double newVal = Math.Round(GlobalVars.globDelayTimes.FeedShareVal * 100);
-            if (newVal <= 0 || newVal > 100 ) //need to check this TODO
+            if (newVal <= 0 || newVal > 400 ) //need to check this TODO
             {
                 FeedSlider.Value = 0;
                 FeedSliderValueText.Text = "-";
@@ -878,8 +910,11 @@ namespace DemoPrototype
 
         private void HotRetHose_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SetFeedSlider();
-            SetMouldSlider();
+            //Do not change if auto
+            if (!FeedSlider.IsEnabled)
+                SetFeedSlider();
+            if (!MouldSlider.IsEnabled)
+                SetMouldSlider();
         }
 
         private void TotalSource_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -46,11 +46,12 @@
 
             <Border Margin="5,5,10,5" BorderBrush="LightGray"  BorderThickness="2" CornerRadius="5" Grid.Row="1" Grid.ColumnSpan="1">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Log events to remote system"></TextBlock>
+                    <TextBlock Margin="5,5,0,0" FontWeight="SemiBold" Text="Log events"></TextBlock>
                     <StackPanel Margin="2,5,0,0" Grid.Row="2" Orientation="Horizontal">
-                        <ToggleSwitch  Margin="5,0,0,0"  IsOn="False" Toggled="ToggleSwitch_Toggled"></ToggleSwitch>
+                        <ToggleSwitch  Margin="5,0,0,0"  IsOn="False" Width="70"  Toggled="ToggleSwitch_Toggled"></ToggleSwitch>
                         <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" Text="Remote logger:"></TextBlock>
                         <TextBox x:Name="remoteUri" Margin="5,0,0,0" Text="IP name or number" Height="32"></TextBox>
+                        <Button Content="Delete files" Margin="5,0,0,0" Name="DeleteLogFiles" Click="DeleteLogFiles_Click"></Button>
                     </StackPanel>
 
 

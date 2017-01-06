@@ -898,7 +898,7 @@ namespace DemoPrototype
             public double F2MHotCalibrateAuto (double share)
             {
                     if (_hotCalibrate == int.MinValue || _hotMoInOut == int.MinValue)
-                        return 0;
+                        return int.MinValue;
                     else
                         return (_hotCalibrate - _hotMoInOut) * share/(1+share);
                
@@ -906,15 +906,40 @@ namespace DemoPrototype
                      
 
             public double HotCalibrateMin
-            {
+            { //Total >= feed + mould
                 get
                 {
                     if (_hotMoInOut == int.MinValue || _F2MHotCalibrate == int.MinValue)
                         return 0;
                     else
-                        return Math.Abs(_F2MHotCalibrate-_hotMoInOut);
+                        return Math.Abs(_F2MHotCalibrate+_hotMoInOut);
                 }
             }
+
+            public double F2MHotCalibrateMax
+            {
+                get
+                {
+                    if (_hotCalibrate == int.MinValue || _hotMoInOut == int.MinValue)
+                        return 90;
+                    else
+                        return Math.Abs(_hotCalibrate - _hotMoInOut);
+                }
+            }
+
+
+            public double HotMoInOutMax
+            {
+                get
+                {
+                    if (_hotCalibrate == int.MinValue || _F2MHotCalibrate == int.MinValue)
+                        return 90;
+                    else
+                        return Math.Abs(_hotCalibrate - _F2MHotCalibrate);
+                }
+            }
+
+
 
             public string HotRetHoseStr
                 //logic: all three parts needs to be defined

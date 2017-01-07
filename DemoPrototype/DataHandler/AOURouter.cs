@@ -59,7 +59,8 @@ namespace DemoPrototype
         {
             powerValues.Clear();
             logMessages.Clear();
-            GlobalVars.Init(); 
+            GlobalVars.Init();
+           
             defaultTimeBetween = timeBetween;
 
             if (GlobalVars.globLogSettings.LogToFile)

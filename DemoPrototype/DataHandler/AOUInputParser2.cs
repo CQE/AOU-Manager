@@ -78,6 +78,17 @@ namespace DemoPrototype
             }
            */ 
 
+            //deal with no line here MW
+
+            if (firstLineInText == null) //no more lines
+            {
+                //save nextLine (later)
+                //print to log
+                if(nextLines.Length > 0)
+                   logs.Add("Line not complete: " + nextLines);
+                return null; //done for now 
+            }
+
             int tagEndPos; // For next string index after tag pair
 
             AOUTagParser.ParseLongTime(firstLineInText, out time_ms); // Parse time and convert to ms

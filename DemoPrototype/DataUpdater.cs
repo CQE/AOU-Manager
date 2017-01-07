@@ -67,7 +67,7 @@ namespace DemoPrototype
         {
             timeBetween = defaultTimeBetween;
             powerCount = defaultPowerCount;
-
+            lastPowerIndex = -1; //need to re-initialise this here /MW
             AOURouter.RunType dataRunType = GlobalAppSettings.DataRunType;
  
             if (dataRunType == AOURouter.RunType.File)

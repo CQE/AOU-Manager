@@ -729,11 +729,12 @@ namespace DemoPrototype
 
             // string textDataStream = UpdateDataTail + GetTextData();
             string textDataStream = GetTextData();
-            if (UpdateDataTail.Length>0)
-               // newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "Added back line: " + UpdateDataTail, 11, 0));
-
-            UpdateDataTail = string.Empty;
-
+            if (UpdateDataTail.Length > 0)
+            {
+                textDataStream = UpdateDataTail + textDataStream;
+                UpdateDataTail = string.Empty;
+            }
+   
             if (HaveLogs())
             {
                 string dataLogText = GetDataLogText();
@@ -757,11 +758,13 @@ namespace DemoPrototype
 
                 string tagContent;
                 string nextTag = AOUInputParser2.GetNextTag(textDataStream, out time_ms, out tagContent, out loglines, out nextLines);
-                //are we ready?
+                //are we ready? check for null
+
+
                 if (textDataStream == nextLines)
                 {
                     //what to do here?
-                    newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "Incomplete line: " + textDataStream, 11, 0));
+                   // newLogMessages.Add(new AOULogMessage(GetAOUTime_ms(), "Incomplete line: " + textDataStream, 11, 0));
                     UpdateDataTail = textDataStream;
                     UpdateDataRunning = false;
                     return;

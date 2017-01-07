@@ -126,63 +126,67 @@ namespace DemoPrototype
             AOUDataTypes.UI_Buttons buttons = new AOUDataTypes.UI_Buttons();
 
             UpdateLogMessages(false);
-            
-            var t1 = GetStringValue(Data.Updater.LastPower.TReturnActual);
-            var t2 = GetStringValue(Data.Updater.LastPower.TReturnForecasted);
 
-            //elapsed time
-            elapsedTime.Text = GetStringValue(Data.Updater.LastPower.ElapsedTime/1000);
-
-            hotTankTemp.Text = GetStringValue(Data.Updater.LastPower.THotTank);
-            coldTankTemp.Text = GetStringValue(Data.Updater.LastPower.TColdTank);
-            //returnValveTemp.Text = GetStringValue(Data.Updater.LastPower.TReturnValve);
-
-            oilHotSideTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferHot);
-            oilMiddleTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferMid);
-            oilColdSideTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferCold);
-
-            oilInletTemp.Text = GetStringValue(double.NaN);
-            oilOutletTemp.Text = GetStringValue(Data.Updater.LastPower.THeaterOilOut);
-
-            coolantWater.Text= GetStringValue(double.NaN);
-            heatTransferOil.Text = GetStringValue(double.NaN);
-
-            retValveTemp.Text= GetStringValue(Data.Updater.LastPower.TReturnValve); 
-            bearingHotPumpTemp.Text = GetStringValue(Data.Updater.LastPower.TBearHot);
-
-            oilExchangeInletTemp.Text = GetStringValue(double.NaN); GetStringValue(double.NaN);
-
-            oilExchangeOutletTemp.Text = GetStringValue(Data.Updater.LastPower.TCoolingCartridgeOut);  //<Cool>
-
-            coolantWaterExchangeInletTemp.Text = GetStringValue(double.NaN);
-            coolantWaterExchangeOutletTemp.Text = GetStringValue(Data.Updater.LastPower.TCoolant); 
-
-            hotPumpOutput.Text = GetStringValue(double.NaN);
-            coldPumpOutput.Text = GetStringValue(double.NaN);
-            toolReturn.Text = GetStringValue(double.NaN);
-            particleFilter.Text = GetStringValue(double.NaN);
-            pneumatics.Text = GetStringValue(double.NaN);
-
-            vL1.Text = GetStringValue(double.NaN);
-            vL2.Text = GetStringValue(double.NaN);
-            vL3.Text = GetStringValue(double.NaN);
-            aL1.Text = GetStringValue(double.NaN);
-            aL2.Text = GetStringValue(double.NaN);
-            aL3.Text = GetStringValue(double.NaN);
+            if (Data.Updater.LastPowerIndex >= 0)
+            {
+                elapsedTime.Text = GetStringValue(Data.Updater.LastPower.ElapsedTime / 1000);
 
 
-            
-            hotFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedHot, GlobalVars.globValveChartValues.HotValveHi);
-            coldFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedCold, GlobalVars.globValveChartValues.ColdValveHi);
-            returnValve.IsOn = GetValveState(Data.Updater.LastPower.ValveReturn, GlobalVars.globValveChartValues.ReturnValveHi);
-            coolantValve.IsOn = GetValveState(Data.Updater.LastPower.ValveCoolant, GlobalVars.globValveChartValues.CoolantValveHi);
+                // var t1 = GetStringValue(Data.Updater.LastPower.TReturnActual);
+                // var t2 = GetStringValue(Data.Updater.LastPower.TReturnForecasted);
 
-            safetyStop.IsOn = GetValveState(Data.Updater.LastPower.SafetyStop, GlobalVars.globSafetyAlarms.SafetyStopHi);
-            safetyReset.IsOn = GetValveState(Data.Updater.LastPower.SafetyReset, GlobalVars.globSafetyAlarms.SafetyResetHi);
-            safetyEmergency.IsOn = GetValveState(Data.Updater.LastPower.SafetyEmergency, GlobalVars.globSafetyAlarms.SafetyEmergencyHi);
-            safetyFluidLevel.IsOn = GetValveState(Data.Updater.LastPower.SafetyFluidLevel, GlobalVars.globSafetyAlarms.SafetyFluidLevelHi);
-            safetyOverHeated.IsOn = GetValveState(Data.Updater.LastPower.SafetyOverHeated, GlobalVars.globSafetyAlarms.SafetyOverHeatedHi);
+                //elapsed time
 
+                hotTankTemp.Text = GetStringValue(Data.Updater.LastPower.THotTank);
+                coldTankTemp.Text = GetStringValue(Data.Updater.LastPower.TColdTank);
+                //returnValveTemp.Text = GetStringValue(Data.Updater.LastPower.TReturnValve);
+
+                oilHotSideTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferHot);
+                oilMiddleTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferMid);
+                oilColdSideTemp.Text = GetStringValue(Data.Updater.LastPower.TBufferCold);
+
+                oilInletTemp.Text = GetStringValue(double.NaN);
+                oilOutletTemp.Text = GetStringValue(Data.Updater.LastPower.THeaterOilOut);
+
+                coolantWater.Text = GetStringValue(double.NaN);
+                heatTransferOil.Text = GetStringValue(double.NaN);
+
+                retValveTemp.Text = GetStringValue(Data.Updater.LastPower.TReturnValve);
+                bearingHotPumpTemp.Text = GetStringValue(Data.Updater.LastPower.TBearHot);
+
+                oilExchangeInletTemp.Text = GetStringValue(double.NaN); GetStringValue(double.NaN);
+
+                oilExchangeOutletTemp.Text = GetStringValue(Data.Updater.LastPower.TCoolingCartridgeOut);  //<Cool>
+
+                coolantWaterExchangeInletTemp.Text = GetStringValue(double.NaN);
+                coolantWaterExchangeOutletTemp.Text = GetStringValue(Data.Updater.LastPower.TCoolant);
+
+                hotPumpOutput.Text = GetStringValue(double.NaN);
+                coldPumpOutput.Text = GetStringValue(double.NaN);
+                toolReturn.Text = GetStringValue(double.NaN);
+                particleFilter.Text = GetStringValue(double.NaN);
+                pneumatics.Text = GetStringValue(double.NaN);
+
+                vL1.Text = GetStringValue(double.NaN);
+                vL2.Text = GetStringValue(double.NaN);
+                vL3.Text = GetStringValue(double.NaN);
+                aL1.Text = GetStringValue(double.NaN);
+                aL2.Text = GetStringValue(double.NaN);
+                aL3.Text = GetStringValue(double.NaN);
+
+
+
+                hotFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedHot, GlobalVars.globValveChartValues.HotValveHi);
+                coldFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedCold, GlobalVars.globValveChartValues.ColdValveHi);
+                returnValve.IsOn = GetValveState(Data.Updater.LastPower.ValveReturn, GlobalVars.globValveChartValues.ReturnValveHi);
+                coolantValve.IsOn = GetValveState(Data.Updater.LastPower.ValveCoolant, GlobalVars.globValveChartValues.CoolantValveHi);
+
+                safetyStop.IsOn = GetValveState(Data.Updater.LastPower.SafetyStop, GlobalVars.globSafetyAlarms.SafetyStopHi);
+                safetyReset.IsOn = GetValveState(Data.Updater.LastPower.SafetyReset, GlobalVars.globSafetyAlarms.SafetyResetHi);
+                safetyEmergency.IsOn = GetValveState(Data.Updater.LastPower.SafetyEmergency, GlobalVars.globSafetyAlarms.SafetyEmergencyHi);
+                safetyFluidLevel.IsOn = GetValveState(Data.Updater.LastPower.SafetyFluidLevel, GlobalVars.globSafetyAlarms.SafetyFluidLevelHi);
+                safetyOverHeated.IsOn = GetValveState(Data.Updater.LastPower.SafetyOverHeated, GlobalVars.globSafetyAlarms.SafetyOverHeatedHi);
+            }
             if (Data.Updater.UIButtonsChanged(out buttons))
             {
                 //UpdateFromUIButtons(buttons);

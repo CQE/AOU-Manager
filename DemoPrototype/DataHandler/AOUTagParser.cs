@@ -65,8 +65,8 @@ namespace DemoPrototype
                     nextLines = input;
 
                 // Return nothing
-                // return (null);
-                return string.Empty; //tetar detta MW
+                 return (null);
+             //   return string.Empty; //tetar detta MW
             }
         }
 

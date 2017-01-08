@@ -69,7 +69,7 @@ namespace DemoPrototype
             initFluids();
 
 
-           // AskForAllParameters();
+            AskForAllParameters();
 
 
 
@@ -416,6 +416,58 @@ namespace DemoPrototype
 
         }
 
+
+        private async void DeleteFile(string type)
+        {
+            try
+            {
+                //we want to delete all files older than date
+                string path = Path.GetDirectoryName("C:\\Users\\Mia\\Pictures");
+                DirectoryInfo folder = new DirectoryInfo(path);
+                FileInfo[] files = folder.GetFiles();
+
+                StorageFolder dataFolder = KnownFolders.PicturesLibrary;
+                var folder2 = await dataFolder.CreateFolderAsync(path, CreationCollisionOption.OpenIfExists);
+
+               // FileInfo[] files = await dataFolder.GetFilesAsync();
+                long folderSize = files.Sum(fi => fi.Length);
+                long folderSizeLimit = 1000;
+                long amountToDelete = 1;
+
+                if (folderSize > folderSizeLimit)
+                {
+                    // Sort the list of files with the oldest first.
+                    Array.Sort(files,
+                               (fi1, fi2) => fi1.CreationTime.CompareTo(fi2.CreationTime));
+
+                    long amountDeleted = 0L;
+
+                    foreach (FileInfo file in files)
+                    {
+                        amountDeleted += file.Length;
+                        AppHelper.ShowMessageBox("You are about to delete 1 file");
+                        file.Delete();
+
+                        if (amountDeleted >= amountToDelete)
+                        {
+                            break;
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                AppHelper.ShowMessageBox("Delete File: " + e.Message);
+            }
+
+        }
+
+
+
+
+
+
         private void pickButton_Click(object sender, RoutedEventArgs e)
         {
             PickFile("FileInput");
@@ -634,12 +686,19 @@ namespace DemoPrototype
         private void DeleteLogFiles_Click(object sender, RoutedEventArgs e)
         {
             //we want to delete all files older than date
-            DirectoryInfo folder = new DirectoryInfo("C:\\Users\\Mia\\Pictures\\AOU-Logs");
+            string path = Path.GetDirectoryName("C:\\Users\\Mia\\Pictures");
+            DirectoryInfo folder = new DirectoryInfo(path);
+
+            // var folder2 = dataFolder.CreateFolderAsync(subPath, CreationCollisionOption.OpenIfExists);
+            StorageFolder dataFolder = KnownFolders.PicturesLibrary;
+          
 
             FileInfo[] files = folder.GetFiles();
             long folderSize = files.Sum(fi => fi.Length);
             long folderSizeLimit = 1000;
             long amountToDelete = 1;
+
+          //  ulong curFolderSize = AOULogFile.
 
             if (folderSize > folderSizeLimit)
             {

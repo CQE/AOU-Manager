@@ -137,12 +137,12 @@
     <Compile Include="DataHandler\AOUTypes.cs" />
     <Compile Include="DataHandler\AOUValuesFile.cs" />
     <Compile Include="DataHandler\AOUXMLCreator.cs" />
-    <Compile Include="DataHandler\HeatTransferFluidsList.cs" />
     <Compile Include="DataHandler\Power.cs" />
     <Compile Include="DataHandler\TextFile.cs" />
     <Compile Include="DataHandler\ValueGenerator.cs" />
     <Compile Include="DataUpdater.cs" />
     <Compile Include="GlobalAppSettings.cs" />
+    <Compile Include="DataHandler\HeatTransferFluidsList2.cs" />
     <Compile Include="HelpPage.xaml.cs">
       <DependentUpon>HelpPage.xaml</DependentUpon>
     </Compile>

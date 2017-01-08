@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Search;
 
 namespace DemoPrototype
 {
@@ -13,9 +15,14 @@ namespace DemoPrototype
         private TextFile aouLogFile;
         private string curAOULogFileName = "";
         private DateTime startTime;
+        private ulong curSizeOfFolder = 0;
+        private ulong maxSizeOfFolder = 1000000; //just testing
 
         public AOULogFile(DateTime StartTime)
         {
+           // curSizeOfFolder = CheckSize();
+            if (curSizeOfFolder > maxSizeOfFolder)
+                DeleteLogFiles();
             aouLogFile = new TextFile();
             this.startTime = StartTime;
             curAOULogFileName = "AOULog-" + startTime.ToString("yyMMdd-hhmmss") + ".txt";
@@ -33,11 +40,50 @@ namespace DemoPrototype
             aouLogFile.AddToFile(subPath, curAOULogFileName, ">" + time + "," + text);
         }
 
-        public void DeleteLogFiles(long date)
+        public ulong CheckSize()
+        {
+           ulong totSize;
+            ulong subTotSize;
+            StorageFolder dataFolder = KnownFolders.PicturesLibrary;
+            StorageFolder dataSubFolder = KnownFolders.PicturesLibrary.GetFolderAsync("AOU-Logs").AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+            DirectoryInfo folder = new DirectoryInfo(subPath);
+            IReadOnlyList<StorageFile> filesInFolder2 = dataFolder.GetFilesAsync(CommonFileQuery.OrderByDate).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            // Size of Folder in bytes
+            IReadOnlyList<StorageFile> filesInFolder = dataFolder.GetFilesAsync().AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            totSize = 0;
+            foreach (StorageFile ff in filesInFolder)
+            {
+                Windows.Storage.FileProperties.BasicProperties bp = ff.GetBasicPropertiesAsync().AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+                totSize = totSize + bp.Size;
+            }
+
+            // Size of Sub folder in bytes
+            IReadOnlyList<StorageFile> filesInSubFolder = dataSubFolder.GetFilesAsync().AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            subTotSize = 0;
+            foreach (StorageFile ffs in filesInSubFolder)
+            {
+                Windows.Storage.FileProperties.BasicProperties bps = ffs.GetBasicPropertiesAsync().AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+                subTotSize += bps.Size;
+            }
+            return totSize + subTotSize;
+        }
+
+
+
+
+        public void DeleteLogFiles(long date = 0)
         {
             //we want to delete all files older than date
             DirectoryInfo folder = new DirectoryInfo(subPath);
+            IReadOnlyList<StorageFile> filesInFolder = dataFolder.GetFilesAsync(CommonFileQuery.OrderByDate).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            return;
+            /*
             FileInfo[] files = folder.GetFiles();
+           // FileInfo[] files2 = await dataFolder.GetFilesAsync();
             long folderSize = files.Sum(fi => fi.Length);
             long folderSizeLimit = 1000;
             long amountToDelete = 1;
@@ -62,7 +108,7 @@ namespace DemoPrototype
                     }
 
                 }
-            }
+            }*/
         }
 
         public void AddLogMessages(AOULogMessage[] logs)

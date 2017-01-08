@@ -147,29 +147,29 @@
 
 
         <TextBlock  Grid.Row="1" Grid.Column="7" Grid.ColumnSpan="2" Margin="0,10,0,6" VerticalAlignment="Bottom" Text="Feed hoses"   HorizontalAlignment="Left"></TextBlock>
-        <TextBox Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,0,0,0" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Name="HotF2MHoses" GotFocus="HotF2MHoses_GotFocus" TextChanged="HotF2MHoses_TextChanged" Text="-"></TextBox>
-        <TextBox Grid.Row="1" Grid.Column="9" VerticalAlignment="Bottom"  HorizontalAlignment="Left" Width="30" Margin="0,0,0,0"  Name="ColdF2MHoses"  GotFocus="ColdF2MHoses_GotFocus"  TextChanged="ColdF2MHoses_TextChanged" Text="-"></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,0,0,0" Width="30" VerticalAlignment="Bottom" IsReadOnly="True"  HorizontalAlignment="Left" Name="HotF2MHoses" GotFocus="HotF2MHoses_GotFocus" TextChanged="HotF2MHoses_TextChanged" Text="-"></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="9" VerticalAlignment="Bottom"  HorizontalAlignment="Left" Width="30" Margin="0,0,0,0" IsReadOnly="True" Name="ColdF2MHoses"  GotFocus="ColdF2MHoses_GotFocus"  TextChanged="ColdF2MHoses_TextChanged" Text="-"></TextBox>
         <Slider Grid.Row="1" Grid.Column="10"  VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,3"   Width="60" FontSize="11" Height="31"  Minimum="0" Maximum="400"  StepFrequency="1" Name="FeedSlider" ValueChanged="FeedSlider_ValueChanged"  Grid.ColumnSpan="2"></Slider>
         <TextBlock Grid.Row="2" Grid.Column="10" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="11" Foreground="Black" Name="FeedSliderValueText" Text="-"></TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="11" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,6"  Text="Feed/Return hose"></TextBlock>
         <ComboBox Grid.Row="1" Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Bottom"  SelectionChanged="FeedHoseSource_SelectionChanged"  Margin="10,0,0,0" Name="FeedHoseSource" ></ComboBox>
 
         <TextBlock  Grid.Row="2" Grid.Column="7" Grid.ColumnSpan="2" Margin="0,10,0,0" VerticalAlignment="Center" Text="Mould"  Foreground="Black" HorizontalAlignment="Left"></TextBlock>
-        <TextBox Grid.Row="2" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,11,0,0" Width="30" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" Name="HotMould"  GotFocus="HotMould_GotFocus" TextChanged="HotMould_TextChanged" Text="-"></TextBox>
-        <TextBox Grid.Row="2" Grid.Column="9" VerticalAlignment="Center"  HorizontalAlignment="Left" Width="30" Margin="0,11,0,0"  Foreground="Black" Name="ColdMould"  GotFocus="ColdMould_GotFocus"  TextChanged="ColdMould_TextChanged" Text="-"></TextBox>
+        <TextBox Grid.Row="2" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,11,0,0" Width="30" VerticalAlignment="Center" IsReadOnly="True" HorizontalAlignment="Left" Foreground="Black" Name="HotMould"  GotFocus="HotMould_GotFocus" TextChanged="HotMould_TextChanged" Text="-"></TextBox>
+        <TextBox Grid.Row="2" Grid.Column="9" VerticalAlignment="Center"  HorizontalAlignment="Left" Width="30" IsReadOnly="True" Margin="0,11,0,0"  Foreground="Black" Name="ColdMould"  GotFocus="ColdMould_GotFocus"  TextChanged="ColdMould_TextChanged" Text="-"></TextBox>
         <Slider Grid.Row="2" Grid.Column="10"  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,10,0,0" Width="60" Height="31"  Minimum="0" Maximum="100" ValueChanged="MouldSlider_ValueChanged" Name="MouldSlider" Grid.ColumnSpan="2"></Slider>
         <TextBlock Grid.Row="2" Grid.Column="11" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,8,0,0"  Foreground="Black" Text="Time/Total"></TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="11" Foreground="Black" Name="MouldSliderValueText" Text="-"></TextBlock>
         <ComboBox Grid.Row="2" Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Center"   Foreground="Black" Name="MouldSource" SelectionChanged="MouldSource_SelectionChanged" Margin="10,11,0,0" ></ComboBox>
 
         <TextBlock  Grid.Row="3" Grid.Column="7" Grid.ColumnSpan="2" Margin="0,17,0,0" VerticalAlignment="Top" Text="Return hose"  Foreground="Black" HorizontalAlignment="Left"></TextBlock>
-        <TextBox Grid.Row="3" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,12,0,0" Width="30" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Black" Name="HotRetHose"  TextChanged="HotRetHose_TextChanged"  Text="-"></TextBox>
-        <TextBox Grid.Row="3" Grid.Column="9" VerticalAlignment="Top"  HorizontalAlignment="Left" Width="30" Margin="0,12,0,0"  Foreground="Black" Name="ColdRetHose" Text="-"></TextBox>
+        <TextBox Grid.Row="3" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,12,0,0" Width="30" VerticalAlignment="Top" HorizontalAlignment="Left" IsReadOnly="True" Foreground="Black" Name="HotRetHose"  TextChanged="HotRetHose_TextChanged"  Text="-"></TextBox>
+        <TextBox Grid.Row="3" Grid.Column="9" VerticalAlignment="Top"  HorizontalAlignment="Left" Width="30" Margin="0,12,0,0"  Foreground="Black" IsReadOnly="True" Name="ColdRetHose" Text="-"></TextBox>
         <ComboBox Grid.Row="3" Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Name="ReturnHoseSource" Foreground="Black" Margin="10,12,0,0" ></ComboBox>
 
         <TextBlock  Grid.Row="4" Grid.Column="7" Grid.ColumnSpan="2" Margin="0,7,0,0" VerticalAlignment="Top" Text="Total"  Foreground="Black" HorizontalAlignment="Left"></TextBlock>
-        <TextBox Grid.Row="4" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,0,0,0" Width="30" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Black" Name="HotFeedToReturnDelayTime" GotFocus="HotFeedToReturnDelayTime_GotFocus" TextChanged="HotFeedToReturnDelayTime_TextChanged_1"  Text="-"></TextBox>
-        <TextBox Grid.Row="4" Grid.Column="9" VerticalAlignment="Top"  HorizontalAlignment="Left" Width="30" Margin="0,0,0,0"  Foreground="Black" Text="-" Name="ColdFeedToReturnDelayTime" GotFocus="ColdFeedToReturnDelayTime_GotFocus" TextChanged="ColdFeedToReturnDelayTime_TextChanged_1" ></TextBox>
+        <TextBox Grid.Row="4" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,0,0,0" Width="30" VerticalAlignment="Top" IsReadOnly="True" HorizontalAlignment="Left" Foreground="Black" Name="HotFeedToReturnDelayTime" GotFocus="HotFeedToReturnDelayTime_GotFocus" TextChanged="HotFeedToReturnDelayTime_TextChanged_1"  Text="-"></TextBox>
+        <TextBox Grid.Row="4" Grid.Column="9" VerticalAlignment="Top"  HorizontalAlignment="Left" Width="30" Margin="0,0,0,0" IsReadOnly="True" Foreground="Black" Text="-" Name="ColdFeedToReturnDelayTime" GotFocus="ColdFeedToReturnDelayTime_GotFocus" TextChanged="ColdFeedToReturnDelayTime_TextChanged_1" ></TextBox>
         <ComboBox Grid.Row="4" Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Top"  Name="TotalSource"  SelectionChanged="TotalSource_SelectionChanged" Foreground="Black" Margin="10,0,0,0" ></ComboBox>
 
         <TextBox Name="FocusControl" Visibility="Collapsed" Grid.Row="1" Height="1" Width="1" Margin="90,0,0,0" BorderThickness="0" BorderBrush="White" ></TextBox>

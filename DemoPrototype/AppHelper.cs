@@ -346,9 +346,9 @@ namespace DemoPrototype
         public static void AskAOUForFeedTimes()
         {
             if (GlobalVars.globDelayTimes.EACalibrate < 0 && GlobalVars.globDelayTimes.EATune < 0)
-                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetRetValveHotPeriod);
-            if (GlobalVars.globDelayTimes.VACalibrate < 0 && GlobalVars.globDelayTimes.VATune < 0)
                 Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetHotFeed2RetValveTime);
+            if (GlobalVars.globDelayTimes.VACalibrate < 0 && GlobalVars.globDelayTimes.VATune < 0)
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetRetValveHotPeriod);
             if (GlobalVars.globDelayTimes.F2MCalibrateUsed < 0 && GlobalVars.globDelayTimes.F2MTuneUsed < 0)
                 Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotFeed2MouldDelayTime);
         }

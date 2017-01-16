@@ -310,7 +310,7 @@ namespace DemoPrototype
               //  time = time / 10;
                 TextBox_NewActiveHeatingTime.Text = time.ToString(); // GlobalVars.globFeedTimes.HeatingActive.ToString();
             }
-            if (Data.Updater.HotDelayChanged(out time))
+            if (Data.Updater.PauseHeatingTimeChanged(out time))
             {
                 // SetHotDelayTimeText();
                // time = time / 10;
@@ -322,7 +322,7 @@ namespace DemoPrototype
                // time = time / 10;
                 TextBox_NewActiveCoolingTime.Text = time.ToString(); // GlobalVars.globFeedTimes.CoolingActive.ToString();
             }
-            if (Data.Updater.CoolDelayChanged(out time))
+            if (Data.Updater.PauseCoolingTimeChanged(out time))
             {
                 // SetColdDelayTimeText();
               //  time = time / 10;

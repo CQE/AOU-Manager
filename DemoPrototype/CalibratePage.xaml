@@ -87,7 +87,7 @@
             <chart:SplineSeries Name="Series_Delay_TColdTank" LegendIcon="Circle" Label="TColdTank"  XBindingPath="ElapsedTime" YBindingPath="TColdTank" ItemsSource="{Binding power}"></chart:SplineSeries>
         </chart:SfChart>
         <!-- Use overlay textbox for showing diff result -->
-        <TextBox Grid.Column="3" Grid.Row="3" Name="CalibratePhaseDiffResult" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="-"></TextBox>
+        <TextBox Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="3" Name="CalibratePhaseDiffResult" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="Yellow" Text="Total trip time: -"></TextBox>
 
         <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Name="HotStepStatus"  VerticalAlignment="Bottom" Margin="30,0,0,0"></TextBlock>
         <StackPanel Margin="30,0,0,0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
@@ -149,7 +149,7 @@
         <TextBlock  Grid.Row="1" Grid.Column="7" Grid.ColumnSpan="2" Margin="0,10,0,6" VerticalAlignment="Bottom" Text="Feed hoses"   HorizontalAlignment="Left"></TextBlock>
         <TextBox Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,0,0,0" Width="30" VerticalAlignment="Bottom" IsReadOnly="True"  HorizontalAlignment="Left" Name="HotF2MHoses" GotFocus="HotF2MHoses_GotFocus" TextChanged="HotF2MHoses_TextChanged" Text="-"></TextBox>
         <TextBox Grid.Row="1" Grid.Column="9" VerticalAlignment="Bottom"  HorizontalAlignment="Left" Width="30" Margin="0,0,0,0" IsReadOnly="True" Name="ColdF2MHoses"  GotFocus="ColdF2MHoses_GotFocus"  TextChanged="ColdF2MHoses_TextChanged" Text="-"></TextBox>
-        <Slider Grid.Row="1" Grid.Column="10"  VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,3"   Width="60" FontSize="11" Height="31"  Minimum="0" Maximum="400"  StepFrequency="1" Name="FeedSlider" ValueChanged="FeedSlider_ValueChanged"  Grid.ColumnSpan="2"></Slider>
+        <Slider Grid.Row="1" Grid.Column="10"  VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,3"   Width="60" FontSize="11" Height="31"  Minimum="0" Maximum="400"  StepFrequency="1" Name="FeedSlider" ValueChanged="FeedSlider_ValueChanged"  DragLeave="FeedSlider_DragLeave" Grid.ColumnSpan="2"></Slider>
         <TextBlock Grid.Row="2" Grid.Column="10" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="11" Foreground="Black" Name="FeedSliderValueText" Text="-"></TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="11" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,6"  Text="Feed/Return hose"></TextBlock>
         <ComboBox Grid.Row="1" Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Bottom"  SelectionChanged="FeedHoseSource_SelectionChanged"  Margin="10,0,0,0" Name="FeedHoseSource" ></ComboBox>
@@ -170,7 +170,7 @@
         <TextBlock  Grid.Row="4" Grid.Column="7" Grid.ColumnSpan="2" Margin="0,7,0,0" VerticalAlignment="Top" Text="Total"  Foreground="Black" HorizontalAlignment="Left"></TextBlock>
         <TextBox Grid.Row="4" Grid.Column="8" Grid.ColumnSpan="2" Margin="10,0,0,0" Width="30" VerticalAlignment="Top" IsReadOnly="True" HorizontalAlignment="Left" Foreground="Black" Name="HotFeedToReturnDelayTime" GotFocus="HotFeedToReturnDelayTime_GotFocus" TextChanged="HotFeedToReturnDelayTime_TextChanged_1"  Text="-"></TextBox>
         <TextBox Grid.Row="4" Grid.Column="9" VerticalAlignment="Top"  HorizontalAlignment="Left" Width="30" Margin="0,0,0,0" IsReadOnly="True" Foreground="Black" Text="-" Name="ColdFeedToReturnDelayTime" GotFocus="ColdFeedToReturnDelayTime_GotFocus" TextChanged="ColdFeedToReturnDelayTime_TextChanged_1" ></TextBox>
-        <ComboBox Grid.Row="4" Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Top"  Name="TotalSource"  SelectionChanged="TotalSource_SelectionChanged" Foreground="Black" Margin="10,0,0,0" ></ComboBox>
+        <ComboBox Grid.Row="4" Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Top"  Name="TotalSource" IsEnabled="False" SelectionChanged="TotalSource_SelectionChanged" Foreground="Black" Margin="10,0,0,0" ></ComboBox>
 
         <TextBox Name="FocusControl" Visibility="Collapsed" Grid.Row="1" Height="1" Width="1" Margin="90,0,0,0" BorderThickness="0" BorderBrush="White" ></TextBox>
 

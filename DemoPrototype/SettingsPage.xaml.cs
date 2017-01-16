@@ -69,7 +69,7 @@ namespace DemoPrototype
             initFluids();
 
 
-            AskForAllParameters();
+          //  AskForAllParameters();
 
 
 
@@ -645,6 +645,13 @@ namespace DemoPrototype
 
         public void AskForAllParameters()
         {
+            AppHelper.AskAOUForTemps();
+            AppHelper.AskAOUForMouldTimes();
+            AppHelper.AskAOUForDelayTimes();
+            //AppHelper.AS
+
+
+            return;
             if (GlobalVars.globTankSetTemps.HotTankSetTemp < 0)
             {
                 AskForSetHotTankTemp_Click(null, null);
@@ -721,6 +728,11 @@ namespace DemoPrototype
 
                 }
             }
+        }
+
+        private void TestMatrix_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.AskForMatrixValues();
         }
     }
 }

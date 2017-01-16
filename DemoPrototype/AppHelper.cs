@@ -339,6 +339,17 @@ namespace DemoPrototype
             {
                 Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
             }
+            if (GlobalVars.globDelayTimes.HotMoInOut < 0 && GlobalVars.globDelayTimes.ColdMoInOut < 0)
+            {
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.HOTMOINOUTDELAYTIM);
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.COLDMOINOUTDELAYTIM);
+            }
+            if (GlobalVars.globDelayTimes.F2MHotCalibrate < 0 && GlobalVars.globDelayTimes.F2MColdCalibrate < 0)
+            {
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotFeed2MouldDelayTime);
+                Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldFeed2MouldDelayTime);
+
+            }
 
         }
 
@@ -445,6 +456,16 @@ namespace DemoPrototype
         {
 
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.forceValves);
+        }
+
+        public static void AskForMatrixValues()
+        {
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotFeed2MouldDelayTime);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.HOTMOINOUTDELAYTIM);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.hotDelayTime);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldFeed2MouldDelayTime);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.COLDMOINOUTDELAYTIM);
         }
 
         public static void SetValves2(AOUDataTypes.CommandType cmd, int val)

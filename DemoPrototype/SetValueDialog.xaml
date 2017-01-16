@@ -15,7 +15,7 @@
     <Grid Margin="0,10,0,0">
         <StackPanel>
             <Slider x:Name="valueSlider" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="270" ValueChanged="valueSlider_ValueChanged"/>
-            <TextBox x:Name="textValue" HorizontalAlignment="Left" Margin="95,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
+            <TextBox x:Name="textValue" HorizontalAlignment="Left" Margin="95,10,0,0" IsReadOnly="True" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
         </StackPanel>
     </Grid>
 </ContentDialog>

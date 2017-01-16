@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Search;
@@ -15,14 +16,14 @@ namespace DemoPrototype
         private TextFile aouLogFile;
         private string curAOULogFileName = "";
         private DateTime startTime;
-        private ulong curSizeOfFolder = 0;
-        private ulong maxSizeOfFolder = 1000000; //just testing
+        private int curSizeOfFolder = 0;
+        private int maxSizeOfFolder = 1000000; //just testing
 
         public AOULogFile(DateTime StartTime)
         {
            // curSizeOfFolder = CheckSize();
             if (curSizeOfFolder > maxSizeOfFolder)
-                DeleteLogFiles();
+                 DeleteLogFiles();
             aouLogFile = new TextFile();
             this.startTime = StartTime;
             curAOULogFileName = "AOULog-" + startTime.ToString("yyMMdd-hhmmss") + ".txt";
@@ -40,7 +41,7 @@ namespace DemoPrototype
             aouLogFile.AddToFile(subPath, curAOULogFileName, ">" + time + "," + text);
         }
 
-        public ulong CheckSize()
+        public ulong CheckSize2()
         {
            ulong totSize;
             ulong subTotSize;
@@ -71,44 +72,49 @@ namespace DemoPrototype
             return totSize + subTotSize;
         }
 
+        public int CheckSize()
+        {
+           StorageFolder dataFolder = KnownFolders.PicturesLibrary;
+         //   StorageFolder dataSubFolder = KnownFolders.PicturesLibrary.GetFolderAsync("AOU-Logs").AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+            DirectoryInfo folder = new DirectoryInfo(subPath);
+            IReadOnlyList<StorageFile> filesInFolder2 = dataFolder.GetFilesAsync(CommonFileQuery.OrderByDate).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            // Size of Folder in bytes
+            IReadOnlyList<StorageFile> fif = dataFolder.GetFilesAsync(CommonFileQuery.OrderByDate).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            int fileCount = 0;
+            Task tmpTask = Task.Run(() => Parallel.ForEach(fif, async (currentFile) =>
+            {
+                //    Windows.Storage.FileProperties.BasicProperties bps = currentFile.GetBasicPropertiesAsync().AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+                Windows.Storage.FileProperties.BasicProperties bps = await currentFile.GetBasicPropertiesAsync();
+
+                Interlocked.Add(ref fileCount, (int)bps.Size);
+            }));
+
+            tmpTask.Wait();
+            return fileCount;
+        }
+
+
+
 
 
 
         public void DeleteLogFiles(long date = 0)
         {
+            StorageFolder dataFolder = KnownFolders.PicturesLibrary;
             //we want to delete all files older than date
-            DirectoryInfo folder = new DirectoryInfo(subPath);
-            IReadOnlyList<StorageFile> filesInFolder = dataFolder.GetFilesAsync(CommonFileQuery.OrderByDate).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+            IReadOnlyList<StorageFile> fif = dataFolder.GetFilesAsync(CommonFileQuery.OrderByDate).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
 
-            return;
-            /*
-            FileInfo[] files = folder.GetFiles();
-           // FileInfo[] files2 = await dataFolder.GetFilesAsync();
-            long folderSize = files.Sum(fi => fi.Length);
-            long folderSizeLimit = 1000;
-            long amountToDelete = 1;
-
-            if (folderSize > folderSizeLimit)
+             // Delete files from oldest onwards
+            int nFiles = fif.Count;
+            for (int fidx = nFiles - 1; fidx >= 0; fidx--)
             {
-                // Sort the list of files with the oldest first.
-                Array.Sort(files,
-                           (fi1, fi2) => fi1.CreationTime.CompareTo(fi2.CreationTime));
+                Windows.Storage.FileProperties.BasicProperties tps = fif.ElementAt(fidx).GetBasicPropertiesAsync().AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+                if (tps.Size > 0UL && fif.ElementAt(fidx).Name == "junk.txt")
+                    fif.ElementAt(fidx).DeleteAsync().AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+            }
 
-                long amountDeleted = 0L;
-
-                foreach (FileInfo file in files)
-                {
-                    amountDeleted += file.Length;
-                    AppHelper.ShowMessageBox("You are about to delete 1 file");
-                    file.Delete();
-
-                    if (amountDeleted >= amountToDelete)
-                    {
-                        break;
-                    }
-
-                }
-            }*/
         }
 
         public void AddLogMessages(AOULogMessage[] logs)

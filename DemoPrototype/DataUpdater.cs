@@ -421,13 +421,13 @@ namespace DemoPrototype
             return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.coldDelayTime, out time);
         }
 
-        private bool PauseHeatingTimeChanged(out int time)
+        public bool PauseHeatingTimeChanged(out int time)
         {
             time = 0;
             return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.toolHeatingFeedPause, out time);
         }
 
-        private bool PauseCoolingTimeChanged(out int time)
+        public bool PauseCoolingTimeChanged(out int time)
         {
             time = 0;
             return GlobalVars.IsCommandValueChanged(AOUDataTypes.CommandType.toolCoolingFeedPause, out time);

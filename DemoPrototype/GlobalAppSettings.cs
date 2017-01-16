@@ -347,9 +347,10 @@ namespace DemoPrototype
 
                         break;
                     }
-                //two new commands     
+                //two new commands HOW    HANDLE?
 
-               // case AOUDataTypes.CommandType.HOTMO2REDELAYTIM  : globDelayTimes. = ival / 10; ival = ival / 10; break;
+                case AOUDataTypes.CommandType.HOTMO2REDELAYTIM  :  dval = (double)(ival) / 10;   ival = ival / 10;  break;
+                case AOUDataTypes.CommandType.COLDMO2REDELAYTIM: dval = (double)(ival) / 10; ival = ival / 10; break;
 
 
                 //for delay times, we cannot divide delay into calibrate and tune when returned TODO how hanlde?
@@ -837,6 +838,8 @@ namespace DemoPrototype
             private double _VATune;
             private double _hotStep;
             private double _coldStep;
+            private bool _feedShareAutoMode;
+            private bool _mouldShareAutoMode;
 
             private double n = 0.45;
 
@@ -859,6 +862,8 @@ namespace DemoPrototype
                 _EACalibrate = int.MinValue;
                 _VATune = int.MinValue;
                 _VACalibrate = int.MinValue;
+                _feedShareAutoMode = true;
+                _mouldShareAutoMode = true;
                 _hotStep = 0; //only local
                 _coldStep = 0; //only local
             }
@@ -870,6 +875,18 @@ namespace DemoPrototype
                 _hotCalibrate != int.MinValue &&
                 _coldTune != int.MinValue &&
                 _coldCalibrate != int.MinValue;
+            }
+
+            public bool FeedShareAutoMode
+            {
+                get { return _feedShareAutoMode; }
+                set { _feedShareAutoMode = value; }
+            }
+
+            public bool MouldShareAutoMode
+            {
+                get { return _mouldShareAutoMode; }
+                set { _mouldShareAutoMode = value; }
             }
 
             public double FeedShareVal
@@ -903,7 +920,16 @@ namespace DemoPrototype
                         return (_hotCalibrate - _hotMoInOut) * share/(1+share);
                
             }
-                     
+
+
+            public double F2MColdCalibrateAuto(double share)
+            {
+                if (_coldCalibrate == int.MinValue || _coldMoInOut == int.MinValue)
+                    return int.MinValue;
+                else
+                    return (_coldCalibrate - _coldMoInOut) * share / (1 + share);
+
+            }
 
             public double HotCalibrateMin
             { //Total >= feed + mould
@@ -916,27 +942,33 @@ namespace DemoPrototype
                 }
             }
 
-            public double F2MHotCalibrateMax
+            public double F2MHotCalibrateMax(bool mouldIsAuto)
             {
-                get
-                {
+                
                     if (_hotCalibrate == int.MinValue || _hotMoInOut == int.MinValue)
                         return 90;
                     else
+                    if (mouldIsAuto)
+                        return Math.Abs(_hotCalibrate);
+                    else
                         return Math.Abs(_hotCalibrate - _hotMoInOut);
-                }
+             
             }
 
 
-            public double HotMoInOutMax
+            public double HotMoInOutMax(bool feedIsAuto)
             {
-                get
+
+                if (_hotCalibrate == int.MinValue || _F2MHotCalibrate == int.MinValue)
+                    return 90;
+                else
                 {
-                    if (_hotCalibrate == int.MinValue || _F2MHotCalibrate == int.MinValue)
-                        return 90;
+                    if (feedIsAuto)
+                        return Math.Abs(_hotCalibrate);
                     else
                         return Math.Abs(_hotCalibrate - _F2MHotCalibrate);
                 }
+                               
             }
 
 

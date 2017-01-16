@@ -126,7 +126,7 @@ namespace DemoPrototype
             {
                 InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(TunePage));
-                TitleTextBlock.Text = "Tune moulding";
+                TitleTextBlock.Text = "Tune operation";
                 //BackButton.Visibility = Visibility.Visible;
             }
 

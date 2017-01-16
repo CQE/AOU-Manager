@@ -40,7 +40,7 @@ namespace DemoPrototype
             if (GlobalVars.globLogSettings.LogToFile)
             {
                 // Log to file in C:\Users\<user>\Pictures\AOU-Logs\
-                aouLogFile = new AOULogFile(DateTime.Now);
+               // aouLogFile = new AOULogFile(DateTime.Now);
             }
         }
 
@@ -159,9 +159,8 @@ namespace DemoPrototype
                 logMessages.Add(new AOULogMessage(aouData.GetAOUTime_ms(), message, 12, 0));
                 if (aouData.SendData(text + "\n"))   //always end data with newline
                 {
-                  var t = Task.Delay(333); // Test: Insert delay
-                    //AppHelper.ShowMessageBox(text);
-                    t.Wait();
+                  var t = Task.Delay(222); // Test: Insert delay
+                  t.Wait();
                 }
             }
             else

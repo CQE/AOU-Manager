@@ -26,6 +26,8 @@ namespace DemoPrototype
         private DispatcherTimer dTimer;
 
         private int doStepTimer = 0;
+        private int feedSliderTimer = int.MinValue;
+        private int mouldSliderTimer = int.MinValue;
 
         private LineChartViewModel chartModel;
 
@@ -67,8 +69,8 @@ namespace DemoPrototype
             MouldSource.Items.Add("Auto");
             ReturnHoseSource.Items.Add("Auto"); //always
             TotalSource.Items.Add("Manual"); //always
-            FeedHoseSource.SelectedItem = "Auto"; //=Auto
-            MouldSource.SelectedItem = "Auto";
+            if (GlobalVars.globDelayTimes.FeedShareAutoMode) FeedHoseSource.SelectedItem = "Auto"; else FeedHoseSource.SelectedItem = "Manual"; //=Auto
+            if (GlobalVars.globDelayTimes.MouldShareAutoMode) MouldSource.SelectedItem = "Auto"; else MouldSource.SelectedItem = "Manual";
             ReturnHoseSource.SelectedItem = "Auto";
             TotalSource.SelectedItem = "Manual";
 
@@ -77,14 +79,14 @@ namespace DemoPrototype
             //row1
             HotF2MHoses.Text = GlobalVars.globDelayTimes.HotF2MStr;
             ColdF2MHoses.Text = GlobalVars.globDelayTimes.ColdF2MStr;
-            FeedSlider.IsEnabled = true;
+            FeedSlider.IsEnabled = GlobalVars.globDelayTimes.FeedShareAutoMode;
             FeedSlider.Value = 100; //default
 
 
             //row2
             HotMould.Text = GlobalVars.globDelayTimes.HotMoInOutStr;
             ColdMould.Text = GlobalVars.globDelayTimes.ColdMoInOutStr;
-            MouldSlider.IsEnabled = true;
+            MouldSlider.IsEnabled = GlobalVars.globDelayTimes.MouldShareAutoMode; ;
             MouldSlider.Value = 10; //default
 
             //total delay times, row4
@@ -291,6 +293,28 @@ namespace DemoPrototype
                     HotStepStatus.Text = "";
                 }
             }
+
+            if (feedSliderTimer > 0)
+            {
+                feedSliderTimer--;
+                if (feedSliderTimer == 0)
+                {
+                    feedSliderTimer = int.MinValue;
+                    if (GlobalVars.globDelayTimes.F2MHotCalibrate > int.MinValue)
+                        Data.Updater.SetCommandValue(AOUDataTypes.CommandType.hotFeed2MouldDelayTime, (int)(GlobalVars.globDelayTimes.F2MHotCalibrate*10));
+                }
+            }
+
+            if (mouldSliderTimer > 0)
+            {
+                mouldSliderTimer--;
+                if (mouldSliderTimer == 0)
+                {
+                    mouldSliderTimer = int.MinValue;
+                    if (GlobalVars.globDelayTimes.HotMoInOut > int.MinValue && MouldSlider.IsEnabled) //check if auto
+                        Data.Updater.SetCommandValue(AOUDataTypes.CommandType.HOTMOINOUTDELAYTIM, (int)(GlobalVars.globDelayTimes.HotMoInOut * 10));
+                }
+            }
         }
 
 
@@ -419,7 +443,7 @@ namespace DemoPrototype
             //phaseDiff = (int)Math.Abs(myX2-myX1)/1000;
             phaseDiff = Math.Abs(myX2 - myX1) / 1000;
             //write result
-            CalibratePhaseDiffResult.Text = phaseDiff.ToString("0.00") + " (s)";
+            CalibratePhaseDiffResult.Text = "Total trip time: " + phaseDiff.ToString("0.00") + " (s)";
         }
 
         private void CalibratePhaseVLine2_DragCompleted(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragCompletedEventArgs e)
@@ -438,7 +462,7 @@ namespace DemoPrototype
             //calculate the difference in seconds
             phaseDiff = Math.Abs(myX2 - myX1) / 1000;
             //write result
-            CalibratePhaseDiffResult.Text = phaseDiff.ToString("0.00") + " (s)";
+            CalibratePhaseDiffResult.Text = "Total trip time: " + phaseDiff.ToString("0.00") + " (s)";
         }
 
         private void SetAxisRangeForTempStep(int stepLength)
@@ -562,13 +586,13 @@ namespace DemoPrototype
         {   //Row4
             //show slider and send command to AOU. Must take nearest higher int
             double minVal = GlobalVars.globDelayTimes.HotCalibrateMin;
-            AppHelper.GetValueToTextBox((TextBox)sender, FocusControl, "Change Hot feed-to-return delay time", AOUDataTypes.CommandType.hotDelayTime, (int) Math.Ceiling(minVal), 90, 0.5, this);         
+            AppHelper.GetValueToTextBox((TextBox)sender, FocusControl, "Change Hot Total (and Auto) Trip times", AOUDataTypes.CommandType.hotDelayTime, (int) Math.Ceiling(minVal), 90, 0.5, this);         
         }
 
         private void ColdFeedToReturnDelayTime_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, FocusControl, "Change Cold feed-to-return delay time", AOUDataTypes.CommandType.coldDelayTime, 0, 30, 0.5, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, FocusControl, "Change Cold Total (and Auto) Trip times", AOUDataTypes.CommandType.coldDelayTime, 0, 90, 0.5, this);
         }
 
         public void AsyncResponseDlg(AOUDataTypes.CommandType cmd, bool ok)
@@ -726,14 +750,14 @@ namespace DemoPrototype
         private void HotF2MHoses_GotFocus(object sender, RoutedEventArgs e) //Row1
         {
             //show slider and send command to AOU
-            double maxVal = GlobalVars.globDelayTimes.F2MHotCalibrateMax;
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Feed-To-Mould delay time", AOUDataTypes.CommandType.hotFeed2MouldDelayTime, 0, (int) maxVal, 0.5, this);
+            double maxVal = GlobalVars.globDelayTimes.F2MHotCalibrateMax(false);// (MouldSlider.IsEnabled); does not really work right now
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Change Hot Feed (and Auto) Trip times", AOUDataTypes.CommandType.hotFeed2MouldDelayTime, 0, (int) maxVal, 0.5, this);
         }
 
         private void ColdF2MHoses_GotFocus(object sender, RoutedEventArgs e)
         {
             //show slider and send command to AOU
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Feed-To-Mould delay time", AOUDataTypes.CommandType.coldFeed2MouldDelayTime, 0, 30, 0.5, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Change Cold Feed (and Auto) Trip times", AOUDataTypes.CommandType.coldFeed2MouldDelayTime, 0, 30, 0.5, this);
         }
 
         private void MouldSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -741,10 +765,25 @@ namespace DemoPrototype
             if (MouldSliderValueText != null) MouldSliderValueText.Text = MouldSlider.Value.ToString() + " %";
             //if auto, change times
             if (MouldSlider.IsEnabled)
-            {
-                if (GlobalVars.globDelayTimes.HotCalibrate > int.MinValue)
+            {   //max new value for mould = total - feed
+                if (GlobalVars.globDelayTimes.HotCalibrate > int.MinValue && ((GlobalVars.globDelayTimes.HotCalibrate * MouldSlider.Value / 100) <= (GlobalVars.globDelayTimes.HotCalibrate - GlobalVars.globDelayTimes.F2MHotCalibrate)))
+                {
                     GlobalVars.globDelayTimes.HotMoInOut = GlobalVars.globDelayTimes.HotCalibrate * MouldSlider.Value / 100; //TODO check this
-                HotMould.Text = GlobalVars.globDelayTimes.HotMoInOutStr;
+                    HotMould.Text = GlobalVars.globDelayTimes.HotMoInOutStr;
+                    mouldSliderTimer = 2;
+                }
+                 else //use old value so no change
+                {
+                    MouldSliderValueText.Text = "-";
+                }
+                //need to test this
+                if (GlobalVars.globDelayTimes.ColdCalibrate > int.MinValue && ((GlobalVars.globDelayTimes.ColdCalibrate * MouldSlider.Value / 100) <= (GlobalVars.globDelayTimes.ColdCalibrate - GlobalVars.globDelayTimes.F2MColdCalibrate)))
+                {
+                    GlobalVars.globDelayTimes.ColdMoInOut = GlobalVars.globDelayTimes.ColdCalibrate * MouldSlider.Value / 100; //TODO check this
+                    ColdMould.Text = GlobalVars.globDelayTimes.ColdMoInOutStr;
+                    mouldSliderTimer = 2;
+                }
+                
             }
         }
 
@@ -758,12 +797,13 @@ namespace DemoPrototype
                 //if we have auto, we need auto value
                 GlobalVars.globDelayTimes.F2MHotCalibrate = GlobalVars.globDelayTimes.F2MHotCalibrateAuto(FeedSlider.Value/100);
                 //can change values only if HotRetHoseVal is defined
-              /*  if (GlobalVars.globDelayTimes.HotRetHoseVal > int.MinValue) //could have better check
-                {
-                    GlobalVars.globDelayTimes.F2MHotCalibrate = GlobalVars.globDelayTimes.HotRetHoseVal * FeedSlider.Value / 100;
-                }
-*/              HotF2MHoses.Text = GlobalVars.globDelayTimes.HotF2MStr;
+               HotF2MHoses.Text = GlobalVars.globDelayTimes.HotF2MStr;
                 HotRetHose.Text = GlobalVars.globDelayTimes.HotRetHoseStr;
+                //we also change cold side
+                GlobalVars.globDelayTimes.F2MColdCalibrate = GlobalVars.globDelayTimes.F2MColdCalibrateAuto(FeedSlider.Value / 100);
+                ColdF2MHoses.Text = GlobalVars.globDelayTimes.ColdF2MStr;
+                ColdRetHose.Text = GlobalVars.globDelayTimes.ColdRetHoseStr;
+                feedSliderTimer = 2; //wait 2 seconds to send command
             }
         }
 
@@ -771,8 +811,8 @@ namespace DemoPrototype
         {   //Row2
             if (HotMould.IsEnabled) //not if only new test set in code
             {
-                double maxVal = GlobalVars.globDelayTimes.HotMoInOutMax;
-                AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Hot xxx delay time", AOUDataTypes.CommandType.HOTMOINOUTDELAYTIM, 0, (int) maxVal, 0.5, this);
+                double maxVal = GlobalVars.globDelayTimes.HotMoInOutMax(FeedSlider.IsEnabled);
+                AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Change Hot Mould (and Auto) Trip times", AOUDataTypes.CommandType.HOTMOINOUTDELAYTIM, 0, (int) maxVal, 0.5, this);
             }
             
 
@@ -780,7 +820,7 @@ namespace DemoPrototype
 
         private void ColdMould_GotFocus(object sender, RoutedEventArgs e)
         {
-            AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Cold xxx delay time", AOUDataTypes.CommandType.COLDMOINOUTDELAYTIM, 0, 30, 0.5, this);
+            AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Change Cold Mould (and Auto) Trip times", AOUDataTypes.CommandType.COLDMOINOUTDELAYTIM, 0, 30, 0.5, this);
 
         }
 
@@ -823,6 +863,30 @@ namespace DemoPrototype
 
         private void ColdMould_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // Row2
+            //must check if auto or manual
+            if (MouldSlider.IsEnabled) //auto
+            {
+                if (FeedSlider.IsEnabled) //auto. if Manual, skip
+                {
+                    GlobalVars.globDelayTimes.F2MColdCalibrate = GlobalVars.globDelayTimes.F2MColdCalibrateAuto(FeedSlider.Value / 100);
+                    ColdF2MHoses.Text = GlobalVars.globDelayTimes.ColdF2MStr;
+                }
+            }
+            else //manual
+            {
+                //what here?
+                //SetMouldSlider(); //not from cold side?
+
+                //divide whats left according to FeedSlider if feed = auto else skip
+                if (FeedSlider.IsEnabled)
+                {
+                    GlobalVars.globDelayTimes.F2MColdCalibrate = (FeedSlider.Value / 100) * (GlobalVars.globDelayTimes.ColdCalibrate - GlobalVars.globDelayTimes.ColdCalibrate * (MouldSlider.Value / 100)) / (1 + FeedSlider.Value / 100);
+                    ColdF2MHoses.Text = GlobalVars.globDelayTimes.ColdF2MStr;
+
+                }
+            }
+
             ColdRetHose.Text = GlobalVars.globDelayTimes.ColdRetHoseStr;
         }
 
@@ -834,10 +898,13 @@ namespace DemoPrototype
             {
                 GlobalVars.globDelayTimes.F2MHotCalibrate = (FeedSlider.Value / 100) * (GlobalVars.globDelayTimes.HotCalibrate - GlobalVars.globDelayTimes.HotCalibrate * (MouldSlider.Value / 100)) / (1 + FeedSlider.Value / 100);
                 HotF2MHoses.Text = GlobalVars.globDelayTimes.HotF2MStr;
+                //send new value to AOU
+                Data.Updater.SetCommandValue(AOUDataTypes.CommandType.hotFeed2MouldDelayTime, (int)(GlobalVars.globDelayTimes.F2MHotCalibrate * 10));
                 if (MouldSlider.IsEnabled) //auto, auto
                 {
                     GlobalVars.globDelayTimes.HotMoInOut = GlobalVars.globDelayTimes.HotCalibrate * MouldSlider.Value / 100; //TODO check this
                     HotMould.Text = GlobalVars.globDelayTimes.HotMoInOutStr; //they call SetSlider if appropriate
+                    Data.Updater.SetCommandValue(AOUDataTypes.CommandType.HOTMOINOUTDELAYTIM, (int)(GlobalVars.globDelayTimes.HotMoInOut * 10));
                 }
                 else // auto, manual
                 {
@@ -852,12 +919,14 @@ namespace DemoPrototype
                     {
                         GlobalVars.globDelayTimes.HotMoInOut = GlobalVars.globDelayTimes.HotCalibrate * MouldSlider.Value / 100; //TODO check this
                         HotMould.Text = GlobalVars.globDelayTimes.HotMoInOutStr; //they call SetSlider if appropriate
-                    }
-                    SetFeedSlider();
+                        Data.Updater.SetCommandValue(AOUDataTypes.CommandType.HOTMOINOUTDELAYTIM, (int)(GlobalVars.globDelayTimes.HotMoInOut * 10));
+                    
+                }
+                   // SetFeedSlider();
                 }
                 else //manual, manual
                 {
-                    SetFeedSlider();
+                   // SetFeedSlider();
                     SetMouldSlider();
                 }
             }    
@@ -866,6 +935,44 @@ namespace DemoPrototype
 
         private void ColdFeedToReturnDelayTime_TextChanged_1(object sender, TextChangedEventArgs e)
         {
+            //This is the Total hot row of the matrix, row4
+            //check if row1 or row2 = auto
+            if (FeedSlider.IsEnabled) //auto, auto or auto, manual
+            {
+                GlobalVars.globDelayTimes.F2MColdCalibrate = (FeedSlider.Value / 100) * (GlobalVars.globDelayTimes.ColdCalibrate - GlobalVars.globDelayTimes.ColdCalibrate * (MouldSlider.Value / 100)) / (1 + FeedSlider.Value / 100);
+                ColdF2MHoses.Text = GlobalVars.globDelayTimes.ColdF2MStr; 
+                //send new value to AOU
+                Data.Updater.SetCommandValue(AOUDataTypes.CommandType.coldFeed2MouldDelayTime, (int)(GlobalVars.globDelayTimes.F2MColdCalibrate * 10));
+                if (MouldSlider.IsEnabled) //auto, auto
+                {
+                    GlobalVars.globDelayTimes.ColdMoInOut = GlobalVars.globDelayTimes.ColdCalibrate * MouldSlider.Value / 100; //TODO check this
+                    ColdMould.Text = GlobalVars.globDelayTimes.ColdMoInOutStr; //they call SetSlider if appropriate
+                    Data.Updater.SetCommandValue(AOUDataTypes.CommandType.COLDMOINOUTDELAYTIM, (int)(GlobalVars.globDelayTimes.ColdMoInOut * 10));
+                }
+                else // auto, manual
+                {
+                    //SetMouldSlider();
+                }
+            }
+            else //manual, auto or manual, manual
+            {
+                if (MouldSlider.IsEnabled) //manual,auto
+                {
+                    if (GlobalVars.globDelayTimes.ColdCalibrate > int.MinValue)
+                    {
+                        GlobalVars.globDelayTimes.ColdMoInOut = GlobalVars.globDelayTimes.ColdCalibrate * MouldSlider.Value / 100; //TODO check this
+                        ColdMould.Text = GlobalVars.globDelayTimes.ColdMoInOutStr; //they call SetSlider if appropriate
+                        Data.Updater.SetCommandValue(AOUDataTypes.CommandType.COLDMOINOUTDELAYTIM, (int)(GlobalVars.globDelayTimes.ColdMoInOut * 10));
+
+                    }
+                    // SetFeedSlider();
+                }
+                else //manual, manual
+                {
+                    // SetFeedSlider();
+                    //SetMouldSlider();
+                }
+            }
 
             ColdRetHose.Text = GlobalVars.globDelayTimes.ColdRetHoseStr;
         }
@@ -873,7 +980,7 @@ namespace DemoPrototype
         private void SetMouldSlider()
         {
             double newVal = Math.Round(GlobalVars.globDelayTimes.MouldShareVal * 100);
-            if (newVal <= 0 || newVal > 100)
+            if (newVal < 0 || newVal > 100)
             {
                 MouldSlider.Value = 0;
                 MouldSliderValueText.Text = "-";
@@ -887,10 +994,10 @@ namespace DemoPrototype
         private void SetFeedSlider()
         {
             double newVal = Math.Round(GlobalVars.globDelayTimes.FeedShareVal * 100);
-            if (newVal <= 0 || newVal > 400 ) //need to check this TODO
+            if (newVal < 0 || newVal > 400 ) //need to check this TODO
             {
-                FeedSlider.Value = 0;
-                FeedSliderValueText.Text = "-";
+                FeedSlider.Value = 400;
+                FeedSliderValueText.Text = ">400%";
             }
             else
             {
@@ -906,6 +1013,7 @@ namespace DemoPrototype
                 HotF2MHoses.IsEnabled = false;
                 ColdF2MHoses.IsEnabled = false;
                 FeedSlider.IsEnabled = true;
+                GlobalVars.globDelayTimes.FeedShareAutoMode = true;
                 // chech if <0 and convert to uint
                 SetFeedSlider();
               
@@ -915,6 +1023,7 @@ namespace DemoPrototype
                 HotF2MHoses.IsEnabled = true;
                 ColdF2MHoses.IsEnabled = true;
                 FeedSlider.IsEnabled = false;
+                GlobalVars.globDelayTimes.FeedShareAutoMode = false;
             }
             else
             {
@@ -930,6 +1039,7 @@ namespace DemoPrototype
                 HotMould.IsEnabled = false;
                 ColdMould.IsEnabled = false;
                 MouldSlider.IsEnabled = true;
+                GlobalVars.globDelayTimes.MouldShareAutoMode = true;
                 SetMouldSlider();
             }
             else if (MouldSource.SelectedItem.ToString() == "Manual")
@@ -937,6 +1047,7 @@ namespace DemoPrototype
                 HotMould.IsEnabled = true;
                 ColdMould.IsEnabled = true;
                 MouldSlider.IsEnabled = false;
+                GlobalVars.globDelayTimes.MouldShareAutoMode = false;
             }
             else
             {
@@ -970,6 +1081,21 @@ namespace DemoPrototype
             {
                 //??
             }
+        }
+
+        private void FeedSlider_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        {
+            FeedSliderValueText.Text = "Sending...";
+        }
+
+        private void FeedSlider_DropCompleted(UIElement sender, DropCompletedEventArgs args)
+        {
+
+        }
+
+        private void FeedSlider_DragLeave(object sender, DragEventArgs e)
+        {
+
         }
     }
 }

@@ -128,15 +128,15 @@ namespace DemoPrototype
             myTuneChart.Legend = myDelayLegend;
 
             //margin
-            myTuneChart.Margin = new Thickness(10,10,10,10);
+            myTuneChart.Margin = new Thickness(10,30,10,30);
 
             //add chart to grid
-            this.TuneGrid.Children.Add(myTuneChart);
+          /*  this.TuneGrid.Children.Add(myTuneChart);
             Grid.SetRow(myTuneChart, 0);
             Grid.SetRowSpan(myTuneChart, 8);
             Grid.SetColumn(myTuneChart, 0);
             Grid.SetColumnSpan(myTuneChart, 6);
-            //Grid.SetMarginProperty(myTuneChart,"10,10,10,10");
+         */   //Grid.SetMarginProperty(myTuneChart,"10,10,10,10");
             
            
            
@@ -304,14 +304,50 @@ namespace DemoPrototype
             F2MCalUsedText.Text = GlobalVars.globDelayTimes.F2MCalibrateUsedStr;
             F2MTuneUsedText.Text = GlobalVars.globDelayTimes.F2MTuneUsedStr;
             F2MTotalUsedText.Text = GlobalVars.globDelayTimes.F2MUsedSumStr;
+
             ////energy Active
             EACalText.Text = GlobalVars.globDelayTimes.EACalibrateStr;
             EATuneText.Text = GlobalVars.globDelayTimes.EATuneStr;
             EATotalText.Text = GlobalVars.globDelayTimes.EASumStr;
+
+            //total fetch value with hotDelayTime, stored in hotCalibrate
+            //delta/tune: offsHotFe2RetValveTim, store in EATune
+            EASwitchTimeTotal.Text = GlobalVars.globDelayTimes.EATotalStr;
+            EANewTune.Text = GlobalVars.globDelayTimes.EATuneStr;
+            EACombo.Items.Add("Manual");
+            EACombo.Items.Add("Auto");
+            if (GlobalVars.globDelayTimes.EAAutoMode)
+                EACombo.SelectedItem = "Auto";
+            else
+                EACombo.SelectedItem = "Manual";
+
+
             //Volume Active
             VACalText.Text = GlobalVars.globDelayTimes.VACalibrateStr;
             VATuneText.Text = GlobalVars.globDelayTimes.VATuneStr;
             VATotalText.Text = GlobalVars.globDelayTimes.VASumStr;
+            if (GlobalVars.globFeedTimes.HeatingActive >= 0)
+                if (GlobalVars.globDelayTimes.VATune >= 0)
+                {
+                    //Add together
+                    VASwitchTimeTotal.Text = (GlobalVars.globFeedTimes.HeatingActive+ GlobalVars.globDelayTimes.VATune).ToString();
+                }
+            else
+                    VASwitchTimeTotal.Text = GlobalVars.globFeedTimes.HeatingActive.ToString();
+            else
+            { VASwitchTimeTotal.Text = "-"; }
+
+            VANewTune.Text = GlobalVars.globDelayTimes.VATuneStr;
+
+            // VACombo.
+            VACombo.Items.Add("Manual");
+            VACombo.Items.Add("Auto");
+            if (GlobalVars.globDelayTimes.VAAutoMode)
+                VACombo.SelectedItem = "Auto";
+            else
+                VACombo.SelectedItem = "Manual";
+
+
             InitDispatcherTimer();
         }
 
@@ -465,6 +501,63 @@ namespace DemoPrototype
         private void VATuneText_TextChanged(object sender, TextChangedEventArgs e)
         {
             VATotalText.Text = GlobalVars.globDelayTimes.VASumStr;
+        }
+
+        private void EANewTune_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //set new total text
+            double newDelta;
+            if (double.TryParse(EANewTune.Text, out newDelta) && (GlobalVars.globDelayTimes.HotCalibrate > -1000))
+            {
+                double newTotal = newDelta + GlobalVars.globDelayTimes.HotCalibrate;
+                EASwitchTimeTotal.Text = newTotal.ToString("0.##");
+            }
+            else
+                EASwitchTimeTotal.Text = "-";
+
+                           
+            
+        }
+
+        private void VANewTune_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double newDelta;
+            if (double.TryParse(VANewTune.Text, out newDelta) && (GlobalVars.globFeedTimes.HeatingActive > -1000))
+            {
+                double newTotal = newDelta + GlobalVars.globFeedTimes.HeatingActive;
+                VASwitchTimeTotal.Text = newTotal.ToString("0.##");
+            }
+            else
+                VASwitchTimeTotal.Text = "-";
+        }
+
+        private void EACombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (EACombo.SelectedItem.ToString() == "Auto")
+            {
+                EANewTune.IsEnabled = false;
+                GlobalVars.globDelayTimes.EAAutoMode = true;
+            }
+            else
+            {
+                EANewTune.IsEnabled = true;
+                GlobalVars.globDelayTimes.EAAutoMode = false;
+            }
+        }
+
+        private void VACombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (VACombo.SelectedItem.ToString() == "Auto")
+            {
+                VANewTune.IsEnabled = false;
+                GlobalVars.globDelayTimes.VAAutoMode = true;
+            } else
+            {
+                VANewTune.IsEnabled = true;
+                GlobalVars.globDelayTimes.VAAutoMode = false;
+            }
+           
         }
     }
 }

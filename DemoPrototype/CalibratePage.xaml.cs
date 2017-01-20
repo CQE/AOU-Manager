@@ -116,12 +116,12 @@ namespace DemoPrototype
 
            
             //EA and VA delay times
-            EACalText.Text = GlobalVars.globDelayTimes.EACalibrateStr;
-            EATuneText.Text = GlobalVars.globDelayTimes.EATuneStr;
-            EATotalText.Text = GlobalVars.globDelayTimes.EASumStr;
-            VACalText.Text = GlobalVars.globDelayTimes.VACalibrateStr;
-            VATuneText.Text = GlobalVars.globDelayTimes.VATuneStr;
-            VATotalText.Text = GlobalVars.globDelayTimes.VASumStr;
+           // EACalText.Text = GlobalVars.globDelayTimes.EACalibrateStr;
+           // EATuneText.Text = GlobalVars.globDelayTimes.EATuneStr;
+           // EATotalText.Text = GlobalVars.globDelayTimes.EASumStr;
+           // VACalText.Text = GlobalVars.globDelayTimes.VACalibrateStr;
+           // VATuneText.Text = GlobalVars.globDelayTimes.VATuneStr;
+           // VATotalText.Text = GlobalVars.globDelayTimes.VASumStr;
             
             //set threshold levels (should have better names)
             TBufHotHLine.Y1 = GlobalVars.globThresholds.ThresholdHotBuffTankAlarmLimit;
@@ -677,7 +677,7 @@ namespace DemoPrototype
             //show slider and send command to AOU
             AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Feed-To-Mould delay time", AOUDataTypes.CommandType.coldFeed2MouldDelayTime, 0, 30, 0.5,this);
         }
-
+/*
         private void EACalText_GotFocus(object sender, RoutedEventArgs e)
         {
             AppHelper.GetValueToTextBox((TextBox)sender, (Control)FocusHere, "Offset Return valve Switch time", AOUDataTypes.CommandType.offsetHotFeed2RetValveTime, 0, 30, 0.5,this);
@@ -685,7 +685,7 @@ namespace DemoPrototype
 
         private void EACalText_TextChanged(object sender, TextChangedEventArgs e)
         {
-            EATotalText.Text = GlobalVars.globDelayTimes.EASumStr;
+            //EATotalText.Text = GlobalVars.globDelayTimes.EASumStr;
         }
 
         private void VACalText_GotFocus(object sender, RoutedEventArgs e)
@@ -695,9 +695,9 @@ namespace DemoPrototype
 
         private void VACalText_TextChanged(object sender, TextChangedEventArgs e)
         {
-            VATotalText.Text = GlobalVars.globDelayTimes.VASumStr;
+            //VATotalText.Text = GlobalVars.globDelayTimes.VASumStr;
         }
-
+        */
         private void CalibrateHotStepValue_GotFocus(object sender, RoutedEventArgs e)
         {
             AppHelper.GetValueToTextBox((TextBox)sender, null, "Hot Step time ", AOUDataTypes.CommandType.runModeHeating, 0, 30, 1, this, false);
@@ -725,7 +725,7 @@ namespace DemoPrototype
             //phaseDiff = (int)Math.Abs(myX2-myX1)/1000;
             phaseDiff = Math.Abs(myX2 - myX1) / 1000;
             //write result
-            CalibratePhaseDiffResult.Text = phaseDiff.ToString("0.00") + " (s)";
+            CalibratePhaseDiffResult.Text = "Total trip time: " + phaseDiff.ToString("0.00") + " (s)";
         }
 
         private void CalibratePhaseVLine2_DragDelta(object sender, Syncfusion.UI.Xaml.Charts.AnnotationDragDeltaEventArgs e)
@@ -744,7 +744,7 @@ namespace DemoPrototype
             //calculate the difference in seconds
             phaseDiff = Math.Abs(myX2 - myX1) / 1000;
             //write result
-            CalibratePhaseDiffResult.Text = phaseDiff.ToString("0.00") + " (s)";
+            CalibratePhaseDiffResult.Text = "Total trip time: " + phaseDiff.ToString("0.00") + " (s)";
         }
 
         private void HotF2MHoses_GotFocus(object sender, RoutedEventArgs e) //Row1

@@ -840,6 +840,8 @@ namespace DemoPrototype
             private double _coldStep;
             private bool _feedShareAutoMode;
             private bool _mouldShareAutoMode;
+            private bool _EAAutoMode;
+            private bool _VAAutoMode;
 
             private double n = 0.45;
 
@@ -864,6 +866,9 @@ namespace DemoPrototype
                 _VACalibrate = int.MinValue;
                 _feedShareAutoMode = true;
                 _mouldShareAutoMode = true;
+                _EAAutoMode = true;
+                _VAAutoMode = true;
+
                 _hotStep = 0; //only local
                 _coldStep = 0; //only local
             }
@@ -887,6 +892,16 @@ namespace DemoPrototype
             {
                 get { return _mouldShareAutoMode; }
                 set { _mouldShareAutoMode = value; }
+            }
+            public bool EAAutoMode
+            {
+                get { return _EAAutoMode; }
+                set { _EAAutoMode = value; }
+            }
+            public bool VAAutoMode
+            {
+                get { return _VAAutoMode; }
+                set { _VAAutoMode = value; }
             }
 
             public double FeedShareVal
@@ -1286,6 +1301,26 @@ namespace DemoPrototype
                         return _hotCalibrate.ToString("0.##");
                 }
             }
+
+
+            public string EATotalStr
+            {
+                get
+                {
+                    if (_hotCalibrate == int.MinValue)
+                        return "-";
+                    else
+                        if (_EATune == int.MinValue)
+                    { return _hotCalibrate.ToString("0.##"); }
+                    else
+                    {
+                        return (_hotCalibrate + _EATune).ToString("0.##");
+                    }
+                      
+                }
+            }
+
+
 
             public string ColdTuneStr
             {

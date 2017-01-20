@@ -9,18 +9,19 @@
 
     <Grid Name="TuneGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="0*"></RowDefinition>
+            <RowDefinition Height="0*"></RowDefinition>
+            <RowDefinition Height="0*"></RowDefinition>
+            <RowDefinition Height="0*"></RowDefinition>
+            <RowDefinition Height="0*"></RowDefinition>
+            <RowDefinition Height="0*"></RowDefinition>
+            <RowDefinition Height="0*"></RowDefinition>
+            <RowDefinition Height="0*"></RowDefinition>
             <RowDefinition Height="4*"></RowDefinition>
             <RowDefinition Height="4*"></RowDefinition>
+            <RowDefinition Height="0*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
 
-            <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -39,14 +40,14 @@
         </Grid.ColumnDefinitions>
 
         <!--  Two borders -->
-        <Border  Margin="5,5,10,5" Grid.Row="0" Grid.RowSpan="8" Grid.Column="0" Grid.ColumnSpan="12" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
+        <Border  Visibility="Collapsed" Margin="5,5,10,5" Grid.Row="0" Grid.RowSpan="8" Grid.Column="0" Grid.ColumnSpan="12" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
             <StackPanel Orientation="Vertical">
-                <TextBlock Margin="5,0,0,0" Text="Delay timings (Feed and Return valves)" FontWeight="SemiBold"/>
+                <TextBlock Visibility="Collapsed" Margin="5,0,0,0" Text="Delay timings (Feed and Return valves)" FontWeight="SemiBold"/>
             </StackPanel>
         </Border>
 
 
-        <Border  Margin="5,5,10,5" Grid.Row="8" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="12" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
+        <Border  Margin="5,5,10,5" Grid.Row="8" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="12" BorderBrush="LightGray" BorderThickness="2" CornerRadius="5">
             <StackPanel Orientation="Vertical" >
                 <TextBlock Margin="5,0,0,0" Text="Balancing" FontWeight="SemiBold"></TextBlock>
 
@@ -121,10 +122,36 @@
 
         <TextBlock  Margin="40,20,0,0"  Grid.Row="10" VerticalAlignment="Center" Grid.Column="0" Text="Energy active timing"></TextBlock>
         <TextBlock Grid.Row="10" Grid.Column="1" Name="EACalText" VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="20,20,0,0" Text="110"></TextBlock>
-        <TextBlock Grid.Row="10" Grid.Column="2" VerticalAlignment="Center" Margin="10,20,0,0" Text="+"></TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="2" VerticalAlignment="Center" Margin="38,64,36,56" Text="+" Grid.ColumnSpan="2"></TextBlock>
         <TextBox Grid.Row="10" Grid.Column="2" Grid.ColumnSpan="2" Width="30" Margin="44,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="EATuneText"  GotFocus="EATuneText_GotFocus"  TextChanged="EATuneText_TextChanged"  IsReadOnly="True"  Text="33"></TextBox>
         <TextBlock  Grid.Row="10" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,20,0,0" Text="="></TextBlock>
         <TextBlock  Grid.Row="10" Grid.Column="4" Name="EATotalText" Margin="5,20,0,0" VerticalAlignment="Center" Text="122"></TextBlock>
+
+        <StackPanel Margin="40,0,0,0" Orientation="Horizontal" Grid.Row="11" Grid.ColumnSpan="9">
+            <TextBlock Margin="0,4,0,0" Text="Shift Return valve Switch time by "></TextBlock>
+            <TextBox Margin="5,0,0,0" Name="EANewTune" Text="-" Height="30"  VerticalAlignment="Top" GotFocus="EATuneText_GotFocus" TextChanged="EANewTune_TextChanged" ></TextBox>
+            <TextBlock Margin="0,4,0,0" Text=" s to t"></TextBlock>
+            <TextBlock FontSize="11" Margin="0,11,0,0" Text="SwitchHotReturn"></TextBlock>
+            <TextBlock Margin="0,4,0,0" Text="="></TextBlock>
+            <TextBox Margin="5,0,0,0" Height="30" Name="EASwitchTimeTotal" VerticalAlignment="Top" IsEnabled="False" Text="-"></TextBox>
+            <TextBlock Margin="0,4,0,0" Text=" s "></TextBlock>
+            <ComboBox Margin="20,0,0,0" Name="EACombo" SelectionChanged="EACombo_SelectionChanged"></ComboBox>
+        </StackPanel>
+
+        <StackPanel Margin="40,0,0,0" Orientation="Horizontal" Grid.Row="11" Grid.Column="6" Grid.ColumnSpan="9">
+            <TextBlock Margin="0,4,0,0" Text="Change Return valve Switching period by "></TextBlock>
+            <TextBox Margin="5,0,0,0" Name="VANewTune" Text="-" Height="30"  VerticalAlignment="Top" GotFocus="VATuneText_GotFocus" TextChanged="VANewTune_TextChanged" ></TextBox>
+            <TextBlock Margin="0,4,0,0" Text=" s to Δt "></TextBlock>
+            
+            <TextBlock FontSize="11" Margin="0,11,0,0" Text="SwitchHotReturn"></TextBlock>
+            <TextBlock Margin="0,4,0,0" Text="="></TextBlock>
+            <TextBox Margin="5,0,0,0" Height="30" Name="VASwitchTimeTotal" VerticalAlignment="Top" IsEnabled="False" Text="-"></TextBox>
+            <TextBlock Margin="0,4,0,0" Text=" s "></TextBlock>
+            <ComboBox Margin="20,0,0,0" Name="VACombo" SelectionChanged="VACombo_SelectionChanged"></ComboBox>
+       
+        </StackPanel>
+
+        <!--   Shift Return valve Switch time by -0.5s to tSwitchHotReturn=17.0s [Auto/Manual] ,Change Return valve Switching period by +1.5s to DtSwitchHotReturn=11.0s  [Auto/Manual]    -->
 
         <!-- Volume active timing  -->
 

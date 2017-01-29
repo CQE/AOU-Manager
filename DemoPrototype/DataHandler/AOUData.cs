@@ -831,6 +831,12 @@ namespace DemoPrototype
                     /* Just log message for "seq" tag */
                     newLogMessages.Add(new AOULogMessage(time_ms, GetSeqString(tagContent), 3));
                 }
+                else if (nextTag == "cmd")
+                {
+                    /* Just log message for "seq" tag */
+                    newLogMessages.Add(new AOULogMessage(time_ms, "unhandeled tag: " + nextTag + tagContent, 3));
+                }
+
                 else if (nextTag == AOUInputParser2.tagLog)
                 {
                     string logMsg = ""; int pid = 0; int prio = 0;
@@ -843,7 +849,7 @@ namespace DemoPrototype
                 {
                     time_ms = time_ms == 0 ? GetAOUTime_ms() : time_ms;
                     // Unknow tag. Add log message
-                    newLogMessages.Add(new AOULogMessage(time_ms, "Unknown tag:" + nextTag + " = " + tagContent, 1));
+                    newLogMessages.Add(new AOULogMessage(time_ms, "Unknown tag: " + nextTag + " = " + tagContent, 1));
                 }
 
             }

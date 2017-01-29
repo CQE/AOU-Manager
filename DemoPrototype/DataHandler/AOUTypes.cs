@@ -59,6 +59,7 @@ namespace DemoPrototype
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.COLDMO2REDELAYTIM, "coldMo2ReDelayTim"));
             
             this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.forceValves, "forceValves"));
+            this.Add(new KeyValuePair<AOUDataTypes.CommandType, string>(AOUDataTypes.CommandType.getValues, "getValues"));
         }
 
         public string StringValue(AOUDataTypes.CommandType cmd)
@@ -116,7 +117,7 @@ namespace DemoPrototype
             #define CMD_COLDMO2REDELAYTIM     28 // Converted to coldPumptime_ToolExit2ReturnValveMs
             
             #define CMD_FORCEVALVES           29 // Force valves
-
+            #define CMD_GETVALUES             30 //
 
         */
         public enum CommandType
@@ -133,7 +134,7 @@ namespace DemoPrototype
             offsetHotFeed2RetValveTime, offsetRetValveHotPeriod,
             hotFeed2MouldDelayTime, coldFeed2MouldDelayTime,
             HOTMOINOUTDELAYTIM, COLDMOINOUTDELAYTIM, HOTMO2REDELAYTIM, COLDMO2REDELAYTIM, 
-            forceValves
+            forceValves, getValues
         }
 //----------------------------------------------------------------------------------------------------------------------------
         public enum HT_StateType {

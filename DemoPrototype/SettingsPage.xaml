@@ -110,6 +110,7 @@
                         <Button Name="AskForTHot2Cold"  Margin="0,0,5,5" Content="THot2Cold" Click="AskForTHot2Cold_Click"></Button>
                         <Button Name="AskForTCold2Hot"  HorizontalAlignment="Right" Margin="5,0,5,5" Content="TCold2Hot" Click="AskForTCold2Hot_Click"></Button>
                         <Button Name="AskForTMidBuf" HorizontalAlignment="Right" Margin="5,0,5,5" Content="TMidBuf" Click="AskForTMidBuf_Click"></Button>
+                        <Button Name="AskForAllValues" HorizontalAlignment="Right" Margin="5,0,5,5" Content="AllValues" Click="AskForAllValues_Click"></Button>
                     </StackPanel>
                     <StackPanel Margin="5,5,0,0" Orientation="Horizontal" >
                         <Button Name="AskForActiveHeating"  Margin="0,0,5,5" Content="HeatActive" Click="AskForActiveHeating_Click"></Button>

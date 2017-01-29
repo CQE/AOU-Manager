@@ -468,6 +468,44 @@ namespace DemoPrototype
             Data.Updater.AskCommandValue(AOUDataTypes.CommandType.COLDMOINOUTDELAYTIM);
         }
 
+        public static void AskAOUForAllValues()
+        {
+
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.getValues);
+        }
+
+        public static void TestAOUCommunication()
+        {
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.coldDelayTime);
+            AskForMatrixValues();
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempHotTankFeedSet);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempHotTankFeedSet);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempHotTankFeedSet);
+            AskForMatrixValues();
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.forceValves);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.forceValves);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.forceValves);
+            AskForMatrixValues();
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferMidRefThreshold);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferMidRefThreshold);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TBufferMidRefThreshold);
+            AskForMatrixValues();
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetRetValveHotPeriod);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetRetValveHotPeriod);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.offsetRetValveHotPeriod);
+            AskForMatrixValues();
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TColdTankAlarmHighThreshold);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TColdTankAlarmHighThreshold);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.TColdTankAlarmHighThreshold);
+            AskForMatrixValues();
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet);
+            Data.Updater.AskCommandValue(AOUDataTypes.CommandType.tempColdTankFeedSet);
+        }
+
+
         public static void SetValves2(AOUDataTypes.CommandType cmd, int val)
         {
           

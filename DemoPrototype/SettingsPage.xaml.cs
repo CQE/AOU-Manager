@@ -734,5 +734,11 @@ namespace DemoPrototype
         {
             AppHelper.AskForMatrixValues();
         }
+
+        private void AskForAllValues_Click(object sender, RoutedEventArgs e)
+        {
+            AppHelper.TestAOUCommunication();
+            // AppHelper.AskAOUForAllValues();
+        }
     }
 }

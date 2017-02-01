@@ -218,6 +218,13 @@ namespace DemoPrototype
         private void MaintenancePage_Unloaded(object sender, RoutedEventArgs e)
         {
             dTimer.Stop();
+            //if hotstep or coldstep is ongoing, abort
+            if (doStepTimer > 0)
+            {
+                Data.Updater.SetCommandValue(AOUDataTypes.CommandType.runModeAOU, 0);
+                GlobalAppSettings.RunningMode = (int)AOUDataTypes.AOURunningMode.Idle;
+            }
+
             //clean data
             //Series_EB_THotTank.ItemsSource = null;
            //Series_EB_TColdTank.ItemsSource = null;

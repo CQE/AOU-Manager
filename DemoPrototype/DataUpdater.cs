@@ -273,6 +273,8 @@ namespace DemoPrototype
                         case AOUDataTypes.CommandType.runModeAOU:
                             dataRouter.SendCommandToPlc(cmd, val);
                             GlobalAppSettings.RunningMode = val;
+                            if (pg.Name == "OperatorPage")
+                                ((OperatorPage)pg).Update_RunningMode();
                             break;
                         case AOUDataTypes.CommandType.THotTankAlarmLowThreshold:
                             dataRouter.SendCommandToPlc(AOUDataTypes.CommandType.THotTankAlarmLowThreshold, val);

@@ -351,6 +351,11 @@ namespace DemoPrototype
             RunningModeCombo.SelectedIndex = oldIndex;
         }
 
+        public void Update_RunningMode()
+        {
+           prevRunModeSelected = RunningModeCombo.SelectedIndex;
+        }
+
         public void Reset_HotTankAlarmThreshold()
         {
             SetHotSafeZoneLine.Y1 = GlobalVars.globThresholds.ThresholdHotTankLowLimit;
@@ -370,10 +375,21 @@ namespace DemoPrototype
             {
                 if (prevRunModeSelected != -1) // Not first time when selected is default value
                 {
+                    //check if auto, not allowed
+                    if (RunningModeCombo.SelectedIndex == (int)AOUDataTypes.AOURunningMode.AutoWithIMM)
+                    {
+                        string errorMessage = "Auto mode must be set on panel";
+                        AppHelper.ShowMessageBox(errorMessage);
+                        Reset_RunningMode();
+                        return;
+                    }
+                    //check if two in a row due to code above
+                    if (prevRunModeSelected == RunningModeCombo.SelectedIndex) return;
                     string modeTitle = RunningModeCombo.Items[RunningModeCombo.SelectedIndex].ToString();
                     string message = "You are about to change running mode";
                     // Data.Updater.VerifySendToAOUDlg(modeTitle, message, AOUDataTypes.CommandType.RunningMode, this, RunningModeCombo.SelectedIndex);
                     Data.Updater.VerifySendToAOUDlg(modeTitle, message, AOUDataTypes.CommandType.runModeAOU, this, RunningModeCombo.SelectedIndex);
+                    
                 }
                 else
                 {

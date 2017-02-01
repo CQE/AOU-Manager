@@ -595,7 +595,7 @@ namespace DemoPrototype
 
                 if (all)
                 {
-                    return dataRouter.GetLastLogMessages(100);
+                    return dataRouter.GetLastLogMessages(500);
                 }
                 else if (dataRouter.NewLogMessagesAvailable > 0)
                 {

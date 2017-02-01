@@ -176,9 +176,9 @@ namespace DemoPrototype
 
 
 
-                hotFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedHot, GlobalVars.globValveChartValues.HotValveHi);
+      /*          hotFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedHot, GlobalVars.globValveChartValues.HotValveHi);
                 coldFeedValve.IsOn = GetValveState(Data.Updater.LastPower.ValveFeedCold, GlobalVars.globValveChartValues.ColdValveHi);
-                returnValve.IsOn = GetValveState(Data.Updater.LastPower.ValveReturn, GlobalVars.globValveChartValues.ReturnValveHi);
+                returnValve.IsOn = GetValveState(Data.Updater.LastPower.ValveReturn, GlobalVars.globValveChartValues.ReturnValveHi);*/
                 coolantValve.IsOn = GetValveState(Data.Updater.LastPower.ValveCoolant, GlobalVars.globValveChartValues.CoolantValveHi);
 
                 safetyStop.IsOn = GetValveState(Data.Updater.LastPower.SafetyStop, GlobalVars.globSafetyAlarms.SafetyStopHi);
@@ -279,7 +279,7 @@ namespace DemoPrototype
             if (hotFeedValve.IsEnabled && !inInit)
             {
                 Data.Updater.SetCommandValue(AOUDataTypes.CommandType.forceValves, val); //hard converted to "0101"
-                hotFeedValve.IsEnabled = false;
+                //hotFeedValve.IsEnabled = false;
             }
         }
 
@@ -324,7 +324,7 @@ namespace DemoPrototype
                 if (coldFeedValve.IsEnabled && !inInit)
                 {
                     Data.Updater.SetCommandValue(AOUDataTypes.CommandType.forceValves, val); //hard converted to "0101"
-                    coldFeedValve.IsEnabled = false;
+                 //   coldFeedValve.IsEnabled = false;
 
                 }
         }
@@ -349,7 +349,7 @@ namespace DemoPrototype
             if (returnValve.IsEnabled && !inInit)
             {
                 Data.Updater.SetCommandValue(AOUDataTypes.CommandType.forceValves, val); //hard converted to "0101
-                returnValve.IsEnabled = false;
+              //  returnValve.IsEnabled = false;
             }
              
         }

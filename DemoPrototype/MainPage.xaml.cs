@@ -45,7 +45,7 @@ namespace DemoPrototype
             MyFrame.Navigate(typeof(OperatorPage));
 
             // MyFrame.Navigate(typeof(SettingsPage));
-            TitleTextBlock.Text = "Run moulding";
+            TitleTextBlock.Text = "Run moulding - this version is for test only";
  
             //create these only once
             webView = new WebView();
@@ -104,7 +104,7 @@ namespace DemoPrototype
             {
                 InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(OperatorPage));
-                TitleTextBlock.Text = "Run moulding";
+                TitleTextBlock.Text = "Run moulding - this version is for test only";
                 BackButton.Visibility = Visibility.Collapsed;
             }
 
@@ -112,21 +112,21 @@ namespace DemoPrototype
             {
                 InfoTextBlock.Text = "";
                 MyFrame.Navigate(typeof(SettingsPage));
-                TitleTextBlock.Text = "System settings";
+                TitleTextBlock.Text = "System settings - this version is for test only";
                 //BackButton.Visibility = Visibility.Visible;
             }
             else if (CalibrateListBoxItem.IsSelected)
             {
                 InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(CalibratePage));
-                TitleTextBlock.Text = "Calibrate moulding";
+                TitleTextBlock.Text = "Calibrate moulding - this version is for test only";
                 //BackButton.Visibility = Visibility.Visible;
             }
             else if (TuneListBoxItem.IsSelected)
             {
                 InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(TunePage));
-                TitleTextBlock.Text = "Tune operation";
+                TitleTextBlock.Text = "Tune operation - this version is for test only";
                 //BackButton.Visibility = Visibility.Visible;
             }
 
@@ -134,7 +134,7 @@ namespace DemoPrototype
             {
                 InfoTextBlock.Text = Data.Updater.GetRunningModeStatus();
                 MyFrame.Navigate(typeof(MaintenancePage));
-                TitleTextBlock.Text = "System maintenance";
+                TitleTextBlock.Text = "System maintenance - this version is for test only";
                 //BackButton.Visibility = Visibility.Visible;
             }
             else if (HelpListBoxItem.IsSelected)
